@@ -1,0 +1,53 @@
+table.occupation_table {
+	table-layout: fixed; /* all columns have equal width */
+	width: 100%;
+	border: 1px solid;
+	border-collapse: separate;
+	border-spacing: 10px;
+	text-align: center;
+	color: #000;
+  background-color: #fcfcfc;
+}
+
+/* all rows have equal height */
+table.occupation_table td {
+	height: 50px;
+	overflow: hidden;
+}
+
+a:link {
+  text-decoration: none;
+  color:black;
+}
+
+a:visited {
+  text-decoration: none;
+  color:black;
+}
+a:hover {
+  color: #aaa;
+}
+
+.available {
+	background-color: #ddd;
+}
+
+.available_light {
+	background-color: #eee;
+}
+
+.type0 { /* Quickbuchung */
+	background-color: #def;
+}
+
+.type1 { /* Training */
+	background-color: #edd;
+}
+
+.type2 { /* Meisterschaft */
+	background-color: #ddf;
+}
+
+.type3 { /* Dauerbuchung */
+	background-color: #eea;
+}
