@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 
 import { OccupationType } from '../occupationtype';
 import { OccupationService } from '../occupation.service';
@@ -23,8 +24,8 @@ export class OccupationAddComponent {
   user: User;
   occupation: Occupation;
 
-  repeat:Date;
-  time;
+  repeat: Date;
+  time: number;
   type: string;
   types: string[];
 
@@ -34,28 +35,34 @@ export class OccupationAddComponent {
   showRepeat: boolean;
   focus: string;
 
-  constructor(private route: ActivatedRoute, private location: Location, private service: OccupationService, private userService: UserService) {
-    this.systemConfig = service.getSystemConfig(route.snapshot.params['system']);
-    this.user = userService.getUser(route.snapshot.params['user']);
+  constructor(private route: ActivatedRoute, private router: Router, private location: Location,
+    private service: OccupationService, private userService: UserService) {
+  }
+
+  ngOnInit() {
+    this.systemConfig = this.service.getSystemConfig(this.route.snapshot.params['system']);
+    this.user = this.userService.getUser(this.route.snapshot.params['user']);
 
     // create option list of occupation types
     this.types = Object.keys(OccupationType).map(key => OccupationType[key])
       .filter(value => typeof value === 'string');
 
     // set default values
-    this.type = OccupationType[OccupationType.Quickbuchung];
 
     this.occupation = new Occupation(
-      new Date(parseInt(route.snapshot.params['date'])), // occupation start
-      2,                                                 // duration default
-      OccupationType.Quickbuchung,                       // default type
-      this.user.name,                                    // default text
-      this.user.id,                                      // user id
-      route.snapshot.params['court']                     // court
+      new Date(parseInt(this.route.snapshot.params['date'])), // occupation start
+      2,                                                      // duration default
+      OccupationType.Quickbuchung,                            // default type
+      this.user.name,                                         // default text
+      this.user.id,                                           // user id
+      this.route.snapshot.params['court']                     // court
     );
 
+    this.time = DateUtil.copyTime(new Date(), this.occupation.start).getTime();
+    this.type = OccupationType[this.occupation.occupationType];
+
     // decide which parts of the layout are visible
-    // this depend on the user role
+    // this depends on the user role
     this.showType = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
     this.showText = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER, UserRole.KIOSK);
     this.showDuration = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
@@ -64,19 +71,34 @@ export class OccupationAddComponent {
     if (this.user.hasRole(UserRole.REGISTERED)) this.focus = "duration";
     if (this.user.hasRole(UserRole.KIOSK)) this.focus = "text";
   }
-  
-  public onDurationChanged(duration: number) {
+
+  duration(d) {
+    return new Date(d).toLocaleTimeString();
+  }
+
+  onDurationChanged(duration) {
     this.occupation.duration = duration;
+  }
+
+  private getTimes() {
+    let times = [];
+    for (let hour = this.systemConfig.openingHour; hour < this.systemConfig.closingHour; hour++) {
+      for (let minute = 0; minute < 60; minute += this.systemConfig.durationUnit) {
+        times.push(DateUtil.of(hour, minute).getTime());
+      }
+    }
+    return times;
   }
 
   onClick() {
     this.occupation.occupationType = OccupationType[this.type];
+    this.occupation.start = DateUtil.copyTime(this.occupation.start, DateUtil.ofMillies(this.time));
 
     this.service.addOccupation(this.occupation);
-    this.location.back();
+    this.onBack();
   }
 
   onBack() {
-    this.location.back();
+    this.router.navigate(["/table", this.systemConfig.id, this.user.id, this.occupation.start.getTime()]);
   }
 }

@@ -11,19 +11,19 @@ import { OccupationSystemConfig } from '../occupation-system-config';
 export class OccupationTable extends TableData {
 
   occupations: Occupation[] = [];
-  start: RDate
+  start: RDate;
 
   constructor(public user: User, public systemConfig: OccupationSystemConfig) {
     super();
-    this.start = new RDate(DateUtil.of(systemConfig.openingHour), systemConfig.durationUnit * DateUtil.MINUTE);
   }
 
-  show() {
+  show(date: Date) {
+    const d = new Date(date);
+    d.setHours(this.systemConfig.openingHour,0,0,0);
+    this.start = new RDate(d, this.systemConfig.durationUnit * DateUtil.MINUTE);
     this.createEmptyTable();
     for (const occupation of this.occupations) {
-      if (DateUtil.isSameDay(this.start.start, occupation.start)) {
         this.addOccupation(occupation);
-      }
     }
   }
 
@@ -38,6 +38,7 @@ export class OccupationTable extends TableData {
   }
 
   createEmptyTable(rowspan = 2) {
+    this.clearAll();
     for (let row = 0; row < this.systemConfig.getRows(); row++) {
       let mainRow: boolean = row % rowspan == 0;
       // first column: time
@@ -60,7 +61,7 @@ export class OccupationTable extends TableData {
     }
   }
 
-  private canMakeReservation(row) {
+  canMakeReservation(row) {
     if (!this.user || this.user.hasRole(UserRole.ANONYMOUS)) {
       return false;
     }
@@ -77,4 +78,4 @@ export class OccupationTable extends TableData {
     const hour = this.start.date(row).getHours();
     return hour + ':00 - ' + (hour + 1) + ':00';
   }
-}
+ }

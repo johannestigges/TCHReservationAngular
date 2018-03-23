@@ -19,7 +19,7 @@ export class TableData {
    * @param colspan
    */
   setCell(row: number, column: number, rowspan: number = 1, colspan: number = 1) {
-    // console.log('set cell (' + row + ',' + column + ') span (' + rowspan + ',' + colspan + ')');
+//    console.log('set cell (' + row + ',' + column + ') span (' + rowspan + ',' + colspan + ')');
     while (row >= this.table_rows) {
       this.newRow();
     }
@@ -32,6 +32,12 @@ export class TableData {
 
   setData(row: number, column: number, data: any) {
     this.table[row][column].data = data;
+  }
+
+  clearAll() {
+    this.table_rows = 0;
+    this.table_columns = 0;
+    this.table = [];
   }
 
   private newRow() {

@@ -6,7 +6,7 @@ table.occupation_table {
 	border-spacing: 10px;
 	text-align: center;
 	color: #000;
-  background-color: #fcfcfc;
+  background-color: #fcfefd;
 }
 
 /* all rows have equal height */
@@ -15,29 +15,40 @@ table.occupation_table td {
 	overflow: hidden;
 }
 
+table.occupation_table th {
+  text-align: center;
+}
+
 a:link {
   text-decoration: none;
-  color:black;
 }
 
 a:visited {
   text-decoration: none;
-  color:black;
-}
-a:hover {
-  color: #aaa;
 }
 
 .available {
-	background-color: #ddd;
+	background-color: #eee;
 }
 
 .available_light {
 	background-color: #eee;
 }
 
+.available_reservable {
+  background-color: #ccc;
+}
+
+.available_light_reservable {
+  background-color: #ddd;
+}
+
 .type0 { /* Quickbuchung */
 	background-color: #def;
+}
+
+.deletable {
+  color: #000;
 }
 
 .type1 { /* Training */
@@ -51,3 +62,4 @@ a:hover {
 .type3 { /* Dauerbuchung */
 	background-color: #eea;
 }
+

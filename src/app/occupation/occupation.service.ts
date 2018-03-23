@@ -43,7 +43,7 @@ export class OccupationService {
   }
 
   getOccupations(date: Date): Observable<Occupation[]> {
-    return of(this.occupations);
+    return of(this.occupations.filter(o => DateUtil.isSameDay(o.start, date)));
   }
 
   addOccupation(occupation) {

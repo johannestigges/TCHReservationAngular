@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
+
 import { OccupationService } from '../occupation.service';
 import { UserService } from '../../user/user.service';
 import { User } from '../../user/user';
@@ -20,22 +22,23 @@ export class OccupationModifyComponent {
   systemConfig: OccupationSystemConfig;
   occupation: Occupation;
 
-  constructor(private route: ActivatedRoute,
-    private location: Location,
-    private service: OccupationService,
-    private userService: UserService) {
-    this.user = userService.getUser(route.snapshot.params['user']);
-    this.systemConfig = service.getSystemConfig(route.snapshot.params['system']);
-    service.getOccupation(route.snapshot.params['reservation']).subscribe(o => this.occupation = o);
-}
+  constructor(private route: ActivatedRoute, private router: Router, private location: Location,
+    private service: OccupationService, private userService: UserService) {
+  }
+
+  ngOnInit() {
+    this.user = this.userService.getUser(this.route.snapshot.params['user']);
+    this.systemConfig = this.service.getSystemConfig(this.route.snapshot.params['system']);
+    this.service.getOccupation(this.route.snapshot.params['reservation']).subscribe(o => this.occupation = o);
+
+  }
 
   onDelete() {
-    console.log(this.occupation);
     this.service.delete(this.occupation.id);
-    this.location.back();
+    this.onBack();
   }
 
   onBack() {
-    this.location.back();
+    this.router.navigate(["/table", this.systemConfig.id, this.user.id, this.occupation.start.getTime()]);
   }
 }

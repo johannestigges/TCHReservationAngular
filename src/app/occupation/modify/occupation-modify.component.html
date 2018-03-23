@@ -1,15 +1,20 @@
 <div class='container'>
-	<h2>Reservierung löschen</h2>
+
 	<form class="form-horizontal">
+
+    <!-- title -->
+	  <div class="form-group">
+	    <h2 class="col-sm-offset-2 col-sm-10">Reservierung löschen</h2>
+    </div>
 
 		<!-- Date and Time -->
 		<div class='form-group'>
 			<label for='date' class="col-sm-2 control-label">Zeit:</label>
 			<div class="row col-sm-10">
-				<div class="col-xs-6">
+				<div class="col-sm-6">
 					<input type="text" class="form-control" [value]='occupation.start.toLocaleDateString()' readonly size='8'>
 				</div>
-				<div class="col-xs-6">
+				<div class="col-sm-6">
 					<input type="text" class="form-control" [value]='occupation.start.toLocaleTimeString()' readonly size='8'>
 				</div>
 			</div>
@@ -19,7 +24,7 @@
 		<div class='form-group'>
 			<label class="col-sm-2 control-label">Platz:</label>
 			<div class="row col-sm-10">
-				<div class="col-xs-4">
+				<div class="col-sm-4">
 					<input type="text" class="form-control" value='{{occupation.court}}' readonly size='1'>
 				</div>
 			</div>
@@ -29,7 +34,7 @@
 		<div class='form-group'>
 			<label class="col-sm-2 control-label">Text:</label>
 			<div class="col-sm-10">
-				<input type="text" class="form-control" value='{{occupation.text}}' readonly size='30'>
+				<input type="text" class="form-control" value='{{occupation.text}}' readonly>
 			</div>
 		</div>
 
@@ -44,8 +49,8 @@
 		<!-- Buttons -->
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
-				<button (click)='onDelete()' class="btn btn-primary btn-block">Löschen</button>
-				<button (click)='onBack()' class="btn btn-block">Zurück</button>
+				<button (click)='onDelete()' class="btn btn-lg btn-block btn-primary">Löschen</button>
+				<button (click)='onBack()' class="btn btn-lg btn-block">Zurück</button>
 			</div>
 		</div>
 	</form>

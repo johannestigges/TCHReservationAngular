@@ -5,10 +5,12 @@ import { OccupationAddComponent } from './occupation/add/occupation-add.componen
 import { OccupationModifyComponent } from './occupation/modify/occupation-modify.component';
 
 const routes: Routes = [
-    { path: '', redirectTo: '/table/1/0', pathMatch: 'full' },
-    { path: 'table/:system/:user', component: OccupationTableComponent },
-    { path: 'add/:system/:user/:court/:date', component: OccupationAddComponent },
-    { path: 'modify/:system/:user/:reservation', component: OccupationModifyComponent }
+    { path: '', redirectTo: '/table/1', pathMatch: 'full' },
+    { path: 'table/:system',                      component: OccupationTableComponent },
+    { path: 'table/:system/:user',                component: OccupationTableComponent },
+    { path: 'table/:system/:user/:date',          component: OccupationTableComponent },
+    { path: 'add/:system/:user/:court/:date',     component: OccupationAddComponent },
+    { path: 'modify/:system/:user/:reservation',  component: OccupationModifyComponent }
 ];
 
 @NgModule( {
