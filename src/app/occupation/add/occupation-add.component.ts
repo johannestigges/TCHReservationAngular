@@ -80,7 +80,7 @@ export class OccupationAddComponent {
     this.occupation.duration = duration;
   }
 
-  private getTimes() {
+  getTimes() {
     let times = [];
     for (let hour = this.systemConfig.openingHour; hour < this.systemConfig.closingHour; hour++) {
       for (let minute = 0; minute < 60; minute += this.systemConfig.durationUnit) {

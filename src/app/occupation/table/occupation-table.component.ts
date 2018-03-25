@@ -56,7 +56,7 @@ export class OccupationTableComponent {
     if (this.user.hasRole(UserRole.ADMIN)) {
       return true;
     }
-    // cannot modify occupation in the past
+    // cannot modify occupation in the past.subscribe(o => this.occupations.push(o));
     if (occupation.start.getTime() < new Date().getTime()) {
       return false;
     }

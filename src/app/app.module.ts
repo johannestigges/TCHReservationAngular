@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
@@ -25,7 +26,8 @@ import { AutofocusDirective } from './autofocus.directive';
         BrowserModule,
         AppRoutingModule,
         RouterModule,
-        FormsModule
+        FormsModule,
+        HttpClientModule
     ],
     providers: [OccupationService, UserService],
     bootstrap: [AppComponent]
