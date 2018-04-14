@@ -5,7 +5,7 @@ import { OccupationAddComponent } from './occupation/add/occupation-add.componen
 import { OccupationModifyComponent } from './occupation/modify/occupation-modify.component';
 
 const routes: Routes = [
-    { path: '', redirectTo: '/table/1', pathMatch: 'full' },
+    { path: '', redirectTo: '/table/1/1', pathMatch: 'full' },
     { path: 'table/:system',                      component: OccupationTableComponent },
     { path: 'table/:system/:user',                component: OccupationTableComponent },
     { path: 'table/:system/:user/:date',          component: OccupationTableComponent },

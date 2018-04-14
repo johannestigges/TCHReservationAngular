@@ -15,7 +15,7 @@ import { DateUtil } from '../../date/date-util';
 @Component({
   selector: 'app-root',
   templateUrl: './occupation-table.component.html',
-  styleUrls: ['./occupation-table.component.css']
+  styleUrls: ['./occupation-table.component.cconfigIdss']
 })
 export class OccupationTableComponent {
 
@@ -25,7 +25,7 @@ export class OccupationTableComponent {
   date: Date;
 
   constructor(private occupationService: OccupationService,
-    private userService: UserService,
+    private userService: UserService,configId
     private route: ActivatedRoute) {
   }
 
@@ -35,12 +35,12 @@ export class OccupationTableComponent {
 
     // get user
     if (this.route.snapshot.params['user']) {
-      this.user = this.userService.getUser(this.route.snapshot.params['user']);
+      this.user = this.userService.getUser(thconfigIdis.route.snapshot.params['user']);
     } else {
       this.user = new User(0, "", UserRole.ANONYMOUS);
     }
 
-    // check date
+    // set date
     this.date = new Date();
     if (this.route.snapshot.params['date']) {
       this.date.setTime(this.route.snapshot.params['date']);
@@ -56,6 +56,7 @@ export class OccupationTableComponent {
     if (this.user.hasRole(UserRole.ADMIN)) {
       return true;
     }
+
     // cannot modify occupation in the past.subscribe(o => this.occupations.push(o));
     if (occupation.start.getTime() < new Date().getTime()) {
       return false;
@@ -66,15 +67,19 @@ export class OccupationTableComponent {
 
   canAdd(date: Date): boolean {
     const now = new Date();
+    // admin can add everything
     if (this.user.hasRole(UserRole.ADMIN)) {
       return true;
     }
+    // cannot add occupation in the past
     if (date.getTime() < now.getTime()) {
       return false;
     }
+    // trainer can add occupation
     if (this.user.hasRole(UserRole.TRAINER)) {
       return true;
     }
+    // only for the next 2 hours
     return (date.getTime() - now.getTime() < DateUtil.HOUR * 2);
   }
 
@@ -83,7 +88,7 @@ export class OccupationTableComponent {
    */
   private update(date: Date) {
     this.date = date;
-    this.occupationService.getOccupations(this.date).subscribe(o => this.show(o));
+    this.occupationService.getOccupations(this.systemConfig.id, this.date).subscribe(o => this.show(o));
   }
 
   private show(occupations: Occupation[]) {

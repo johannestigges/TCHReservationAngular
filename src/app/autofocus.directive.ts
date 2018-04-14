@@ -1,5 +1,5 @@
 //
-// This code is copied from Ben Nadel 
+// This code is copied from Ben Nadel
 // https://www.bennadel.com/blog/3376-creating-an-input-driven-autofocus-directive-in-angular-5-0-2.htm
 //
 // Import the core angular services.

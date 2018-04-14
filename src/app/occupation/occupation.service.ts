@@ -7,6 +7,7 @@ import { Occupation } from './occupation';
 import { OccupationType } from './occupationtype';
 import { OccupationSystemConfig } from './occupation-system-config';
 
+const BACKEND_URL = ""; // "http://tchserver.fritz.box:8080";
 /**
  * occupation service
  */
@@ -28,13 +29,13 @@ export class OccupationService {
 //      DateUtil.of(9), 3, OccupationType.Quickbuchung, 'Quickbuchung', 2, 1, 2));
 //    this.occupations.push(new Occupation(
 //      DateUtil.of(10, 30), 2, OccupationType.Training, 'Training', 2, 1));
-//    this.occupations.push(new Occupation(
+//    this.occupations.push(new Occupation(create
 //      DateUtil.of(13), 3, OccupationType.Dauerbuchung, 'Dauerbuchung', 1, 2));
 
   }
 
   getOccupation(id: number): Observable<Occupation> {
-//    httpClient.get('http://127.0.0.1:8080/getOccupations/')
+//    httpClient.get('/reservation/getOccupation/' + id).subscribe(o => )create
 
     let found: Occupation = null;
     this.occupations.forEach(o => {
@@ -45,22 +46,26 @@ export class OccupationService {
     return of(found);
   }
 
-  getOccupations(date: Date): Observable<Occupation[]> {
-    this.httpClient.get<Occupation[]>('http://127.0.0.1:8080/getOccupations').subscribe(o=> this.occupations = o);
+  getOccupations(systemConfigId: number, date: Date): Observable<Occupation[]> {
+    this.httpClient.get<Occupation[]>(BACKEND_URL + '/reservation/getOccupations/' + systemConfigId + '/0')
+    .subscribe (o => console.log(o));
+
+    //.subscribe(o=> this.occupations = o);
     return of(this.occupations.filter(o => DateUtil.isSameDay(o.start, date)));
   }
 
   addOccupation(occupation) {
-    console.log('add ');
+    console.log('add occupation');
     console.log(occupation);
-    this.httpClient.post<Occupation>('http://127.0.0.1/add', occupation)
+    this.httpClient.post<Occupation>(BACKEND_URL + '/reservation/add', occupation).subscribe();
+    console.log("added occupation!");
+    this.httpClient.get<Occupation>(BACKEND_URL + '/myfancyurl');
 //    this.occupations.push(occupation);
   }
-
   delete(id: number) {
     console.log('delete ' + id)
-    this.httpClient.delete('http://127.0.0.1/delete/' + id);
-    //this.occupations = this.occupations.filter(o => o.id !== id);
+    this.httpClient.delete(BACKEND_URL + '/reservation/delete/' + id).subscribe();
+    //this.occupations = this.occupations.filter(o => o.id !== id);reservation/getOccupations/1/0
   }
 
   getSystemConfig(systemId) {

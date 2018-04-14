@@ -2,5 +2,6 @@ export enum OccupationType {
   Quickbuchung,
   Training,
   Meisterschaft,
-  Dauerbuchung
+  Dauerbuchung,
+  Gesperrt
 }

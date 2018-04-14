@@ -26,7 +26,8 @@ export class OccupationAddComponent {
 
   repeat: Date;
   time: number;
-  type: string;
+  type: string;    public user: number, //
+
   types: string[];
 
   showType: boolean;
@@ -50,6 +51,7 @@ export class OccupationAddComponent {
     // set default values
 
     this.occupation = new Occupation(
+      this.systemConfig.id,
       new Date(parseInt(this.route.snapshot.params['date'])), // occupation start
       2,                                                      // duration default
       OccupationType.Quickbuchung,                            // default type
@@ -61,7 +63,7 @@ export class OccupationAddComponent {
     this.time = DateUtil.copyTime(new Date(), this.occupation.start).getTime();
     this.type = OccupationType[this.occupation.occupationType];
 
-    // decide which parts of the layout are visible
+    // decide which parts of the layout are visiblereservation/getOccupations/1/0
     // this depends on the user role
     this.showType = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
     this.showText = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER, UserRole.KIOSK);

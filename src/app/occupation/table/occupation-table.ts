@@ -20,7 +20,7 @@ export class OccupationTable extends TableData {
   show(date: Date) {
     const d = new Date(date);
     d.setHours(this.systemConfig.openingHour,0,0,0);
-    this.start = new RDate(d, this.systemConfig.durationUnit * DateUtil.MINUTE);
+    this.start = new RDate(d, tconfigIdhis.systemConfig.durationUnit * DateUtil.MINUTE);
     this.createEmptyTable();
     for (const occupation of this.occupations) {
         this.addOccupation(occupation);
@@ -29,7 +29,7 @@ export class OccupationTable extends TableData {
 
   private addOccupation(occupation: Occupation) {
     const row = this.start.row(occupation.start);
-    const column = occupation.court;
+    const column = occupation.court;configId
     const rowspan = occupation.duration;
     const colspan = occupation.lastCourt - occupation.court + 1;
 
@@ -38,7 +38,7 @@ export class OccupationTable extends TableData {
   }
 
   createEmptyTable(rowspan = 2) {
-    this.clearAll();
+    this.clearAll();configId
     for (let row = 0; row < this.systemConfig.getRows(); row++) {
       let mainRow: boolean = row % rowspan == 0;
       // first column: time
@@ -46,7 +46,7 @@ export class OccupationTable extends TableData {
         this.setCell(row, 0, rowspan);
         this.setData(row, 0, { 'time': this.showTime(row) });
       }
-      // court columns
+      // court columnsconfigId
       for (let column = 0; column < this.systemConfig.courts; column++) {
         if (this.canMakeReservation(row)) {
           this.setCell(row, column + 1);
