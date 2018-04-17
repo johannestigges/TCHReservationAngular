@@ -3,12 +3,13 @@ import { DateUtil } from '../date/date-util';
 /**
  * reservation system configuration data
  */
-export class OccupationSystemConfig {
+export class ReservationSystemConfig {
 
   constructor(
     public id: number,              // system configuration id
+    public name: string,            // name of reservation system
     public courts: number,          // number of available courts
-    public durationUnit: number,    // smallest reservation unit in minutes
+    public durationUnitInMinutes: number, // smallest reservation unit
     public openingHour: number,     // first reservation hour
     public closingHour: number,     // last reservation hour
     public reservationfrom: number, // reservation possible from
@@ -22,16 +23,15 @@ export class OccupationSystemConfig {
     return Array.from(new Array(this.courts), (val, index) => index + 1);
   }
 
-
   /**
    * get the number of rows from opening hour to closing hour
    */
   public getRows(): number {
-    return (this.closingHour - this.openingHour) * 60 / this.durationUnit
+    return (this.closingHour - this.openingHour) * 60 / this.durationUnitInMinutes;
   }
 
   public toMinutes(row: number) {
-    return this.openingHour * 60 + row * this.durationUnit;
+    return this.openingHour * 60 + row * this.durationUnitInMinutes;
   }
 
   public setTime(date:Date, row:number) {

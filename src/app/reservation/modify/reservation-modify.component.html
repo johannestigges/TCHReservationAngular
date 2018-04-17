@@ -12,10 +12,10 @@
 			<label for='date' class="col-sm-2 control-label">Zeit:</label>
 			<div class="row col-sm-10">
 				<div class="col-sm-6">
-					<input type="text" class="form-control" [value]='occupation.start.toLocaleDateString()' readonly size='8'>
+					<input type="text" class="form-control" [value]='getStart().toLocaleDateString()' readonly size='8'>
 				</div>
 				<div class="col-sm-6">
-					<input type="text" class="form-control" [value]='occupation.start.toLocaleTimeString()' readonly size='8'>
+					<input type="text" class="form-control" [value]='getStart().toLocaleTimeString()' readonly size='8'>
 				</div>
 			</div>
 		</div>
@@ -25,7 +25,7 @@
 			<label class="col-sm-2 control-label">Platz:</label>
 			<div class="row col-sm-10">
 				<div class="col-sm-4">
-					<input type="text" class="form-control" value='{{occupation.court}}' readonly size='1'>
+					<input type="text" class="form-control" value='{{reservation.courts}}' readonly size='1'>
 				</div>
 			</div>
 		</div>
@@ -34,7 +34,7 @@
 		<div class='form-group'>
 			<label class="col-sm-2 control-label">Text:</label>
 			<div class="col-sm-10">
-				<input type="text" class="form-control" value='{{occupation.text}}' readonly>
+				<input type="text" class="form-control" value='{{reservation.text}}' readonly>
 			</div>
 		</div>
 
@@ -42,7 +42,7 @@
 		<div class='form-group'>
 			<label class="col-sm-2 control-label">Dauer:</label>
 			<div class="col-sm-10">
-				<input type="text" class="form-control" value='{{occupation.duration}}' readonly size='2'>
+				<input type="text" class="form-control" value='{{reservation.duration}}' readonly size='2'>
 			</div>
 		</div>
 

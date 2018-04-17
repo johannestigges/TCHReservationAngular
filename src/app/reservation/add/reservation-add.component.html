@@ -11,7 +11,7 @@
 			<label class="col-sm-2 control-label">Zeit:</label>
 			<div class="row col-sm-10">
 				<div class="col-sm-6">
-					<input type="text" name="date" class="form-control" [value]="occupation.start.toLocaleDateString()"
+					<input type="text" name="date" class="form-control" [value]="getStart().toLocaleDateString()"
                  size='8' readonly [appAutofocus]='(focus ==="date" )'>
 				</div>
 				<div class="col-sm-6">
@@ -27,7 +27,7 @@
 			<label class="col-sm-2 control-label">Platz:</label>
 			<div class="row col-sm-10">
 				<div class="col-sm-4">
-					<select class='form-control' id='court' [(ngModel)]="occupation.court" name="court">
+					<select class='form-control' id='court' [(ngModel)]="reservation.courts" name="court">
             <option *ngFor='let court of systemConfig.getCourtsArray()' [value] = 'court'>{{court}}</option>
           </select>
 				</div>
@@ -48,7 +48,7 @@
 		<div *ngIf='showText' class="form-group">
 			<label class="col-sm-2 control-label">Text:</label>
 			<div class="col-sm-10">
-				<input type="text" class="form-control" [(ngModel)]="occupation.text" name='text' 
+				<input type="text" class="form-control" [(ngModel)]="reservation.text" name='text'
                required [appAutofocus]='( focus === "text" )'>
 			</div>
 		</div>
@@ -58,7 +58,7 @@
 			<label class="col-sm-2 control-label">Dauer:</label>
 			<div class="row col-sm-10">
 				<div class="col-sm-4">
-					<input type="text" class="form-control" [(ngModel)]="occupation.duration" name='duration' 
+					<input type="text" class="form-control" [(ngModel)]="reservation.duration" name='duration'
                  size="1" [appAutofocus]='( focus === "duration" )'>
 				</div>
 				<div class="col-sm-8">

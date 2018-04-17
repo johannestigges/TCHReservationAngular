@@ -1,26 +1,27 @@
 import { RDate } from '../../date/date';
 import { DateUtil } from '../../date/date-util';
 import { TableData } from '../../table/table-data';
+
 import { Occupation } from '../occupation';
-import { OccupationType } from '../occupationtype';
+import { ReservationType } from '../reservationtype';
 import { AvailableEntry } from './available-entry';
 import { User } from '../../user/user';
 import { UserRole } from '../../user/user-role.enum';
-import { OccupationSystemConfig } from '../occupation-system-config';
+import { ReservationSystemConfig } from '../reservation-system-config';
 
 export class OccupationTable extends TableData {
 
   occupations: Occupation[] = [];
   start: RDate;
 
-  constructor(public user: User, public systemConfig: OccupationSystemConfig) {
+  constructor(public user: User, public systemConfig: ReservationSystemConfig) {
     super();
   }
 
   show(date: Date) {
     const d = new Date(date);
     d.setHours(this.systemConfig.openingHour,0,0,0);
-    this.start = new RDate(d, tconfigIdhis.systemConfig.durationUnit * DateUtil.MINUTE);
+    this.start = new RDate(d, this.systemConfig.durationUnitInMinutes * DateUtil.MINUTE);
     this.createEmptyTable();
     for (const occupation of this.occupations) {
         this.addOccupation(occupation);
@@ -28,8 +29,8 @@ export class OccupationTable extends TableData {
   }
 
   private addOccupation(occupation: Occupation) {
-    const row = this.start.row(occupation.start);
-    const column = occupation.court;configId
+    const row = this.start.row(new Date(occupation.start));
+    const column = occupation.court;
     const rowspan = occupation.duration;
     const colspan = occupation.lastCourt - occupation.court + 1;
 
@@ -38,7 +39,7 @@ export class OccupationTable extends TableData {
   }
 
   createEmptyTable(rowspan = 2) {
-    this.clearAll();configId
+    this.clearAll();
     for (let row = 0; row < this.systemConfig.getRows(); row++) {
       let mainRow: boolean = row % rowspan == 0;
       // first column: time
@@ -51,7 +52,7 @@ export class OccupationTable extends TableData {
         if (this.canMakeReservation(row)) {
           this.setCell(row, column + 1);
           this.setData(row, column + 1,
-            new AvailableEntry(this.start.date(row), column + 1, mainRow ? 'available' : 'available_light'));
+            new AvailableEntry                (this.start.date(row), column + 1, mainRow ? 'available' : 'available_light'));
         } else {
           if (mainRow) {
             this.setCell(row, column + 1, rowspan);

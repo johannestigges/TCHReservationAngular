@@ -1,4 +1,4 @@
-export enum OccupationType {
+export enum ReservationType {
   Quickbuchung,
   Training,
   Meisterschaft,

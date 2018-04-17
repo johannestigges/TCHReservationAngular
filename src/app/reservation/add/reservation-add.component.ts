@@ -3,10 +3,10 @@ import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 
-import { OccupationType } from '../occupationtype';
-import { OccupationService } from '../occupation.service';
-import { OccupationSystemConfig } from '../occupation-system-config';
-import { Occupation } from '../occupation';
+import { ReservationType } from '../reservationtype';
+import { ReservationService } from '../reservation.service';
+import { ReservationSystemConfig } from '../reservation-system-config';
+import { Reservation } from '../reservation';
 
 import { UserService } from '../../user/user.service';
 import { User } from '../../user/user';
@@ -14,19 +14,19 @@ import { UserRole } from '../../user/user-role.enum';
 import { DateUtil } from '../../date/date-util';
 
 @Component({
-  selector: 'occupation-add',
-  templateUrl: './occupation-add.component.html',
-  styleUrls: ['./occupation-add.component.css']
+  selector: 'reservation-add',
+  templateUrl: './reservation-add.component.html',
+  styleUrls: ['./reservation-add.component.css']
 })
-export class OccupationAddComponent {
+export class ReservationAddComponent {
 
-  systemConfig: OccupationSystemConfig;
+  systemConfig: ReservationSystemConfig;
   user: User;
-  occupation: Occupation;
+  reservation: Reservation;
 
   repeat: Date;
   time: number;
-  type: string;    public user: number, //
+  type: string;
 
   types: string[];
 
@@ -37,7 +37,7 @@ export class OccupationAddComponent {
   focus: string;
 
   constructor(private route: ActivatedRoute, private router: Router, private location: Location,
-    private service: OccupationService, private userService: UserService) {
+    private service: ReservationService, private userService: UserService) {
   }
 
   ngOnInit() {
@@ -45,25 +45,27 @@ export class OccupationAddComponent {
     this.user = this.userService.getUser(this.route.snapshot.params['user']);
 
     // create option list of occupation types
-    this.types = Object.keys(OccupationType).map(key => OccupationType[key])
+    this.types = Object.keys(ReservationType).map(key => ReservationType[key])
       .filter(value => typeof value === 'string');
 
     // set default values
+    const start = parseInt(this.route.snapshot.params['date']);
 
-    this.occupation = new Occupation(
+    this.reservation = new Reservation(
       this.systemConfig.id,
-      new Date(parseInt(this.route.snapshot.params['date'])), // occupation start
-      2,                                                      // duration default
-      OccupationType.Quickbuchung,                            // default type
-      this.user.name,                                         // default text
-      this.user.id,                                           // user id
-      this.route.snapshot.params['court']                     // court
+      this.user.id,                           // user id
+      this.user.name,                         // text = user name
+      start,                                  // reservation Date
+      start,                                  // reservation start
+      2,                                      // duration default
+      this.route.snapshot.params['court'],    // court
+      ReservationType.Quickbuchung,           // default type
     );
 
-    this.time = DateUtil.copyTime(new Date(), this.occupation.start).getTime();
-    this.type = OccupationType[this.occupation.occupationType];
+    this.time = DateUtil.copyTime(new Date(), new Date(this.reservation.start)).getTime();
+    this.type = ReservationType[this.reservation.type];
 
-    // decide which parts of the layout are visiblereservation/getOccupations/1/0
+    // decide which parts of the layout are visible
     // this depends on the user role
     this.showType = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
     this.showText = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER, UserRole.KIOSK);
@@ -79,28 +81,32 @@ export class OccupationAddComponent {
   }
 
   onDurationChanged(duration) {
-    this.occupation.duration = duration;
+    this.reservation.duration = duration;
   }
 
   getTimes() {
     let times = [];
     for (let hour = this.systemConfig.openingHour; hour < this.systemConfig.closingHour; hour++) {
-      for (let minute = 0; minute < 60; minute += this.systemConfig.durationUnit) {
+      for (let minute = 0; minute < 60; minute += this.systemConfig.durationUnitInMinutes) {
         times.push(DateUtil.of(hour, minute).getTime());
       }
     }
     return times;
   }
 
-  onClick() {
-    this.occupation.occupationType = OccupationType[this.type];
-    this.occupation.start = DateUtil.copyTime(this.occupation.start, DateUtil.ofMillies(this.time));
+  getStart() {
+    return new Date(this.reservation.start);
+  }
 
-    this.service.addOccupation(this.occupation);
+  onClick() {
+    this.reservation.type = ReservationType[this.type];
+    this.reservation.start = DateUtil.copyTime(new Date(this.reservation.start), DateUtil.ofMillies(this.time)).getTime();
+
+    this.service.addReservation(this.reservation);
     this.onBack();
   }
 
   onBack() {
-    this.router.navigate(["/table", this.systemConfig.id, this.user.id, this.occupation.start.getTime()]);
+    this.router.navigate(["/table", this.systemConfig.id, this.user.id, this.reservation.start]);
   }
 }

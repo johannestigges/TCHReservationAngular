@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Params } from '@angular/router';
 
-import { OccupationService } from '../occupation.service';
-import { OccupationSystemConfig } from '../occupation-system-config';
-import { Occupation } from '../occupation';
-import { OccupationType } from '../occupationtype';
+import { ReservationService } from '../reservation.service';
+import { ReservationSystemConfig } from '../reservation-system-config';
+import { ReservationType } from '../reservationtype';
 import { OccupationTable } from './occupation-table';
+import { Occupation } from '../occupation';
 import { UserService } from '../../user/user.service';
 import { User } from '../../user/user';
 import { UserRole } from '../../user/user-role.enum';
@@ -15,27 +15,27 @@ import { DateUtil } from '../../date/date-util';
 @Component({
   selector: 'app-root',
   templateUrl: './occupation-table.component.html',
-  styleUrls: ['./occupation-table.component.cconfigIdss']
+  styleUrls: ['./occupation-table.component.css']
 })
 export class OccupationTableComponent {
 
   occupationTable: OccupationTable;
   user: User;
-  systemConfig: OccupationSystemConfig;
+  systemConfig: ReservationSystemConfig;
   date: Date;
 
-  constructor(private occupationService: OccupationService,
-    private userService: UserService,configId
+  constructor(private reservationService: ReservationService,
+    private userService: UserService,
     private route: ActivatedRoute) {
   }
 
   ngOnInit() {
     // read system config
-    this.systemConfig = this.occupationService.getSystemConfig(this.route.snapshot.params['system']);
+    this.systemConfig = this.reservationService.getSystemConfig(this.route.snapshot.params['system']);
 
     // get user
     if (this.route.snapshot.params['user']) {
-      this.user = this.userService.getUser(thconfigIdis.route.snapshot.params['user']);
+      this.user = this.userService.getUser(this.route.snapshot.params['user']);
     } else {
       this.user = new User(0, "", UserRole.ANONYMOUS);
     }
@@ -58,11 +58,11 @@ export class OccupationTableComponent {
     }
 
     // cannot modify occupation in the past.subscribe(o => this.occupations.push(o));
-    if (occupation.start.getTime() < new Date().getTime()) {
+    if (occupation.start < new Date().getTime()) {
       return false;
     }
     // can only modify my ccupations
-    return occupation.userid == this.user.id;
+    return occupation.user == this.user.id;
   }
 
   canAdd(date: Date): boolean {
@@ -88,7 +88,8 @@ export class OccupationTableComponent {
    */
   private update(date: Date) {
     this.date = date;
-    this.occupationService.getOccupations(this.systemConfig.id, this.date).subscribe(o => this.show(o));
+    this.reservationService.getOccupations(this.systemConfig.id, this.date);
+    this.show(this.reservationService.occupations);
   }
 
   private show(occupations: Occupation[]) {

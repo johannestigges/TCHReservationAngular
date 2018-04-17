@@ -1,4 +1,4 @@
-import { OccupationType } from './occupationtype';
+import { ReservationType } from './reservationtype';
 
 /**
  * data of one occupation
@@ -12,12 +12,12 @@ export class Occupation {
     public reservation: number, //
     public user: number, //
     public text: string, //
-    public date: Date, //
-    public start: Date, //
+    public date: number, // date of occupation
+    public start: number, // start time of occupation
     public duration: number, //
     public court: number, //
     public lastCourt: number = court, //
-    public occupationType: OccupationType) {
+    public type: ReservationType) {
     this.id = Math.floor(Math.random() * 100000000 );
   }
 }

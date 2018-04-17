@@ -1,4 +1,4 @@
-import { OccupationType } from './occupationtype';
+import { ReservationType } from './reservationtype';
 
 export class Reservation {
 
@@ -8,12 +8,12 @@ export class Reservation {
     public systemConfigId: number, //
     public user: number, //
     public text: string, //
-    public date: Date, //
-    public start: Date, //
+    public date: number, // date of reservation
+    public start: number, // start time of reservation
     public duration: number, //
     public courts: string, //
     public type: ReservationType, //
-    public weeklyRepeatUntil: Date) {
+    public weeklyRepeatUntil? : number) {
     this.id = Math.floor(Math.random() * 100000000 );
   }
 
