@@ -21,6 +21,7 @@ export class ReservationModifyComponent {
   user: User;
   systemConfig: ReservationSystemConfig;
   reservation: Reservation;
+  error: string;
 
   constructor(private route: ActivatedRoute, private router: Router, private location: Location,
     private service: ReservationService, private userService: UserService) {
@@ -36,10 +37,23 @@ export class ReservationModifyComponent {
   getStart() {
     return new Date(this.reservation.start);
   }
-  
+
   onDelete() {
-    this.service.deleteReservation(this.reservation.id);
-    this.onBack();
+    this.service.deleteReservation(this.reservation.id)
+      .subscribe(
+        data => {
+          this.onBack();
+        },
+        err => {
+          this.showError(err);
+        },
+        () => { this.onBack(); }
+      );
+  }
+
+  private showError(error) {
+    this.error = error;
+    console.log(error);
   }
 
   onBack() {

@@ -16,64 +16,31 @@ const BACKEND_URL = ""; // "http://tchserver.fritz.box:8080";
 @Injectable()
 export class ReservationService {
 
-  public occupations: Occupation[] = [];
-  private reservation: Reservation;
   private systemConfig: { [key: number]: ReservationSystemConfig; } = {};
-  public error: string;
 
   constructor(private httpClient: HttpClient) {
     // initialize system config
     this.systemConfig[1] = new ReservationSystemConfig(1, "Außenplätze", 6, 30, 8, 22, 0, 4);
     this.systemConfig[2] = new ReservationSystemConfig(1, "Hallenplätze", 2, 30, 8, 22, 0, 480);
-
   }
 
   getReservation(id: number): Observable<Reservation> {
-    this.httpClient.get<Reservation>(BACKEND_URL + '/reservation/' + id)
-      .subscribe(
-        data => { this.reservation = data; },
-        err => { this.setError(err); },
-        () => { console.log("done get reservation " + id); }
-      );
-    return of(this.reservation);
+    return this.httpClient.get<Reservation>(BACKEND_URL + '/reservation/' + id);
   }
 
-  getOccupations(systemConfigId: number, date: Date) {
-    return this.httpClient.get<Occupation[]>(BACKEND_URL + '/reservation/getOccupations/' + systemConfigId + '/' + date.getTime())
-    .subscribe (
-      data => { this.occupations = data; },
-      err => { this.setError(err); },
-      () => { console.log("done loading occupations for " + date); }
-    );
+  getOccupations(systemConfigId: number, date: Date): Observable<Occupation[]> {
+    return this.httpClient.get<Occupation[]>(BACKEND_URL + '/reservation/getOccupations/' + systemConfigId + '/' + date.getTime());
   }
 
-  addReservation(reservation: Reservation) {
-    console.log('add reservation');
-    console.log(reservation);
-    this.httpClient.post<Reservation>(BACKEND_URL + '/reservation/add', reservation)
-    .subscribe(
-      data => { console.log(data); },
-      err => { this.setError(err); },
-      () => { console.log("done add reservation"); }
-    );
+  addReservation(reservation: Reservation): Observable<Reservation> {
+    return this.httpClient.post<Reservation>(BACKEND_URL + '/reservation/add', reservation);
   }
 
-  deleteReservation(id: number) {
-    console.log('delete ' + id)
-    this.httpClient.delete(BACKEND_URL + '/reservation/delete/' + id)
-    .subscribe(
-      data => { console.log(data); },
-      err => { this.setError(err); },
-      () => { console.log("done deleted " + id); }
-    );
+  deleteReservation(id: number): Observable<Reservation> {
+    return this.httpClient.delete<Reservation>(BACKEND_URL + '/reservation/delete/' + id);
   }
 
-  private setError(err) {
-    this.error = err;
-    console.log(err);
-  }
-
-  getSystemConfig(systemId) {
+  getSystemConfig(systemId): ReservationSystemConfig {
     return this.systemConfig[systemId];
   }
 }

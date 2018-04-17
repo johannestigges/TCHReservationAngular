@@ -23,6 +23,7 @@ export class ReservationAddComponent {
   systemConfig: ReservationSystemConfig;
   user: User;
   reservation: Reservation;
+  error:string;
 
   repeat: Date;
   time: number;
@@ -94,6 +95,11 @@ export class ReservationAddComponent {
     return times;
   }
 
+  private showError(error) {
+    this.error = error;
+    console.log(error);
+  }
+
   getStart() {
     return new Date(this.reservation.start);
   }
@@ -102,8 +108,17 @@ export class ReservationAddComponent {
     this.reservation.type = ReservationType[this.type];
     this.reservation.start = DateUtil.copyTime(new Date(this.reservation.start), DateUtil.ofMillies(this.time)).getTime();
 
-    this.service.addReservation(this.reservation);
-    this.onBack();
+    this.service.addReservation(this.reservation)
+      .subscribe(
+        data => {
+          this.reservation = data;
+          this.onBack();
+        },
+        err => {
+          this.showError(err);
+        },
+        () => { this.onBack; }
+      );
   }
 
   onBack() {

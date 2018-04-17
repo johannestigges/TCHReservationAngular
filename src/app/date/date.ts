@@ -15,6 +15,8 @@ export class RDate {
   }
 
   row(date: Date): number {
+    console.log("row " + JSON.stringify(this.start) + " " + JSON.stringify(date));
+    console.log(this.rows(this.start, date));
     return this.rows(this.start, date);
   }
 

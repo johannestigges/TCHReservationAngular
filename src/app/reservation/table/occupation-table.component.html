@@ -20,14 +20,14 @@
 			<ng-container *ngFor="let cell of row">
 
 				<!-- first column with time data -->
-				<td *ngIf="cell.data && cell.data.time" 
+				<td *ngIf="cell.data && cell.data.time"
             [attr.rowspan]="cell.rowspan" [attr.colspan]="cell.colspan">
 					  {{cell.data.time}}
         </td>
 
 				<!-- occupation entry with link to modify or delete occupation -->
-				<td *ngIf="cell.data && cell.data.text && canModify(cell.data)" 
-            [attr.rowspan]="cell.rowspan" [attr.colspan]="cell.colspan" 
+				<td *ngIf="cell.data && cell.data.text && canModify(cell.data)"
+            [attr.rowspan]="cell.rowspan" [attr.colspan]="cell.colspan"
             class="type{{cell.data.occupationType}} deletable">
 					<a routerLink='/modify/{{systemConfig.id}}/{{user.id}}/{{cell.data.id}}'>
 						{{cell.data.text}}
@@ -35,15 +35,15 @@
 				</td>
 
 				<!-- occupation entry -->
-				<td *ngIf="cell.data && cell.data.text && !canModify(cell.data)" 
-            [attr.rowspan]="cell.rowspan" [attr.colspan]="cell.colspan" 
+				<td *ngIf="cell.data && cell.data.text && !canModify(cell.data)"
+            [attr.rowspan]="cell.rowspan" [attr.colspan]="cell.colspan"
             class="type{{cell.data.occupationType}}">
 					{{cell.data.text}}
         </td>
 
 				<!-- available cell with link to add reservation -->
-				<td *ngIf="cell.rowspan > 0 && cell.colspan > 0 && cell.data && cell.data.date && cell.data.court && canAdd(cell.data.date)" 
-            [attr.rowspan]="cell.rowspan" [attr.colspan]="cell.colspan" 
+				<td *ngIf="cell.rowspan > 0 && cell.colspan > 0 && cell.data && cell.data.date && cell.data.court && canAdd(cell.data.date)"
+            [attr.rowspan]="cell.rowspan" [attr.colspan]="cell.colspan"
             class="{{cell.data.css}}_reservable">
 					<a routerLink='/add/{{systemConfig.id}}/{{user.id}}/{{cell.data.court}}/{{cell.data.date.getTime()}}'>
 						<div style="height:100%;width:100%">&nbsp;&nbsp;&nbsp;</div>
@@ -51,14 +51,14 @@
 				</td>
 
 				<!-- available cell without link to add reservation -->
-				<td *ngIf="cell.rowspan > 0 && cell.colspan > 0 && cell.data && cell.data.date && cell.data.court && !canAdd(cell.data.date)" 
-            [attr.rowspan]="cell.rowspan" [attr.colspan]="cell.colspan" 
+				<td *ngIf="cell.rowspan > 0 && cell.colspan > 0 && cell.data && cell.data.date && cell.data.court && !canAdd(cell.data.date)"
+            [attr.rowspan]="cell.rowspan" [attr.colspan]="cell.colspan"
             class="{{cell.data.css}}">
 					<div style="height:100%;width:100%"></div>
 				</td>
 
 				<!-- no data? available cell without link -->
-				<td *ngIf="cell.rowspan > 0 && cell.colspan > 0 && cell.data == undefined" 
+				<td *ngIf="cell.rowspan > 0 && cell.colspan > 0 && cell.data == undefined"
             [attr.rowspan]="cell.rowspan" [attr.colspan]="cell.colspan" class="available">
 					  <div style="height:100%;width:100%"></div>
 				</td>
@@ -67,3 +67,4 @@
 		</tr>
 	</tbody>
 </table>
+<div>{{error}}</div>

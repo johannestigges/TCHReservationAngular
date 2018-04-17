@@ -23,6 +23,7 @@ export class OccupationTableComponent {
   user: User;
   systemConfig: ReservationSystemConfig;
   date: Date;
+  error: string;
 
   constructor(private reservationService: ReservationService,
     private userService: UserService,
@@ -84,12 +85,31 @@ export class OccupationTableComponent {
   }
 
   /**
-   * update table: asynchronous read occupations and show table
+   * update table: read occupations asynchronously and show table
    */
   private update(date: Date) {
     this.date = date;
-    this.reservationService.getOccupations(this.systemConfig.id, this.date);
-    this.show(this.reservationService.occupations);
+    this.reservationService.getOccupations(this.systemConfig.id, this.date)
+      .subscribe(
+        data => {
+          console.log(JSON.stringify(data));
+          this.occupationTable.occupations = data;
+          console.log(JSON.stringify(this.occupationTable.occupations));
+
+          this.show(data);
+        },
+        err => {
+          this.showError(err);
+        },
+        () => {
+          console.log("finished update reservations for " + date);
+        }
+      );
+  }
+
+  public showError(error) {
+    this.error = error;
+    console.log(error);
   }
 
   private show(occupations: Occupation[]) {
