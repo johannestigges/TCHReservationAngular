@@ -16,46 +16,39 @@ export class OccupationTable extends TableData {
 
   constructor(public user: User, public systemConfig: ReservationSystemConfig) {
     super();
-    this.start = new RDate(new Date(), this.systemConfig.durationUnitInMinutes * DateUtil.MINUTE);
-    this.createEmptyTable();
+    this.createEmptyTable(new Date());
   }
 
   show(date: Date) {
-    const d = new Date(date);
-    console.log("show date " + JSON.stringify(date));
-    d.setHours(this.systemConfig.openingHour,0,0,0);
-    console.log("show date " + JSON.stringify(d));
-    this.start = new RDate(d, this.systemConfig.durationUnitInMinutes * DateUtil.MINUTE);
-    console.log("show rdate " + JSON.stringify(this.start));
-    this.createEmptyTable();
+    this.createEmptyTable(date);
     for (const occupation of this.occupations) {
         this.addOccupation(occupation);
     }
   }
 
   private addOccupation(occupation: Occupation) {
-    console.log("add occupation " + occupation.text + ": " + JSON.stringify(occupation));
-    const d = new Date();
+    const d = new Date();AvailableEntry
     d.setTime(occupation.start);
-    console.log(occupation.start);
-    console.log(d);
     const row = this.start.row(d);
     const column = occupation.court;
     const rowspan = occupation.duration;
     const colspan = occupation.lastCourt - occupation.court + 1;
-    console.log ("cell("+row+","+column+") span(" + rowspan + "," + colspan + ")");
 
-    this.setCell(row, column, rowspan, colspan);
+    this.setCell(row, column, rowspan, colspan);AvailableEntry
     this.setData(row, column, occupation);
   }
 
-  createEmptyTable(rowspan = 2) {
+  createEmptyTable(date:Date, rowspan = 2) {
+    const startDate = new Date(date);
+    startDate.setHours(this.systemConfig.openingHour,0,0,0);
+    this.start = new RDate(startDate, this.systemConfig.durationUnitInMinutes * DateUtil.MINUTE);AvailableEntry
+
     this.clearAll();
     for (let row = 0; row < this.systemConfig.getRows(); row++) {
       let mainRow: boolean = row % rowspan == 0;
 
       // first column: time
-      if (mainRow) {
+      if (mainRow) {AvailableEntry
         this.setCell(row, 0, rowspan);
         this.setData(row, 0, { 'time': this.showTime(row) });
       }

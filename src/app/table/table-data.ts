@@ -1,7 +1,7 @@
 import { TableCell } from './table-cell';
 
 /**
- *generic table data  
+ *generic table data
  */
 export class TableData {
 
@@ -11,7 +11,7 @@ export class TableData {
 
   /**
    * set the data for one cell
-   * 
+   *
    * @param row
    * @param column
    * @param data
@@ -19,7 +19,6 @@ export class TableData {
    * @param colspan
    */
   setCell(row: number, column: number, rowspan: number = 1, colspan: number = 1) {
-//    console.log('set cell (' + row + ',' + column + ') span (' + rowspan + ',' + colspan + ')');
     while (row >= this.table_rows) {
       this.newRow();
     }

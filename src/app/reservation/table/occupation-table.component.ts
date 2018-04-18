@@ -24,6 +24,7 @@ export class OccupationTableComponent {
   systemConfig: ReservationSystemConfig;
   date: Date;
   error: string;
+  lastUpdated: Date;
 
   constructor(private reservationService: ReservationService,
     private userService: UserService,
@@ -59,29 +60,29 @@ export class OccupationTableComponent {
     }
 
     // cannot modify occupation in the past.subscribe(o => this.occupations.push(o));
-    if (occupation.start < new Date().getTime()) {
+    if (occupation.start < this.lastUpdated.getTime()) {
       return false;
     }
     // can only modify my ccupations
     return occupation.user == this.user.id;
   }
 
-  canAdd(date: Date): boolean {
-    const now = new Date();
+  canAdd(date: number): boolean {
+
     // admin can add everything
     if (this.user.hasRole(UserRole.ADMIN)) {
       return true;
     }
     // cannot add occupation in the past
-    if (date.getTime() < now.getTime()) {
+    if (date < this.lastUpdated.getTime()) {
       return false;
     }
-    // trainer can add occupation
+    // trainer can add occupationcell.rowspan > 0 && cell.colspan > 0 &&
     if (this.user.hasRole(UserRole.TRAINER)) {
       return true;
     }
     // only for the next 2 hours
-    return (date.getTime() - now.getTime() < DateUtil.HOUR * 2);
+    return (date - this.lastUpdated.getTime() < DateUtil.HOUR * 2);
   }
 
   /**
@@ -92,10 +93,6 @@ export class OccupationTableComponent {
     this.reservationService.getOccupations(this.systemConfig.id, this.date)
       .subscribe(
         data => {
-          console.log(JSON.stringify(data));
-          this.occupationTable.occupations = data;
-          console.log(JSON.stringify(this.occupationTable.occupations));
-
           this.show(data);
         },
         err => {
@@ -109,10 +106,11 @@ export class OccupationTableComponent {
 
   public showError(error) {
     this.error = error;
-    console.log(error);
+    console.log(JSON.stringify(error));
   }
 
   private show(occupations: Occupation[]) {
+    this.lastUpdated = new Date();
     this.occupationTable.occupations = occupations;
     this.occupationTable.show(this.date);
   }
