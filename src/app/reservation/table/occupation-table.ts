@@ -35,11 +35,11 @@ export class OccupationTable extends TableData {
 
   private addOccupation(occupation: Occupation) {
     console.log("add occupation " + occupation.text + ": " + JSON.stringify(occupation));
+    const d = new Date();
+    d.setTime(occupation.start);
     console.log(occupation.start);
-    console.log(new Date(occupation.start));
-    console.log(new Date(parseInt(occupation.start)));
-    console.log(JSON.stringify(new Date(occupation.start)));
-    const row = this.start.row(new Date(occupation.start));
+    console.log(d);
+    const row = this.start.row(d);
     const column = occupation.court;
     const rowspan = occupation.duration;
     const colspan = occupation.lastCourt - occupation.court + 1;
