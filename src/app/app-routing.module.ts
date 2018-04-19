@@ -5,7 +5,7 @@ import { ReservationAddComponent } from './reservation/add/reservation-add.compo
 import { ReservationModifyComponent } from './reservation/modify/reservation-modify.component';
 
 const routes: Routes = [
-    { path: '', redirectTo: '/table/1/1', pathMatch: 'full' },
+    { path: '', redirectTo: '/table/1', pathMatch: 'full' },
     { path: 'table/:system',                      component: OccupationTableComponent },
     { path: 'table/:system/:user',                component: OccupationTableComponent },
     { path: 'table/:system/:user/:date',          component: OccupationTableComponent },

@@ -96,12 +96,14 @@ export class ReservationAddComponent {
   }
 
   private showError(error) {
-    this.error = error;
-    console.log(error);
+    this.error = JSON.stringify(error);
+    console.log(this.error);
   }
 
   getStart() {
-    return new Date(this.reservation.start);
+    const date = new Date();
+    date.setTime(this.reservation.start);
+    return date;
   }
 
   onClick() {
@@ -117,7 +119,7 @@ export class ReservationAddComponent {
         err => {
           this.showError(err);
         },
-        () => { this.onBack; }
+        () => { this.onBack(); }
       );
   }
 

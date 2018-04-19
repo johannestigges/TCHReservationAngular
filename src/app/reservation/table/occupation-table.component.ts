@@ -105,8 +105,8 @@ export class OccupationTableComponent {
   }
 
   public showError(error) {
-    this.error = error;
-    console.log(JSON.stringify(error));
+    this.error = JSON.stringify(error);
+    console.log(this.error);
   }
 
   private show(occupations: Occupation[]) {

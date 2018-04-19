@@ -25,7 +25,7 @@ export class ReservationService {
   }
 
   getReservation(id: number): Observable<Reservation> {
-    return this.httpClient.get<Reservation>(BACKEND_URL + '/reservation/' + id);
+    return this.httpClient.get<Reservation>(BACKEND_URL + '/reservation/get/' + id);
   }
 
   getOccupations(systemConfigId: number, date: Date): Observable<Occupation[]> {

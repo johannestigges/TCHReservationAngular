@@ -29,7 +29,7 @@
 				<td *ngIf="cell.rowspan > 0 && cell.colspan > 0 && cell.data && cell.data.text && canModify(cell.data)"
             [attr.rowspan]="cell.rowspan" [attr.colspan]="cell.colspan"
             class="type{{cell.data.occupationType}} deletable">
-					<a routerLink='/modify/{{systemConfig.id}}/{{user.id}}/{{cell.data.id}}'>
+					<a routerLink='/modify/{{systemConfig.id}}/{{user.id}}/{{cell.data.reservation.id}}'>
 						{{cell.data.text}}
 					</a>
 				</td>
