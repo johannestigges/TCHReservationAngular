@@ -28,8 +28,8 @@ export class ReservationService {
     return this.httpClient.get<Reservation>(BACKEND_URL + '/reservation/get/' + id);
   }
 
-  getOccupations(systemConfigId: number, date: Date): Observable<Occupation[]> {
-    return this.httpClient.get<Occupation[]>(BACKEND_URL + '/reservation/getOccupations/' + systemConfigId + '/' + date.getTime());
+  getOccupations(systemConfigId: number, date: number): Observable<Occupation[]> {
+    return this.httpClient.get<Occupation[]>(BACKEND_URL + '/reservation/getOccupations/' + systemConfigId + '/' + date);
   }
 
   addReservation(reservation: Reservation): Observable<Reservation> {

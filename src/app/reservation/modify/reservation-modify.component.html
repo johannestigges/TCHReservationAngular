@@ -12,10 +12,10 @@
 			<label for='date' class="col-sm-2 control-label">Zeit:</label>
 			<div class="row col-sm-10">
 				<div class="col-sm-6">
-					<input type="text" class="form-control" [value]='getStart().toLocaleDateString()' readonly size='8'>
+					<input type="text" class="form-control" [value]='getDate(reservation.start).toLocaleDateString()' readonly size='8'>
 				</div>
 				<div class="col-sm-6">
-					<input type="text" class="form-control" [value]='getStart().toLocaleTimeString()' readonly size='8'>
+					<input type="text" class="form-control" [value]='getDate(reservation.start).toLocaleTimeString()' readonly size='8'>
 				</div>
 			</div>
 		</div>

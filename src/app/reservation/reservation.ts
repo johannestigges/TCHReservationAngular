@@ -8,8 +8,8 @@ export class Reservation {
     public systemConfigId: number, //
     public user: number, //
     public text: string, //
-    public date: number, // date of reservation
-    public start: number, // start time of reservation
+    public date: number, // date of reservation in epocj ofMillies
+    public start: number, // start time of reservation in epoch ofMillies
     public duration: number, //
     public courts: string, //
     public type: ReservationType, //

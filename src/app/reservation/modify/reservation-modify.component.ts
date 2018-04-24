@@ -40,10 +40,10 @@ export class ReservationModifyComponent {
       );
   }
 
-  getStart() {
-    const date = new Date();
-    date.setTime(this.reservation.start);
-    return date;
+  getDate(date:number) {
+    const d = new Date();
+    d.setTime(date);
+    return d;
   }
 
   onDelete() {

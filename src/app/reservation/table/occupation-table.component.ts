@@ -22,9 +22,8 @@ export class OccupationTableComponent {
   occupationTable: OccupationTable;
   user: User;
   systemConfig: ReservationSystemConfig;
-  date: Date;
   error: string;
-  lastUpdated: Date;
+  lastUpdated: number;
 
   constructor(private reservationService: ReservationService,
     private userService: UserService,
@@ -42,15 +41,16 @@ export class OccupationTableComponent {
       this.user = new User(0, "", UserRole.ANONYMOUS);
     }
 
+    // create occupation table
+    this.occupationTable = new OccupationTable(this.user, this.systemConfig);
+
     // set date
-    this.date = new Date();
     if (this.route.snapshot.params['date']) {
-      this.date.setTime(this.route.snapshot.params['date']);
+      this.occupationTable.setDate(parseInt(this.route.snapshot.params['date']));
     }
 
-    // create and update occupation table
-    this.occupationTable = new OccupationTable(this.user, this.systemConfig);
-    this.update(this.date);
+    // update occupation table
+    this.update(this.occupationTable.date);
   }
 
   canModify(occupation: Occupation): boolean {
@@ -60,7 +60,7 @@ export class OccupationTableComponent {
     }
 
     // cannot modify occupation in the past.subscribe(o => this.occupations.push(o));
-    if (occupation.start < this.lastUpdated.getTime()) {
+    if (occupation.start < this.lastUpdated) {
       return false;
     }
     // can only modify my ccupations
@@ -74,25 +74,26 @@ export class OccupationTableComponent {
       return true;
     }
     // cannot add occupation in the past
-    if (date < this.lastUpdated.getTime()) {
+    if (date < this.lastUpdated) {
       return false;
     }
-    // trainer can add occupationcell.rowspan > 0 && cell.colspan > 0 &&
-    if (this.user.hasRole(UserRole.TRAINER)) {
+    // trainer can add occupation
+     if (this.user.hasRole(UserRole.TRAINER)) {
       return true;
     }
     // only for the next 2 hours
-    return (date - this.lastUpdated.getTime() < DateUtil.HOUR * 2);
+    return (date - this.lastUpdated < 2 * DateUtil.HOUR);
   }
 
   /**
    * update table: read occupations asynchronously and show table
    */
-  private update(date: Date) {
-    this.date = date;
-    this.reservationService.getOccupations(this.systemConfig.id, this.date)
+  private update(date:number) {
+    this.reservationService.getOccupations(this.systemConfig.id, date)
       .subscribe(
         data => {
+          this.lastUpdated = new Date().getTime();
+          this.occupationTable.setDate(date);
           this.show(data);
         },
         err => {
@@ -104,34 +105,37 @@ export class OccupationTableComponent {
       );
   }
 
-  public showError(error) {
+  showError(error) {
     this.error = JSON.stringify(error);
     console.log(this.error);
   }
 
+  showDate() {
+    return DateUtil.toDate(this.occupationTable.date).toLocaleDateString();
+  }
+
   private show(occupations: Occupation[]) {
-    this.lastUpdated = new Date();
     this.occupationTable.occupations = occupations;
-    this.occupationTable.show(this.date);
+    this.occupationTable.show();
   }
 
   onBackWeek() {
-    this.update(DateUtil.addDays(this.date, -7));
+    this.update(this.occupationTable.date - 7 * DateUtil.DAY);
   }
 
   onBackDay() {
-    this.update(DateUtil.addDays(this.date, -1));
+    this.update(this.occupationTable.date - DateUtil.DAY);
   }
 
   onToday() {
-    this.update(new Date());
+    this.update(new Date().getTime());
   }
 
   onNextDay() {
-    this.update(DateUtil.addDays(this.date, 1));
+    this.update(this.occupationTable.date + DateUtil.DAY);
   }
 
   onNextWeek() {
-    this.update(DateUtil.addDays(this.date, 7));
+    this.update(this.occupationTable.date + 7 * DateUtil.DAY);
   }
 }

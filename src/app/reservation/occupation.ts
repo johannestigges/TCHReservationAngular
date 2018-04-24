@@ -12,8 +12,8 @@ export class Occupation {
     public reservation: number, //
     public user: number, //
     public text: string, //
-    public date: number, // date of occupation
-    public start: number, // start time of occupation
+    public date: number, // date of occupation in epoch millies
+    public start: number, // start time of occupation in epoch ofMillies
     public duration: number, //
     public court: number, //
     public lastCourt: number = court, //

@@ -1,4 +1,3 @@
-import { RDate } from '../../date/date';
 import { DateUtil } from '../../date/date-util';
 import { TableData } from '../../table/table-data';
 
@@ -12,43 +11,43 @@ import { ReservationSystemConfig } from '../reservation-system-config';
 export class OccupationTable extends TableData {
 
   occupations: Occupation[] = [];
-  start: RDate;
+  date: number; // display occupation table for one day in epoch millies
 
   constructor(public user: User, public systemConfig: ReservationSystemConfig) {
     super();
-    this.createEmptyTable(new Date());
+    this.setDate(new Date().getTime());
+    this.createEmptyTable();
   }
 
-  show(date: Date) {
-    this.createEmptyTable(date);
+  setDate(date:number) {
+    this.date = DateUtil.getDatePart(date);
+  }
+
+  show(date: number = this.date) {
+    this.setDate(date);
+    this.createEmptyTable();
     for (const occupation of this.occupations) {
         this.addOccupation(occupation);
     }
   }
 
   private addOccupation(occupation: Occupation) {
-    const d = new Date();AvailableEntry
-    d.setTime(occupation.start);
-    const row = this.start.row(d);
+    const row = this.systemConfig.toRow(occupation.start);
     const column = occupation.court;
     const rowspan = occupation.duration;
     const colspan = occupation.lastCourt - occupation.court + 1;
-
-    this.setCell(row, column, rowspan, colspan);AvailableEntry
+    console.log('add occupation (' + row + ',' + column + ') span (' + rowspan + ',' + colspan + ')');
+    this.setCell(row, column, rowspan, colspan);
     this.setData(row, column, occupation);
   }
 
-  createEmptyTable(date:Date, rowspan = 2) {
-    const startDate = new Date(date);
-    startDate.setHours(this.systemConfig.openingHour,0,0,0);
-    this.start = new RDate(startDate, this.systemConfig.durationUnitInMinutes * DateUtil.MINUTE);AvailableEntry
-
+  createEmptyTable(rowspan = 2) {
     this.clearAll();
     for (let row = 0; row < this.systemConfig.getRows(); row++) {
       let mainRow: boolean = row % rowspan == 0;
 
       // first column: time
-      if (mainRow) {AvailableEntry
+      if (mainRow) {
         this.setCell(row, 0, rowspan);
         this.setData(row, 0, { 'time': this.showTime(row) });
       }
@@ -57,7 +56,7 @@ export class OccupationTable extends TableData {
         if (this.canMakeReservation(row)) {
           this.setCell(row, column + 1);
           this.setData(row, column + 1,
-            new AvailableEntry (this.start.date(row), column + 1, mainRow ? 'available' : 'available_light'));
+            new AvailableEntry (this.date + this.systemConfig.toMinutes(row) * DateUtil.MINUTE, column + 1, mainRow ? 'available' : 'available_light'));
         } else {
           if (mainRow) {
             this.setCell(row, column + 1, rowspan);
@@ -82,7 +81,7 @@ export class OccupationTable extends TableData {
   }
 
   private showTime(row: number): string {
-    const hour = this.start.date(row).getHours();
+    const hour = this.systemConfig.toMinutes(row) / 60;
     return hour + ':00 - ' + (hour + 1) + ':00';
   }
- }
+}

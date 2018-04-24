@@ -25,7 +25,7 @@ export class ReservationAddComponent {
   reservation: Reservation;
   error:string;
 
-  repeat: Date;
+  repeat: number;
   time: number;
   type: string;
 
@@ -51,19 +51,20 @@ export class ReservationAddComponent {
 
     // set default values
     const start = parseInt(this.route.snapshot.params['date']);
+    console.log('Start ' + start + ' ' + DateUtil.getDatePart(start) + ' ' + DateUtil.getTimePart(start));
 
     this.reservation = new Reservation(
       this.systemConfig.id,
       this.user.id,                           // user id
       this.user.name,                         // text = user name
-      start,                                  // reservation Date
-      start,                                  // reservation start
+      DateUtil.getDatePart(start),            // reservation Date
+      DateUtil.getTimePart(start),            // reservation start
       2,                                      // duration default
       this.route.snapshot.params['court'],    // court
       ReservationType.Quickbuchung,           // default type
     );
 
-    this.time = DateUtil.copyTime(new Date(), new Date(this.reservation.start)).getTime();
+    this.time = this.reservation.start;
     this.type = ReservationType[this.reservation.type];
 
     // decide which parts of the layout are visible
@@ -75,6 +76,10 @@ export class ReservationAddComponent {
     if (this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER)) this.focus = "date";
     if (this.user.hasRole(UserRole.REGISTERED)) this.focus = "duration";
     if (this.user.hasRole(UserRole.KIOSK)) this.focus = "text";
+  }
+
+  getDate() {
+    return DateUtil.toDate(this.reservation.date).toLocaleDateString();
   }
 
   duration(d) {
@@ -89,7 +94,7 @@ export class ReservationAddComponent {
     let times = [];
     for (let hour = this.systemConfig.openingHour; hour < this.systemConfig.closingHour; hour++) {
       for (let minute = 0; minute < 60; minute += this.systemConfig.durationUnitInMinutes) {
-        times.push(DateUtil.of(hour, minute).getTime());
+        times.push((hour * 60 + minute) * DateUtil.MINUTE);
       }
     }
     return times;
@@ -100,16 +105,9 @@ export class ReservationAddComponent {
     console.log(this.error);
   }
 
-  getStart() {
-    const date = new Date();
-    date.setTime(this.reservation.start);
-    return date;
-  }
-
   onClick() {
     this.reservation.type = ReservationType[this.type];
-    this.reservation.start = DateUtil.copyTime(new Date(this.reservation.start), DateUtil.ofMillies(this.time)).getTime();
-
+    this.reservation.start = this.time;
     this.service.addReservation(this.reservation)
       .subscribe(
         data => {

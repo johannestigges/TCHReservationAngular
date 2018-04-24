@@ -30,6 +30,10 @@ export class ReservationSystemConfig {
     return (this.closingHour - this.openingHour) * 60 / this.durationUnitInMinutes;
   }
 
+  public toRow(date:number): number {
+    return (DateUtil.getDayMinutesPart(date) - this.openingHour * 60) / this.durationUnitInMinutes;
+  }
+
   public toMinutes(row: number) {
     return this.openingHour * 60 + row * this.durationUnitInMinutes;
   }
