@@ -59,12 +59,27 @@ export class TableData {
     for (let i = 1; i < rowspan; i++) {
       this.setCell(row + i, column, 0, colspan);
     }
+    if (rowspan > 0) {
+      for (let i = 0; i < row; i++) {
+        if (this.table[i][column] && this.table[i][column].rowspan > row - i) {
+          console.log('reduce (' + i + ',' + column + ') rowspan from ' + this.table[i][column].rowspan + ' to ' + (row - i));
+          this.table[i][column].rowspan = row - i;
+        }
+      }
+    }
   }
 
   private setColspan(row: number, column: number, rowspan: number, colspan: number) {
     this.table[row][column].colspan = colspan;
     for (let i = 1; i < colspan; i++) {
       this.setCell(row, column + i, rowspan, 0);
+    }
+    if (colspan > 0) {
+      for (let i = 0; i < column; i++) {
+        if (this.table[row][i] && this.table[row][i].colspan > column - i) {
+          this.table[row][i].colspan = column - i;
+        }
+      }
     }
   }
 }

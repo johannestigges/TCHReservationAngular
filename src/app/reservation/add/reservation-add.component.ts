@@ -122,6 +122,6 @@ export class ReservationAddComponent {
   }
 
   onBack() {
-    this.router.navigate(["/table", this.systemConfig.id, this.user.id, this.reservation.start]);
+    this.router.navigate(["/table", this.systemConfig.id, this.user.id, this.reservation.date]);
   }
 }
