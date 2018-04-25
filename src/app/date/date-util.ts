@@ -11,35 +11,34 @@ export class DateUtil {
   static DAY = DateUtil.HOUR * 24;
 
   static getTimePart(date:number):number {
-    const d = DateUtil.toDate(date);
+    const d1 = DateUtil.toDate(date);
     const d2 = DateUtil.toDate(0);
-    d2.setDay(d1.getDay());
+    d2.setDate(d1.getDate());
     d2.setMonth(d1.getMonth());
     d2.setFullYear(d1.getFullYear());
-    console.log('get time part ' + date + " " + d.toLocaleString() + "  "
-      +  d2.toLocaleString() + " " + d.getTime() - d2.getTime());
-    return d.getTime() - d2.getTime();
+    console.log('get time part ' + date + " " + d1.toLocaleString() + "  "
+      +  d2.toLocaleString() + " " + (d1.getTime() - d2.getTime()));
+    return d1.getTime() - d2.getTime();
   }
 
   static getDatePart(date:number):number {
-    const d = DateUtil.of(date);
+    const d = DateUtil.toDate(date);
     d.setHours(0,0,0);
     d.setMilliseconds(0);
-    return return d.getTime();
+    return d.getTime();
   }
 
   static getHourPart(date:number): number {
-
 //    console.log('get hour part ' + DateUtil.toDate(date).toLocaleString() + "  "
 //      +date % DateUtil.DAY / DateUtil.HOUR);
-    return DateUtil.of(date).getHour();
+    return DateUtil.toDate(date).getHours();
   }
 
   static getDayMinutesPart(date:number): number {
-    const d = DateUtil.of(date);
+    const d = DateUtil.toDate(date);
 //    console.log("get day minutes " + date + " " + DateUtil.toDate(date).toLocaleString()
 //      + " " + DateUtil.getTimePart(date) / DateUtil.MINUTE);
-    return d.getHour() * 60 + d.getMinute();
+    return d.getHours() * 60 + d.getMinutes();
   }
 
   static toDate(date:number):Date{
