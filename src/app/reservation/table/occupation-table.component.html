@@ -29,7 +29,7 @@
 				    <!-- occupation entry with link to modify or delete occupation -->
 				    <td *ngIf="cell.data.text && canModify(cell.data)"
               [attr.rowspan]="cell.rowspan" [attr.colspan]="cell.colspan"
-              class="type{{cell.data.occupationType}} deletable">
+              class="type{{cell.data.type}} deletable">
 					    <a routerLink='/modify/{{systemConfig.id}}/{{user.id}}/{{cell.data.reservation.id}}'>
 						    {{cell.data.text}}
 					    </a>
@@ -38,7 +38,7 @@
 				    <!-- occupation entry -->
 				    <td *ngIf="cell.data.text && !canModify(cell.data)"
               [attr.rowspan]="cell.rowspan" [attr.colspan]="cell.colspan"
-              class="type{{cell.data.occupationType}}">
+              class="type{{cell.data.type}}">
 					    {{cell.data.text}}
             </td>
 
@@ -47,22 +47,23 @@
               [attr.rowspan]="cell.rowspan" [attr.colspan]="cell.colspan"
               class="{{cell.data.css}}_reservable">
 					    <a routerLink='/add/{{systemConfig.id}}/{{user.id}}/{{cell.data.court}}/{{cell.data.date}}'>
-						    <div style="height:100%;width:100%"></div>
-					    </a>
+                &nbsp;
+              </a>
 				    </td>
 
 				    <!-- available cell without link to add reservation -->
 				    <td *ngIf="cell.data.css && !canAdd(cell.data.date)"
               [attr.rowspan]="cell.rowspan" [attr.colspan]="cell.colspan"
-              class="{{cell.data.css}}">
-					    <div style="height:100%;width:100%"></div>
-				    </td>
+              class="{{cell.data.css}}"
+              style="height:100%;width:100%">
+            </td>
           </ng-container>
+
           <ng-template #noCellData>
             <!-- no data? available cell without link -->
-				    <td [attr.rowspan]="cell.rowspan" [attr.colspan]="cell.colspan" class="available">
-					    <div style="height:100%;width:100%"></div>
-				    </td>
+				    <td [attr.rowspan]="cell.rowspan" [attr.colspan]="cell.colspan"
+              class="available">
+            </td>
           </ng-template>
         </ng-container>
 			</ng-container>

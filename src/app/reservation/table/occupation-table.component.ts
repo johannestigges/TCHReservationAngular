@@ -69,6 +69,7 @@ export class OccupationTableComponent {
 
   canAdd(date: number): boolean {
 
+    console.log('can add ' + DateUtil.toDate(date));
     // admin can add everything
     if (this.user.hasRole(UserRole.ADMIN)) {
       return true;
@@ -100,7 +101,7 @@ export class OccupationTableComponent {
           this.showError(err);
         },
         () => {
-          console.log("finished update reservations for " + date);
+//          console.log("finished update reservations for " + date);
         }
       );
   }

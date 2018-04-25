@@ -47,6 +47,7 @@ export class ReservationModifyComponent {
   }
 
   onDelete() {
+    this.error = '';
     this.service.deleteReservation(this.reservation.id)
       .subscribe(
         data => {

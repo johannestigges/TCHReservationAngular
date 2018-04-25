@@ -106,6 +106,7 @@ export class ReservationAddComponent {
   }
 
   onClick() {
+    this.error = '';
     this.reservation.type = ReservationType[this.type];
     this.reservation.start = this.time;
     this.service.addReservation(this.reservation)

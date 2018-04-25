@@ -36,7 +36,7 @@ export class OccupationTable extends TableData {
     const column = occupation.court;
     const rowspan = occupation.duration;
     const colspan = occupation.lastCourt - occupation.court + 1;
-    console.log('add occupation (' + row + ',' + column + ') span (' + rowspan + ',' + colspan + ')');
+//    console.log('add occupation (' + row + ',' + column + ') span (' + rowspan + ',' + colspan + ')');
     this.setCell(row, column, rowspan, colspan);
     this.setData(row, column, occupation);
   }
