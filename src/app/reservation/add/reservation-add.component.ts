@@ -43,7 +43,35 @@ export class ReservationAddComponent {
 
   ngOnInit() {
     this.systemConfig = this.service.getSystemConfig(this.route.snapshot.params['system']);
-    this.user = this.userService.getUser(this.route.snapshot.params['user']);
+    this.showType = false;
+    this.showText = false;
+    this.showDuration = false;
+    this.showRepeat = false;
+    this.focus = 'date';
+
+    this.user = new User(0,"",UserRole.ANONYMOUS);
+    this.userService.getLoggedInUser().subscribe(
+      data => {
+        this.user = new User(data.id, data.name, data.role);
+        this.reservation.user = this.user.id;
+
+        // decide which parts of the layout are visible
+        // this depends on the user role
+        this.showType = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
+        this.showText = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER, UserRole.KIOSK);
+        this.showDuration = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
+        this.showRepeat = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
+        if (this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER)) this.focus = "date";
+        if (this.user.hasRole(UserRole.REGISTERED)) this.focus = "duration";
+        if (this.user.hasRole(UserRole.KIOSK)) this.focus = "text";
+      },
+      err => {
+        this.showError(err);
+      },
+      () => {
+        console.log ("finished get user");
+      }
+    );
 
     // create option list of occupation types
     this.types = Object.keys(ReservationType).map(key => ReservationType[key])
@@ -66,16 +94,6 @@ export class ReservationAddComponent {
 
     this.time = this.reservation.start;
     this.type = ReservationType[this.reservation.type];
-
-    // decide which parts of the layout are visible
-    // this depends on the user role
-    this.showType = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
-    this.showText = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER, UserRole.KIOSK);
-    this.showDuration = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
-    this.showRepeat = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
-    if (this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER)) this.focus = "date";
-    if (this.user.hasRole(UserRole.REGISTERED)) this.focus = "duration";
-    if (this.user.hasRole(UserRole.KIOSK)) this.focus = "text";
   }
 
   getDate() {
@@ -123,6 +141,6 @@ export class ReservationAddComponent {
   }
 
   onBack() {
-    this.router.navigate(["/table", this.systemConfig.id, this.user.id, this.reservation.date]);
+    this.router.navigate(["/table", this.systemConfig.id, this.reservation.date]);
   }
 }

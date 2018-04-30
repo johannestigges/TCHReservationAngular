@@ -1,6 +1,6 @@
 <router-outlet></router-outlet>
-<div class="row"><h2 class="center-block">Reservierungen {{showDate()}}</h2></div>
 <div class="row center-block">
+  <h2>Reservierungen {{showDate()}}</h2>
   <button (click)='onBackWeek()' title="Eine Woche zurück" class="btn"><<</button>
   <button (click)='onBackDay()' title="Einen Tag zurück" class="btn"><</button>
   <button (click)='onToday()' title="Heute" class="btn btn-primary">+</button>
@@ -30,7 +30,7 @@
 				    <td *ngIf="cell.data.text && canModify(cell.data)"
               [attr.rowspan]="cell.rowspan" [attr.colspan]="cell.colspan"
               class="type{{cell.data.type}} deletable">
-					    <a routerLink='/modify/{{systemConfig.id}}/{{user.id}}/{{cell.data.reservation.id}}'>
+					    <a routerLink='/modify/{{systemConfig.id}}/{{cell.data.reservation.id}}'>
 						    {{cell.data.text}}
 					    </a>
 				    </td>
@@ -46,7 +46,7 @@
 				    <td *ngIf="cell.data.css && canAdd(cell.data.date)"
               [attr.rowspan]="cell.rowspan" [attr.colspan]="cell.colspan"
               class="{{cell.data.css}}_reservable">
-					    <a routerLink='/add/{{systemConfig.id}}/{{user.id}}/{{cell.data.court}}/{{cell.data.date}}'>
+					    <a routerLink='/add/{{systemConfig.id}}/{{cell.data.court}}/{{cell.data.date}}'>
                 &nbsp;
               </a>
 				    </td>

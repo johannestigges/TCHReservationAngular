@@ -20,7 +20,6 @@ import { DateUtil } from '../../date/date-util';
 export class OccupationTableComponent {
 
   occupationTable: OccupationTable;
-  user: User;
   systemConfig: ReservationSystemConfig;
   error: string;
   lastUpdated: number;
@@ -34,20 +33,26 @@ export class OccupationTableComponent {
     // read system config
     this.systemConfig = this.reservationService.getSystemConfig(this.route.snapshot.params['system']);
 
-    // get user
-    if (this.route.snapshot.params['user']) {
-      this.user = this.userService.getUser(this.route.snapshot.params['user']);
-    } else {
-      this.user = new User(0, "", UserRole.ANONYMOUS);
-    }
-
     // create occupation table
-    this.occupationTable = new OccupationTable(this.user, this.systemConfig);
+    this.occupationTable = new OccupationTable(new User(0, "", UserRole.ANONYMOUS), this.systemConfig);
 
     // set date
     if (this.route.snapshot.params['date']) {
       this.occupationTable.setDate(parseInt(this.route.snapshot.params['date']));
     }
+
+    // get logged in user
+    this.userService.getLoggedInUser().subscribe(
+      data => {
+        this.occupationTable.setUser(new User(data.id, data.name, data.role));
+      },
+      err => {
+        this.showError(err);
+      },
+      () => {
+        console.log('finished get user.' + this.occupationTable.user);
+      }
+    );
 
     // update occupation table
     this.update(this.occupationTable.date);
@@ -55,7 +60,7 @@ export class OccupationTableComponent {
 
   canModify(occupation: Occupation): boolean {
     // admin can modify everything
-    if (this.user.hasRole(UserRole.ADMIN)) {
+    if (this.occupationTable.user.hasRole(UserRole.ADMIN)) {
       return true;
     }
 
@@ -64,14 +69,14 @@ export class OccupationTableComponent {
       return false;
     }
     // can only modify my ccupations
-    return occupation.user == this.user.id;
+    return occupation.user == this.occupationTable.user.id;
   }
 
   canAdd(date: number): boolean {
 
     console.log('can add ' + DateUtil.toDate(date));
     // admin can add everything
-    if (this.user.hasRole(UserRole.ADMIN)) {
+    if (this.occupationTable.user.hasRole(UserRole.ADMIN)) {
       return true;
     }
     // cannot add occupation in the past
@@ -79,7 +84,7 @@ export class OccupationTableComponent {
       return false;
     }
     // trainer can add occupation
-     if (this.user.hasRole(UserRole.TRAINER)) {
+     if (this.occupationTable.user.hasRole(UserRole.TRAINER)) {
       return true;
     }
     // only for the next 2 hours
@@ -101,7 +106,7 @@ export class OccupationTableComponent {
           this.showError(err);
         },
         () => {
-//          console.log("finished update reservations for " + date);
+          console.log("finished update reservations for " + date);
         }
       );
   }

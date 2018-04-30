@@ -1,12 +1,19 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
+
 import { User } from './user';
 import { UserRole } from './user-role.enum';
 
 @Injectable()
 export class UserService {
 
-  constructor() { }
+  constructor(private httpClient: HttpClient) {
+  }
 
+  getLoggedInUser(): Observable<User> {
+    return this.httpClient.get<User>('/user/me');
+  }
 
   getUser(id: number): User {
     if (id == 1) {

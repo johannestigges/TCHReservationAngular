@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
 
 import { DateUtil } from '../date/date-util';
 import { Reservation } from './reservation';
@@ -9,7 +8,6 @@ import { ReservationType } from './reservationtype';
 import { ReservationSystemConfig } from './reservation-system-config';
 import { Occupation } from './occupation';
 
-const BACKEND_URL = ""; // "http://tchserver.fritz.box:8080";
 /**
  * reservation service
  */
@@ -25,19 +23,19 @@ export class ReservationService {
   }
 
   getReservation(id: number): Observable<Reservation> {
-    return this.httpClient.get<Reservation>(BACKEND_URL + '/reservation/get/' + id);
+    return this.httpClient.get<Reservation>('/reservation/get/' + id);
   }
 
   getOccupations(systemConfigId: number, date: number): Observable<Occupation[]> {
-    return this.httpClient.get<Occupation[]>(BACKEND_URL + '/reservation/getOccupations/' + systemConfigId + '/' + date);
+    return this.httpClient.get<Occupation[]>('/reservation/getOccupations/' + systemConfigId + '/' + date);
   }
 
   addReservation(reservation: Reservation): Observable<Reservation> {
-    return this.httpClient.post<Reservation>(BACKEND_URL + '/reservation/add', reservation);
+    return this.httpClient.post<Reservation>('/reservation/add', reservation);
   }
 
   deleteReservation(id: number): Observable<Reservation> {
-    return this.httpClient.delete<Reservation>(BACKEND_URL + '/reservation/delete/' + id);
+    return this.httpClient.delete<Reservation>('/reservation/delete/' + id);
   }
 
   getSystemConfig(systemId): ReservationSystemConfig {

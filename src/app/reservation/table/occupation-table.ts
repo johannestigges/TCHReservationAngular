@@ -23,6 +23,11 @@ export class OccupationTable extends TableData {
     this.date = DateUtil.getDatePart(date);
   }
 
+  setUser(user) {
+    this.user = user;
+    this.show();
+  }
+
   show(date: number = this.date) {
     this.setDate(date);
     this.createEmptyTable();

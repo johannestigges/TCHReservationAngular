@@ -18,26 +18,23 @@ import { ReservationSystemConfig } from '../reservation-system-config';
 })
 export class ReservationModifyComponent {
 
-  user: User;
   systemConfig: ReservationSystemConfig;
   reservation: Reservation;
   error: string;
 
   constructor(private route: ActivatedRoute, private router: Router, private location: Location,
-    private service: ReservationService, private userService: UserService) {
+    private service: ReservationService) {
   }
 
   ngOnInit() {
-    this.user = this.userService.getUser(this.route.snapshot.params['user']);
     this.systemConfig = this.service.getSystemConfig(this.route.snapshot.params['system']);
     const reservationId: number = this.route.snapshot.params['reservation'];
     console.log('get reservation ' + reservationId);
-    this.service.getReservation(reservationId)
-      .subscribe(
-        data => { this.reservation = data; },
-        err => { this.setError(err); },
-        () => { console.log ('finished get reservation ' + reservationId); }
-      );
+    this.service.getReservation(reservationId).subscribe(
+      data => { this.reservation = data; },
+      err => { this.setError(err); },
+      () => { console.log ('finished get reservation ' + reservationId); }
+    );
   }
 
   getDate(date:number) {
@@ -66,6 +63,6 @@ export class ReservationModifyComponent {
   }
 
   onBack() {
-    this.router.navigate(["/table", this.systemConfig.id, this.user.id, this.reservation.date]);
+    this.router.navigate(["/table", this.systemConfig.id, this.reservation.date]);
   }
 }
