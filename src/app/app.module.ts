@@ -10,6 +10,9 @@ import { ReservationService } from './reservation/reservation.service';
 import { OccupationTableComponent } from './reservation/table/occupation-table.component';
 import { ReservationAddComponent } from './reservation/add/reservation-add.component';
 import { ReservationModifyComponent } from './reservation/modify/reservation-modify.component';
+import { UserTableComponent } from './user/table/user-table.component';
+import { UserModifyComponent } from './user/modify/user-modify.component';
+import { UserAddComponent } from './user/add/user-add.component';
 import { UserService } from './user/user.service';
 import { AutofocusDirective } from './autofocus.directive';
 
@@ -20,6 +23,9 @@ import { AutofocusDirective } from './autofocus.directive';
         OccupationTableComponent,
         ReservationAddComponent,
         ReservationModifyComponent,
+        UserTableComponent,
+        UserAddComponent,
+        UserModifyComponent,
         AutofocusDirective
     ],
     imports: [

@@ -1,7 +1,14 @@
 import { UserRole } from './user-role.enum';
+import { ActivationStatus } from './activation-status.enum';
 
 export class User {
-  constructor(public id: number, public name: string, public role: UserRole) {
+  constructor(
+    public id: number,
+    public name: string,
+    public role: UserRole,
+    public email = "",
+    public password = "",
+    public status = ActivationStatus.CREATED) {
   }
 
   /**

@@ -1,0 +1,25 @@
+<h2>Benutzerverwaltung</h2>
+<table>
+	<thead>
+		<tr>
+			<th>Id</th>
+      <th>Name</th>
+      <th>EMail</th>
+      <th>Rolle</th>
+      <th>Status</th>
+			<th>Aktion</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr *ngFor="let user of users">
+      <td>{{user.id}}</td>
+      <td>{{user.name}}</td>
+      <td>{{user.email}}</td>
+      <td>{{user.role}}</td>
+      <td>{{user.status}}</td>
+			<td><a routerLink='/user/modify/{{user.id}}'>ändern</a></td>
+		</tr>
+	</tbody>
+</table>
+<a routerLink='/user/add'>Neuen Benutzer anlegen</a>
+<div>{{error}}</div>
