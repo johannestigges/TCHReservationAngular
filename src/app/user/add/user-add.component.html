@@ -10,7 +10,7 @@
 		<div class="form-group">
 			<label class="col-sm-2 control-label">Name:</label>
 			<div class="col-sm-10">
-				<input type="text" class="form-control" [(ngModel)]="user.name" name='name'
+				<input type="text" class="form-control" [(ngModel)]="newUser.name" name='name'
                required>
 			</div>
 		</div>
@@ -19,7 +19,7 @@
 		<div class="form-group">
 			<label class="col-sm-2 control-label">EMail:</label>
 			<div class="col-sm-10">
-				<input type="email" class="form-control" [(ngModel)]="user.email" name='email'
+				<input type="email" class="form-control" [(ngModel)]="newUser.email" name='email'
                required>
 			</div>
 		</div>
@@ -28,16 +28,16 @@
 		<div class="form-group">
 			<label class="col-sm-2 control-label">Password:</label>
 			<div class="col-sm-10">
-				<input type="password" class="form-control" [(ngModel)]="user.password" name='email'
+				<input type="password" class="form-control" [(ngModel)]="newUser.password" name='email'
                required>
 			</div>
 		</div>
 
 		<!-- user confirm passowrd -->
 		<div class="form-group">
-			<label class="col-smangular/user-2 control-label">Passwort bestätigen:</label>
+			<label class="col-sm-2 control-label">Passwort bestätigen:</label>
 			<div class="col-sm-10">
-				<input type="password" class="form-control" [(ngModel)]="password" name='email'
+				<input type="password" class="form-control" [(ngModel)]="confirmPassword" name='email'
                required>
 			</div>
 		</div>
@@ -46,7 +46,7 @@
 		<div class='form-group'>
 			<label class="col-sm-2 control-label">Rolle:</label>
 			<div class="col-sm-10">
-				<select class='formangular/user-control' id='type' [(ngModel)]="user.role" name="role">
+				<select class='form-control' id='type' [(ngModel)]="newUser.role" name="role">
 					<option *ngFor='let role of roles' [value] = 'role'>{{role}}</option>
 				</select>
 			</div>
@@ -55,7 +55,7 @@
 		<div class='form-group'>
 			<label class="col-sm-2 control-label">Status:</label>
 			<div class="col-sm-10">
-				<select class='form-control' id='type' [(ngModel)]="user.status" name="status">
+				<select class='form-control' id='type' [(ngModel)]="newUser.status" name="status">
 					<option *ngFor='let s of status' [value] = 'status'>{{s}}</option>
 				</select>
 			</div>

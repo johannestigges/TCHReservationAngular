@@ -16,8 +16,8 @@ export class UserAddComponent {
 
   roles;
   status;
-  user: User;
-  password: string;
+  newUser: User;
+  confirmPassword: string;
   error;
 
   constructor(private route: ActivatedRoute, private router: Router,
@@ -25,7 +25,11 @@ export class UserAddComponent {
   }
 
   ngOnInit() {
-    this.user = new User(0,"",UserRole.REGISTERED);
+    this.newUser = new User(0,"",UserRole.REGISTERED,"","",ActivationStatus.CREATED);
+    console.log(this.newUser);
+    console.log(this.newUser.email);
+    console.log(this.newUser.password);
+    this.confirmPassword = this.newUser.password;
     this.roles = Object.keys(UserRole).map(key => UserRole[key])
       .filter(value => typeof value === 'string');
     this.status = Object.keys(ActivationStatus).map(key => ActivationStatus[key])
@@ -39,14 +43,14 @@ export class UserAddComponent {
 
   onClick() {
     this.error = '';
-    if (this.user.password !== this.password) {
+    if (this.newUser.password !== this.confirmPassword) {
       this.setError("Passwörter stimmen nicht überein!");
       return;
     }
 
-    this.userService.addUser(this.user).subscribe(
+    this.userService.addUser(this.newUser).subscribe(
       data => {
-        this.user = data;
+        this.newUser = data;
         this.onBack();
       },
       err => {

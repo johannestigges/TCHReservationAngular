@@ -74,7 +74,6 @@ export class OccupationTableComponent {
 
   canAdd(date: number): boolean {
 
-    console.log('can add ' + DateUtil.toDate(date));
     // admin can add everything
     if (this.occupationTable.user.hasRole(UserRole.ADMIN)) {
       return true;
