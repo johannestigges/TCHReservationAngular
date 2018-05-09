@@ -15,6 +15,7 @@ import { UserModifyComponent } from './user/modify/user-modify.component';
 import { UserAddComponent } from './user/add/user-add.component';
 import { UserService } from './user/user.service';
 import { AutofocusDirective } from './autofocus.directive';
+//import { KeyPipe } from './key-pipe';
 
 
 @NgModule( {

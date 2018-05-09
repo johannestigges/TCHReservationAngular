@@ -37,8 +37,27 @@
 		<div class="form-group">
 			<label class="col-sm-2 control-label">Passwort bestätigen:</label>
 			<div class="col-sm-10">
-				<input type="password" class="form-control" [(ngModel)]="password" name='confirmPassword'
+				<input type="password" class="form-control" [(ngModel)]="confirmPassword" name='confirmPassword'
                required>
+			</div>
+		</div>
+
+		<!-- user role -->
+		<div class='form-group'>
+			<label class="col-sm-2 control-label">Rolle:</label>
+			<div class="col-sm-10">
+				<select class='form-control' id='type' [(ngModel)]="user_role" name="role">
+					<option *ngFor='let role of role_values' [value] = 'role'>{{role}}</option>
+				</select>
+			</div>
+		</div>
+		<!-- user status -->
+		<div class='form-group'>
+			<label class="col-sm-2 control-label">Status:</label>
+			<div class="col-sm-10">
+				<select class='form-control' id='type' [(ngModel)]="user_status" name="status">
+					<option *ngFor='let s of status_values' [value] = 's'>{{s}}</option>
+				</select>
 			</div>
 		</div>
 
@@ -47,7 +66,7 @@
 		<!-- Buttons -->
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
-				<button (click)='onClick()' class="btn btn-lg btn-block btn-primary">Benutzer anlegen</button>
+				<button (click)='onClick()' class="btn btn-lg btn-block btn-primary">Daten speichern</button>
 				<button (click)='onBack()' class="btn btn-lg btn-block">Zurück</button>
 			</div>
 		</div>

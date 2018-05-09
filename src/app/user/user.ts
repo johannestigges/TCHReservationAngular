@@ -6,8 +6,8 @@ export class User {
     public id: number,
     public name: string,
     public role: UserRole,
-    public email = "e",
-    public password = "p",
+    public email = "",
+    public password = "",
     public status = ActivationStatus.CREATED) {
   }
 

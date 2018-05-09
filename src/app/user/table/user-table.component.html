@@ -1,5 +1,5 @@
 <h2>Benutzerverwaltung</h2>
-<table>
+<table class='table table-bordered table-hover'>
 	<thead>
 		<tr>
 			<th>Id</th>
@@ -17,9 +17,10 @@
       <td>{{user.email}}</td>
       <td>{{user.role}}</td>
       <td>{{user.status}}</td>
-			<td><a routerLink='/user/modify/{{user.id}}'>ändern</a></td>
+			<td><a class='btn'
+				routerLink='/user/modify/{{user.id}}'>ändern</a></td>
 		</tr>
 	</tbody>
 </table>
-<a routerLink='/user/add'>Neuen Benutzer anlegen</a>
+<a class='btn btn-lg btn-primary' routerLink='/user/add'>Neuen Benutzer anlegen</a>
 <div>{{error}}</div>

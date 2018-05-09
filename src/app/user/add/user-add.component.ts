@@ -14,9 +14,11 @@ import { ActivationStatus } from '../activation-status.enum';
 })
 export class UserAddComponent {
 
-  roles;
-  status;
-  newUser: User;
+  role_values: string[];
+  status_values: string[];
+  user_role: string;
+  user_status: string;
+  user: User;
   confirmPassword: string;
   error;
 
@@ -25,15 +27,16 @@ export class UserAddComponent {
   }
 
   ngOnInit() {
-    this.newUser = new User(0,"",UserRole.REGISTERED,"","",ActivationStatus.CREATED);
-    console.log(this.newUser);
-    console.log(this.newUser.email);
-    console.log(this.newUser.password);
-    this.confirmPassword = this.newUser.password;
-    this.roles = Object.keys(UserRole).map(key => UserRole[key])
+    this.role_values = Object.keys(UserRole).map(key => UserRole[key])
       .filter(value => typeof value === 'string');
-    this.status = Object.keys(ActivationStatus).map(key => ActivationStatus[key])
+    this.status_values = Object.keys(ActivationStatus).map(key => ActivationStatus[key])
       .filter(value => typeof value === 'string');
+
+    // initialize user with defaults
+    this.user = new User(0,"",UserRole.REGISTERED,"","",ActivationStatus.CREATED);
+    this.confirmPassword = this.user.password;
+    this.user_role = UserRole[UserRole.REGISTERED];
+    this.user_status = ActivationStatus[ActivationStatus.CREATED];
   }
 
   setError(error) {
@@ -43,14 +46,16 @@ export class UserAddComponent {
 
   onClick() {
     this.error = '';
-    if (this.newUser.password !== this.confirmPassword) {
+    if (this.user.password !== this.confirmPassword) {
       this.setError("Passwörter stimmen nicht überein!");
       return;
     }
+    this.user.role = UserRole[this.user_role];
+    this.user.status = ActivationStatus[this.user_status];
 
-    this.userService.addUser(this.newUser).subscribe(
+    this.userService.addUser(this.user).subscribe(
       data => {
-        this.newUser = data;
+        this.user = data;
         this.onBack();
       },
       err => {
