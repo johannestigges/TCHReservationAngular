@@ -41,6 +41,10 @@ export class UserModifyComponent {
         this.confirmPassword = this.user.password;
         this.user_role = UserRole[this.user.role];
         this.user_status = ActivationStatus[this.user.status];
+        console.log(this.user.role);
+        console.log(this.user_role);
+        console.log(this.user.status);
+        console.log(this.user_status);
       },
       err => {
         this.setError(err);

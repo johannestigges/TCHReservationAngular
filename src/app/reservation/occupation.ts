@@ -1,3 +1,4 @@
+import { Reservation } from './reservation';
 import { ReservationType } from './reservationtype';
 
 /**
@@ -9,8 +10,7 @@ export class Occupation {
 
   constructor(
     public systemConfigId: number, //
-    public reservation: number, //
-    public user: number, //
+    public reservation: Reservation, //
     public text: string, //
     public date: number, // date of occupation in epoch millies
     public start: number, // start time of occupation in epoch ofMillies

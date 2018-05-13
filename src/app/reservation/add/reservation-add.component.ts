@@ -52,8 +52,8 @@ export class ReservationAddComponent {
     this.user = new User(0,"",UserRole.ANONYMOUS);
     this.userService.getLoggedInUser().subscribe(
       data => {
-        this.user = new User(data.id, data.name, data.role);
-        this.reservation.user = this.user.id;
+        this.user = new User(data.id, data.name, UserRole["" + data.role]);
+        this.reservation.user = this.user;
 
         // decide which parts of the layout are visible
         // this depends on the user role
@@ -79,11 +79,10 @@ export class ReservationAddComponent {
 
     // set default values
     const start = parseInt(this.route.snapshot.params['date']);
-    console.log('Start ' + start + ' ' + DateUtil.getDatePart(start) + ' ' + DateUtil.getTimePart(start));
 
     this.reservation = new Reservation(
       this.systemConfig.id,
-      this.user.id,                           // user id
+      this.user,                              // user
       this.user.name,                         // text = user name
       DateUtil.getDatePart(start),            // reservation Date
       DateUtil.getTimePart(start),            // reservation start
@@ -127,6 +126,7 @@ export class ReservationAddComponent {
     this.error = '';
     this.reservation.type = ReservationType[this.type];
     this.reservation.start = this.time;
+    console.log(this.reservation);
     this.service.addReservation(this.reservation)
       .subscribe(
         data => {

@@ -10,6 +10,7 @@ import { Occupation } from '../occupation';
 import { UserService } from '../../user/user.service';
 import { User } from '../../user/user';
 import { UserRole } from '../../user/user-role.enum';
+import { ActivationStatus } from '../../user/activation-status.enum';
 import { DateUtil } from '../../date/date-util';
 
 @Component({
@@ -44,13 +45,13 @@ export class OccupationTableComponent {
     // get logged in user
     this.userService.getLoggedInUser().subscribe(
       data => {
-        this.occupationTable.setUser(new User(data.id, data.name, data.role));
+        this.occupationTable.setUser(new User(data.id, data.name, UserRole[""+data.role], "", "", ActivationStatus[""+data.status]));
       },
       err => {
         this.showError(err);
       },
       () => {
-        console.log('finished get user.' + this.occupationTable.user);
+        console.log('finished get user.');
       }
     );
 
@@ -59,17 +60,19 @@ export class OccupationTableComponent {
   }
 
   canModify(occupation: Occupation): boolean {
+
     // admin can modify everything
     if (this.occupationTable.user.hasRole(UserRole.ADMIN)) {
       return true;
     }
 
-    // cannot modify occupation in the past.subscribe(o => this.occupations.push(o));
-    if (occupation.start < this.lastUpdated) {
+    // cannot modify occupation in the past
+    if (DateUtil.ofDateAndTime(occupation.date, occupation.start).getTime() < this.lastUpdated) {
       return false;
     }
+
     // can only modify my ccupations
-    return occupation.user == this.occupationTable.user.id;
+    return "" + occupation.reservation.user.id == "" + this.occupationTable.user.id;
   }
 
   canAdd(date: number): boolean {

@@ -16,8 +16,6 @@ export class DateUtil {
     d2.setDate(d1.getDate());
     d2.setMonth(d1.getMonth());
     d2.setFullYear(d1.getFullYear());
-    console.log('get time part ' + date + " " + d1.toLocaleString() + "  "
-      +  d2.toLocaleString() + " " + (d1.getTime() - d2.getTime()));
     return d1.getTime() - d2.getTime();
   }
 
@@ -45,5 +43,12 @@ export class DateUtil {
     let d = new Date();
     d.setTime(date);
     return d;
+  }
+
+  static ofDateAndTime(date:number, time:number): Date {
+    let d1 = DateUtil.toDate(date);
+    let d2 = DateUtil.toDate(time);
+    d1.setHours(d2.getHours(), d2.getMinutes(), d2.getSeconds());
+    return d1;
   }
 }

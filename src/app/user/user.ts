@@ -8,7 +8,7 @@ export class User {
     public role: UserRole,
     public email = "",
     public password = "",
-    public status = ActivationStatus.CREATED) {
+    public status: ActivationStatus = ActivationStatus.CREATED) {
   }
 
   /**
@@ -21,5 +21,9 @@ export class User {
       }
     }
     return false;
+  }
+
+  is(user: User) {
+    return "" + this.id == "" + user.id;
   }
 }

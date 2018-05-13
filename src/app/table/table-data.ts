@@ -62,7 +62,6 @@ export class TableData {
     if (rowspan > 0) {
       for (let i = 0; i < row; i++) {
         if (this.table[i][column] && this.table[i][column].rowspan > row - i) {
-          console.log('reduce (' + i + ',' + column + ') rowspan from ' + this.table[i][column].rowspan + ' to ' + (row - i));
           this.table[i][column].rowspan = row - i;
         }
       }

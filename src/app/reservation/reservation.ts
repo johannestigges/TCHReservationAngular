@@ -1,4 +1,5 @@
 import { ReservationType } from './reservationtype';
+import { User } from './../user/user';
 
 export class Reservation {
 
@@ -6,7 +7,7 @@ export class Reservation {
 
   constructor(
     public systemConfigId: number, //
-    public user: number, //
+    public user: User, //
     public text: string, //
     public date: number, // date of reservation in epocj ofMillies
     public start: number, // start time of reservation in epoch ofMillies

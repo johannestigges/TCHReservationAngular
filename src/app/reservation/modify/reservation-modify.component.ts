@@ -29,11 +29,17 @@ export class ReservationModifyComponent {
   ngOnInit() {
     this.systemConfig = this.service.getSystemConfig(this.route.snapshot.params['system']);
     const reservationId: number = this.route.snapshot.params['reservation'];
-    console.log('get reservation ' + reservationId);
     this.service.getReservation(reservationId).subscribe(
-      data => { this.reservation = data; },
-      err => { this.setError(err); },
-      () => { console.log ('finished get reservation ' + reservationId); }
+      data => {
+        this.reservation = data;
+      },
+      err => {
+        this.setError(err);
+      },
+      () => {
+        console.log ('finished get reservation ' + reservationId);
+      }
+
     );
   }
 
@@ -42,6 +48,7 @@ export class ReservationModifyComponent {
     d.setTime(date);
     return d;
   }
+
 
   onDelete() {
     this.error = '';
@@ -54,7 +61,8 @@ export class ReservationModifyComponent {
           this.setError(err);
         },
         () => { this.onBack(); }
-      );
+      )
+
   }
 
   private setError(error) {
