@@ -45,7 +45,8 @@ export class OccupationTableComponent {
     // get logged in user
     this.userService.getLoggedInUser().subscribe(
       data => {
-        this.occupationTable.setUser(new User(data.id, data.name, UserRole[""+data.role], "", "", ActivationStatus[""+data.status]));
+        this.occupationTable.setUser(
+          new User(data.id, data.name, UserRole[""+data.role], "", "", ActivationStatus[""+data.status]));
       },
       err => {
         this.showError(err);

@@ -22,21 +22,6 @@ export class UserService {
 
   getUser(id: number): Observable<User> {
     return this.httpClient.get<User>('/user/get/' + id);
-    /*
-    if (id == 1) {
-      return new User(id, "Johannes Tigges", UserRole.ADMIN);
-    }
-    if (id == 2) {
-      return new User(id, "Karsten Echte", UserRole.TRAINER);
-    }
-    if (id == 3) {
-      return new User(id, "Ulrich Holtstiege", UserRole.REGISTERED);
-    }
-    if (id == 4) {
-      return new User(id, "", UserRole.KIOSK);
-    }
-    return new User(id, "", UserRole.ANONYMOUS);
-    */
   }
 
   addUser(user: User): Observable<User> {
@@ -46,5 +31,4 @@ export class UserService {
   updateUser(user: User): Observable<User> {
     return this.httpClient.put<User>('/user/', user);
   }
-
 }

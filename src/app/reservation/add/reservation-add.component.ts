@@ -126,7 +126,6 @@ export class ReservationAddComponent {
     this.error = '';
     this.reservation.type = ReservationType[this.type];
     this.reservation.start = this.time;
-    console.log(this.reservation);
     this.service.addReservation(this.reservation)
       .subscribe(
         data => {
