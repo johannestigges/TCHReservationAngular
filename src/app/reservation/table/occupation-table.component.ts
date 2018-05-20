@@ -60,6 +60,10 @@ export class OccupationTableComponent {
     this.update(this.occupationTable.date);
   }
 
+  isLoggedIn() {
+    return this.occupationTable.user.role != UserRole.ANONYMOUS;
+  }
+
   canModify(occupation: Occupation): boolean {
 
     // admin can modify everything

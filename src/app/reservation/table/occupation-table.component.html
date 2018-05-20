@@ -1,13 +1,23 @@
 <router-outlet></router-outlet>
-<div class="row center-block">
-  <h2>Reservierungen {{showDate()}}</h2>
-  <button (click)='onBackWeek()' title="Eine Woche zurück" class="btn"><<</button>
-  <button (click)='onBackDay()' title="Einen Tag zurück" class="btn"><</button>
-  <button (click)='onToday()' title="Heute" class="btn btn-primary">+</button>
-  <button (click)='onNextDay()' title="Einen Tag vor" class="btn">></button>
-  <button (click)='onNextWeek()' title="Eine Woche vor" class="btn">>></button>
-</div>
-<br/>
+<div class="row">
+  <h2 class="col-md-8">Reservierungen {{showDate()}}</h2>
+  <div class="col-md-4">
+    <button (click)='onBackWeek()' title="Eine Woche zurück" class="btn btn-space"><<</button>
+    <button (click)='onBackDay()' title="Einen Tag zurück" class="btn btn-space"><</button>
+    <button (click)='onToday()' title="Heute" class="btn btn-primary btn-space">+</button>
+    <button (click)='onNextDay()' title="Einen Tag vor" class="btn btn-space">></button>
+    <button (click)='onNextWeek()' title="Eine Woche vor" class="btn btn-space">>></button>
+
+    <div class="text-right">
+      <div *ngIf="!isLoggedIn()">
+        <a href='../../login'>login</a>
+      </div>
+      <div *ngIf="isLoggedIn()">
+        {{occupationTable.user.name}}
+      </div>
+    </div>
+  </div>
+
 <table class="occupation_table">
 	<thead>
 		<tr>
