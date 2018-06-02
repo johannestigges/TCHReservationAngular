@@ -62,8 +62,14 @@ export class ReservationAddComponent {
         this.showDuration = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
         this.showRepeat = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
         if (this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER)) this.focus = "date";
+        if (this.user.hasRole(UserRole.TRAINER)) this.focus = "duration";
         if (this.user.hasRole(UserRole.REGISTERED)) this.focus = "duration";
         if (this.user.hasRole(UserRole.KIOSK)) this.focus = "text";
+        
+        if (this.user.hasRole(UserRole.TRAINER)) {
+            this.type = ReservationType[ReservationType.Training];
+            this.reservation.text = this.user.name;
+        }
       },
       err => {
         this.showError(err);

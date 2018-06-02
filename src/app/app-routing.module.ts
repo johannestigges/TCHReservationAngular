@@ -6,6 +6,7 @@ import { ReservationModifyComponent } from './reservation/modify/reservation-mod
 import { UserTableComponent } from './user/table/user-table.component';
 import { UserModifyComponent } from './user/modify/user-modify.component';
 import { UserAddComponent } from './user/add/user-add.component';
+import { LoginComponent } from './login/login.component';
 
 const routes: Routes = [
     { path: '', redirectTo: '/table/1', pathMatch: 'full' },
@@ -16,7 +17,8 @@ const routes: Routes = [
     { path: 'modify/:system/:reservation',  component: ReservationModifyComponent },
     { path: 'user',                         component: UserTableComponent },
     { path: 'user/add',                     component: UserAddComponent },
-    { path: 'user/modify/:user',            component: UserModifyComponent }
+    { path: 'user/modify/:user',            component: UserModifyComponent },
+    { path: 'login',                        component: LoginComponent }
 ];
 
 @NgModule( {

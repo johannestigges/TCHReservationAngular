@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
 import { User } from './user';
@@ -13,6 +13,17 @@ export class UserService {
 
   getLoggedInUser(): Observable<User> {
     return this.httpClient.get<User>('/user/me');
+  }
+
+  login(user, password): Observable<any> {
+    //const headers = new HttpHeaders().set('authorization', 'Basic ' + btoa(user + ':' + password));
+    //return this.httpClient.get('/user', {headers});
+
+    const params = new HttpParams()
+      .set('username', user)
+      .set('password', password)
+      .set('submit','Login');
+    return this.httpClient.post<User>('/login', params);
   }
 
   getAll(): Observable<User[]> {

@@ -1,14 +1,15 @@
 {
-  "/reservation/*": {
-    "target": "http://localhost:8080",
-    "secure": false,
-    "logLevel": "debug",
-    "changeOrigin": true
-  },
-  "/user/*": {
-    "target": "http://localhost:8080",
-    "secure": false,
-    "logLevel": "debug",
-    "changeOrigin": true
-  }
+	"/reservation/*": {
+		"target": "https://localhost:8443/reservation",
+		"secure": true,
+		"logLevel": "debug",
+		"changeOrigin": true
+	},
+	
+	"/user/*": {
+		"target": "https://localhost:8443/user",
+		"secure": true,
+		"logLevel": "debug",
+		"changeOrigin": true
+	},
 }
