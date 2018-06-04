@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Params } from '@angular/router';
+import { Observable, Subscription } from 'rxjs/Rx';
 
 import { ReservationService } from '../reservation.service';
 import { ReservationSystemConfig } from '../reservation-system-config';
@@ -24,6 +25,8 @@ export class OccupationTableComponent {
   systemConfig: ReservationSystemConfig;
   error: string;
   lastUpdated: number;
+  private timer;
+  private timerSubscription;
 
   constructor(private reservationService: ReservationService,
     private userService: UserService,
@@ -52,12 +55,25 @@ export class OccupationTableComponent {
         this.showError(err);
       },
       () => {
-        console.log('finished get user.');
+          console.log('finished get user.');
+          if (this.occupationTable.user.hasRole(UserRole.KIOSK)) {
+              this.timer = Observable.timer(300000,300000);
+              this.timerSubscription = this.timer.subscribe(() => this.update(this.occupationTable.date));
+          }
       }
     );
 
     // update occupation table
     this.update(this.occupationTable.date);
+  }
+  
+  ngOnDestroy(){
+      console.log("Destroy timer");
+      // unsubscribe here
+      if (this.timerSubscription) {
+          this.timerSubscription.unsubscribe();
+      }
+
   }
 
   isLoggedIn() {
