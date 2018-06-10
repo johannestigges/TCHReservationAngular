@@ -55,7 +55,7 @@ export class OccupationTableComponent {
         this.showError(err);
       },
       () => {
-          console.log('finished get user.');
+          // reload system when user is 'kiosk' every 5 Minutes
           if (this.occupationTable.user.hasRole(UserRole.KIOSK)) {
               this.timer = Observable.timer(300000,300000);
               this.timerSubscription = this.timer.subscribe(() => this.update(this.occupationTable.date));
