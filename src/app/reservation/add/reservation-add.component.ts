@@ -7,6 +7,7 @@ import { ReservationType } from '../reservationtype';
 import { ReservationService } from '../reservation.service';
 import { ReservationSystemConfig } from '../reservation-system-config';
 import { Reservation } from '../reservation';
+import { ErrorAware } from '../../error/error-aware';
 
 import { UserService } from '../../user/user.service';
 import { User } from '../../user/user';
@@ -18,12 +19,11 @@ import { DateUtil } from '../../date/date-util';
   templateUrl: './reservation-add.component.html',
   styleUrls: ['./reservation-add.component.css']
 })
-export class ReservationAddComponent {
+export class ReservationAddComponent extends ErrorAware {
 
   systemConfig: ReservationSystemConfig;
   user: User;
   reservation: Reservation;
-  error:string;
 
   repeat: number;
   time: number;
@@ -39,6 +39,7 @@ export class ReservationAddComponent {
 
   constructor(private route: ActivatedRoute, private router: Router, private location: Location,
     private service: ReservationService, private userService: UserService) {
+      super();
   }
 
   ngOnInit() {
@@ -72,10 +73,10 @@ export class ReservationAddComponent {
         }
       },
       err => {
-        this.showError(err);
+        this.httpError = err;
       },
       () => {
-        console.log ("finished get user");
+//        console.log ("finished get user");
       }
     );
 
@@ -123,13 +124,10 @@ export class ReservationAddComponent {
     return times;
   }
 
-  private showError(error) {
-    this.error = JSON.stringify(error);
-    console.log(this.error);
-  }
+
 
   onClick() {
-    this.error = '';
+    this.clearError();
     this.reservation.type = ReservationType[this.type];
     this.reservation.start = this.time;
     this.service.addReservation(this.reservation)
@@ -139,7 +137,7 @@ export class ReservationAddComponent {
           this.onBack();
         },
         err => {
-          this.showError(err);
+          this.httpError = err;
         },
         () => { this.onBack(); }
       );

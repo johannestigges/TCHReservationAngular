@@ -6,13 +6,14 @@ import { UserService } from '../user.service';
 import { User } from '../user';
 import { UserRole } from '../user-role.enum';
 import { ActivationStatus } from '../activation-status.enum';
+import { ErrorAware } from '../../error/error-aware';
 
 @Component({
   selector: 'user-add',
   templateUrl: './user-add.component.html',
   styleUrls: ['./user-add.component.css']
 })
-export class UserAddComponent {
+export class UserAddComponent extends ErrorAware {
 
   role_values: string[];
   status_values: string[];
@@ -20,10 +21,10 @@ export class UserAddComponent {
   user_status: string;
   user: User;
   confirmPassword: string;
-  error;
 
   constructor(private route: ActivatedRoute, private router: Router,
     private userService: UserService) {
+      super();
   }
 
   ngOnInit() {
@@ -39,15 +40,11 @@ export class UserAddComponent {
     this.user_status = ActivationStatus[ActivationStatus.CREATED];
   }
 
-  setError(error) {
-    this.error = JSON.stringify(error);
-    console.log(this.error);
-  }
 
   onClick() {
-    this.error = '';
+    this.clearError();
     if (this.user.password !== this.confirmPassword) {
-      this.setError("Passwörter stimmen nicht überein!");
+      this.errorMessage = "Passwörter stimmen nicht überein!";
       return;
     }
     this.user.role = UserRole[this.user_role];
@@ -59,7 +56,7 @@ export class UserAddComponent {
         this.onBack();
       },
       err => {
-        this.setError(err);
+        this.httpError = err;
       },
       () => { this.onBack(); }
     );

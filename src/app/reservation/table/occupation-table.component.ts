@@ -13,17 +13,18 @@ import { User } from '../../user/user';
 import { UserRole } from '../../user/user-role.enum';
 import { ActivationStatus } from '../../user/activation-status.enum';
 import { DateUtil } from '../../date/date-util';
+import { ErrorAware } from '../../error/error-aware';
+
 
 @Component({
   selector: 'app-root',
   templateUrl: './occupation-table.component.html',
   styleUrls: ['./occupation-table.component.css']
 })
-export class OccupationTableComponent {
+export class OccupationTableComponent extends ErrorAware {
 
   occupationTable: OccupationTable;
   systemConfig: ReservationSystemConfig;
-  error: string;
   lastUpdated: number;
   private timer;
   private timerSubscription;
@@ -31,6 +32,7 @@ export class OccupationTableComponent {
   constructor(private reservationService: ReservationService,
     private userService: UserService,
     private route: ActivatedRoute) {
+      super();
   }
 
   ngOnInit() {
@@ -52,7 +54,7 @@ export class OccupationTableComponent {
           new User(data.id, data.name, UserRole[""+data.role], "", "", ActivationStatus[""+data.status]));
       },
       err => {
-        this.showError(err);
+        this.httpError = err;
       },
       () => {
           // reload system when user is 'kiosk' every 5 Minutes
@@ -68,12 +70,10 @@ export class OccupationTableComponent {
   }
   
   ngOnDestroy(){
-      console.log("Destroy timer");
-      // unsubscribe here
+      // unsubscribe refresh timer when in kiosk mode
       if (this.timerSubscription) {
           this.timerSubscription.unsubscribe();
       }
-
   }
 
   isLoggedIn() {
@@ -118,6 +118,7 @@ export class OccupationTableComponent {
    * update table: read occupations asynchronously and show table
    */
   private update(date:number) {
+    this.clearError();
     this.reservationService.getOccupations(this.systemConfig.id, date)
       .subscribe(
         data => {
@@ -126,17 +127,12 @@ export class OccupationTableComponent {
           this.show(data);
         },
         err => {
-          this.showError(err);
+          this.httpError = err;
         },
         () => {
-          console.log("finished update reservations for " + date);
+//          console.log("finished update reservations for " + date);
         }
       );
-  }
-
-  showError(error) {
-    this.error = JSON.stringify(error);
-    console.log(this.error);
   }
 
   showDate() {

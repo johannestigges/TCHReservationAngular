@@ -6,6 +6,7 @@ import { UserService } from '../../user/user.service';
 import { User } from '../../user/user';
 import { UserRole } from '../user-role.enum';
 import { ActivationStatus } from '../activation-status.enum';
+import { ErrorAware } from '../../error/error-aware';
 
 
 @Component({
@@ -13,7 +14,7 @@ import { ActivationStatus } from '../activation-status.enum';
   templateUrl: './user-modify.component.html',
   styleUrls: ['./user-modify.component.css']
 })
-export class UserModifyComponent {
+export class UserModifyComponent extends ErrorAware {
 
   role_values: string[];
   status_values: string[];
@@ -21,10 +22,10 @@ export class UserModifyComponent {
   user_status: string;
   user: User;
   confirmPassword: string;
-  error;
 
   constructor(private route: ActivatedRoute, private router: Router,
     private userService: UserService) {
+      super();
   }
 
   ngOnInit() {
@@ -43,23 +44,19 @@ export class UserModifyComponent {
         this.user_status = "" + this.user.status;
       },
       err => {
-        this.setError(err);
+        this.httpError = err;
       },
       () => {
-        console.log("finished read user " + id);
+//        console.log("finished read user " + id);
       }
     );
   }
 
-  setError(error) {
-    this.error = JSON.stringify(error);
-    console.log(this.error);
-  }
 
   onClick() {
-    this.error = '';
+    this.clearError();
     if (this.user.password !== this.confirmPassword) {
-      this.setError("Passwörter stimmen nicht überein!");
+      this.errorMessage = "Passwörter stimmen nicht überein!";
       return;
     }
     this.user.role = UserRole[this.user_role];
@@ -71,7 +68,7 @@ export class UserModifyComponent {
         this.onBack();
       },
       err => {
-        this.setError(err);
+        this.httpError = err;
       },
       () => { this.onBack(); }
     );

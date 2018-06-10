@@ -3,18 +3,19 @@ import { ActivatedRoute } from '@angular/router';
 
 import { UserService } from '../../user/user.service';
 import { User } from '../../user/user';
+import { ErrorAware } from '../../error/error-aware';
 
 @Component({
   selector: 'user-table',
   templateUrl: './user-table.component.html',
   styleUrls: ['./user-table.component.css']
 })
-export class UserTableComponent {
+export class UserTableComponent extends ErrorAware {
 
   users: User[];
-  error;
 
   constructor(private userService: UserService, private route: ActivatedRoute) {
+      super();
   }
 
   ngOnInit() {
@@ -23,16 +24,11 @@ export class UserTableComponent {
         this.users = data;
       },
       err => {
-        this.setError(err);
+        this.httpError = err;
       },
       () => {
-        console.log('finished get all user');
+//        console.log('finished get all user');
       }
     );
-  }
-
-  setError(error) {
-    this.error = JSON.stringify(error);
-    console.log(this.error);
   }
 }

@@ -9,6 +9,8 @@ import { User } from '../../user/user';
 import { Reservation } from '../reservation';
 import { ReservationType } from '../reservationtype';
 import { ReservationSystemConfig } from '../reservation-system-config';
+import { ErrorAware } from '../../error/error-aware';
+
 
 
 @Component({
@@ -16,14 +18,14 @@ import { ReservationSystemConfig } from '../reservation-system-config';
   templateUrl: './reservation-modify.component.html',
   styleUrls: ['./reservation-modify.component.css']
 })
-export class ReservationModifyComponent {
+export class ReservationModifyComponent extends ErrorAware {
 
   systemConfig: ReservationSystemConfig;
   reservation: Reservation;
-  error: string;
 
   constructor(private route: ActivatedRoute, private router: Router, private location: Location,
     private service: ReservationService) {
+      super();
   }
 
   ngOnInit() {
@@ -34,10 +36,10 @@ export class ReservationModifyComponent {
         this.reservation = data;
       },
       err => {
-        this.setError(err);
+        this.httpError = err;
       },
       () => {
-        console.log ('finished get reservation ' + reservationId);
+//        console.log ('finished get reservation ' + reservationId);
       }
 
     );
@@ -51,23 +53,18 @@ export class ReservationModifyComponent {
 
 
   onDelete() {
-    this.error = '';
+    this.clearError();
     this.service.deleteReservation(this.reservation.id)
       .subscribe(
         data => {
           this.onBack();
         },
         err => {
-          this.setError(err);
+          this.httpError = err;
         },
         () => { this.onBack(); }
       )
 
-  }
-
-  private setError(error) {
-    this.error = JSON.stringify(error);
-    console.log(this.error);
   }
 
   onBack() {

@@ -16,6 +16,7 @@ import { UserAddComponent } from './user/add/user-add.component';
 import { UserService } from './user/user.service';
 import { AutofocusDirective } from './autofocus.directive';
 import { LoginComponent } from './login/login.component';
+import { ShowErrorComponent } from './show-error/show-error.component';
 //import { KeyPipe } from './key-pipe';
 
 
@@ -29,7 +30,8 @@ import { LoginComponent } from './login/login.component';
         UserAddComponent,
         UserModifyComponent,
         AutofocusDirective,
-        LoginComponent
+        LoginComponent,
+        ShowErrorComponent
     ],
     imports: [
         BrowserModule,

@@ -10,83 +10,93 @@ import { ReservationSystemConfig } from '../reservation-system-config';
 
 export class OccupationTable extends TableData {
 
-  occupations: Occupation[] = [];
-  date: number; // display occupation table for one day in epoch millies
+    occupations: Occupation[] = [];
+    date: number; // display occupation table for one day in epoch millies
 
-  constructor(public user: User, public systemConfig: ReservationSystemConfig) {
-    super();
-    this.setDate(new Date().getTime());
-    this.createEmptyTable();
-  }
-
-  setDate(date:number) {
-    this.date = DateUtil.getDatePart(date);
-  }
-
-  setUser(user) {
-    this.user = user;
-    this.show();
-  }
-
-  show(date: number = this.date) {
-    this.setDate(date);
-    this.createEmptyTable();
-    for (const occupation of this.occupations) {
-        this.addOccupation(occupation);
+    constructor( public user: User, public systemConfig: ReservationSystemConfig ) {
+        super();
+        this.setDate( new Date().getTime() );
+        this.createEmptyTable();
     }
-  }
 
-  private addOccupation(occupation: Occupation) {
-    const row = this.systemConfig.toRow(occupation.start);
-    const column = occupation.court;
-    const rowspan = occupation.duration;
-    const colspan = occupation.lastCourt - occupation.court + 1;
-//    console.log('add occupation (' + row + ',' + column + ') span (' + rowspan + ',' + colspan + ')');
-    this.setCell(row, column, rowspan, colspan);
-    this.setData(row, column, occupation);
-  }
+    setDate( date: number ) {
+        this.date = DateUtil.getDatePart( date );
+    }
 
-  createEmptyTable(rowspan = 2) {
-    this.clearAll();
-    for (let row = 0; row < this.systemConfig.getRows(); row++) {
-      let mainRow: boolean = row % rowspan == 0;
+    setUser( user ) {
+        this.user = user;
+        this.show();
+    }
 
-      // first column: time
-      if (mainRow) {
-        this.setCell(row, 0, rowspan);
-        this.setData(row, 0, { 'time': this.showTime(row) });
-      }
-      // court columnsconfigId
-      for (let column = 0; column < this.systemConfig.courts; column++) {
-        if (this.canMakeReservation(row)) {
-          this.setCell(row, column + 1);
-          this.setData(row, column + 1,
-            new AvailableEntry (this.date + this.systemConfig.toMinutes(row) * DateUtil.MINUTE, column + 1, mainRow ? 'available' : 'available_light'));
-        } else {
-          if (mainRow) {
-            this.setCell(row, column + 1, rowspan);
-          }
+    show( date: number = this.date ) {
+        this.setDate( date );
+        this.createEmptyTable();
+        for ( const occupation of this.occupations ) {
+            this.addOccupation( occupation );
         }
-      }
     }
-  }
 
-  canMakeReservation(row) {
-    if (!this.user || this.user.hasRole(UserRole.ANONYMOUS)) {
-      return false;
+    private addOccupation( occupation: Occupation ) {
+        const row = this.systemConfig.toRow( occupation.start );
+        const column = occupation.court;
+        const rowspan = occupation.duration;
+        const colspan = occupation.lastCourt - occupation.court + 1;
+        //    console.log('add occupation (' + row + ',' + column + ') span (' + rowspan + ',' + colspan + ')');
+        this.setCell( row, column, rowspan, colspan );
+        this.setData( row, column, occupation );
     }
-    if (this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER)) {
-      return true;
 
-    }
-    if (this.user.hasRole(UserRole.KIOSK, UserRole.REGISTERED)) {
-      return true;
-    }
-    return false;
-  }
+    createEmptyTable( rowspan = 2 ) {
+        this.clearAll();
+        for ( let row = 0; row < this.systemConfig.getRows(); row++ ) {
+            let mainRow: boolean = row % rowspan == 0;
 
-  private showTime(row: number): string {
-    const hour = this.systemConfig.toMinutes(row) / 60;
-    return hour + ':00 - ' + (hour + 1) + ':00';
-  }
+            // first column: time
+            //      if (mainRow) {
+            //        this.setCell(row, 0, rowspan);
+            this.setCell( row, 0, 1 );
+            this.setData( row, 0, { 'time': this.showTime( row ) } );
+            //      }
+            // court columnsconfigId
+            for ( let column = 0; column < this.systemConfig.courts; column++ ) {
+                if ( this.canMakeReservation( row ) ) {
+                    this.setCell( row, column + 1 );
+                    this.setData( row, column + 1,
+                        new AvailableEntry( this.date + this.systemConfig.toMinutes( row ) * DateUtil.MINUTE, column + 1, mainRow ? 'available' : 'available_light' ) );
+                } else {
+                    if ( mainRow ) {
+                        this.setCell( row, column + 1, rowspan );
+                    }
+                }
+            }
+        }
+    }
+
+    canMakeReservation( row ) {
+        if ( !this.user || this.user.hasRole( UserRole.ANONYMOUS ) ) {
+            return false;
+        }
+        if ( this.user.hasRole( UserRole.ADMIN, UserRole.TRAINER ) ) {
+            return true;
+
+        }
+        if ( this.user.hasRole( UserRole.KIOSK, UserRole.REGISTERED ) ) {
+            return true;
+        }
+        return false;
+    }
+
+    private showTime( row: number ): string {
+        const start = new Date();
+        this.systemConfig.setTime( start, row );
+        const end = DateUtil.toDate( start.getTime() + this.systemConfig.durationUnitInMinutes * DateUtil.MINUTE );
+
+        return this.zeroPad( start.getHours(), 2 ) + ':' + this.zeroPad( start.getMinutes(), 2 ) + ' - ' +
+            this.zeroPad( end.getHours(), 2 ) + ':' + this.zeroPad( end.getMinutes(), 2 );
+    }
+
+    private zeroPad( num, places ) {
+        var zero = places - num.toString().length + 1;
+        return Array( +( zero > 0 && zero ) ).join( "0" ) + num;
+    }
 }
