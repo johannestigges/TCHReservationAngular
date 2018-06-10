@@ -2,20 +2,24 @@
 
 	<form class="form-horizontal">
 
-    <!-- title -->
-	  <div class="form-group">
-	    <h2 class="col-sm-offset-2 col-sm-10">Reservierung löschen</h2>
-    </div>
+		<!-- title -->
+		<div class="form-group">
+			<h2 class="col-sm-offset-2 col-sm-10">Reservierung löschen</h2>
+		</div>
 
 		<!-- Date and Time -->
 		<div class='form-group'>
 			<label for='date' class="col-sm-2 control-label">Zeit:</label>
 			<div class="row col-sm-10">
 				<div class="col-sm-6">
-					<input type="text" class="form-control" [value]='getDate(reservation.date).toLocaleDateString()' readonly size='8'>
+					<input type="text" class="form-control"
+						[value]='getDate(reservation.date).toLocaleDateString()' readonly
+						size='8'>
 				</div>
 				<div class="col-sm-6">
-					<input type="text" class="form-control" [value]='getDate(reservation.start).toLocaleTimeString()' readonly size='8'>
+					<input type="text" class="form-control"
+						[value]='getDate(reservation.start).toLocaleTimeString()' readonly
+						size='8'>
 				</div>
 			</div>
 		</div>
@@ -25,7 +29,8 @@
 			<label class="col-sm-2 control-label">Platz:</label>
 			<div class="row col-sm-10">
 				<div class="col-sm-4">
-					<input type="text" class="form-control" value='{{reservation.courts}}' readonly size='1'>
+					<input type="text" class="form-control"
+						value='{{reservation.courts}}' readonly size='1'>
 				</div>
 			</div>
 		</div>
@@ -34,29 +39,34 @@
 		<div class='form-group'>
 			<label class="col-sm-2 control-label">Text:</label>
 			<div class="col-sm-10">
-				<input type="text" class="form-control" value='{{reservation.text}}' readonly>
+				<input type="text" class="form-control" value='{{reservation.text}}'
+					readonly>
 			</div>
 		</div>
 
 		<!-- duration -->
 		<div class='form-group'>
 			<label class="col-sm-2 control-label">Dauer:</label>
-			<div class="col-sm-10">
-				<input type="text" class="form-control" value='{{reservation.duration}}' readonly size='2'>
+			<div class="row col-sm-10">
+				<div class="col-sm-4">
+					<input type="text" class="form-control"
+						value='{{reservation.duration}}' readonly size='2'>
+				</div>
+				<div class="col-sm-8">mal
+					{{systemConfig.durationUnitInMinutes}} Minuten</div>
 			</div>
 		</div>
 
 		<!-- error -->
 		<div class="form-group">
-			<div class="col-sm-offset-2 col-sm-10">
-				{{error}}
-			</div>
+			<div class="col-sm-offset-2 col-sm-10">{{error}}</div>
 		</div>
 
 		<!-- Buttons -->
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
-				<button (click)='onDelete()' class="btn btn-lg btn-block btn-primary">Löschen</button>
+				<button (click)='onDelete()'
+					class="btn btn-lg btn-block btn-primary">Löschen</button>
 				<button (click)='onBack()' class="btn btn-lg btn-block">Zurück</button>
 			</div>
 		</div>
