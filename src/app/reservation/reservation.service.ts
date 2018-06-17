@@ -33,6 +33,10 @@ export class ReservationService {
   addReservation(reservation: Reservation): Observable<Reservation> {
     return this.httpClient.post<Reservation>('/reservation/add', reservation);
   }
+  
+  updateReservation(reservation: Reservation): Observable<Reservation> {
+      return this.httpClient.put<Reservation>('/reservation/update', reservation);
+  }
 
   deleteReservation(id: number): Observable<Reservation> {
     return this.httpClient.delete<Reservation>('/reservation/delete/' + id);
