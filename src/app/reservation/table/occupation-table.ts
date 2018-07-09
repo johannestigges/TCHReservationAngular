@@ -52,12 +52,9 @@ export class OccupationTable extends TableData {
             let mainRow: boolean = row % rowspan == 0;
 
             // first column: time
-            //      if (mainRow) {
-            //        this.setCell(row, 0, rowspan);
             this.setCell( row, 0, 1 );
-            this.setData( row, 0, { 'time': this.showTime( row ) } );
-            //      }
-            // court columnsconfigId
+            this.setData( row, 0, { 'time': this.showTime( row ), 'short_time': this.showShortTime( row ) } );
+            // court
             for ( let column = 0; column < this.systemConfig.courts; column++ ) {
                 if ( this.canMakeReservation( row ) ) {
                     this.setCell( row, column + 1 );
@@ -93,6 +90,12 @@ export class OccupationTable extends TableData {
 
         return this.zeroPad( start.getHours(), 2 ) + ':' + this.zeroPad( start.getMinutes(), 2 ) + ' - ' +
             this.zeroPad( end.getHours(), 2 ) + ':' + this.zeroPad( end.getMinutes(), 2 );
+    }
+    
+    private showShortTime( row: number): string {
+        const start = new Date();
+        this.systemConfig.setTime( start, row );
+        return "" + start.getHours();
     }
 
     private zeroPad( num, places ) {

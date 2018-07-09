@@ -11,7 +11,7 @@ table.occupation_table {
 
 /* all rows have equal height */
 table.occupation_table td {
-	height: 50px;
+	height: 30px;
 	overflow: hidden;
 }
 
