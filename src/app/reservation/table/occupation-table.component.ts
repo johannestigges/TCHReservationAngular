@@ -110,8 +110,8 @@ export class OccupationTableComponent extends ErrorAware {
      if (this.occupationTable.user.hasRole(UserRole.TRAINER)) {
       return true;
     }
-    // only for the next 2 hours
-    return (date - this.lastUpdated < 2 * DateUtil.HOUR);
+    // only for the next 1 hours
+    return (date - this.lastUpdated < 1 * DateUtil.HOUR);
   }
 
   /**
