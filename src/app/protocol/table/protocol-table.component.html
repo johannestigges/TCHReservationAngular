@@ -1,0 +1,27 @@
+<h2>Protokolle</h2>
+<table class='table table-bordered table-hover'>
+	<thead>
+		<tr>
+			<th>Id</th>
+			<th>Zeitpunkt</th>
+			<th>Aktion</th>
+			<th>Datentyp</th>
+			<th>DatenId</th>
+			<th>Wert</th>
+			<th>Benutzer</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr *ngFor="let protocol of protocols">
+			<td>{{protocol.id}}</td>
+			<td>{{protocol.time}}</td>
+			<td>{{protocol.actionType}}</td>
+			<td>{{protocol.entityType}}</td>
+			<td>{{protocol.entityId}}</td>
+			<td>{{protocol.value}}</td>
+			<td>{{protocol.user.name}}</td>
+		</tr>
+	</tbody>
+</table>
+<app-show-error [httpError]="httpError" [errorMessages]="errorMessages"></app-show-error>
+

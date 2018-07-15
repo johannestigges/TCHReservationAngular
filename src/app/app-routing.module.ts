@@ -6,6 +6,7 @@ import { ReservationModifyComponent } from './reservation/modify/reservation-mod
 import { UserTableComponent } from './user/table/user-table.component';
 import { UserModifyComponent } from './user/modify/user-modify.component';
 import { UserAddComponent } from './user/add/user-add.component';
+import { ProtocolTableComponent } from './protocol/table/protocol-table.component';
 import { LoginComponent } from './login/login.component';
 
 const routes: Routes = [
@@ -16,6 +17,7 @@ const routes: Routes = [
     { path: 'add/:system/:court/:date',     component: ReservationAddComponent },
     { path: 'modify/:system/:reservation',  component: ReservationModifyComponent },
     { path: 'user',                         component: UserTableComponent },
+    { path: 'protocol',                     component: ProtocolTableComponent },
     { path: 'user/add',                     component: UserAddComponent },
     { path: 'user/modify/:user',            component: UserModifyComponent },
     { path: 'login',                        component: LoginComponent }

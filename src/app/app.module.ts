@@ -13,6 +13,8 @@ import { ReservationModifyComponent } from './reservation/modify/reservation-mod
 import { UserTableComponent } from './user/table/user-table.component';
 import { UserModifyComponent } from './user/modify/user-modify.component';
 import { UserAddComponent } from './user/add/user-add.component';
+import { ProtocolTableComponent } from './protocol/table/protocol-table.component';
+import { ProtocolService } from './protocol/protocol.service';
 import { UserService } from './user/user.service';
 import { AutofocusDirective } from './autofocus.directive';
 import { LoginComponent } from './login/login.component';
@@ -29,6 +31,7 @@ import { ShowErrorComponent } from './show-error/show-error.component';
         UserTableComponent,
         UserAddComponent,
         UserModifyComponent,
+        ProtocolTableComponent,
         AutofocusDirective,
         LoginComponent,
         ShowErrorComponent
@@ -40,7 +43,7 @@ import { ShowErrorComponent } from './show-error/show-error.component';
         FormsModule,
         HttpClientModule
     ],
-    providers: [ReservationService, UserService],
+    providers: [ReservationService, UserService, ProtocolService],
     bootstrap: [AppComponent]
 } )
 export class AppModule { }
