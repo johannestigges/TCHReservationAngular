@@ -36,11 +36,11 @@ table.occupation_table a {
 }
 
 .available_reservable {
-  background-color: #ccc;
+  background-color: #777;
 }
 
 .available_light_reservable {
-  background-color: #ddd;
+  background-color: #888;
 }
 
 .deletable {
