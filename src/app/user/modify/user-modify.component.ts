@@ -23,6 +23,7 @@ export class UserModifyComponent extends ErrorAware {
     user: User;
     loggedinUser: User
     confirmPassword: string;
+    isAdmin = false;
 
     constructor( private route: ActivatedRoute, private userService: UserService, private location: Location ) {
         super();
@@ -53,7 +54,8 @@ export class UserModifyComponent extends ErrorAware {
 
         this.userService.getLoggedInUser().subscribe(
             data => {
-                this.loggedinUser = data;
+                this.loggedinUser = new User(data.id, data.name, UserRole["" + data.role]);
+                this.isAdmin = this.loggedinUser.hasRole(UserRole.ADMIN);
             },
             err => {
                 this.httpError = err;
@@ -61,7 +63,6 @@ export class UserModifyComponent extends ErrorAware {
             () => { }
         );
     }
-
 
     onClick() {
         this.clearError();

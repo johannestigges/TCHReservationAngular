@@ -43,7 +43,7 @@
 		</div>
 
 		<!-- user role -->
-		<div class='form-group'>
+		<div *ngIf='isAdmin' class='form-group'>
 			<label class="col-sm-2 control-label">Rolle:</label>
 			<div class="col-sm-10">
 				<select class='form-control' id='type' [(ngModel)]="user_role" name="role">
@@ -52,7 +52,7 @@
 			</div>
 		</div>
 		<!-- user status -->
-		<div class='form-group'>
+		<div *ngIf='isAdmin' class='form-group'>
 			<label class="col-sm-2 control-label">Status:</label>
 			<div class="col-sm-10">
 				<select class='form-control' id='type' [(ngModel)]="user_status" name="status">
