@@ -3,27 +3,24 @@
 	<thead>
 		<tr>
 			<th>Id</th>
-      <th>Name</th>
-      <th>EMail</th>
-      <th>Rolle</th>
-      <th>Status</th>
+			<th>Name</th>
+			<th>EMail</th>
+			<th>Rolle</th>
+			<th>Status</th>
 			<th>Aktion</th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr *ngFor="let user of users">
-      <td>{{user.id}}</td>
-      <td>{{user.name}}</td>
-      <td>{{user.email}}</td>
-      <td>{{user.role}}</td>
-      <td>{{user.status}}</td>
-			<td><a class='btn'
-				routerLink='/user/modify/{{user.id}}'>ändern</a></td>
+			<td>{{user.id}}</td>
+			<td>{{user.name}}</td>
+			<td>{{user.email}}</td>
+			<td>{{user.role}}</td>
+			<td>{{user.status}}</td>
+			<td><a class='btn' routerLink='/user/modify/{{user.id}}'>ändern</a></td>
 		</tr>
 	</tbody>
 </table>
 <a class='btn btn-lg' routerLink='/user/add'>Neuen Benutzer anlegen</a>
-<a class='btn btn-lg btn-primary' routerLink='/table/1'>Zurück</a>
-
+<button class='btn btn-lg btn-primary' (click)="cancel()">Zurück</button>
 <app-show-error [httpError]="httpError" [errorMessages]="errorMessages"></app-show-error>
-

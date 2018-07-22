@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
 
 import { UserService } from '../../user/user.service';
 import { User } from '../../user/user';
@@ -14,7 +14,7 @@ export class UserTableComponent extends ErrorAware {
 
   users: User[];
 
-  constructor(private userService: UserService, private route: ActivatedRoute) {
+  constructor(private userService: UserService, private location: Location) {
       super();
   }
 
@@ -26,9 +26,11 @@ export class UserTableComponent extends ErrorAware {
       err => {
         this.httpError = err;
       },
-      () => {
-//        console.log('finished get all user');
-      }
+      () => { }
     );
+  }
+  
+  cancel() {
+      this.location.back();
   }
 }

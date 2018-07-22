@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 import { UserService } from '../user.service';
 import { User } from '../user';
@@ -22,7 +23,7 @@ export class UserAddComponent extends ErrorAware {
   user: User;
   confirmPassword: string;
 
-  constructor(private route: ActivatedRoute, private router: Router,
+  constructor(private route: ActivatedRoute, private router: Router, private location: Location,
     private userService: UserService) {
       super();
   }
@@ -53,16 +54,16 @@ export class UserAddComponent extends ErrorAware {
     this.userService.addUser(this.user).subscribe(
       data => {
         this.user = data;
-        this.onBack();
+        this.cancel();
       },
       err => {
         this.httpError = err;
       },
-      () => { this.onBack(); }
+      () => { this.cancel(); }
     );
   }
 
-  onBack() {
-    this.router.navigate(["/user"]);
+  cancel() {
+    this.location.back();
   }
 }
