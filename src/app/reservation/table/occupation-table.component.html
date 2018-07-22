@@ -1,21 +1,12 @@
 <router-outlet></router-outlet>
 <div class="row">
-  <h2 class="col-md-8">Platzbelegungen {{showDate()}}</h2>
-  <div class="col-md-4">
+  <h2>Platzbelegungen {{showDate()}} &nbsp;</h2>
+  <div>
     <button (click)='onBackWeek()' title="Eine Woche zurück" class="btn btn-space"><<</button>
     <button (click)='onBackDay()' title="Einen Tag zurück" class="btn btn-space"><</button>
     <button (click)='onToday()' title="Heute" class="btn btn-primary btn-space">+</button>
     <button (click)='onNextDay()' title="Einen Tag vor" class="btn btn-space">></button>
     <button (click)='onNextWeek()' title="Eine Woche vor" class="btn btn-space">>></button>
-
-    <div class="text-right">
-      <div *ngIf="!isLoggedIn()">
-        <a href='../../login'>login</a>
-      </div>
-      <div *ngIf="isLoggedIn()">
-        {{occupationTable.user.name}}
-      </div>
-    </div>
   </div>
 
 <table class="occupation_table">
@@ -84,3 +75,22 @@
 </table>
 <app-show-error [httpError]="httpError" [errorMessages]="errorMessages"></app-show-error>
 
+<!-- show menu -->
+<div class="col-md-12">
+	<span *ngIf="!isLoggedIn()">
+    	<a href='../../login'>login</a>
+    </span>
+    <span *ngIf="isLoggedIn()">
+    	<span *ngIf="!isKiosk()">
+      		<a href='../../logout'>logout</a>
+      		<!-- 
+      		<a href='../user/modify/{{occupationTable.user.id}}'>Kennwort ändern</a>
+      		 -->
+      	</span>
+      	<span *ngIf="isAdmin()">
+      	   <a href='../user'>Benutzerverwaltung</a>
+      	   <a href='../protocol'>Historie</a>
+      	</span>
+        {{occupationTable.user.name}}
+    </span>
+</div>

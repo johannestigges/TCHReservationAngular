@@ -77,13 +77,21 @@ export class OccupationTableComponent extends ErrorAware {
   }
 
   isLoggedIn() {
-    return this.occupationTable.user.role != UserRole.ANONYMOUS;
+    return !this.occupationTable.user.hasRole(UserRole.ANONYMOUS);
+  }
+  
+  isKiosk() {
+      return this.occupationTable.user.hasRole(UserRole.KIOSK);
+  }
+  
+  isAdmin() {
+      return this.occupationTable.user.hasRole(UserRole.ADMIN);
   }
 
   canModify(occupation: Occupation): boolean {
 
-    // admin can modify everything
-    if (this.occupationTable.user.hasRole(UserRole.ADMIN)) {
+    // admin and trainer can modify everything
+    if (this.occupationTable.user.hasRole(UserRole.ADMIN, UserRole.TRAINER)) {
       return true;
     }
 
@@ -98,18 +106,16 @@ export class OccupationTableComponent extends ErrorAware {
 
   canAdd(date: number): boolean {
 
-    // admin can add everything
-    if (this.occupationTable.user.hasRole(UserRole.ADMIN)) {
+    // admin and trainer can add everything
+    if (this.occupationTable.user.hasRole(UserRole.ADMIN, UserRole.TRAINER)) {
       return true;
     }
+    
     // cannot add occupation in the past
     if (date < this.lastUpdated) {
       return false;
     }
-    // trainer can add occupation
-     if (this.occupationTable.user.hasRole(UserRole.TRAINER)) {
-      return true;
-    }
+     
     // only for the next 1 hours
     return (date - this.lastUpdated < 1 * DateUtil.HOUR);
   }
