@@ -27,16 +27,16 @@ export class UserService {
   }
 
   getAll(): Observable<User[]> {
-    return this.httpClient.get<User[]>('/user/getAll');
+    return this.httpClient.get<User[]>('/user/all');
   }
 
 
   getUser(id: number): Observable<User> {
-    return this.httpClient.get<User>('/user/get/' + id);
+    return this.httpClient.get<User>('/user/' + id);
   }
 
   addUser(user: User): Observable<User> {
-    return this.httpClient.post<User>('/user/add', user);
+    return this.httpClient.post<User>('/user/', user);
   }
 
   updateUser(user: User): Observable<User> {
