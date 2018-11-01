@@ -7,12 +7,17 @@ import { Reservation } from './reservation';
 import { ReservationType } from './reservationtype';
 import { ReservationSystemConfig } from './reservation-system-config';
 import { Occupation } from './occupation';
+import { environment } from 'environments/environment';
+
+const URL = environment.restURL;
+const RESERVATION_URL = URL + "/reservation/";
 
 /**
  * reservation service
  */
 @Injectable()
 export class ReservationService {
+
 
   private systemConfig: { [key: number]: ReservationSystemConfig; } = {};
 
@@ -23,23 +28,23 @@ export class ReservationService {
   }
 
   getReservation(id: number): Observable<Reservation> {
-    return this.httpClient.get<Reservation>('/reservation/get/' + id);
+    return this.httpClient.get<Reservation>(RESERVATION_URL + 'get/' + id);
   }
 
   getOccupations(systemConfigId: number, date: number): Observable<Occupation[]> {
-    return this.httpClient.get<Occupation[]>('/reservation/getOccupations/' + systemConfigId + '/' + date);
+    return this.httpClient.get<Occupation[]>(RESERVATION_URL + 'getOccupations/' + systemConfigId + '/' + date);
   }
 
   addReservation(reservation: Reservation): Observable<Reservation> {
-    return this.httpClient.post<Reservation>('/reservation/add', reservation);
+    return this.httpClient.post<Reservation>(RESERVATION_URL + 'add', reservation);
   }
-  
+
   updateReservation(reservation: Reservation): Observable<Reservation> {
-      return this.httpClient.put<Reservation>('/reservation/update', reservation);
+      return this.httpClient.put<Reservation>(RESERVATION_URL + 'update', reservation);
   }
 
   deleteReservation(id: number): Observable<Reservation> {
-    return this.httpClient.delete<Reservation>('/reservation/delete/' + id);
+    return this.httpClient.delete<Reservation>(RESERVATION_URL + 'delete/' + id);
   }
 
   getSystemConfig(systemId): ReservationSystemConfig {

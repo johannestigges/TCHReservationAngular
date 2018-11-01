@@ -3,6 +3,10 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
 import { Protocol } from './protocol';
+import { environment } from 'environments/environment';
+
+const URL = environment.restURL;
+const PROTOCOL_URL = URL + "/protocol/";
 
 @Injectable()
 export class ProtocolService {
@@ -11,6 +15,6 @@ export class ProtocolService {
   }
 
   getAll(): Observable<Protocol[]> {
-    return this.httpClient.get<Protocol[]>('/protocol/get');
+    return this.httpClient.get<Protocol[]>(PROTOCOL_URL + 'get');
   }
 }

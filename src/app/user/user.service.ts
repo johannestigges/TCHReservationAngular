@@ -4,15 +4,20 @@ import { Observable } from 'rxjs/Observable';
 
 import { User } from './user';
 import { UserRole } from './user-role.enum';
+import { environment } from 'environments/environment';
+
+const URL = environment.restURL;
+const USER_URL = URL + "/user/";
 
 @Injectable()
 export class UserService {
+
 
   constructor(private httpClient: HttpClient) {
   }
 
   getLoggedInUser(): Observable<User> {
-    return this.httpClient.get<User>('/user/me');
+    return this.httpClient.get<User>(URL + 'me');
   }
 
   login(user, password): Observable<any> {
@@ -23,23 +28,23 @@ export class UserService {
       .set('username', user)
       .set('password', password)
       .set('submit','Login');
-    return this.httpClient.post<User>('/login', params);
+    return this.httpClient.post<User>(URL + '/login', params);
   }
 
   getAll(): Observable<User[]> {
-    return this.httpClient.get<User[]>('/user/all');
+    return this.httpClient.get<User[]>(USER_URL + 'all');
   }
 
 
   getUser(id: number): Observable<User> {
-    return this.httpClient.get<User>('/user/' + id);
+    return this.httpClient.get<User>(USER_URL + id);
   }
 
   addUser(user: User): Observable<User> {
-    return this.httpClient.post<User>('/user/', user);
+    return this.httpClient.post<User>(USER_URL, user);
   }
 
   updateUser(user: User): Observable<User> {
-    return this.httpClient.put<User>('/user/', user);
+    return this.httpClient.put<User>(USER_URL, user);
   }
 }
