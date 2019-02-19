@@ -32,7 +32,7 @@ export class OccupationTableComponent extends ErrorAware {
   constructor(private reservationService: ReservationService,
     private userService: UserService,
     private route: ActivatedRoute) {
-      super();
+    super();
   }
 
   ngOnInit() {
@@ -51,41 +51,41 @@ export class OccupationTableComponent extends ErrorAware {
     this.userService.getLoggedInUser().subscribe(
       data => {
         this.occupationTable.setUser(
-          new User(data.id, data.name, UserRole[""+data.role], "", "", ActivationStatus[""+data.status]));
+          new User(data.id, data.name, UserRole["" + data.role], "", "", ActivationStatus["" + data.status]));
       },
       err => {
         this.httpError = err;
       },
       () => {
-          // reload system when user is 'kiosk' every 5 Minutes
-          if (this.occupationTable.user.hasRole(UserRole.KIOSK)) {
-              this.timer = Observable.timer(300000,300000);
-              this.timerSubscription = this.timer.subscribe(() => this.update(this.occupationTable.date));
-          }
+        // reload system when user is 'kiosk' every 5 Minutes
+        if (this.occupationTable.user.hasRole(UserRole.KIOSK)) {
+          this.timer = Observable.timer(300000, 300000);
+          this.timerSubscription = this.timer.subscribe(() => this.update(this.occupationTable.date));
+        }
       }
     );
 
     // update occupation table
     this.update(this.occupationTable.date);
   }
-  
-  ngOnDestroy(){
-      // unsubscribe refresh timer when in kiosk mode
-      if (this.timerSubscription) {
-          this.timerSubscription.unsubscribe();
-      }
+
+  ngOnDestroy() {
+    // unsubscribe refresh timer when in kiosk mode
+    if (this.timerSubscription) {
+      this.timerSubscription.unsubscribe();
+    }
   }
 
   isLoggedIn() {
     return !this.occupationTable.user.hasRole(UserRole.ANONYMOUS);
   }
-  
+
   isKiosk() {
-      return this.occupationTable.user.hasRole(UserRole.KIOSK);
+    return this.occupationTable.user.hasRole(UserRole.KIOSK);
   }
-  
+
   isAdmin() {
-      return this.occupationTable.user.hasRole(UserRole.ADMIN);
+    return this.occupationTable.user.hasRole(UserRole.ADMIN);
   }
 
   canModify(occupation: Occupation): boolean {
@@ -110,12 +110,12 @@ export class OccupationTableComponent extends ErrorAware {
     if (this.occupationTable.user.hasRole(UserRole.ADMIN, UserRole.TRAINER)) {
       return true;
     }
-    
+
     // cannot add occupation in the past
     if (date < this.lastUpdated) {
       return false;
     }
-     
+
     // only for the next 1 hours
     return (date - this.lastUpdated < 1 * DateUtil.HOUR);
   }
@@ -123,7 +123,7 @@ export class OccupationTableComponent extends ErrorAware {
   /**
    * update table: read occupations asynchronously and show table
    */
-  private update(date:number) {
+  private update(date: number) {
     this.clearError();
     this.reservationService.getOccupations(this.systemConfig.id, date)
       .subscribe(
@@ -136,7 +136,7 @@ export class OccupationTableComponent extends ErrorAware {
           this.httpError = err;
         },
         () => {
-//          console.log("finished update reservations for " + date);
+          //          console.log("finished update reservations for " + date);
         }
       );
   }

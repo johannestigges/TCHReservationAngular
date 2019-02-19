@@ -10,20 +10,16 @@ import { UserService } from '../user/user.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
 
-  userid;
-  password;
-  error;
+  userid: string;
+  password: string;
+  error: string;
 
   constructor(private route: ActivatedRoute, private router: Router, private location: Location,
     private userService: UserService) { }
 
-  ngOnInit() {
-  }
-
-
-  setError(error) {
+  setError(error: any) {
     this.error = JSON.stringify(error);
     console.log(this.error);
   }
@@ -39,7 +35,7 @@ export class LoginComponent implements OnInit {
         console.log(error);
         console.log("url: " + url);
         if (url.search('http') >= 0 && url.search('login?error') == -1) {
-            this.cancel();
+          this.cancel();
         } else {
           this.setError("ungültige Anmeldung!");
         }

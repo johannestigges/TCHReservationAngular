@@ -11,22 +11,22 @@ import { LoginComponent } from './login/login.component';
 
 const routes: Routes = [
     { path: '', redirectTo: '/table/1', pathMatch: 'full' },
-    { path: 'table/:system',                component: OccupationTableComponent },
-    { path: 'table/:system',                component: OccupationTableComponent },
-    { path: 'table/:system/:date',          component: OccupationTableComponent },
-    { path: 'add/:system/:court/:date',     component: ReservationAddComponent },
-    { path: 'modify/:system/:reservation',  component: ReservationModifyComponent },
-    { path: 'user',                         component: UserTableComponent },
-    { path: 'protocol',                     component: ProtocolTableComponent },
-    { path: 'user/add',                     component: UserAddComponent },
-    { path: 'user/modify/:user',            component: UserModifyComponent },
-    { path: 'login',                        component: LoginComponent }
+    { path: 'table/:system', component: OccupationTableComponent },
+    { path: 'table/:system', component: OccupationTableComponent },
+    { path: 'table/:system/:date', component: OccupationTableComponent },
+    { path: 'add/:system/:court/:date', component: ReservationAddComponent },
+    { path: 'modify/:system/:reservation', component: ReservationModifyComponent },
+    { path: 'user', component: UserTableComponent },
+    { path: 'protocol', component: ProtocolTableComponent },
+    { path: 'user/add', component: UserAddComponent },
+    { path: 'user/modify/:user', component: UserModifyComponent },
+    { path: 'login', component: LoginComponent }
 ];
 
-@NgModule( {
-    imports: [RouterModule.forRoot( routes )],
+@NgModule({
+    imports: [RouterModule.forRoot(routes)],
     exports: [RouterModule]
-} )
+})
 
 export class AppRoutingModule {
 }
