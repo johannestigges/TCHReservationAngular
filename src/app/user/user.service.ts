@@ -17,7 +17,7 @@ export class UserService {
   }
 
   getLoggedInUser(): Observable<User> {
-    return this.httpClient.get<User>(URL + 'me');
+    return this.httpClient.get<User>(USER_URL + 'me');
   }
 
   login(user, password): Observable<any> {
