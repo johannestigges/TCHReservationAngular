@@ -6,16 +6,16 @@ import { Protocol } from '../protocol';
 import { User } from '../../user/user';
 import { ErrorAware } from '../../error/error-aware';
 
-@Component( {
+@Component({
     selector: 'protocol-table',
     templateUrl: './protocol-table.component.html',
     styleUrls: ['./protocol-table.component.css']
-} )
+})
 export class ProtocolTableComponent extends ErrorAware {
 
     protocols: Protocol[];
 
-    constructor( private protocolService: ProtocolService, private location: Location ) {
+    constructor(private protocolService: ProtocolService, private location: Location) {
         super();
     }
 
@@ -27,8 +27,6 @@ export class ProtocolTableComponent extends ErrorAware {
             err => {
                 this.httpError = err;
             },
-            () => {
-            }
         );
     }
 
