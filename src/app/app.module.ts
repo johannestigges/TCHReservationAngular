@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
@@ -19,10 +19,11 @@ import { UserService } from './user/user.service';
 import { AutofocusDirective } from './autofocus.directive';
 import { LoginComponent } from './login/login.component';
 import { ShowErrorComponent } from './show-error/show-error.component';
+import { CorsInterceptor } from './cors-interceptor';
 //import { KeyPipe } from './key-pipe';
 
 
-@NgModule( {
+@NgModule({
     declarations: [
         AppComponent,
         OccupationTableComponent,
@@ -43,7 +44,11 @@ import { ShowErrorComponent } from './show-error/show-error.component';
         FormsModule,
         HttpClientModule
     ],
-    providers: [ReservationService, UserService, ProtocolService],
+    providers: [ReservationService, UserService, ProtocolService, {
+        provide: HTTP_INTERCEPTORS,
+        useClass: CorsInterceptor,
+        multi: true
+    }],
     bootstrap: [AppComponent]
-} )
+})
 export class AppModule { }

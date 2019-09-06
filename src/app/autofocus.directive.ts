@@ -30,7 +30,7 @@ export class AutofocusDirective implements AfterContentInit, OnChanges, OnDestro
     private timer: number;
 
     // I initialize the autofocus directive.
-    constructor( elementRef: ElementRef ) {
+    constructor(elementRef: ElementRef) {
 
         this.elementRef = elementRef;
 
@@ -44,13 +44,13 @@ export class AutofocusDirective implements AfterContentInit, OnChanges, OnDestro
     // PUBLIC METHODS.
     // ---
     // I get called once after the contents have been fully initialized.
-    public ngAfterContentInit() : void {
+    public ngAfterContentInit(): void {
 
         // Because this directive can act on the stand-only "autofocus" attribute or
         // the more specialized "appAutofocus" property, we need to check to see if the
         // "shouldFocusElement" input property is the empty string. This will signify
         // that the focus it not being data-driven and should be performed automatically.
-        if ( this.shouldFocusElement === "" ) {
+        if (this.shouldFocusElement === "") {
 
             this.startFocusWorkflow();
 
@@ -60,15 +60,15 @@ export class AutofocusDirective implements AfterContentInit, OnChanges, OnDestro
 
 
     // I get called every time the input bindings are updated.
-    public ngOnChanges( changes: SimpleChanges ) : void {
+    public ngOnChanges(changes: SimpleChanges): void {
 
         // If the timer delay is being passed-in as a string (ie, someone is using
         // attribute-input syntax, not property-input syntax), let's coalesce the
         // attribute to a numeric value so that our type-annotations are consistent.
-        if ( changes.timerDelay && ( typeof( this.timerDelay ) !== "number" ) ) {
+        if (changes.timerDelay && (typeof (this.timerDelay) !== "number")) {
 
             // If the coalesce fails, just fall-back to a sane value.
-            if ( isNaN( this.timerDelay = +this.timerDelay ) ) {
+            if (isNaN(this.timerDelay = +this.timerDelay)) {
 
                 this.timerDelay = BASE_TIMER_DELAY;
 
@@ -79,12 +79,12 @@ export class AutofocusDirective implements AfterContentInit, OnChanges, OnDestro
         // If the focus input is being data-driven, then we either need to start the
         // focus workflow if focus is required; or, clear any existing workflow if focus
         // is no longer required (so that we don't steal focus from another element).
-        if ( changes.shouldFocusElement ) {
+        if (changes.shouldFocusElement) {
 
-            ( this.shouldFocusElement )
+            (this.shouldFocusElement)
                 ? this.startFocusWorkflow()
                 : this.stopFocusWorkflow()
-            ;
+                ;
 
         }
 
@@ -92,7 +92,7 @@ export class AutofocusDirective implements AfterContentInit, OnChanges, OnDestro
 
 
     // I get called once when the directive is being unmounted.
-    public ngOnDestroy() : void {
+    public ngOnDestroy(): void {
 
         this.stopFocusWorkflow();
 
@@ -102,34 +102,34 @@ export class AutofocusDirective implements AfterContentInit, OnChanges, OnDestro
     // PRIVATE METHODS.
     // ---
     // I start the timer-based workflow that will focus the current element.
-    private startFocusWorkflow() : void {
+    private startFocusWorkflow(): void {
 
         // If there is already a timer running for this element, just let it play out -
         // resetting it at this point will only push-out the time at which the focus is
         // applied to the element.
-        if ( this.timer ) {
+        if (this.timer) {
 
             return;
 
         }
 
         this.timer = setTimeout(
-            () : void => {
+            (): void => {
 
                 this.timer = null;
                 this.elementRef.nativeElement.focus();
 
             },
-            this.timerDelay
+            //            this.timerDelay
         );
 
     }
 
 
     // I stop the timer-based workflow, preventing focus from taking place.
-    private stopFocusWorkflow() : void {
+    private stopFocusWorkflow(): void {
 
-        clearTimeout( this.timer );
+        clearTimeout(this.timer);
         this.timer = null;
 
     }

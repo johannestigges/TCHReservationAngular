@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
 
 import { DateUtil } from '../date/date-util';
 import { Reservation } from './reservation';
 import { ReservationType } from './reservationtype';
 import { ReservationSystemConfig } from './reservation-system-config';
 import { Occupation } from './occupation';
-import { environment } from 'environments/environment';
+import { environment } from 'src/environments/environment';
+import { Observable } from 'rxjs';
 
 const URL = environment.restURL;
 const RESERVATION_URL = URL + "/reservation/";
@@ -40,7 +40,7 @@ export class ReservationService {
   }
 
   updateReservation(reservation: Reservation): Observable<Reservation> {
-      return this.httpClient.put<Reservation>(RESERVATION_URL + 'update', reservation);
+    return this.httpClient.put<Reservation>(RESERVATION_URL + 'update', reservation);
   }
 
   deleteReservation(id: number): Observable<Reservation> {

@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
 
 import { User } from './user';
 import { UserRole } from './user-role.enum';
-import { environment } from 'environments/environment';
+import { environment } from 'src/environments/environment';
+import { Observable } from 'rxjs';
 
 const URL = environment.restURL;
-const USER_URL = URL + "/user/";
+const USER_URL = URL + '/user/';
 
 @Injectable()
 export class UserService {
@@ -21,13 +21,14 @@ export class UserService {
   }
 
   login(user, password): Observable<any> {
-    //const headers = new HttpHeaders().set('authorization', 'Basic ' + btoa(user + ':' + password));
-    //return this.httpClient.get('/user', {headers});
+    // const headers = new HttpHeaders().set('authorization', 'Basic ' + btoa(user + ':' + password));
+    // return this.httpClient.get('/user', {headers});
 
     const params = new HttpParams()
       .set('username', user)
       .set('password', password)
-      .set('submit','Login');
+      .set('submit', 'Login');
+    console.log('login user ' + user);
     return this.httpClient.post<User>(URL + '/login', params);
   }
 

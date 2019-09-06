@@ -1,11 +1,8 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Params } from '@angular/router';
-import { Observable, Subscription } from 'rxjs/Rx';
 
 import { ReservationService } from '../reservation.service';
 import { ReservationSystemConfig } from '../reservation-system-config';
-import { ReservationType } from '../reservationtype';
 import { OccupationTable } from './occupation-table';
 import { Occupation } from '../occupation';
 import { UserService } from '../../user/user.service';
@@ -14,6 +11,7 @@ import { UserRole } from '../../user/user-role.enum';
 import { ActivationStatus } from '../../user/activation-status.enum';
 import { DateUtil } from '../../date/date-util';
 import { ErrorAware } from '../../error/error-aware';
+import { Observable, timer, Subscription } from 'rxjs';
 
 
 @Component({
@@ -26,8 +24,8 @@ export class OccupationTableComponent extends ErrorAware {
   occupationTable: OccupationTable;
   systemConfig: ReservationSystemConfig;
   lastUpdated: number;
-  private timer;
-  private timerSubscription;
+  private timer: Observable<number>;
+  private timerSubscription: Subscription;
 
   constructor(private reservationService: ReservationService,
     private userService: UserService,
@@ -37,21 +35,21 @@ export class OccupationTableComponent extends ErrorAware {
 
   ngOnInit() {
     // read system config
-    this.systemConfig = this.reservationService.getSystemConfig(this.route.snapshot.params['system']);
+    this.systemConfig = this.reservationService.getSystemConfig(this.route.snapshot.params.system);
 
     // create occupation table
-    this.occupationTable = new OccupationTable(new User(0, "", UserRole.ANONYMOUS), this.systemConfig);
+    this.occupationTable = new OccupationTable(new User(0, '', UserRole.ANONYMOUS), this.systemConfig);
 
     // set date
-    if (this.route.snapshot.params['date']) {
-      this.occupationTable.setDate(parseInt(this.route.snapshot.params['date']));
+    if (this.route.snapshot.params.date) {
+      this.occupationTable.setDate(parseInt(this.route.snapshot.params.date));
     }
 
     // get logged in user
     this.userService.getLoggedInUser().subscribe(
       data => {
         this.occupationTable.setUser(
-          new User(data.id, data.name, UserRole["" + data.role], "", "", ActivationStatus["" + data.status]));
+          new User(data.id, data.name, UserRole['' + data.role], '', '', ActivationStatus['' + data.status]));
       },
       err => {
         this.httpError = err;
@@ -59,8 +57,10 @@ export class OccupationTableComponent extends ErrorAware {
       () => {
         // reload system when user is 'kiosk' every 5 Minutes
         if (this.occupationTable.user.hasRole(UserRole.KIOSK)) {
-          this.timer = Observable.timer(300000, 300000);
-          this.timerSubscription = this.timer.subscribe(() => this.update(this.occupationTable.date));
+          this.timer = timer(300000, 300000);
+          this.timerSubscription = this.timer.subscribe(
+            () => this.update(this.occupationTable.date)
+          );
         }
       }
     );
@@ -101,7 +101,7 @@ export class OccupationTableComponent extends ErrorAware {
     }
 
     // can only modify my ccupations
-    return "" + occupation.reservation.user.id == "" + this.occupationTable.user.id;
+    return '' + occupation.reservation.user.id == '' + this.occupationTable.user.id;
   }
 
   canAdd(date: number): boolean {
@@ -128,6 +128,7 @@ export class OccupationTableComponent extends ErrorAware {
     this.reservationService.getOccupations(this.systemConfig.id, date)
       .subscribe(
         data => {
+          console.log('got occupations', data);
           this.lastUpdated = new Date().getTime();
           this.occupationTable.setDate(date);
           this.show(data);
