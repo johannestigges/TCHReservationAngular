@@ -11,13 +11,13 @@
 			<label class="col-sm-2 control-label">Zeit:</label>
 			<div class="row col-sm-10">
 				<div class="col-sm-6">
-					<input type="text" name="date" class="form-control" [value]="getDate()"
-                 size='8' readonly [appAutofocus]='(focus ==="date" )'>
+					<input type="text" name="date" class="form-control" [value]="getDate()" size='8' readonly
+						[tchAppAutofocus]='(focus ==="date" )'>
 				</div>
 				<div class="col-sm-6">
 					<select class="form-control" id="time" [(ngModel)]="time" name="time">
-            <option *ngFor='let t of getTimes()' [value] = 't'>{{duration(t)}}</option>
-          </select>
+						<option *ngFor='let t of getTimes()' [value]='t'>{{duration(t)}}</option>
+					</select>
 				</div>
 			</div>
 		</div>
@@ -28,8 +28,8 @@
 			<div class="row col-sm-10">
 				<div class="col-sm-4">
 					<select class='form-control' id='court' [(ngModel)]="reservation.courts" name="court">
-            <option *ngFor='let court of systemConfig.getCourtsArray()' [value] = 'court'>{{court}}</option>
-          </select>
+						<option *ngFor='let court of systemConfig.getCourtsArray()' [value]='court'>{{court}}</option>
+					</select>
 				</div>
 			</div>
 		</div>
@@ -39,8 +39,8 @@
 			<label class="col-sm-2 control-label">Typ:</label>
 			<div class="col-sm-10">
 				<select class='form-control' id='type' [(ngModel)]="type" name="type">
-          <option *ngFor='let type of types' [value] = 'type'>{{type}}</option>
-        </select>
+					<option *ngFor='let type of types' [value]='type'>{{type}}</option>
+				</select>
 			</div>
 		</div>
 
@@ -48,8 +48,8 @@
 		<div *ngIf='showText' class="form-group">
 			<label class="col-sm-2 control-label">Text:</label>
 			<div class="col-sm-10">
-				<input type="text" class="form-control" [(ngModel)]="reservation.text" name='text'
-               required [appAutofocus]='( focus === "text" )'>
+				<input type="text" class="form-control" [(ngModel)]="reservation.text" name='text' required
+					[tchAppAutofocus]='( focus === "text" )'>
 			</div>
 		</div>
 
@@ -58,8 +58,8 @@
 			<label class="col-sm-2 control-label">Dauer:</label>
 			<div class="row col-sm-10">
 				<div class="col-sm-4">
-					<input type="text" class="form-control" [(ngModel)]="reservation.duration" name='duration'
-                 size="1" [appAutofocus]='( focus === "duration" )'>
+					<input type="text" class="form-control" [(ngModel)]="reservation.duration" name='duration' size="1"
+						[tchAppAutofocus]='( focus === "duration" )'>
 				</div>
 				<div class="col-sm-8">
 					mal {{systemConfig.durationUnitInMinutes}} Minuten
@@ -70,22 +70,22 @@
 		<!-- simple duration as select list -->
 		<div *ngIf='!showDuration' class="form-group">
 			<label class="col-sm-2 control-label">Dauer:</label>
-      <div class="row col-sm-10">
-			  <div class="col-sm-12 radio">
-				  <label>
-            <input type="radio" name="duration" (change)="onDurationChanged(2)" checked
-                   [appAutofocus] = '( focus === "duration" )'>
-            Einzel (60 Minuten)
-          </label>
-			  </div>
-			  <div class="col-sm-12 radio">
-				  <label>
-            <input type="radio" name="duration" (change)="onDurationChanged(3)">
-            Doppel (90 Minuten)
-          </label>
-			  </div>
-      </div>
-	  </div>
+			<div class="row col-sm-10">
+				<div class="col-sm-12 radio">
+					<label>
+						<input type="radio" name="duration" (change)="onDurationChanged(2)" checked
+							[tchAppAutofocus]='( focus === "duration" )'>
+						Einzel (60 Minuten)
+					</label>
+				</div>
+				<div class="col-sm-12 radio">
+					<label>
+						<input type="radio" name="duration" (change)="onDurationChanged(3)">
+						Doppel (90 Minuten)
+					</label>
+				</div>
+			</div>
+		</div>
 
 		<!-- duration repeat -->
 		<!--  not working yet
@@ -100,7 +100,7 @@
 		<!-- error -->
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
-				<app-show-error [httpError]="httpError" [errorMessages]="errorMessages"></app-show-error>
+				<tch-show-error [httpError]="httpError" [errorMessages]="errorMessages"></tch-show-error>
 			</div>
 		</div>
 

@@ -6,7 +6,7 @@ import { User } from '../../user/user';
 import { ErrorAware } from '../../error/error-aware';
 
 @Component({
-  selector: 'user-table',
+  selector: 'tch-user-table',
   templateUrl: './user-table.component.html',
   styleUrls: ['./user-table.component.css']
 })

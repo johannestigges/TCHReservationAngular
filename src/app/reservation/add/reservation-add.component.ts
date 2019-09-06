@@ -15,7 +15,7 @@ import { UserRole } from '../../user/user-role.enum';
 import { DateUtil } from '../../date/date-util';
 
 @Component({
-  selector: 'reservation-add',
+  selector: 'tch-reservation-add',
   templateUrl: './reservation-add.component.html',
   styleUrls: ['./reservation-add.component.css']
 })

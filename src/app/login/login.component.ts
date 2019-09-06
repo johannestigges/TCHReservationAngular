@@ -6,7 +6,7 @@ import { Location } from '@angular/common';
 import { UserService } from '../user/user.service';
 
 @Component({
-  selector: 'app-login',
+  selector: 'tch-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
