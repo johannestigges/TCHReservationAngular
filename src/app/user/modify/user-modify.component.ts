@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 
@@ -10,7 +10,7 @@ import { ErrorAware } from '../../error/error-aware';
 
 
 @Component({
-    selector: 'user-modify',
+    selector: 'tch-user-modify',
     templateUrl: './user-modify.component.html',
     styleUrls: ['./user-modify.component.css']
 })

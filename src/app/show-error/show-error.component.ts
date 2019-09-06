@@ -2,7 +2,7 @@ import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
-    selector: 'app-show-error',
+    selector: 'tch-show-error',
     templateUrl: './show-error.component.html',
     styleUrls: ['./show-error.component.css']
 })

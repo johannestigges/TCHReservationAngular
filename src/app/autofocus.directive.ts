@@ -15,9 +15,9 @@ import { SimpleChanges } from '@angular/core';
 const BASE_TIMER_DELAY = 10;
 
 @Directive({
-    selector: '[autofocus], [appAutofocus]',
+    selector: '[tchAutofocus], [tchAppAutofocus]',
     inputs: [
-        'shouldFocusElement: appAutofocus',
+        'shouldFocusElement: tchAppAutofocus',
         'timerDelay: autofocusDelay'
     ]
 })

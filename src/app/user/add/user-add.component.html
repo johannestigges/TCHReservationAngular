@@ -44,7 +44,7 @@
 			<label class="col-sm-2 control-label">Rolle:</label>
 			<div class="col-sm-10">
 				<select class='form-control' id='type' [(ngModel)]="userRole" name="role">
-					<option *ngFor='let role of role_values' [value]='role'>{{role}}</option>
+					<option *ngFor='let role of roleValues' [value]='role'>{{role}}</option>
 				</select>
 			</div>
 		</div>
@@ -53,7 +53,7 @@
 			<label class="col-sm-2 control-label">Status:</label>
 			<div class="col-sm-10">
 				<select class='form-control' id='type' [(ngModel)]="userStatus" name="status">
-					<option *ngFor='let s of status_values' [value]='s'>{{s}}</option>
+					<option *ngFor='let s of statusValues' [value]='s'>{{s}}</option>
 				</select>
 			</div>
 		</div>
@@ -61,7 +61,7 @@
 		<!-- error -->
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
-				<app-show-error [httpError]="httpError" [errorMessages]="errorMessages"></app-show-error>
+				<tch-show-error [httpError]="httpError" [errorMessages]="errorMessages"></tch-show-error>
 			</div>
 		</div>
 

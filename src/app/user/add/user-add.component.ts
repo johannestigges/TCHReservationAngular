@@ -10,7 +10,7 @@ import { ActivationStatus } from '../activation-status.enum';
 import { ErrorAware } from '../../error/error-aware';
 
 @Component({
-  selector: 'user-add',
+  selector: 'tch-user-add',
   templateUrl: './user-add.component.html',
   styleUrls: ['./user-add.component.css']
 })

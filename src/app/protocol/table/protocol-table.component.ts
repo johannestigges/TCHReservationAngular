@@ -6,7 +6,7 @@ import { Protocol } from '../protocol';
 import { ErrorAware } from '../../error/error-aware';
 
 @Component({
-    selector: 'protocol-table',
+    selector: 'tch-protocol-table',
     templateUrl: './protocol-table.component.html',
     styleUrls: ['./protocol-table.component.css']
 })

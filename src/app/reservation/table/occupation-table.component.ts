@@ -15,7 +15,7 @@ import { Observable, timer, Subscription } from 'rxjs';
 
 
 @Component({
-  selector: 'app-root',
+  selector: 'tch-occupation-table',
   templateUrl: './occupation-table.component.html',
   styleUrls: ['./occupation-table.component.css']
 })
