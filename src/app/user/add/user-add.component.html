@@ -10,8 +10,7 @@
 		<div class="form-group">
 			<label class="col-sm-2 control-label">Name:</label>
 			<div class="col-sm-10">
-				<input type="text" class="form-control" [(ngModel)]="user.name" name='name'
-               required>
+				<input type="text" class="form-control" [(ngModel)]="user.name" name='name' required>
 			</div>
 		</div>
 
@@ -19,8 +18,7 @@
 		<div class="form-group">
 			<label class="col-sm-2 control-label">EMail:</label>
 			<div class="col-sm-10">
-				<input type="email" class="form-control" [(ngModel)]="user.email" name='email'
-               required>
+				<input type="email" class="form-control" [(ngModel)]="user.email" name='email' required>
 			</div>
 		</div>
 
@@ -28,8 +26,7 @@
 		<div class="form-group">
 			<label class="col-sm-2 control-label">Password:</label>
 			<div class="col-sm-10">
-				<input type="password" class="form-control" [(ngModel)]="user.password" name='password'
-               required>
+				<input type="password" class="form-control" [(ngModel)]="user.password" name='password' required>
 			</div>
 		</div>
 
@@ -38,7 +35,7 @@
 			<label class="col-sm-2 control-label">Passwort bestätigen:</label>
 			<div class="col-sm-10">
 				<input type="password" class="form-control" [(ngModel)]="confirmPassword" name='confirmPassword'
-               required>
+					required>
 			</div>
 		</div>
 
@@ -46,8 +43,8 @@
 		<div class='form-group'>
 			<label class="col-sm-2 control-label">Rolle:</label>
 			<div class="col-sm-10">
-				<select class='form-control' id='type' [(ngModel)]="user_role" name="role">
-					<option *ngFor='let role of role_values' [value] = 'role'>{{role}}</option>
+				<select class='form-control' id='type' [(ngModel)]="userRole" name="role">
+					<option *ngFor='let role of role_values' [value]='role'>{{role}}</option>
 				</select>
 			</div>
 		</div>
@@ -55,8 +52,8 @@
 		<div class='form-group'>
 			<label class="col-sm-2 control-label">Status:</label>
 			<div class="col-sm-10">
-				<select class='form-control' id='type' [(ngModel)]="user_status" name="status">
-					<option *ngFor='let s of status_values' [value] = 's'>{{s}}</option>
+				<select class='form-control' id='type' [(ngModel)]="userStatus" name="status">
+					<option *ngFor='let s of status_values' [value]='s'>{{s}}</option>
 				</select>
 			</div>
 		</div>

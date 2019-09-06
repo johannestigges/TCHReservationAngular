@@ -3,22 +3,22 @@
 // https://www.bennadel.com/blog/3376-creating-an-input-driven-autofocus-directive-in-angular-5-0-2.htm
 //
 // Import the core angular services.
-import { AfterContentInit } from "@angular/core";
-import { Directive } from "@angular/core";
-import { ElementRef } from "@angular/core";
-import { OnChanges } from "@angular/core";
-import { OnDestroy } from "@angular/core";
-import { SimpleChanges } from "@angular/core";
+import { AfterContentInit } from '@angular/core';
+import { Directive } from '@angular/core';
+import { ElementRef } from '@angular/core';
+import { OnChanges } from '@angular/core';
+import { OnDestroy } from '@angular/core';
+import { SimpleChanges } from '@angular/core';
 
 // ----------------------------------------------------------------------------------- //
 // ----------------------------------------------------------------------------------- //
-var BASE_TIMER_DELAY = 10;
+const BASE_TIMER_DELAY = 10;
 
 @Directive({
-    selector: "[autofocus], [appAutofocus]",
+    selector: '[autofocus], [appAutofocus]',
     inputs: [
-        "shouldFocusElement: appAutofocus",
-        "timerDelay: autofocusDelay"
+        'shouldFocusElement: appAutofocus',
+        'timerDelay: autofocusDelay'
     ]
 })
 export class AutofocusDirective implements AfterContentInit, OnChanges, OnDestroy {
@@ -34,7 +34,7 @@ export class AutofocusDirective implements AfterContentInit, OnChanges, OnDestro
 
         this.elementRef = elementRef;
 
-        this.shouldFocusElement = "";
+        this.shouldFocusElement = '';
         this.timer = null;
         this.timerDelay = BASE_TIMER_DELAY;
 
@@ -50,7 +50,7 @@ export class AutofocusDirective implements AfterContentInit, OnChanges, OnDestro
         // the more specialized "appAutofocus" property, we need to check to see if the
         // "shouldFocusElement" input property is the empty string. This will signify
         // that the focus it not being data-driven and should be performed automatically.
-        if (this.shouldFocusElement === "") {
+        if (this.shouldFocusElement === '') {
 
             this.startFocusWorkflow();
 
@@ -65,7 +65,7 @@ export class AutofocusDirective implements AfterContentInit, OnChanges, OnDestro
         // If the timer delay is being passed-in as a string (ie, someone is using
         // attribute-input syntax, not property-input syntax), let's coalesce the
         // attribute to a numeric value so that our type-annotations are consistent.
-        if (changes.timerDelay && (typeof (this.timerDelay) !== "number")) {
+        if (changes.timerDelay && (typeof (this.timerDelay) !== 'number')) {
 
             // If the coalesce fails, just fall-back to a sane value.
             if (isNaN(this.timerDelay = +this.timerDelay)) {

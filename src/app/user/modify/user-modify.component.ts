@@ -9,40 +9,40 @@ import { ActivationStatus } from '../activation-status.enum';
 import { ErrorAware } from '../../error/error-aware';
 
 
-@Component( {
+@Component({
     selector: 'user-modify',
     templateUrl: './user-modify.component.html',
     styleUrls: ['./user-modify.component.css']
-} )
-export class UserModifyComponent extends ErrorAware {
+})
+export class UserModifyComponent extends ErrorAware implements OnInit {
 
-    role_values: string[];
-    status_values: string[];
-    user_role: string;
-    user_status: string;
+    roleValues: string[];
+    statusValues: string[];
+    userRole: string;
+    userStatus: string;
     user: User;
-    loggedinUser: User
+    loggedinUser: User;
     confirmPassword: string;
     isAdmin = false;
 
-    constructor( private route: ActivatedRoute, private userService: UserService, private location: Location ) {
+    constructor(private route: ActivatedRoute, private userService: UserService, private location: Location) {
         super();
     }
 
     ngOnInit() {
 
-        this.role_values = Object.keys( UserRole ).map( key => UserRole[key] )
-            .filter( value => typeof value === 'string' );
-        this.status_values = Object.keys( ActivationStatus ).map( key => ActivationStatus[key] )
-            .filter( value => typeof value === 'string' );
+        this.roleValues = Object.keys(UserRole).map(key => UserRole[key])
+            .filter(value => typeof value === 'string');
+        this.statusValues = Object.keys(ActivationStatus).map(key => ActivationStatus[key])
+            .filter(value => typeof value === 'string');
 
-        const id = this.route.snapshot.params['user'];
-        this.userService.getUser( id ).subscribe(
+        const id = this.route.snapshot.params.user;
+        this.userService.getUser(id).subscribe(
             data => {
                 this.user = data;
                 this.confirmPassword = this.user.password;
-                this.user_role = "" + this.user.role;
-                this.user_status = "" + this.user.status;
+                this.userRole = '' + this.user.role;
+                this.userStatus = '' + this.user.status;
             },
             err => {
                 this.httpError = err;
@@ -54,7 +54,7 @@ export class UserModifyComponent extends ErrorAware {
 
         this.userService.getLoggedInUser().subscribe(
             data => {
-                this.loggedinUser = new User(data.id, data.name, UserRole["" + data.role]);
+                this.loggedinUser = new User(data.id, data.name, UserRole['' + data.role]);
                 this.isAdmin = this.loggedinUser.hasRole(UserRole.ADMIN);
             },
             err => {
@@ -66,14 +66,14 @@ export class UserModifyComponent extends ErrorAware {
 
     onClick() {
         this.clearError();
-        if ( this.user.password !== this.confirmPassword ) {
-            this.errorMessages.push( 'Passwörter stimmen nicht überein!' );
+        if (this.user.password !== this.confirmPassword) {
+            this.errorMessages.push('Passwörter stimmen nicht überein!');
             return;
         }
-        this.user.role = UserRole[this.user_role];
-        this.user.status = ActivationStatus[this.user_status];
+        this.user.role = UserRole[this.userRole];
+        this.user.status = ActivationStatus[this.userStatus];
 
-        this.userService.updateUser( this.user ).subscribe(
+        this.userService.updateUser(this.user).subscribe(
             data => {
                 this.user = data;
                 this.cancel();

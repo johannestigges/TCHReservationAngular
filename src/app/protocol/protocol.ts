@@ -9,7 +9,7 @@ export class Protocol {
     public actionType: string,
     public value: string,
     public oldValue: string,
-    public user:User
-) {
+    public user: User
+  ) {
   }
 }

@@ -6,8 +6,8 @@ export class User {
     public id: number,
     public name: string,
     public role: UserRole,
-    public email = "",
-    public password = "",
+    public email = '',
+    public password = '',
     public status: ActivationStatus = ActivationStatus.CREATED) {
   }
 
@@ -15,8 +15,8 @@ export class User {
    * check, if user has one of the given roles
    */
   hasRole(...roles) {
-    for (var i = 0; i < roles.length; i++) {
-      if (roles[i] == this.role) {
+    for (let i = 0; i < roles.length; i++) {
+      if (roles[i] === this.role) {
         return true;
       }
     }
@@ -24,6 +24,6 @@ export class User {
   }
 
   is(user: User) {
-    return "" + this.id == "" + user.id;
+    return '' + this.id === '' + user.id;
   }
 }

@@ -6,7 +6,7 @@ import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 
 const URL = environment.restURL;
-const PROTOCOL_URL = URL + "/protocol/";
+const PROTOCOL_URL = URL + '/protocol/';
 
 @Injectable()
 export class ProtocolService {

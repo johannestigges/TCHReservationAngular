@@ -1,28 +1,22 @@
 import { TableCell } from './table-cell';
 
 /**
- *generic table data
+ * generic table data
  */
 export class TableData {
 
-  private table_rows = 0;
-  private table_columns = 0;
+  private tableRows = 0;
+  private tableColumns = 0;
   table: TableCell[][] = [];
 
   /**
    * set the data for one cell
-   *
-   * @param row
-   * @param column
-   * @param data
-   * @param rowspan
-   * @param colspan
    */
   setCell(row: number, column: number, rowspan: number = 1, colspan: number = 1) {
-    while (row >= this.table_rows) {
+    while (row >= this.tableRows) {
       this.newRow();
     }
-    while (column >= this.table_columns) {
+    while (column >= this.tableColumns) {
       this.newColumn();
     }
     this.setRowspan(row, column, rowspan, colspan);
@@ -34,24 +28,24 @@ export class TableData {
   }
 
   clearAll() {
-    this.table_rows = 0;
-    this.table_columns = 0;
+    this.tableRows = 0;
+    this.tableColumns = 0;
     this.table = [];
   }
 
   private newRow() {
-    this.table[this.table_rows] = [];
-    for (let column = 0; column < this.table_columns; column++) {
-      this.table[this.table_rows][column] = new TableCell();
+    this.table[this.tableRows] = [];
+    for (let column = 0; column < this.tableColumns; column++) {
+      this.table[this.tableRows][column] = new TableCell();
     }
-    this.table_rows++;
+    this.tableRows++;
   }
 
   private newColumn() {
-    for (let row = 0; row < this.table_rows; row++) {
-      this.table[row][this.table_columns] = new TableCell();
+    for (let row = 0; row < this.tableRows; row++) {
+      this.table[row][this.tableColumns] = new TableCell();
     }
-    this.table_columns++;
+    this.tableColumns++;
   }
 
   private setRowspan(row: number, column: number, rowspan: number, colspan: number) {

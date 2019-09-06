@@ -28,16 +28,16 @@ export class LoginComponent {
     this.error = '';
     this.userService.login(this.userid, this.password).subscribe(
       data => {
-        this.cancel();;
+        this.cancel();
       },
       error => {
-        const url = error['url'];
+        const url = error.urls;
         console.log(error);
-        console.log("url: " + url);
-        if (url.search('http') >= 0 && url.search('login?error') == -1) {
+        console.log('url: ' + url);
+        if (url.search('http') >= 0 && url.search('login?error') === -1) {
           this.cancel();
         } else {
-          this.setError("ungültige Anmeldung!");
+          this.setError('ungültige Anmeldung!');
         }
       },
       () => {

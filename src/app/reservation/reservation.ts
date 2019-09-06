@@ -3,7 +3,7 @@ import { User } from './../user/user';
 
 export class Reservation {
 
-  public id:number;
+  public id: number;
 
   constructor(
     public systemConfigId: number, //
@@ -14,8 +14,8 @@ export class Reservation {
     public duration: number, //
     public courts: string, //
     public type: ReservationType, //
-    public weeklyRepeatUntil? : number) {
-    this.id = Math.floor(Math.random() * 100000000 );
+    public weeklyRepeatUntil?: number) {
+    this.id = Math.floor(Math.random() * 100000000);
   }
 
   setCourts(...courts: number[]) {
@@ -27,8 +27,8 @@ export class Reservation {
   }
 
   getCourts(): number[] {
-    return this.courts.split(" ").map(function(court) {
-      return parseInt(court);
+    return this.courts.split(' ').map(function (court) {
+      return parseInt(court, 10);
     });
   }
 }

@@ -19,7 +19,7 @@ import { DateUtil } from '../../date/date-util';
   templateUrl: './reservation-add.component.html',
   styleUrls: ['./reservation-add.component.css']
 })
-export class ReservationAddComponent extends ErrorAware {
+export class ReservationAddComponent extends ErrorAware implements OnInit {
 
   systemConfig: ReservationSystemConfig;
   user: User;
@@ -39,21 +39,21 @@ export class ReservationAddComponent extends ErrorAware {
 
   constructor(private route: ActivatedRoute, private router: Router, private location: Location,
     private service: ReservationService, private userService: UserService) {
-      super();
+    super();
   }
 
   ngOnInit() {
-    this.systemConfig = this.service.getSystemConfig(this.route.snapshot.params['system']);
+    this.systemConfig = this.service.getSystemConfig(this.route.snapshot.params.system);
     this.showType = false;
     this.showText = false;
     this.showDuration = false;
     this.showRepeat = false;
     this.focus = 'date';
 
-    this.user = new User(0,"",UserRole.ANONYMOUS);
+    this.user = new User(0, '', UserRole.ANONYMOUS);
     this.userService.getLoggedInUser().subscribe(
       data => {
-        this.user = new User(data.id, data.name, UserRole["" + data.role]);
+        this.user = new User(data.id, data.name, UserRole['' + data.role]);
         this.reservation.user = this.user;
 
         // decide which parts of the layout are visible
@@ -62,21 +62,21 @@ export class ReservationAddComponent extends ErrorAware {
         this.showText = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER, UserRole.KIOSK);
         this.showDuration = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
         this.showRepeat = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
-        if (this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER)) this.focus = "date";
-        if (this.user.hasRole(UserRole.TRAINER)) this.focus = "duration";
-        if (this.user.hasRole(UserRole.REGISTERED)) this.focus = "duration";
-        if (this.user.hasRole(UserRole.KIOSK)) this.focus = "text";
-        
+        if (this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER)) { this.focus = 'date'; }
+        if (this.user.hasRole(UserRole.TRAINER)) { this.focus = 'duration'; }
+        if (this.user.hasRole(UserRole.REGISTERED)) { this.focus = 'duration'; }
+        if (this.user.hasRole(UserRole.KIOSK)) { this.focus = 'text'; }
+
         if (this.user.hasRole(UserRole.TRAINER)) {
-            this.type = ReservationType[ReservationType.Training];
-            this.reservation.text = this.user.name;
+          this.type = ReservationType[ReservationType.Training];
+          this.reservation.text = this.user.name;
         }
       },
       err => {
         this.httpError = err;
       },
       () => {
-//        console.log ("finished get user");
+        //        console.log ("finished get user");
       }
     );
 
@@ -85,7 +85,7 @@ export class ReservationAddComponent extends ErrorAware {
       .filter(value => typeof value === 'string');
 
     // set default values
-    const start = parseInt(this.route.snapshot.params['date']);
+    const start = parseInt(this.route.snapshot.params.date, 10);
 
     this.reservation = new Reservation(
       this.systemConfig.id,
@@ -94,7 +94,7 @@ export class ReservationAddComponent extends ErrorAware {
       DateUtil.getDatePart(start),            // reservation Date
       DateUtil.getTimePart(start),            // reservation start
       2,                                      // duration default
-      this.route.snapshot.params['court'],    // court
+      this.route.snapshot.params.court,    // court
       ReservationType.Quickbuchung,           // default type
     );
 
@@ -115,7 +115,7 @@ export class ReservationAddComponent extends ErrorAware {
   }
 
   getTimes() {
-    let times = [];
+    const times = [];
     for (let hour = this.systemConfig.openingHour; hour < this.systemConfig.closingHour; hour++) {
       for (let minute = 0; minute < 60; minute += this.systemConfig.durationUnitInMinutes) {
         times.push((hour * 60 + minute) * DateUtil.MINUTE);
@@ -144,6 +144,6 @@ export class ReservationAddComponent extends ErrorAware {
   }
 
   onBack() {
-    this.router.navigate(["/table", this.systemConfig.id, this.reservation.date]);
+    this.router.navigate(['/table', this.systemConfig.id, this.reservation.date]);
   }
 }

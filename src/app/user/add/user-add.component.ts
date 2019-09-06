@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
@@ -14,31 +14,31 @@ import { ErrorAware } from '../../error/error-aware';
   templateUrl: './user-add.component.html',
   styleUrls: ['./user-add.component.css']
 })
-export class UserAddComponent extends ErrorAware {
+export class UserAddComponent extends ErrorAware implements OnInit {
 
-  role_values: string[];
-  status_values: string[];
-  user_role: string;
-  user_status: string;
+  roleValues: string[];
+  statusValues: string[];
+  userRole: string;
+  userStatus: string;
   user: User;
   confirmPassword: string;
 
   constructor(private route: ActivatedRoute, private router: Router, private location: Location,
     private userService: UserService) {
-      super();
+    super();
   }
 
   ngOnInit() {
-    this.role_values = Object.keys(UserRole).map(key => UserRole[key])
+    this.roleValues = Object.keys(UserRole).map(key => UserRole[key])
       .filter(value => typeof value === 'string');
-    this.status_values = Object.keys(ActivationStatus).map(key => ActivationStatus[key])
+    this.statusValues = Object.keys(ActivationStatus).map(key => ActivationStatus[key])
       .filter(value => typeof value === 'string');
 
     // initialize user with defaults
-    this.user = new User(0,"",UserRole.REGISTERED,"","",ActivationStatus.CREATED);
+    this.user = new User(0, '', UserRole.REGISTERED, '', '', ActivationStatus.CREATED);
     this.confirmPassword = this.user.password;
-    this.user_role = UserRole[UserRole.REGISTERED];
-    this.user_status = ActivationStatus[ActivationStatus.CREATED];
+    this.userRole = UserRole[UserRole.REGISTERED];
+    this.userStatus = ActivationStatus[ActivationStatus.CREATED];
   }
 
 
@@ -48,8 +48,8 @@ export class UserAddComponent extends ErrorAware {
       this.errorMessages.push('"Passwörter stimmen nicht überein!');
       return;
     }
-    this.user.role = UserRole[this.user_role];
-    this.user.status = ActivationStatus[this.user_status];
+    this.user.role = UserRole[this.userRole];
+    this.user.status = ActivationStatus[this.userStatus];
 
     this.userService.addUser(this.user).subscribe(
       data => {

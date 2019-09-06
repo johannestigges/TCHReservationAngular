@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { ReservationService } from '../reservation.service';
@@ -19,7 +19,7 @@ import { Observable, timer, Subscription } from 'rxjs';
   templateUrl: './occupation-table.component.html',
   styleUrls: ['./occupation-table.component.css']
 })
-export class OccupationTableComponent extends ErrorAware {
+export class OccupationTableComponent extends ErrorAware implements OnInit, OnDestroy {
 
   occupationTable: OccupationTable;
   systemConfig: ReservationSystemConfig;
@@ -42,7 +42,7 @@ export class OccupationTableComponent extends ErrorAware {
 
     // set date
     if (this.route.snapshot.params.date) {
-      this.occupationTable.setDate(parseInt(this.route.snapshot.params.date));
+      this.occupationTable.setDate(parseInt(this.route.snapshot.params.date, 10));
     }
 
     // get logged in user
@@ -101,7 +101,7 @@ export class OccupationTableComponent extends ErrorAware {
     }
 
     // can only modify my ccupations
-    return '' + occupation.reservation.user.id == '' + this.occupationTable.user.id;
+    return '' + occupation.reservation.user.id === '' + this.occupationTable.user.id;
   }
 
   canAdd(date: number): boolean {

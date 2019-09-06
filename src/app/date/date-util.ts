@@ -10,7 +10,7 @@ export class DateUtil {
   static HOUR = DateUtil.MINUTE * 60;
   static DAY = DateUtil.HOUR * 24;
 
-  static getTimePart(date:number):number {
+  static getTimePart(date: number): number {
     const d1 = DateUtil.toDate(date);
     const d2 = DateUtil.toDate(0);
     d2.setDate(d1.getDate());
@@ -19,35 +19,35 @@ export class DateUtil {
     return d1.getTime() - d2.getTime();
   }
 
-  static getDatePart(date:number):number {
+  static getDatePart(date: number): number {
     const d = DateUtil.toDate(date);
-    d.setHours(0,0,0);
+    d.setHours(0, 0, 0);
     d.setMilliseconds(0);
     return d.getTime();
   }
 
-  static getHourPart(date:number): number {
-//    console.log('get hour part ' + DateUtil.toDate(date).toLocaleString() + "  "
-//      +date % DateUtil.DAY / DateUtil.HOUR);
+  static getHourPart(date: number): number {
+    //    console.log('get hour part ' + DateUtil.toDate(date).toLocaleString() + "  "
+    //      +date % DateUtil.DAY / DateUtil.HOUR);
     return DateUtil.toDate(date).getHours();
   }
 
-  static getDayMinutesPart(date:number): number {
+  static getDayMinutesPart(date: number): number {
     const d = DateUtil.toDate(date);
-//    console.log("get day minutes " + date + " " + DateUtil.toDate(date).toLocaleString()
-//      + " " + DateUtil.getTimePart(date) / DateUtil.MINUTE);
+    //    console.log("get day minutes " + date + " " + DateUtil.toDate(date).toLocaleString()
+    //      + " " + DateUtil.getTimePart(date) / DateUtil.MINUTE);
     return d.getHours() * 60 + d.getMinutes();
   }
 
-  static toDate(date:number):Date{
-    let d = new Date();
+  static toDate(date: number): Date {
+    const d = new Date();
     d.setTime(date);
     return d;
   }
 
-  static ofDateAndTime(date:number, time:number): Date {
-    let d1 = DateUtil.toDate(date);
-    let d2 = DateUtil.toDate(time);
+  static ofDateAndTime(date: number, time: number): Date {
+    const d1 = DateUtil.toDate(date);
+    const d2 = DateUtil.toDate(time);
     d1.setHours(d2.getHours(), d2.getMinutes(), d2.getSeconds());
     return d1;
   }
