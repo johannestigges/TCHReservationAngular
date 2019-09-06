@@ -1,12 +1,12 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 
-@Component( {
+@Component({
     selector: 'app-show-error',
     templateUrl: './show-error.component.html',
     styleUrls: ['./show-error.component.css']
-} )
-export class ShowErrorComponent implements OnInit {
+})
+export class ShowErrorComponent implements OnInit, OnChanges {
 
     @Input() httpError: HttpErrorResponse;
     @Input() errorMessages: string[];
@@ -19,15 +19,15 @@ export class ShowErrorComponent implements OnInit {
     }
 
     private analyzeHttpError() {
-        if ( this.httpError ) {
-            if ( this.httpError.error ) {
-                this.errorMessages.push( this.httpError.error.message );
-                if ( this.httpError.error.fieldErrors ) {
-                    this.httpError.error.fieldErrors.forEach(( fe ) => { 
-                        this.errorMessages.push( 'Fehler im Feld ' + fe.field + ': ' + fe.message ) 
-                        } );
+        if (this.httpError) {
+            if (this.httpError.error) {
+                this.errorMessages.push(this.httpError.error.message);
+                if (this.httpError.error.fieldErrors) {
+                    this.httpError.error.fieldErrors.forEach((fe) => {
+                        this.errorMessages.push('Fehler im Feld ' + fe.field + ': ' + fe.message);
+                    });
                 }
-            } else if ( this.httpError.message ) {
+            } else if (this.httpError.message) {
                 this.errorMessages.push(this.httpError.message);
             }
         }

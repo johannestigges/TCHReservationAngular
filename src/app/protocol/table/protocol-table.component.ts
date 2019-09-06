@@ -1,9 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 
 import { ProtocolService } from '../protocol.service';
 import { Protocol } from '../protocol';
-import { User } from '../../user/user';
 import { ErrorAware } from '../../error/error-aware';
 
 @Component({
@@ -11,7 +10,7 @@ import { ErrorAware } from '../../error/error-aware';
     templateUrl: './protocol-table.component.html',
     styleUrls: ['./protocol-table.component.css']
 })
-export class ProtocolTableComponent extends ErrorAware {
+export class ProtocolTableComponent extends ErrorAware implements OnInit {
 
     protocols: Protocol[];
 

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 
 import { UserService } from '../../user/user.service';
@@ -10,12 +10,12 @@ import { ErrorAware } from '../../error/error-aware';
   templateUrl: './user-table.component.html',
   styleUrls: ['./user-table.component.css']
 })
-export class UserTableComponent extends ErrorAware {
+export class UserTableComponent extends ErrorAware implements OnInit {
 
   users: User[];
 
   constructor(private userService: UserService, private location: Location) {
-      super();
+    super();
   }
 
   ngOnInit() {
@@ -29,8 +29,8 @@ export class UserTableComponent extends ErrorAware {
       () => { }
     );
   }
-  
+
   cancel() {
-      this.location.back();
+    this.location.back();
   }
 }
