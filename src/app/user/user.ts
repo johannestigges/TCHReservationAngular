@@ -2,7 +2,7 @@ import { UserRole } from './user-role.enum';
 import { ActivationStatus } from './activation-status.enum';
 
 export class User {
-  constructor(
+  constructor (
     public id: number,
     public name: string,
     public role: UserRole,
@@ -14,16 +14,16 @@ export class User {
   /**
    * check, if user has one of the given roles
    */
-  hasRole(...roles) {
-    for (let i = 0; i < roles.length; i++) {
-      if (roles[i] === this.role) {
+  hasRole (...roles: UserRole[]) {
+    for (var r of roles) {
+      if (r === this.role) {
         return true;
       }
     }
     return false;
   }
 
-  is(user: User) {
-    return '' + this.id === '' + user.id;
+  is (user: User) {
+    return this.id === user.id;
   }
 }
