@@ -16,7 +16,10 @@ export class LoginComponent {
   password: string;
   error: string;
 
-  constructor(private route: ActivatedRoute, private router: Router, private location: Location,
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private location: Location,
     private userService: UserService) { }
 
   setError(error: any) {

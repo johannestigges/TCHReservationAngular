@@ -27,7 +27,8 @@ export class OccupationTableComponent extends ErrorAware implements OnInit, OnDe
   private timer: Observable<number>;
   private timerSubscription: Subscription;
 
-  constructor(private reservationService: ReservationService,
+  constructor(
+    private reservationService: ReservationService,
     private userService: UserService,
     private route: ActivatedRoute) {
     super();

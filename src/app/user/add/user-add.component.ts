@@ -23,7 +23,10 @@ export class UserAddComponent extends ErrorAware implements OnInit {
   user: User;
   confirmPassword: string;
 
-  constructor(private route: ActivatedRoute, private router: Router, private location: Location,
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private location: Location,
     private userService: UserService) {
     super();
   }

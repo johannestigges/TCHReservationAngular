@@ -37,8 +37,12 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
   showRepeat: boolean;
   focus: string;
 
-  constructor(private route: ActivatedRoute, private router: Router, private location: Location,
-    private service: ReservationService, private userService: UserService) {
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private location: Location,
+    private service: ReservationService,
+    private userService: UserService) {
     super();
   }
 

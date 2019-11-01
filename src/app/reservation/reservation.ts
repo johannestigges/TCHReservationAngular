@@ -27,7 +27,7 @@ export class Reservation {
   }
 
   getCourts(): number[] {
-    return this.courts.split(' ').map(function (court) {
+    return this.courts.split(' ').map((court) => {
       return parseInt(court, 10);
     });
   }
