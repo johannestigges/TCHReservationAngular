@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
@@ -19,7 +19,7 @@ import { DateUtil } from '../../date/date-util';
     templateUrl: './reservation-modify.component.html',
     styleUrls: ['./reservation-modify.component.css']
 })
-export class ReservationModifyComponent extends ErrorAware implements OnInit {
+export class ReservationModifyComponent extends ErrorAware implements OnInit, OnDestroy {
 
     systemConfig: ReservationSystemConfig;
     user: User;
@@ -38,8 +38,11 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit {
     focus: string;
 
 
-    constructor(private route: ActivatedRoute, private router: Router, private location: Location,
-        private service: ReservationService, private userService: UserService) {
+    constructor(
+        private route: ActivatedRoute,
+        private router: Router,
+        private service: ReservationService,
+        private userService: UserService) {
         super();
     }
 
@@ -52,56 +55,61 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit {
         this.focus = 'date';
 
         const reservationId: number = this.route.snapshot.params.reservation;
-        this.service.getReservation(reservationId).subscribe(
-            data => {
-                this.reservation = data;
-                this.time = this.reservation.start;
-                this.type = ReservationType[this.reservation.type];
-
-            },
-            err => {
-                this.httpError = err;
-            },
-            () => {
-                //        console.log ('finished get reservation ' + reservationId);
-            }
-
-        );
 
         // create option list of occupation types
         this.types = Object.keys(ReservationType).map(key => ReservationType[key])
             .filter(value => typeof value === 'string');
 
-        this.user = new User(0, '', UserRole.ANONYMOUS);
-        this.userService.getLoggedInUser().subscribe(
+        this.service.getReservation(reservationId).subscribe(
             data => {
-                this.user = new User(data.id, data.name, UserRole['' + data.role]);
-                this.reservation.user = this.user;
-
-                // decide which parts of the layout are visible
-                // this depends on the user role
-                this.showType = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
-                this.showText = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER, UserRole.KIOSK);
-                this.showDuration = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
-                this.showRepeat = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
-                if (this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER)) { this.focus = 'date'; }
-                if (this.user.hasRole(UserRole.TRAINER)) { this.focus = 'duration'; }
-                if (this.user.hasRole(UserRole.REGISTERED)) { this.focus = 'duration'; }
-                if (this.user.hasRole(UserRole.KIOSK)) { this.focus = 'text'; }
-
-                if (this.user.hasRole(UserRole.TRAINER)) {
-                    this.type = ReservationType[ReservationType.Training];
-                    this.reservation.text = this.user.name;
-                }
+                this.reservation = data;
+                this.time = this.reservation.start;
+                this.type = ReservationType[this.reservation.type];
+                this.update();
             },
             err => {
                 this.httpError = err;
-            },
-            () => {
-                //            console.log ("finished get user");
             }
         );
 
+        this.userService.getLoggedInUser().subscribe(
+            data => {
+                this.user = new User(data.id, data.name, UserRole['' + data.role]);
+                this.update();
+            },
+            err => {
+                this.httpError = err;
+            }
+        );
+
+    }
+    ngOnDestroy(): void {
+        this.reservation = undefined;
+        this.user = undefined;
+        this.clearError();
+    }
+
+    private update() {
+        if (!this.reservation || !this.user) {
+            return;
+        }
+        this.reservation.user = this.user;
+
+        // decide which parts of the layout are visible
+        // this depends on the user role
+        this.showType = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
+        this.showText = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER, UserRole.KIOSK);
+        this.showDuration = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
+        this.showRepeat = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
+        if (this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER)) { this.focus = 'date'; }
+        if (this.user.hasRole(UserRole.TRAINER)) { this.focus = 'duration'; }
+        if (this.user.hasRole(UserRole.REGISTERED)) { this.focus = 'duration'; }
+        if (this.user.hasRole(UserRole.KIOSK)) { this.focus = 'text'; }
+
+        if (this.user.hasRole(UserRole.TRAINER)) {
+            this.type = ReservationType[ReservationType.Training];
+            this.reservation.text = this.user.name;
+        }
     }
 
     getDate() {
