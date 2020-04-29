@@ -16,6 +16,7 @@ const BASE_TIMER_DELAY = 10;
 
 @Directive({
     selector: '[tchAutofocus], [tchAppAutofocus]',
+    // tslint:disable-next-line: no-inputs-metadata-property
     inputs: [
         'shouldFocusElement: tchAppAutofocus',
         'timerDelay: autofocusDelay'
