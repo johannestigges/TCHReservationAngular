@@ -68,25 +68,27 @@
 		</div>
 
 		<!-- simple duration as select list -->
-		<div *ngIf='!showDuration' class="form-group">
-			<label class="col-sm-2 control-label">Dauer:</label>
-			<div class="row col-sm-10">
-				<div class="col-sm-12 radio">
-					<label>
-						<input type="radio" name="duration" (change)="onDurationChanged(2)" checked
+		<!-- not used at the moment due to corona virus
+			<div *ngIf='!showDuration' class="form-group">
+				<label class="col-sm-2 control-label">Dauer:</label>
+				<div class="row col-sm-10">
+					<div class="col-sm-12 radio">
+						<label>
+							<input type="radio" name="duration" (change)="onDurationChanged(2)" checked
 							[tchAppAutofocus]='( focus === "duration" )'>
-						Einzel (60 Minuten)
-					</label>
-				</div>
-				<div class="col-sm-12 radio">
-					<label>
-						<input type="radio" name="duration" (change)="onDurationChanged(3)">
-						Doppel (90 Minuten)
-					</label>
+							Einzel (60 Minuten)
+						</label>
+					</div>
+					<div class="col-sm-12 radio">
+						<label>
+							<input type="radio" name="duration" (change)="onDurationChanged(3)">
+							Doppel (90 Minuten)
+						</label>
+					</div>
 				</div>
 			</div>
-		</div>
-
+		-->
+			
 		<!-- duration repeat -->
 		<!--  not working yet
 		<div *ngIf='showRepeat' class="form-group">

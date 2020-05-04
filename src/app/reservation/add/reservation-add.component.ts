@@ -13,6 +13,7 @@ import { UserService } from '../../user/user.service';
 import { User } from '../../user/user';
 import { UserRole } from '../../user/user-role.enum';
 import { DateUtil } from '../../date/date-util';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'tch-reservation-add',
@@ -40,9 +41,9 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private location: Location,
     private service: ReservationService,
-    private userService: UserService) {
+    private userService: UserService,
+    private cookieService: CookieService) {
     super();
   }
 
@@ -63,13 +64,13 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
         // decide which parts of the layout are visible
         // this depends on the user role
         this.showType = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
-        this.showText = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER, UserRole.KIOSK);
+        this.showText = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER, UserRole.KIOSK, UserRole.TECHNICAL);
         this.showDuration = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
         this.showRepeat = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
         if (this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER)) { this.focus = 'date'; }
         if (this.user.hasRole(UserRole.TRAINER)) { this.focus = 'duration'; }
         if (this.user.hasRole(UserRole.REGISTERED)) { this.focus = 'duration'; }
-        if (this.user.hasRole(UserRole.KIOSK)) { this.focus = 'text'; }
+        if (this.user.hasRole(UserRole.KIOSK, UserRole.TECHNICAL)) { this.focus = 'text'; }
 
         if (this.user.hasRole(UserRole.TRAINER)) {
           this.type = ReservationType[ReservationType.Training];
@@ -79,9 +80,6 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
       err => {
         this.httpError = err;
       },
-      () => {
-        //        console.log ("finished get user");
-      }
     );
 
     // create option list of occupation types
@@ -101,7 +99,9 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
       this.route.snapshot.params.court,    // court
       ReservationType.Quickbuchung,           // default type
     );
-
+    if (this.cookieService.check('reservationtext')) {
+      this.reservation.text = this.cookieService.get('reservationtext');
+    }
     this.time = this.reservation.start;
     this.type = ReservationType[this.reservation.type];
   }
@@ -134,6 +134,7 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
     this.clearError();
     this.reservation.type = ReservationType[this.type];
     this.reservation.start = this.time;
+    this.cookieService.set('reservationtext', this.reservation.text, 30);
     this.service.addReservation(this.reservation)
       .subscribe(
         data => {

@@ -75,16 +75,18 @@
   <!-- show menu -->
   <div class="col-md-12">
     <span *ngIf="!isLoggedIn()">
-      <a href='../../login'>login</a>
+      <a class="menu_link" href='../../login'>login</a>
     </span>
     <span *ngIf="isLoggedIn()">
-      <span *ngIf="!isKiosk()">
-        <a href='../../logout'>logout</a>
-        <a href='../user/modify/{{occupationTable.user.id}}'>Kennwort ändern</a>
+      <span *ngIf="canLogout()">
+        <a class="menu_link" href='../../logout'>logout</a>
+      </span>
+      <span *ngIf="canChangePassword()">
+        <a class="menu_link" href='../user/modify/{{occupationTable.user.id}}'>Kennwort ändern</a>
       </span>
       <span *ngIf="isAdmin()">
-        <a href='../user'>Benutzerverwaltung</a>
-        <a href='../protocol'>Historie</a>
+        <a class="menu_link" href='../user'>Benutzerverwaltung</a>
+        <a class="menu_link" href='../protocol'>Historie</a>
       </span>
       {{occupationTable.user.name}}
     </span>

@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -44,11 +45,17 @@ import { CorsInterceptor } from './cors-interceptor';
         FormsModule,
         HttpClientModule
     ],
-    providers: [ReservationService, UserService, ProtocolService, {
+    providers: [
+        ReservationService,
+        UserService,
+        ProtocolService,
+        CookieService,
+        {
         provide: HTTP_INTERCEPTORS,
         useClass: CorsInterceptor,
         multi: true
-    }],
+    }
+],
     bootstrap: [AppComponent]
 })
 export class AppModule { }
