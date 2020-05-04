@@ -81,8 +81,12 @@ export class OccupationTableComponent extends ErrorAware implements OnInit, OnDe
     return !this.occupationTable.user.hasRole(UserRole.ANONYMOUS);
   }
 
-  isKiosk() {
-    return this.occupationTable.user.hasRole(UserRole.KIOSK);
+  canChangePassword() {
+    return this.isLoggedIn() && !this.occupationTable.user.hasRole(UserRole.KIOSK, UserRole.TECHNICAL);
+  }
+
+  canLogout() {
+    return this.isLoggedIn() && !this.occupationTable.user.hasRole(UserRole.KIOSK);
   }
 
   isAdmin() {
@@ -90,6 +94,10 @@ export class OccupationTableComponent extends ErrorAware implements OnInit, OnDe
   }
 
   canModify(occupation: Occupation): boolean {
+
+    if (!this.isLoggedIn()) {
+      return false;
+    }
 
     // admin and trainer can modify everything
     if (this.occupationTable.user.hasRole(UserRole.ADMIN, UserRole.TRAINER)) {
@@ -102,10 +110,14 @@ export class OccupationTableComponent extends ErrorAware implements OnInit, OnDe
     }
 
     // can only modify my ccupations
-    return '' + occupation.reservation.user.id === '' + this.occupationTable.user.id;
+    return occupation.reservation.user.id === this.occupationTable.user.id;
   }
 
   canAdd(date: number): boolean {
+
+    if (!this.isLoggedIn()) {
+      return false;
+    }
 
     // admin and trainer can add everything
     if (this.occupationTable.user.hasRole(UserRole.ADMIN, UserRole.TRAINER)) {
@@ -117,8 +129,8 @@ export class OccupationTableComponent extends ErrorAware implements OnInit, OnDe
       return false;
     }
 
-    // only for the next 1 hours
-    return (date - this.lastUpdated < 1 * DateUtil.HOUR);
+    // only for tis and the next day
+    return (date - this.lastUpdated < 1 * DateUtil.DAY);
   }
 
   /**
@@ -129,7 +141,6 @@ export class OccupationTableComponent extends ErrorAware implements OnInit, OnDe
     this.reservationService.getOccupations(this.systemConfig.id, date)
       .subscribe(
         data => {
-          console.log('got occupations', data);
           this.lastUpdated = new Date().getTime();
           this.occupationTable.setDate(date);
           this.show(data);
@@ -137,9 +148,6 @@ export class OccupationTableComponent extends ErrorAware implements OnInit, OnDe
         err => {
           this.httpError = err;
         },
-        () => {
-          //          console.log("finished update reservations for " + date);
-        }
       );
   }
 

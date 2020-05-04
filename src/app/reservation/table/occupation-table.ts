@@ -2,7 +2,6 @@ import { DateUtil } from '../../date/date-util';
 import { TableData } from '../../table/table-data';
 
 import { Occupation } from '../occupation';
-import { ReservationType } from '../reservationtype';
 import { AvailableEntry } from './available-entry';
 import { User } from '../../user/user';
 import { UserRole } from '../../user/user-role.enum';
@@ -41,7 +40,6 @@ export class OccupationTable extends TableData {
         const column = occupation.court;
         const rowspan = occupation.duration;
         const colspan = occupation.lastCourt - occupation.court + 1;
-        //    console.log('add occupation (' + row + ',' + column + ') span (' + rowspan + ',' + colspan + ')');
         this.setCell(row, column, rowspan, colspan);
         this.setData(row, column, occupation);
     }
@@ -56,7 +54,7 @@ export class OccupationTable extends TableData {
             this.setData(row, 0, { time: this.showTime(row), short_time: this.showShortTime(row) });
             // court
             for (let column = 0; column < this.systemConfig.courts; column++) {
-                if (this.canMakeReservation(row)) {
+                if (this.canMakeReservation()) {
                     this.setCell(row, column + 1);
                     this.setData(row, column + 1,
                         new AvailableEntry(this.date + this.systemConfig.toMinutes(row) * DateUtil.MINUTE,
@@ -70,15 +68,14 @@ export class OccupationTable extends TableData {
         }
     }
 
-    canMakeReservation(row) {
+    canMakeReservation() {
         if (!this.user || this.user.hasRole(UserRole.ANONYMOUS)) {
             return false;
         }
         if (this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER)) {
             return true;
-
         }
-        if (this.user.hasRole(UserRole.KIOSK, UserRole.REGISTERED)) {
+        if (this.user.hasRole(UserRole.KIOSK, UserRole.REGISTERED, UserRole.TECHNICAL)) {
             return true;
         }
         return false;

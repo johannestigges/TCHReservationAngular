@@ -27,6 +27,10 @@ table.occupation_table a {
 	text-decoration: none;
 }
 
+.menu_link {
+	padding-right: 0.2em;
+}
+
 .available {
 	background-color: #eee;
 }

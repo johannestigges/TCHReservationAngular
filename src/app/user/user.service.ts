@@ -12,14 +12,14 @@ const LOGIN_URL = '/login';
 @Injectable()
 export class UserService {
 
-  constructor (private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient) {
   }
 
-  getLoggedInUser (): Observable<User> {
+  getLoggedInUser(): Observable<User> {
     return this.httpClient.get<User>(USER_URL + 'me');
   }
 
-  login (user, password): Observable<any> {
+  login(user, password): Observable<any> {
     // const headers = new HttpHeaders().set('authorization', 'Basic ' + btoa(user + ':' + password));
     // return this.httpClient.get('/user', {headers});
 
@@ -31,20 +31,20 @@ export class UserService {
     return this.httpClient.post<User>(LOGIN_URL, params);
   }
 
-  getAll (): Observable<User[]> {
+  getAll(): Observable<User[]> {
     return this.httpClient.get<User[]>(USER_URL + 'all');
   }
 
 
-  getUser (id: number): Observable<User> {
+  getUser(id: number): Observable<User> {
     return this.httpClient.get<User>(USER_URL + id);
   }
 
-  addUser (user: User): Observable<User> {
+  addUser(user: User): Observable<User> {
     return this.httpClient.post<User>(USER_URL, user);
   }
 
-  updateUser (user: User): Observable<User> {
+  updateUser(user: User): Observable<User> {
     return this.httpClient.put<User>(USER_URL, user);
   }
 }
