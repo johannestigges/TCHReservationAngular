@@ -29,6 +29,8 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
   repeat: number;
   time: number;
   type: string;
+  spieler2: string;
+  spieler1: string;
 
   types: string[];
 
@@ -99,8 +101,11 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
       this.route.snapshot.params.court,    // court
       ReservationType.Quickbuchung,           // default type
     );
-    if (this.cookieService.check('reservationtext')) {
-      this.reservation.text = this.cookieService.get('reservationtext');
+    if (this.cookieService.check('spieler1')) {
+      this.spieler1 = this.cookieService.get('spieler1');
+    }
+    if (this.cookieService.check('spieler2')) {
+      this.spieler2 = this.cookieService.get('spieler2');
     }
     this.time = this.reservation.start;
     this.type = ReservationType[this.reservation.type];
@@ -134,7 +139,9 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
     this.clearError();
     this.reservation.type = ReservationType[this.type];
     this.reservation.start = this.time;
-    this.cookieService.set('reservationtext', this.reservation.text, 30);
+    this.cookieService.set('spieler1', this.spieler1, 30);
+    this.cookieService.set('spieler2', this.spieler2, 30);
+    this.reservation.text = this.spieler1 + ' ' + this.spieler2;
     this.service.addReservation(this.reservation)
       .subscribe(
         data => {

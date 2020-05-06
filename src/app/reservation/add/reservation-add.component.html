@@ -46,13 +46,25 @@
 
 		<!-- occupation text -->
 		<div *ngIf='showText' class="form-group">
-			<label class="col-sm-2 control-label">Text:</label>
-			<div class="col-sm-10">
-				<input type="text" class="form-control" [(ngModel)]="reservation.text" name='text' required
-					[tchAppAutofocus]='( focus === "text" )'>
-			</div>
-		</div>
+			<!-- 
 
+				<label class="col-sm-2 control-label">Text:</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" [(ngModel)]="reservation.text" name='text' required
+					[tchAppAutofocus]='( focus === "text" )'>
+				</div>
+			-->
+			<label class="col-sm-2 control-label">Spieler 1:</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" [(ngModel)]="spieler1" name='text' required
+				[tchAppAutofocus]='( focus === "text" )'>
+			</div>
+			<label class="col-sm-2 control-label">Spieler 2:</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" [(ngModel)]="spieler2" name='spieler2' required>
+			</div>
+</div>
+		
 		<!-- duration -->
 		<div *ngIf='showDuration' class="form-group">
 			<label class="col-sm-2 control-label">Dauer:</label>
