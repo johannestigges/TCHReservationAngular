@@ -32,8 +32,6 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit, On
     types: string[];
 
     showType: boolean;
-    showText: boolean;
-    showDuration: boolean;
     showRepeat: boolean;
     focus: string;
 
@@ -49,8 +47,6 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit, On
     ngOnInit() {
         this.systemConfig = this.service.getSystemConfig(this.route.snapshot.params.system);
         this.showType = false;
-        this.showText = false;
-        this.showDuration = false;
         this.showRepeat = false;
         this.focus = 'date';
 
@@ -93,23 +89,28 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit, On
         if (!this.reservation || !this.user) {
             return;
         }
-        this.reservation.user = this.user;
 
         // decide which parts of the layout are visible
         // this depends on the user role
         this.showType = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
-        this.showText = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER, UserRole.KIOSK);
-        this.showDuration = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
         this.showRepeat = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
         if (this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER)) { this.focus = 'date'; }
         if (this.user.hasRole(UserRole.TRAINER)) { this.focus = 'duration'; }
         if (this.user.hasRole(UserRole.REGISTERED)) { this.focus = 'duration'; }
         if (this.user.hasRole(UserRole.KIOSK)) { this.focus = 'text'; }
+    }
 
-        if (this.user.hasRole(UserRole.TRAINER)) {
-            this.type = ReservationType[ReservationType.Training];
-            this.reservation.text = this.user.name;
+    private canEdit(): boolean {
+        if (!this.user || !this.reservation) {
+            return false;
         }
+        if (this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER)) {
+            return true;
+        }
+        if (this.user.id === this.reservation.user.id) {
+            return true;
+        }
+        return false;
     }
 
     getDate() {

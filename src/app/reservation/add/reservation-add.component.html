@@ -46,14 +46,13 @@
 
 		<!-- occupation text -->
 		<div *ngIf='showText' class="form-group">
-			<!-- 
-
 				<label class="col-sm-2 control-label">Text:</label>
 				<div class="col-sm-10">
 					<input type="text" class="form-control" [(ngModel)]="reservation.text" name='text' required
 					[tchAppAutofocus]='( focus === "text" )'>
 				</div>
-			-->
+		</div>
+		<div *ngIf='!showText' class="form-group">
 			<label class="col-sm-2 control-label">Spieler 1:</label>
 			<div class="col-sm-10">
 				<input type="text" class="form-control" [(ngModel)]="spieler1" name='text' required
@@ -62,6 +61,16 @@
 			<label class="col-sm-2 control-label">Spieler 2:</label>
 			<div class="col-sm-10">
 				<input type="text" class="form-control" [(ngModel)]="spieler2" name='spieler2' required>
+			</div>
+			<div *ngIf="showDouble">
+				<label class="col-sm-2 control-label">Spieler 3:</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" [(ngModel)]="spieler3" name='spieler3' required>
+				</div>
+				<label class="col-sm-2 control-label">Spieler 4:</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" [(ngModel)]="spieler4" name='spieler4' required>
+				</div>
 			</div>
 </div>
 		
@@ -80,7 +89,6 @@
 		</div>
 
 		<!-- simple duration as select list -->
-		<!-- not used at the moment due to corona virus
 			<div *ngIf='!showDuration' class="form-group">
 				<label class="col-sm-2 control-label">Dauer:</label>
 				<div class="row col-sm-10">
@@ -99,7 +107,6 @@
 					</div>
 				</div>
 			</div>
-		-->
 			
 		<!-- duration repeat -->
 		<!--  not working yet
