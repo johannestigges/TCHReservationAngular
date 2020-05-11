@@ -4,7 +4,7 @@
 
 		<!-- title -->
 		<div class="form-group">
-			<h2 class="col-sm-offset-2 col-sm-10">Reservierung ändern oder Löschen</h2>
+			<h2 class="col-sm-offset-2 col-sm-10">Reservierung Löschen</h2>
 		</div>
 
 		<!-- Date and Time -->
@@ -46,7 +46,7 @@
 		</div>
 
 		<!-- occupation text -->
-		<div *ngIf='showText' class="form-group">
+		<div class="form-group">
 			<label class="col-sm-2 control-label">Text:</label>
 			<div class="col-sm-10">
 				<input type="text" class="form-control" [(ngModel)]="reservation.text" name='text' required
@@ -55,7 +55,7 @@
 		</div>
 
 		<!-- duration -->
-		<div *ngIf='showDuration' class="form-group">
+		<div class="form-group">
 			<label class="col-sm-2 control-label">Dauer:</label>
 			<div class="row col-sm-10">
 				<div class="col-sm-4">
@@ -64,26 +64,6 @@
 				</div>
 				<div class="col-sm-8">
 					mal {{systemConfig.durationUnitInMinutes}} Minuten
-				</div>
-			</div>
-		</div>
-
-		<!-- simple duration as select list -->
-		<div *ngIf='!showDuration' class="form-group">
-			<label class="col-sm-2 control-label">Dauer:</label>
-			<div class="row col-sm-10">
-				<div class="col-sm-12 radio">
-					<label>
-						<input type="radio" name="duration" (change)="onDurationChanged(2)" checked
-							[tchAppAutofocus]='( focus === "duration" )'>
-						Einzel (60 Minuten)
-					</label>
-				</div>
-				<div class="col-sm-12 radio">
-					<label>
-						<input type="radio" name="duration" (change)="onDurationChanged(3)">
-						Doppel (90 Minuten)
-					</label>
 				</div>
 			</div>
 		</div>
@@ -109,7 +89,9 @@
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
 				<button (click)='onDelete()' class="btn btn-lg btn-block btn-primary">Löschen</button>
-				<button (click)='onUpdate()' class="btn btn-lg btn-block btn-primary">Speichern</button>
+				<!-- 
+					<button (click)='onUpdate()' class="btn btn-lg btn-block btn-primary">Speichern</button>
+				-->
 				<button (click)='onBack()' class="btn btn-lg btn-block">Zurück</button>
 			</div>
 		</div>
