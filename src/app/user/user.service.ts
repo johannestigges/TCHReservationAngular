@@ -2,12 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
 import { User } from './user';
-import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
-
-const URL = environment.restURL;
-const USER_URL = URL + '/user/';
-const LOGIN_URL = '/login';
 
 @Injectable()
 export class UserService {
@@ -16,7 +11,7 @@ export class UserService {
   }
 
   getLoggedInUser(): Observable<User> {
-    return this.httpClient.get<User>(USER_URL + 'me');
+    return this.httpClient.get<User>(this.userUrl() + 'me');
   }
 
   login(user, password): Observable<any> {
@@ -28,23 +23,35 @@ export class UserService {
       .set('password', password)
       .set('submit', 'Login');
     console.log('login user ' + user);
-    return this.httpClient.post<User>(LOGIN_URL, params);
+    return this.httpClient.post<User>(this.loginUrl(), params);
   }
 
   getAll(): Observable<User[]> {
-    return this.httpClient.get<User[]>(USER_URL + 'all');
+    return this.httpClient.get<User[]>(this.userUrl() + 'all');
   }
 
-
   getUser(id: number): Observable<User> {
-    return this.httpClient.get<User>(USER_URL + id);
+    return this.httpClient.get<User>(this.userUrl() + id);
   }
 
   addUser(user: User): Observable<User> {
-    return this.httpClient.post<User>(USER_URL, user);
+    return this.httpClient.post<User>(this.userUrl(), user);
   }
 
   updateUser(user: User): Observable<User> {
-    return this.httpClient.put<User>(USER_URL, user);
+    return this.httpClient.put<User>(this.userUrl(), user);
+  }
+
+  private userUrl() {
+    return this.url() + '/user/';
+  }
+
+  private loginUrl() {
+    return this.url() + '/login';
+  }
+
+  private url() {
+    console.log(`url: ${window.location.protocol}//${window.location.host}`);
+    return `${window.location.protocol}//${window.location.host}`;
   }
 }

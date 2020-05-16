@@ -5,7 +5,4 @@
 
 export const environment = {
   production: false,
-
-  // URL of REST Services
-  restURL: 'http://localhost:8080'
 };
