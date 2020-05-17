@@ -42,28 +42,41 @@ export class OccupationTable extends TableData {
         const colspan = occupation.lastCourt - occupation.court + 1;
         this.setCell(row, column, rowspan, colspan);
         this.setData(row, column, occupation);
+        // need to add available entry?
+        const availableRow = row + rowspan;
+        for (let c = column; c < column + colspan; c++) {
+            if (availableRow < this.getRows() &&
+                (!this.getCell(availableRow, c) ||
+                    this.getCell(availableRow, c).rowspan === 0)) {
+                this.createAvailableEntry(availableRow, c, 1);
+            }
+        }
     }
 
     createEmptyTable(rowspan = 2) {
         this.clearAll();
         for (let row = 0; row < this.systemConfig.getRows(); row++) {
-            const mainRow: boolean = row % rowspan === 0;
 
             // first column: time
             this.setCell(row, 0, 1);
             this.setData(row, 0, { time: this.showTime(row), short_time: this.showShortTime(row) });
-            // court
+            // courts
             for (let column = 0; column < this.systemConfig.courts; column++) {
-                if (this.canMakeReservation()) {
-                    this.setCell(row, column + 1);
-                    this.setData(row, column + 1,
-                        new AvailableEntry(this.date + this.systemConfig.toMinutes(row) * DateUtil.MINUTE,
-                            column + 1, mainRow ? 'available' : 'available_light'));
-                } else {
-                    if (mainRow) {
-                        this.setCell(row, column + 1, rowspan);
-                    }
-                }
+                this.createAvailableEntry(row, column + 1, rowspan);
+            }
+        }
+    }
+
+    createAvailableEntry(row: number, column: number, rowspan: number) {
+        const mainRow: boolean = row % rowspan === 0;
+        if (this.canMakeReservation()) {
+            this.setCell(row, column);
+            this.setData(row, column,
+                new AvailableEntry(this.date + this.systemConfig.toMinutes(row) * DateUtil.MINUTE,
+                    column, mainRow ? 'available' : 'available_light'));
+        } else {
+            if (mainRow) {
+                this.setCell(row, column, rowspan);
             }
         }
     }

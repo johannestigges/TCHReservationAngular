@@ -24,13 +24,31 @@ export class TableData {
   }
 
   setData(row: number, column: number, data: any) {
-    this.table[row][column].data = data;
+    const cell = this.getCell(row, column);
+    if (cell != null) {
+      cell.data = data;
+    }
   }
 
   clearAll() {
     this.tableRows = 0;
     this.tableColumns = 0;
     this.table = [];
+  }
+
+  getRows() {
+    return this.tableRows;
+  }
+
+  getColums() {
+    return this.tableColumns;
+  }
+
+  getCell(row: number, column: number): TableCell | null {
+    if (row > this.getRows() || column > this.getColums()) {
+      return null;
+    }
+    return this.table[row][column];
   }
 
   private newRow() {
