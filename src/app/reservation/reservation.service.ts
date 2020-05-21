@@ -36,6 +36,10 @@ export class ReservationService {
     return this.httpClient.put<Reservation>(this.url() + 'update', reservation);
   }
 
+  terminateReservation(reservation: Reservation): Observable<Reservation> {
+    return this.httpClient.put<Reservation>(this.url() + 'terminate', reservation);
+  }
+
   deleteReservation(id: number): Observable<Reservation> {
     return this.httpClient.delete<Reservation>(this.url() + 'delete/' + id);
   }

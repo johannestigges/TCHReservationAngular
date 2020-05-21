@@ -104,8 +104,17 @@ export class OccupationTableComponent extends ErrorAware implements OnInit, OnDe
       return true;
     }
 
+    const now = new Date().getTime();
+    const start = DateUtil.ofDateAndTime(occupation.date, occupation.start).getTime();
+    const end = this.systemConfig.getOccupationEnd(occupation);
+
+    // everyone can terminate current reservation
+    if (start < now && end > now) {
+      return true;
+    }
+
     // cannot modify occupation in the past
-    if (DateUtil.ofDateAndTime(occupation.date, occupation.start).getTime() < this.lastUpdated) {
+    if (start < now) {
       return false;
     }
 
