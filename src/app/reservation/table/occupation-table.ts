@@ -58,7 +58,8 @@ export class OccupationTable extends TableData {
         }
     }
 
-    createEmptyTable(rowspan = 2) {
+    createEmptyTable() {
+        const rowspan = 60 / this.systemConfig.durationUnitInMinutes;
         this.clearAll();
         for (let row = 0; row < this.systemConfig.getRows(); row++) {
 

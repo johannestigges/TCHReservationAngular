@@ -1,4 +1,6 @@
 import { DateUtil } from '../date/date-util';
+import { Reservation } from './reservation';
+import { Occupation } from './occupation';
 
 /**
  * reservation system configuration data
@@ -52,5 +54,17 @@ export class ReservationSystemConfig {
 
   public setTime(date: Date, row: number) {
     date.setHours(0, this.toMinutes(row));
+  }
+
+  public getEnd(date: number, start: number, duration: number) {
+    return date + start + duration * this.durationUnitInMinutes * DateUtil.MINUTE;
+  }
+
+  public getReservationEnd(reservation: Reservation) {
+    return this.getEnd(reservation.date, reservation.start, reservation.duration);
+  }
+
+  public getOccupationEnd(occupation: Occupation) {
+    return this.getEnd(occupation.date, occupation.start, occupation.duration);
   }
 }

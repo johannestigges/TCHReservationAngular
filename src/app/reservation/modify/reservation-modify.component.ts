@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 
@@ -34,7 +33,6 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit, On
     showType: boolean;
     showRepeat: boolean;
     focus: string;
-
 
     constructor(
         private route: ActivatedRoute,
@@ -109,6 +107,17 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit, On
         return false;
     }
 
+    public canMakeAvailable() {
+        return this.isReservationCurrent();
+    }
+
+    public isReservationCurrent() {
+        const now = new Date().getTime();
+        const start = DateUtil.ofDateAndTime(this.reservation.date, this.reservation.start).getTime();
+        const end = this.systemConfig.getReservationEnd(this.reservation);
+        return start < now && end > now;
+    }
+
     getDate() {
         return DateUtil.toDate(this.reservation.date).toLocaleDateString();
     }
@@ -151,6 +160,35 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit, On
                 },
                 () => { this.onBack(); }
             );
+    }
+
+    onTerminate() {
+        this.clearError();
+        const now = new Date().getTime();
+        while (this.systemConfig.getReservationEnd(this.reservation) > now) {
+            this.reservation.duration--;
+        }
+        if (this.reservation.duration > 0) {
+            this.service.updateReservation(this.reservation)
+            .subscribe(
+                data => {
+                    this.onBack();
+                },
+                error => {
+                    this.httpError = error;
+                }
+            );
+        } else {
+            this.service.deleteReservation(this.reservation.id)
+            .subscribe(
+                data => {
+                    this.onBack();
+                },
+                error => {
+                    this.httpError = error;
+                }
+            );
+        }
     }
 
     onUpdate() {
