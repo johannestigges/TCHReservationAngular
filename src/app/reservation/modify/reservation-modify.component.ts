@@ -45,40 +45,39 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit, On
     }
 
     ngOnInit() {
-        this.systemConfig = this.service.getSystemConfig(this.route.snapshot.params.system);
+        const systemId = this.route.snapshot.params.system;
+        const reservationId: number = this.route.snapshot.params.reservation;
         this.showType = false;
         this.showRepeat = false;
         this.focus = 'date';
-
-        const reservationId: number = this.route.snapshot.params.reservation;
 
         // create option list of occupation types
         this.types = Object.keys(ReservationType).map(key => ReservationType[key])
             .filter(value => typeof value === 'string');
 
-        this.service.getReservation(reservationId).subscribe(
-            data => {
-                this.reservation = data;
-                this.time = this.reservation.start;
-                this.type = ReservationType[this.reservation.type];
-                this.update();
+        this.service.getSystemConfig(systemId).subscribe(
+            config => {
+                this.systemConfig = ReservationSystemConfig.of(config);
+                this.userService.getLoggedInUser().subscribe(
+                    user => {
+                        this.user = new User(user.id, user.name, UserRole['' + user.role]);
+                        this.service.getReservation(reservationId).subscribe(
+                            reservation => {
+                                this.reservation = reservation;
+                                this.time = this.reservation.start;
+                                this.type = ReservationType[this.reservation.type];
+                                this.update();
+                            },
+                            reservationerror => this.httpError = reservationerror
+                        );
+                    },
+                    usererror => this.httpError = usererror
+                );
             },
-            err => {
-                this.httpError = err;
-            }
+            configerror => this.httpError = configerror
         );
-
-        this.userService.getLoggedInUser().subscribe(
-            data => {
-                this.user = new User(data.id, data.name, UserRole['' + data.role]);
-                this.update();
-            },
-            err => {
-                this.httpError = err;
-            }
-        );
-
     }
+
     ngOnDestroy(): void {
         this.reservation = undefined;
         this.user = undefined;
@@ -86,9 +85,6 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit, On
     }
 
     private update() {
-        if (!this.reservation || !this.user) {
-            return;
-        }
 
         // decide which parts of the layout are visible
         // this depends on the user role

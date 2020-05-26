@@ -16,6 +16,18 @@ export class ReservationSystemConfig {
     public reservationUntil: number // reservation possible until
   ) { }
 
+  public static of(config: ReservationSystemConfig) {
+    return new ReservationSystemConfig(
+      config.id,
+      config.name,
+      config.courts,
+      config.durationUnitInMinutes,
+      config.openingHour,
+      config.closingHour,
+      config.reservationfrom,
+      config.reservationUntil);
+  }
+
   /**
    * get array of court [1,2,3,...]
    */

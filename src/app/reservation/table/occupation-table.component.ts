@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { ReservationService } from '../reservation.service';
-import { ReservationSystemConfig } from '../reservation-system-config';
 import { OccupationTable } from './occupation-table';
 import { Occupation } from '../occupation';
 import { UserService } from '../../user/user.service';
@@ -22,7 +21,6 @@ import { Observable, timer, Subscription } from 'rxjs';
 export class OccupationTableComponent extends ErrorAware implements OnInit, OnDestroy {
 
   occupationTable: OccupationTable;
-  systemConfig: ReservationSystemConfig;
   lastUpdated: number;
   private timer: Observable<number>;
   private timerSubscription: Subscription;
@@ -35,39 +33,41 @@ export class OccupationTableComponent extends ErrorAware implements OnInit, OnDe
   }
 
   ngOnInit() {
-    // read system config
-    this.systemConfig = this.reservationService.getSystemConfig(this.route.snapshot.params.system);
-
-    // create occupation table
-    this.occupationTable = new OccupationTable(new User(0, '', UserRole.ANONYMOUS), this.systemConfig);
-
+    const systemId = this.route.snapshot.params.system;
+    const date = this.route.snapshot.params.date;
+    this.occupationTable = new OccupationTable(new User(0, '', UserRole.ANONYMOUS));
     // set date
-    if (this.route.snapshot.params.date) {
-      this.occupationTable.setDate(parseInt(this.route.snapshot.params.date, 10));
+    if (date) {
+      this.occupationTable.setDate(parseInt(date, 10));
     }
 
-    // get logged in user
-    this.userService.getLoggedInUser().subscribe(
-      data => {
-        this.occupationTable.setUser(
-          new User(data.id, data.name, UserRole['' + data.role], '', '', ActivationStatus['' + data.status]));
-      },
-      err => {
-        this.httpError = err;
-      },
-      () => {
-        // reload system when user is 'kiosk' every 5 Minutes
-        if (this.occupationTable.user.hasRole(UserRole.KIOSK)) {
-          this.timer = timer(300000, 300000);
-          this.timerSubscription = this.timer.subscribe(
-            () => this.update(this.occupationTable.date)
-          );
-        }
-      }
-    );
+    // read system config
+    this.reservationService.getSystemConfig(systemId).subscribe(
+      systemConfig => {
+        this.occupationTable.setSystemConfig(systemConfig);
 
-    // update occupation table
-    this.update(this.occupationTable.date);
+        // get logged in user
+        this.userService.getLoggedInUser().subscribe(
+          user => {
+            this.occupationTable.setUser(
+              new User(user.id, user.name, UserRole['' + user.role], '', '', ActivationStatus['' + user.status]));
+            // update occupation table
+            this.update(this.occupationTable.date);
+          },
+          usererror => this.httpError = usererror,
+          () => {
+            // reload system when user is 'kiosk' every 5 Minutes
+            if (this.occupationTable.user.hasRole(UserRole.KIOSK)) {
+              this.timer = timer(300000, 300000);
+              this.timerSubscription = this.timer.subscribe(
+                () => this.update(this.occupationTable.date)
+              );
+            }
+          }
+        );
+      },
+      configerror => this.httpError = configerror
+    );
   }
 
   ngOnDestroy() {
@@ -138,7 +138,7 @@ export class OccupationTableComponent extends ErrorAware implements OnInit, OnDe
    */
   private update(date: number) {
     this.clearError();
-    this.reservationService.getOccupations(this.systemConfig.id, date)
+    this.reservationService.getOccupations(this.occupationTable.systemConfig.id, date)
       .subscribe(
         data => {
           this.lastUpdated = new Date().getTime();

@@ -10,12 +10,12 @@ import { ReservationSystemConfig } from '../reservation-system-config';
 export class OccupationTable extends TableData {
 
     occupations: Occupation[] = [];
+    systemConfig: ReservationSystemConfig;
     date: number; // display occupation table for one day in epoch millies
 
-    constructor(public user: User, public systemConfig: ReservationSystemConfig) {
+    constructor(public user: User) {
         super();
         this.setDate(new Date().getTime());
-        this.createEmptyTable();
     }
 
     setDate(date: number) {
@@ -25,6 +25,11 @@ export class OccupationTable extends TableData {
     setUser(user) {
         this.user = user;
         this.show();
+    }
+
+    setSystemConfig(systemConfig: ReservationSystemConfig) {
+        this.systemConfig = ReservationSystemConfig.of(systemConfig);
+        this.createEmptyTable();
     }
 
     show(date: number = this.date) {

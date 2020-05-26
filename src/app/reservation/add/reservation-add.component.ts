@@ -53,75 +53,84 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
   }
 
   ngOnInit() {
-    this.systemConfig = this.service.getSystemConfig(this.route.snapshot.params.system);
+    const systemId = this.route.snapshot.params.system;
+    const start = parseInt(this.route.snapshot.params.date, 10);
+    const court = this.route.snapshot.params.court;
+
     this.showType = false;
     this.showText = false;
     this.showDuration = false;
     this.showRepeat = false;
     this.focus = 'date';
-
     this.user = new User(0, '', UserRole.ANONYMOUS);
-    this.userService.getLoggedInUser().subscribe(
-      data => {
-        this.user = new User(data.id, data.name, UserRole['' + data.role]);
-        this.reservation.user = this.user;
-
-        // decide which parts of the layout are visible
-        // this depends on the user role
-        this.showType = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
-        this.showText = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
-        this.showDuration = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
-        this.showRepeat = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
-        if (this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER)) { this.focus = 'date'; }
-        if (this.user.hasRole(UserRole.TRAINER)) { this.focus = 'duration'; }
-        if (this.user.hasRole(UserRole.REGISTERED)) { this.focus = 'duration'; }
-        if (this.user.hasRole(UserRole.KIOSK, UserRole.TECHNICAL)) { this.focus = 'text'; }
-
-        if (this.showText) {
-          if (this.cookieService.check('text')) {
-            this.reservation.text = this.cookieService.get('text');
-          }
-        } else {
-          if (this.cookieService.check('spieler1')) {
-            this.spieler1 = this.cookieService.get('spieler1');
-          }
-          if (this.cookieService.check('spieler2')) {
-            this.spieler2 = this.cookieService.get('spieler2');
-          }
-          if (this.cookieService.check('spieler3')) {
-            this.spieler3 = this.cookieService.get('spieler3');
-          }
-          if (this.cookieService.check('spieler4')) {
-            this.spieler4 = this.cookieService.get('spieler4');
-          }
-        }
-        if (this.user.hasRole(UserRole.TRAINER)) {
-          this.type = ReservationType[ReservationType.Training];
-          this.reservation.text = this.user.name;
-        }
-      },
-      err => {
-        this.httpError = err;
-      },
+    this.reservation = new Reservation(
+      0,                              // Reservarion System Config Id
+      this.user,                      // user
+      this.user.name,                 // text = user name
+      DateUtil.getDatePart(start),    // reservation Date
+      DateUtil.getTimePart(start),    // reservation start
+      2,                              // duration default
+      court,                          // court
+      ReservationType.Quickbuchung,   // default type
     );
+
 
     // create option list of occupation types
     this.types = Object.keys(ReservationType).map(key => ReservationType[key])
       .filter(value => typeof value === 'string');
 
-    // set default values
-    const start = parseInt(this.route.snapshot.params.date, 10);
-
-    this.reservation = new Reservation(
-      this.systemConfig.id,
-      this.user,                              // user
-      this.user.name,                         // text = user name
-      DateUtil.getDatePart(start),            // reservation Date
-      DateUtil.getTimePart(start),            // reservation start
-      2,                                      // duration default
-      this.route.snapshot.params.court,    // court
-      ReservationType.Quickbuchung,           // default type
+    this.service.getSystemConfig(systemId).subscribe(
+      config => {
+        this.systemConfig = ReservationSystemConfig.of(config);
+        this.reservation.systemConfigId = this.systemConfig.id;
+        this.userService.getLoggedInUser().subscribe(
+          user => {
+            this.user = new User(user.id, user.name, UserRole['' + user.role]);
+            this.reservation.user = this.user;
+            this.init(start);
+          },
+          usererror => this.httpError = usererror
+        );
+      },
+      configerror => this.httpError = configerror
     );
+  }
+
+  private init(start: number) {
+    // decide which parts of the layout are visible
+    // this depends on the user role
+    this.showType = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
+    this.showText = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
+    this.showDuration = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
+    this.showRepeat = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
+    if (this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER)) { this.focus = 'date'; }
+    if (this.user.hasRole(UserRole.TRAINER)) { this.focus = 'duration'; }
+    if (this.user.hasRole(UserRole.REGISTERED)) { this.focus = 'duration'; }
+    if (this.user.hasRole(UserRole.KIOSK, UserRole.TECHNICAL)) { this.focus = 'text'; }
+
+    if (this.showText) {
+      if (this.cookieService.check('text')) {
+        this.reservation.text = this.cookieService.get('text');
+      }
+    } else {
+      if (this.cookieService.check('spieler1')) {
+        this.spieler1 = this.cookieService.get('spieler1');
+      }
+      if (this.cookieService.check('spieler2')) {
+        this.spieler2 = this.cookieService.get('spieler2');
+      }
+      if (this.cookieService.check('spieler3')) {
+        this.spieler3 = this.cookieService.get('spieler3');
+      }
+      if (this.cookieService.check('spieler4')) {
+        this.spieler4 = this.cookieService.get('spieler4');
+      }
+    }
+    if (this.user.hasRole(UserRole.TRAINER)) {
+      this.type = ReservationType[ReservationType.Training];
+      this.reservation.text = this.user.name;
+    }
+
     this.time = this.reservation.start;
     this.type = ReservationType[this.reservation.type];
   }
@@ -160,7 +169,7 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
         this.reservation.text = `${this.spieler1} ${this.spieler2} ${this.spieler3} ${this.spieler4}`;
         this.cookieService.set('spieler3', this.spieler3, 30);
         this.cookieService.set('spieler4', this.spieler4, 30);
-        } else {
+      } else {
         this.reservation.text = `${this.spieler1} ${this.spieler2}`;
       }
     } else {
