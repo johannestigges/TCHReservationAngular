@@ -57,7 +57,8 @@ export class ReservationSystemConfig {
   }
 
   public getEnd(date: number, start: number, duration: number) {
-    return date + start + duration * this.durationUnitInMinutes * DateUtil.MINUTE;
+    const d = duration * this.durationUnitInMinutes * DateUtil.MINUTE;
+    return +date + +start + +d;
   }
 
   public getReservationEnd(reservation: Reservation) {

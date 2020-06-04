@@ -56,14 +56,11 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit, On
         this.service.getSystemConfig(systemId).subscribe(
             config => {
                 this.systemConfig = ReservationSystemConfig.of(config);
-                console.log('got system config');
                 this.userService.getLoggedInUser().subscribe(
                     user => {
-                        console.log('got user');
                         this.user = new User(user.id, user.name, UserRole['' + user.role]);
                         this.service.getReservation(reservationId).subscribe(
                             reservation => {
-                                console.log('got reservation');
                                 this.reservation = reservation;
                                 this.time = this.reservation.start;
                                 this.type = ReservationType[this.reservation.type];
@@ -117,8 +114,6 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit, On
         const start = DateUtil.ofDateAndTime(this.reservation.date, this.reservation.start).getTime();
         const end = this.systemConfig.getReservationEnd(this.reservation);
         const now = DateUtil.now();
-        console.log(`can terminate ${start} - ${end} : ${now}`);
-        console.log(`can terminate ${DateUtil.show(start)} - ${DateUtil.show(end)} : ${DateUtil.show(now)}`);
         return start < now && end > now;
     }
 

@@ -39,8 +39,8 @@
             <td *ngIf="cell.data.text && canModify(cell.data)" [attr.rowspan]="cell.rowspan"
               [attr.colspan]="cell.colspan" class="type{{cell.data.type}} deletable">
               <a routerLink='/modify/{{occupationTable.systemConfig.id}}/{{cell.data.reservation.id}}'>
-                <span *ngIf="isLoggedIn()">
-                  {{cell.data.text}}</span>
+                <span *ngIf="isLoggedIn()">{{cell.data.text}}</span>
+                <span *ngIf="!isLoggedIn()">Reserviert</span>
               </a>
             </td>
 
@@ -48,6 +48,7 @@
             <td *ngIf="cell.data.text && !canModify(cell.data)" [attr.rowspan]="cell.rowspan"
               [attr.colspan]="cell.colspan" class="type{{cell.data.type}}">
               <span *ngIf="isLoggedIn()">{{cell.data.text}}</span>
+              <span *ngIf="!isLoggedIn()">Reserviert</span>
             </td>
 
             <!-- available cell with link to add reservation -->

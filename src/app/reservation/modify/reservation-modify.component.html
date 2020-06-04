@@ -1,10 +1,10 @@
-<div class='container'>
+<div *ngIf="reservation" class='container'>
 
 	<form class="form-horizontal">
 
 		<!-- title -->
 		<div class="form-group">
-			<h2 class="col-sm-offset-2 col-sm-10">Reservierung Löschen</h2>
+			<h2 class="col-sm-offset-2 col-sm-10">Reservierung bearbeiten</h2>
 		</div>
 
 		<!-- Date and Time -->
@@ -88,9 +88,14 @@
 		<!-- Buttons -->
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
-				<button *ngIf="canDelete()" (click)='onDelete()' class="btn btn-lg btn-block btn-primary">Löschen</button>
-				<button *ngIf="canEdit()" (click)='onUpdate()' class="btn btn-lg btn-block btn-primary">Speichern</button>
-				<button *ngIf="canTerminate()"(click)='onTerminate()' class="btn btn-lg btn-block btn-primary">Platz freigeben</button>
+				<button *ngIf="canDelete()" (click)='onDelete()'
+					class="btn btn-lg btn-block btn-primary">Löschen</button>
+				<!-- not working yet
+						<button *ngIf="canEdit()" (click)='onUpdate()'
+						class="btn btn-lg btn-block btn-primary">Speichern</button>
+						<button *ngIf="canTerminate()" (click)='onTerminate()' class="btn btn-lg btn-block btn-primary">Platz
+							freigeben</button>
+						-->
 				<button (click)='onBack()' class="btn btn-lg btn-block">Zurück</button>
 			</div>
 		</div>
