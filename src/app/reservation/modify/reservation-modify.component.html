@@ -88,11 +88,9 @@
 		<!-- Buttons -->
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
-				<button (click)='onDelete()' class="btn btn-lg btn-block btn-primary">Löschen</button>
-				<!-- 
-					<button (click)='onUpdate()' class="btn btn-lg btn-block btn-primary">Speichern</button>
-				-->
-				<button *ngIf="canMakeAvailable()"(click)='onTerminate()' class="btn btn-lg btn-block btn-primary">Platz freigeben</button>
+				<button *ngIf="canDelete()" (click)='onDelete()' class="btn btn-lg btn-block btn-primary">Löschen</button>
+				<button *ngIf="canEdit()" (click)='onUpdate()' class="btn btn-lg btn-block btn-primary">Speichern</button>
+				<button *ngIf="canTerminate()"(click)='onTerminate()' class="btn btn-lg btn-block btn-primary">Platz freigeben</button>
 				<button (click)='onBack()' class="btn btn-lg btn-block">Zurück</button>
 			</div>
 		</div>

@@ -51,4 +51,19 @@ export class DateUtil {
     d1.setHours(d2.getHours(), d2.getMinutes(), d2.getSeconds());
     return d1;
   }
+
+  static isToday(date: number): boolean {
+    return this.getDatePart(date) === this.getDatePart(this.now());
+  }
+
+  static getActualTime(): number {
+    return this.getDayMinutesPart(this.now());
+  }
+
+  static now(): number {
+    return new Date().getTime();
+  }
+  static show(date: number): string {
+    return this.toDate(date).toLocaleString();
+  }
 }

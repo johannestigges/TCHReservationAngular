@@ -106,7 +106,7 @@ export class OccupationTableComponent extends ErrorAware implements OnInit, OnDe
 
     const now = new Date().getTime();
     const start = DateUtil.ofDateAndTime(occupation.date, occupation.start).getTime();
-    const end = this.systemConfig.getOccupationEnd(occupation);
+    const end = this.occupationTable.systemConfig.getOccupationEnd(occupation);
 
     // everyone can terminate current reservation
     if (start < now && end > now) {

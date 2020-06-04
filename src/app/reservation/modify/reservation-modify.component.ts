@@ -56,11 +56,14 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit, On
         this.service.getSystemConfig(systemId).subscribe(
             config => {
                 this.systemConfig = ReservationSystemConfig.of(config);
+                console.log('got system config');
                 this.userService.getLoggedInUser().subscribe(
                     user => {
+                        console.log('got user');
                         this.user = new User(user.id, user.name, UserRole['' + user.role]);
                         this.service.getReservation(reservationId).subscribe(
                             reservation => {
+                                console.log('got reservation');
                                 this.reservation = reservation;
                                 this.time = this.reservation.start;
                                 this.type = ReservationType[this.reservation.type];
@@ -79,11 +82,11 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit, On
     ngOnDestroy(): void {
         this.reservation = undefined;
         this.user = undefined;
+        this.systemConfig = undefined;
         this.clearError();
     }
 
     private update() {
-
         // decide which parts of the layout are visible
         // this depends on the user role
         this.showType = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
@@ -94,8 +97,8 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit, On
         if (this.user.hasRole(UserRole.KIOSK)) { this.focus = 'text'; }
     }
 
-    private canEdit(): boolean {
-        if (!this.user || !this.reservation) {
+    public canEdit(): boolean {
+        if (!this.reservation) {
             return false;
         }
         if (this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER)) {
@@ -107,19 +110,30 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit, On
         return false;
     }
 
-    public canMakeAvailable() {
-        return this.isReservationCurrent();
-    }
-
-    public isReservationCurrent() {
-        const now = new Date().getTime();
+    public canTerminate() {
+        if (!this.reservation) {
+            return false;
+        }
         const start = DateUtil.ofDateAndTime(this.reservation.date, this.reservation.start).getTime();
         const end = this.systemConfig.getReservationEnd(this.reservation);
+        const now = DateUtil.now();
+        console.log(`can terminate ${start} - ${end} : ${now}`);
+        console.log(`can terminate ${DateUtil.show(start)} - ${DateUtil.show(end)} : ${DateUtil.show(now)}`);
         return start < now && end > now;
     }
 
+    canDelete() {
+        if (!this.reservation) {
+            return false;
+        }
+        return this.canEdit();
+    }
+
     getDate() {
-        return DateUtil.toDate(this.reservation.date).toLocaleDateString();
+        if (this.reservation) {
+            console.log('get date');
+            return DateUtil.toDate(this.reservation.date).toLocaleDateString();
+        }
     }
 
     duration(d: number) {
@@ -131,13 +145,15 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit, On
     }
 
     getTimes() {
-        const times = [];
-        for (let hour = this.systemConfig.openingHour; hour < this.systemConfig.closingHour; hour++) {
-            for (let minute = 0; minute < 60; minute += this.systemConfig.durationUnitInMinutes) {
-                times.push((hour * 60 + minute) * DateUtil.MINUTE);
+        if (this.systemConfig) {
+            const times = [];
+            for (let hour = this.systemConfig.openingHour; hour < this.systemConfig.closingHour; hour++) {
+                for (let minute = 0; minute < 60; minute += this.systemConfig.durationUnitInMinutes) {
+                    times.push((hour * 60 + minute) * DateUtil.MINUTE);
+                }
             }
+            return times;
         }
-        return times;
     }
 
 
@@ -170,44 +186,46 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit, On
         }
         if (this.reservation.duration > 0) {
             this.service.updateReservation(this.reservation)
-            .subscribe(
-                data => {
-                    this.onBack();
-                },
-                error => {
-                    this.httpError = error;
-                }
-            );
+                .subscribe(
+                    data => {
+                        this.onBack();
+                    },
+                    error => {
+                        this.httpError = error;
+                    }
+                );
         } else {
             this.service.deleteReservation(this.reservation.id)
-            .subscribe(
-                data => {
-                    this.onBack();
-                },
-                error => {
-                    this.httpError = error;
-                }
-            );
+                .subscribe(
+                    data => {
+                        this.onBack();
+                    },
+                    error => {
+                        this.httpError = error;
+                    }
+                );
         }
     }
 
     onUpdate() {
+        console.log('update occupation');
         this.clearError();
         this.reservation.type = ReservationType[this.type];
         this.reservation.start = this.time;
         this.service.updateReservation(this.reservation)
             .subscribe(
                 data => {
+                    console.log('update finished');
                     this.onBack();
                 },
                 err => {
                     this.httpError = err;
-                },
-                () => { this.onBack(); }
+                }
             );
     }
 
     onBack() {
+        console.log('go back');
         this.router.navigate(['/table', this.systemConfig.id, this.reservation.date]);
     }
 }

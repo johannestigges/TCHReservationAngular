@@ -39,14 +39,15 @@
             <td *ngIf="cell.data.text && canModify(cell.data)" [attr.rowspan]="cell.rowspan"
               [attr.colspan]="cell.colspan" class="type{{cell.data.type}} deletable">
               <a routerLink='/modify/{{occupationTable.systemConfig.id}}/{{cell.data.reservation.id}}'>
-                {{cell.data.text}}
+                <span *ngIf="isLoggedIn()">
+                  {{cell.data.text}}</span>
               </a>
             </td>
 
             <!-- occupation entry -->
             <td *ngIf="cell.data.text && !canModify(cell.data)" [attr.rowspan]="cell.rowspan"
               [attr.colspan]="cell.colspan" class="type{{cell.data.type}}">
-              {{cell.data.text}}
+              <span *ngIf="isLoggedIn()">{{cell.data.text}}</span>
             </td>
 
             <!-- available cell with link to add reservation -->
