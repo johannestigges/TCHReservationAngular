@@ -1,4 +1,6 @@
 import { DateUtil } from '../date/date-util';
+import { Reservation } from './reservation';
+import { Occupation } from './occupation';
 
 /**
  * reservation system configuration data
@@ -15,6 +17,18 @@ export class ReservationSystemConfig {
     public reservationfrom: number, // reservation possible from
     public reservationUntil: number // reservation possible until
   ) { }
+
+  public static of(config: ReservationSystemConfig) {
+    return new ReservationSystemConfig(
+      config.id,
+      config.name,
+      config.courts,
+      config.durationUnitInMinutes,
+      config.openingHour,
+      config.closingHour,
+      config.reservationfrom,
+      config.reservationUntil);
+  }
 
   /**
    * get array of court [1,2,3,...]
@@ -40,5 +54,18 @@ export class ReservationSystemConfig {
 
   public setTime(date: Date, row: number) {
     date.setHours(0, this.toMinutes(row));
+  }
+
+  public getEnd(date: number, start: number, duration: number) {
+    const d = duration * this.durationUnitInMinutes * DateUtil.MINUTE;
+    return +date + +start + +d;
+  }
+
+  public getReservationEnd(reservation: Reservation) {
+    return this.getEnd(reservation.date, reservation.start, reservation.duration);
+  }
+
+  public getOccupationEnd(occupation: Occupation) {
+    return this.getEnd(occupation.date, occupation.start, occupation.duration);
   }
 }

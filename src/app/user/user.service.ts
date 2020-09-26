@@ -22,7 +22,6 @@ export class UserService {
       .set('username', user)
       .set('password', password)
       .set('submit', 'Login');
-    console.log('login user ' + user);
     return this.httpClient.post<User>(this.loginUrl(), params);
   }
 
@@ -51,7 +50,6 @@ export class UserService {
   }
 
   private url() {
-    console.log(`url: ${window.location.protocol}//${window.location.host}`);
     return `${window.location.protocol}//${window.location.host}`;
   }
 }

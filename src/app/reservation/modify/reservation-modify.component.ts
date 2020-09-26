@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 
@@ -35,7 +34,6 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit, On
     showRepeat: boolean;
     focus: string;
 
-
     constructor(
         private route: ActivatedRoute,
         private router: Router,
@@ -45,51 +43,47 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit, On
     }
 
     ngOnInit() {
-        this.systemConfig = this.service.getSystemConfig(this.route.snapshot.params.system);
+        const systemId = this.route.snapshot.params.system;
+        const reservationId: number = this.route.snapshot.params.reservation;
         this.showType = false;
         this.showRepeat = false;
         this.focus = 'date';
-
-        const reservationId: number = this.route.snapshot.params.reservation;
 
         // create option list of occupation types
         this.types = Object.keys(ReservationType).map(key => ReservationType[key])
             .filter(value => typeof value === 'string');
 
-        this.service.getReservation(reservationId).subscribe(
-            data => {
-                this.reservation = data;
-                this.time = this.reservation.start;
-                this.type = ReservationType[this.reservation.type];
-                this.update();
+        this.service.getSystemConfig(systemId).subscribe(
+            config => {
+                this.systemConfig = ReservationSystemConfig.of(config);
+                this.userService.getLoggedInUser().subscribe(
+                    user => {
+                        this.user = new User(user.id, user.name, UserRole['' + user.role]);
+                        this.service.getReservation(reservationId).subscribe(
+                            reservation => {
+                                this.reservation = reservation;
+                                this.time = this.reservation.start;
+                                this.type = ReservationType[this.reservation.type];
+                                this.update();
+                            },
+                            reservationerror => this.httpError = reservationerror
+                        );
+                    },
+                    usererror => this.httpError = usererror
+                );
             },
-            err => {
-                this.httpError = err;
-            }
+            configerror => this.httpError = configerror
         );
-
-        this.userService.getLoggedInUser().subscribe(
-            data => {
-                this.user = new User(data.id, data.name, UserRole['' + data.role]);
-                this.update();
-            },
-            err => {
-                this.httpError = err;
-            }
-        );
-
     }
+
     ngOnDestroy(): void {
         this.reservation = undefined;
         this.user = undefined;
+        this.systemConfig = undefined;
         this.clearError();
     }
 
     private update() {
-        if (!this.reservation || !this.user) {
-            return;
-        }
-
         // decide which parts of the layout are visible
         // this depends on the user role
         this.showType = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
@@ -100,8 +94,8 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit, On
         if (this.user.hasRole(UserRole.KIOSK)) { this.focus = 'text'; }
     }
 
-    private canEdit(): boolean {
-        if (!this.user || !this.reservation) {
+    public canEdit(): boolean {
+        if (!this.reservation) {
             return false;
         }
         if (this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER)) {
@@ -113,8 +107,28 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit, On
         return false;
     }
 
+    public canTerminate() {
+        if (!this.reservation) {
+            return false;
+        }
+        const start = DateUtil.ofDateAndTime(this.reservation.date, this.reservation.start).getTime();
+        const end = this.systemConfig.getReservationEnd(this.reservation);
+        const now = DateUtil.now();
+        return start < now && end > now;
+    }
+
+    canDelete() {
+        if (!this.reservation) {
+            return false;
+        }
+        return this.canEdit();
+    }
+
     getDate() {
-        return DateUtil.toDate(this.reservation.date).toLocaleDateString();
+        if (this.reservation) {
+            console.log('get date');
+            return DateUtil.toDate(this.reservation.date).toLocaleDateString();
+        }
     }
 
     duration(d: number) {
@@ -126,13 +140,15 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit, On
     }
 
     getTimes() {
-        const times = [];
-        for (let hour = this.systemConfig.openingHour; hour < this.systemConfig.closingHour; hour++) {
-            for (let minute = 0; minute < 60; minute += this.systemConfig.durationUnitInMinutes) {
-                times.push((hour * 60 + minute) * DateUtil.MINUTE);
+        if (this.systemConfig) {
+            const times = [];
+            for (let hour = this.systemConfig.openingHour; hour < this.systemConfig.closingHour; hour++) {
+                for (let minute = 0; minute < 60; minute += this.systemConfig.durationUnitInMinutes) {
+                    times.push((hour * 60 + minute) * DateUtil.MINUTE);
+                }
             }
+            return times;
         }
-        return times;
     }
 
 
@@ -157,23 +173,54 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit, On
             );
     }
 
+    onTerminate() {
+        this.clearError();
+        const now = new Date().getTime();
+        while (this.systemConfig.getReservationEnd(this.reservation) > now) {
+            this.reservation.duration--;
+        }
+        if (this.reservation.duration > 0) {
+            this.service.updateReservation(this.reservation)
+                .subscribe(
+                    data => {
+                        this.onBack();
+                    },
+                    error => {
+                        this.httpError = error;
+                    }
+                );
+        } else {
+            this.service.deleteReservation(this.reservation.id)
+                .subscribe(
+                    data => {
+                        this.onBack();
+                    },
+                    error => {
+                        this.httpError = error;
+                    }
+                );
+        }
+    }
+
     onUpdate() {
+        console.log('update occupation');
         this.clearError();
         this.reservation.type = ReservationType[this.type];
         this.reservation.start = this.time;
         this.service.updateReservation(this.reservation)
             .subscribe(
                 data => {
+                    console.log('update finished');
                     this.onBack();
                 },
                 err => {
                     this.httpError = err;
-                },
-                () => { this.onBack(); }
+                }
             );
     }
 
     onBack() {
+        console.log('go back');
         this.router.navigate(['/table', this.systemConfig.id, this.reservation.date]);
     }
 }

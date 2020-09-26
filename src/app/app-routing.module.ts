@@ -12,7 +12,6 @@ import { LoginComponent } from './login/login.component';
 const routes: Routes = [
     { path: '', redirectTo: '/table/1', pathMatch: 'full' },
     { path: 'table/:system', component: OccupationTableComponent },
-    { path: 'table/:system', component: OccupationTableComponent },
     { path: 'table/:system/:date', component: OccupationTableComponent },
     { path: 'add/:system/:court/:date', component: ReservationAddComponent },
     { path: 'modify/:system/:reservation', component: ReservationModifyComponent },
