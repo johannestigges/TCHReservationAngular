@@ -161,7 +161,9 @@ export class OccupationTableComponent extends ErrorAware implements OnInit, OnDe
   }
 
   showDate() {
-    return DateUtil.toDate(this.occupationTable.date).toLocaleDateString();
+    return DateUtil.toDate(this.occupationTable.date).toLocaleDateString(
+      'de-DE',
+      {weekday: 'long', year: 'numeric', month: 'numeric', day: 'numeric'});
   }
 
   private show(occupations: Occupation[]) {
