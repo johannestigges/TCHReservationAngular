@@ -154,7 +154,6 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
         times.push((hour * 60 + minute) * DateUtil.MINUTE);
       }
     }
-    console.log(times);
     return times;
   }
 
