@@ -18,19 +18,23 @@ export class UserModifyComponent extends ErrorAware implements OnInit {
 
     roleValues: string[];
     statusValues: string[];
+
+    user: User;
     userRole: string;
     userStatus: string;
-    user: User;
-    loggedinUser: User;
     confirmPassword: string;
+
+    loggedinUser: User;
     isAdmin = false;
 
-    constructor(private route: ActivatedRoute, private userService: UserService, private location: Location) {
+    constructor(
+        private route: ActivatedRoute, 
+        private userService: UserService, 
+        private location: Location) {
         super();
     }
 
     ngOnInit() {
-
         this.roleValues = Object.keys(UserRole).map(key => UserRole[key])
             .filter(value => typeof value === 'string');
         this.statusValues = Object.keys(ActivationStatus).map(key => ActivationStatus[key])
@@ -44,12 +48,7 @@ export class UserModifyComponent extends ErrorAware implements OnInit {
                 this.userRole = '' + this.user.role;
                 this.userStatus = '' + this.user.status;
             },
-            err => {
-                this.httpError = err;
-            },
-            () => {
-                //        console.log("finished read user " + id);
-            }
+            err => this.httpError = err
         );
 
         this.userService.getLoggedInUser().subscribe(
@@ -57,10 +56,7 @@ export class UserModifyComponent extends ErrorAware implements OnInit {
                 this.loggedinUser = new User(data.id, data.name, UserRole['' + data.role]);
                 this.isAdmin = this.loggedinUser.hasRole(UserRole.ADMIN);
             },
-            err => {
-                this.httpError = err;
-            },
-            () => { }
+            err => this.httpError = err
         );
     }
 
@@ -78,12 +74,7 @@ export class UserModifyComponent extends ErrorAware implements OnInit {
                 this.user = data;
                 this.cancel();
             },
-            err => {
-                this.httpError = err;
-            },
-            () => {
-                this.cancel();
-            }
+            err => this.httpError = err
         );
     }
 

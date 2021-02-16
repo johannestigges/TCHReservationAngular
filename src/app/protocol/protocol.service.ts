@@ -11,7 +11,7 @@ export class ProtocolService {
   }
 
   getAll(): Observable<Protocol[]> {
-    return this.httpClient.get<Protocol[]>(this.url() + '/protocol/get');
+    return this.httpClient.get<Protocol[]>(`${this.url()}/protocol/get`);
   }
   private url() {
     return `${window.location.protocol}//${window.location.host}`;

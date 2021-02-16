@@ -18,14 +18,13 @@ export class UserAddComponent extends ErrorAware implements OnInit {
 
   roleValues: string[];
   statusValues: string[];
+  
+  user: User;
   userRole: string;
   userStatus: string;
-  user: User;
   confirmPassword: string;
 
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
     private location: Location,
     private userService: UserService) {
     super();
@@ -44,7 +43,6 @@ export class UserAddComponent extends ErrorAware implements OnInit {
     this.userStatus = ActivationStatus[ActivationStatus.CREATED];
   }
 
-
   onClick() {
     this.clearError();
     if (this.user.password !== this.confirmPassword) {
@@ -59,10 +57,7 @@ export class UserAddComponent extends ErrorAware implements OnInit {
         this.user = data;
         this.cancel();
       },
-      err => {
-        this.httpError = err;
-      },
-      () => { this.cancel(); }
+      err => this.httpError = err
     );
   }
 

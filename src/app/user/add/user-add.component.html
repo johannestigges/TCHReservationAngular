@@ -1,4 +1,4 @@
-<div class='container'>
+<div class="container">
 	<form class="form-horizontal">
 
 		<!-- title -->
@@ -10,7 +10,8 @@
 		<div class="form-group">
 			<label class="col-sm-2 control-label">Name:</label>
 			<div class="col-sm-10">
-				<input type="text" class="form-control" [(ngModel)]="user.name" name='name' required>
+				<input type="text" class="form-control" name="name" 
+					[(ngModel)]="user.name" required>
 			</div>
 		</div>
 
@@ -18,7 +19,8 @@
 		<div class="form-group">
 			<label class="col-sm-2 control-label">EMail:</label>
 			<div class="col-sm-10">
-				<input type="email" class="form-control" [(ngModel)]="user.email" name='email' required>
+				<input type="email" class="form-control" name="email" 
+					[(ngModel)]="user.email" required>
 			</div>
 		</div>
 
@@ -26,7 +28,8 @@
 		<div class="form-group">
 			<label class="col-sm-2 control-label">Password:</label>
 			<div class="col-sm-10">
-				<input type="password" class="form-control" [(ngModel)]="user.password" name='password' required>
+				<input type="password" class="form-control" name="password" 
+					[(ngModel)]="user.password" required>
 			</div>
 		</div>
 
@@ -34,8 +37,8 @@
 		<div class="form-group">
 			<label class="col-sm-2 control-label">Passwort bestätigen:</label>
 			<div class="col-sm-10">
-				<input type="password" class="form-control" [(ngModel)]="confirmPassword" name='confirmPassword'
-					required>
+				<input type="password" class="form-control" name="confirmPassword"
+					[(ngModel)]="confirmPassword" required>
 			</div>
 		</div>
 
@@ -61,15 +64,17 @@
 		<!-- error -->
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
-				<tch-show-error [httpError]="httpError" [errorMessages]="errorMessages"></tch-show-error>
+				<tch-show-error [httpError]="httpError" [errorMessages]="errorMessages">
+				</tch-show-error>
 			</div>
 		</div>
 
 		<!-- Buttons -->
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
-				<button (click)='onClick()' class="btn btn-lg btn-block btn-primary">Benutzer anlegen</button>
-				<button (click)='cancel()' class="btn btn-lg btn-block">Zurück</button>
+				<button (click)="onClick()" class="btn btn-lg btn-block btn-primary">
+					Benutzer anlegen</button>
+				<button (click)="cancel()" class="btn btn-lg btn-block">Zurück</button>
 			</div>
 		</div>
 	</form>

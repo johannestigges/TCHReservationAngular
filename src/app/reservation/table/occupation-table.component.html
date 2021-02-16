@@ -2,14 +2,14 @@
 <div class="row">
   <h3>Platzbelegungen {{showDate()}} &nbsp;</h3>
   <div>
-    <button (click)='onBackWeek()' title="Eine Woche zurück" class="btn btn-space">&lt;&lt;</button>
-    <button (click)='onBackDay()' title="Einen Tag zurück" class="btn btn-space">&lt;</button>
-    <button (click)='onToday()' title="Heute" class="btn btn-primary btn-space">+</button>
-    <button (click)='onNextDay()' title="Einen Tag vor" class="btn btn-space">&gt;</button>
-    <button (click)='onNextWeek()' title="Eine Woche vor" class="btn btn-space">&gt;&gt;</button>
+    <button (click)="onBackWeek()" title="Eine Woche zurück" class="btn btn-space">&lt;&lt;</button>
+    <button (click)="onBackDay()" title="Einen Tag zurück" class="btn btn-space">&lt;</button>
+    <button (click)="onToday()" title="Heute" class="btn btn-primary btn-space">+</button>
+    <button (click)="onNextDay()" title="Einen Tag vor" class="btn btn-space">&gt;</button>
+    <button (click)="onNextWeek()" title="Eine Woche vor" class="btn btn-space">&gt;&gt;</button>
   </div>
   <div *ngIf="!isLoggedIn()">
-    <a class="btn btn-secondary" href='../../login'>login</a>
+    <a class="btn btn-secondary" href="../../login">login</a>
   </div>
 </div>
 

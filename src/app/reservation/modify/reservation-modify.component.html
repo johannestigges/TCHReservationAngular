@@ -1,4 +1,4 @@
-<div *ngIf="reservation" class='container'>
+<div *ngIf="reservation" class="container">
 
 	<form class="form-horizontal">
 
@@ -8,39 +8,41 @@
 		</div>
 
 		<!-- Date and Time -->
-		<div class='form-group'>
+		<div class="form-group">
 			<label class="col-sm-2 control-label">Zeit:</label>
 			<div class="row col-sm-10">
 				<div class="col-sm-6">
-					<input type="text" name="date" class="form-control" [value]="getDate()" size='8' readonly
+					<input type="text" name="date" class="form-control" [value]="getDate()" size="8" readonly
 						[tchAppAutofocus]='(focus ==="date" )'>
 				</div>
 				<div class="col-sm-6">
 					<select class="form-control" id="time" [(ngModel)]="time" name="time">
-						<option *ngFor='let t of getTimes()' [value]='t'>{{duration(t)}}</option>
+						<option *ngFor="let t of getTimes()" [value]="t">{{duration(t)}}</option>
 					</select>
 				</div>
 			</div>
 		</div>
 
 		<!-- court -->
-		<div class='form-group'>
+		<div class="form-group">
 			<label class="col-sm-2 control-label">Platz:</label>
 			<div class="row col-sm-10">
 				<div class="col-sm-4">
-					<select class='form-control' id='court' [(ngModel)]="reservation.courts" name="court">
-						<option *ngFor='let court of systemConfig.getCourtsArray()' [value]='court'>{{court}}</option>
+					<select class="form-control" id="court" 
+						[(ngModel)]="reservation.courts" name="court">
+						<option *ngFor="let court of systemConfig.getCourtsArray()" [value]="court">
+							{{court}}</option>
 					</select>
 				</div>
 			</div>
 		</div>
 
 		<!-- occupation type -->
-		<div *ngIf='showType' class='form-group'>
+		<div *ngIf="showType" class="form-group">
 			<label class="col-sm-2 control-label">Typ:</label>
 			<div class="col-sm-10">
-				<select class='form-control' id='type' [(ngModel)]="type" name="type">
-					<option *ngFor='let type of types' [value]='type'>{{type}}</option>
+				<select class="form-control" id="type" [(ngModel)]="type" name="type">
+					<option *ngFor="let type of types" [value]="type">{{type}}</option>
 				</select>
 			</div>
 		</div>
@@ -59,8 +61,8 @@
 			<label class="col-sm-2 control-label">Dauer:</label>
 			<div class="row col-sm-10">
 				<div class="col-sm-4">
-					<input type="text" class="form-control" [(ngModel)]="reservation.duration" name='duration' size="1"
-						[tchAppAutofocus]='( focus === "duration" )'>
+					<input type="text" class="form-control" [(ngModel)]="reservation.duration" 
+						name="duration" size="1" [tchAppAutofocus]='( focus === "duration" )'>
 				</div>
 				<div class="col-sm-8">
 					mal {{systemConfig.durationUnitInMinutes}} Minuten
@@ -88,7 +90,7 @@
 		<!-- Buttons -->
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
-				<button *ngIf="canDelete()" (click)='onDelete()'
+				<button *ngIf="canDelete()" (click)="onDelete()"
 					class="btn btn-lg btn-block btn-primary">Löschen</button>
 				<!-- not working yet
 						<button *ngIf="canEdit()" (click)='onUpdate()'
@@ -96,7 +98,7 @@
 						<button *ngIf="canTerminate()" (click)='onTerminate()' class="btn btn-lg btn-block btn-primary">Platz
 							freigeben</button>
 						-->
-				<button (click)='onBack()' class="btn btn-lg btn-block">Zurück</button>
+				<button (click)="onBack()" class="btn btn-lg btn-block">Zurück</button>
 			</div>
 		</div>
 	</form>

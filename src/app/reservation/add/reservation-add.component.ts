@@ -28,10 +28,10 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
   repeat: number;
   time: number;
   type: string;
-  spieler1: string;
-  spieler2: string;
-  spieler3: string;
-  spieler4: string;
+  player1: string;
+  player2: string;
+  player3: string;
+  player4: string;
 
   types: string[];
 
@@ -112,17 +112,17 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
         this.reservation.text = this.cookieService.get('text');
       }
     } else {
-      if (this.cookieService.check('spieler1')) {
-        this.spieler1 = this.cookieService.get('spieler1');
+      if (this.cookieService.check('player1')) {
+        this.player1 = this.cookieService.get('player1');
       }
-      if (this.cookieService.check('spieler2')) {
-        this.spieler2 = this.cookieService.get('spieler2');
+      if (this.cookieService.check('player2')) {
+        this.player2 = this.cookieService.get('player2');
       }
-      if (this.cookieService.check('spieler3')) {
-        this.spieler3 = this.cookieService.get('spieler3');
+      if (this.cookieService.check('player3')) {
+        this.player3 = this.cookieService.get('player3');
       }
-      if (this.cookieService.check('spieler4')) {
-        this.spieler4 = this.cookieService.get('spieler4');
+      if (this.cookieService.check('player4')) {
+        this.player4 = this.cookieService.get('player4');
       }
     }
     if (this.user.hasRole(UserRole.TRAINER)) {
@@ -162,28 +162,24 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
     this.reservation.type = ReservationType[this.type];
     this.reservation.start = this.time;
     if (!this.showText) {
-      this.cookieService.set('spieler1', this.spieler1, 30);
-      this.cookieService.set('spieler2', this.spieler2, 30);
+      this.cookieService.set('player1', this.player1, 30);
+      this.cookieService.set('player2', this.player2, 30);
       if (this.showDouble) {
-        this.reservation.text = `${this.spieler1} ${this.spieler2} ${this.spieler3} ${this.spieler4}`;
-        this.cookieService.set('spieler3', this.spieler3, 30);
-        this.cookieService.set('spieler4', this.spieler4, 30);
+        this.reservation.text = `${this.player1} ${this.player2} ${this.player3} ${this.player4}`;
+        this.cookieService.set('player3', this.player3, 30);
+        this.cookieService.set('playerr4', this.player4, 30);
       } else {
-        this.reservation.text = `${this.spieler1} ${this.spieler2}`;
+        this.reservation.text = `${this.player1} ${this.player2}`;
       }
     } else {
       this.cookieService.set('text', this.reservation.text, 30);
     }
-    this.service.addReservation(this.reservation)
-      .subscribe(
+    this.service.addReservation(this.reservation).subscribe(
         data => {
           this.reservation = data;
           this.onBack();
         },
-        err => {
-          this.httpError = err;
-        },
-        () => { this.onBack(); }
+        err => this.httpError = err
       );
   }
 

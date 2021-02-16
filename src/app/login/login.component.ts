@@ -1,8 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Router } from '@angular/router';
+import { Component } from '@angular/core';
 import { Location } from '@angular/common';
-
 import { UserService } from '../user/user.service';
 
 @Component({
@@ -17,8 +14,6 @@ export class LoginComponent {
   error: string;
 
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
     private location: Location,
     private userService: UserService) { }
 
@@ -42,9 +37,6 @@ export class LoginComponent {
         } else {
           this.setError('ungültige Anmeldung!');
         }
-      },
-      () => {
-        console.log('finished login.');
       }
     );
   }

@@ -20,12 +20,8 @@ export class ProtocolTableComponent extends ErrorAware implements OnInit {
 
     ngOnInit() {
         this.protocolService.getAll().subscribe(
-            data => {
-                this.protocols = data;
-            },
-            err => {
-                this.httpError = err;
-            },
+            data => this.protocols = data,
+            err => this.httpError = err
         );
     }
 

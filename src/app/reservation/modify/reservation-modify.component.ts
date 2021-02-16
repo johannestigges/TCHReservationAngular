@@ -126,7 +126,6 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit, On
 
     getDate() {
         if (this.reservation) {
-            console.log('get date');
             return DateUtil.toDate(this.reservation.date).toLocaleDateString();
         }
     }
@@ -163,13 +162,8 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit, On
         this.clearError();
         this.service.deleteReservation(this.reservation.id)
             .subscribe(
-                data => {
-                    this.onBack();
-                },
-                err => {
-                    this.httpError = err;
-                },
-                () => { this.onBack(); }
+                data => this.onBack(),
+                err => this.httpError = err
             );
     }
 
@@ -182,45 +176,30 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit, On
         if (this.reservation.duration > 0) {
             this.service.updateReservation(this.reservation)
                 .subscribe(
-                    data => {
-                        this.onBack();
-                    },
-                    error => {
-                        this.httpError = error;
-                    }
+                    data => this.onBack(),
+                    error => this.httpError = error
                 );
         } else {
             this.service.deleteReservation(this.reservation.id)
                 .subscribe(
-                    data => {
-                        this.onBack();
-                    },
-                    error => {
-                        this.httpError = error;
-                    }
+                    data => this.onBack(),
+                    error => this.httpError = error
                 );
         }
     }
 
     onUpdate() {
-        console.log('update occupation');
         this.clearError();
         this.reservation.type = ReservationType[this.type];
         this.reservation.start = this.time;
         this.service.updateReservation(this.reservation)
             .subscribe(
-                data => {
-                    console.log('update finished');
-                    this.onBack();
-                },
-                err => {
-                    this.httpError = err;
-                }
+                data => this.onBack(),
+                err => this.httpError = err
             );
     }
 
     onBack() {
-        console.log('go back');
         this.router.navigate(['/table', this.systemConfig.id, this.reservation.date]);
     }
 }
