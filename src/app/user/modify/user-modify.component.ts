@@ -28,8 +28,8 @@ export class UserModifyComponent extends ErrorAware implements OnInit {
     isAdmin = false;
 
     constructor(
-        private route: ActivatedRoute, 
-        private userService: UserService, 
+        private route: ActivatedRoute,
+        private userService: UserService,
         private location: Location) {
         super();
     }

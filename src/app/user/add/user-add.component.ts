@@ -18,7 +18,7 @@ export class UserAddComponent extends ErrorAware implements OnInit {
 
   roleValues: string[];
   statusValues: string[];
-  
+
   user: User;
   userRole: string;
   userStatus: string;
