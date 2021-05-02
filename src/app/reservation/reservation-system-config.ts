@@ -68,4 +68,11 @@ export class ReservationSystemConfig {
   public getOccupationEnd(occupation: Occupation) {
     return this.getEnd(occupation.date, occupation.start, occupation.duration);
   }
+
+  public getDurationDefault() {
+    if (this.durationUnitInMinutes === 60) {
+      return 1;
+    }
+    return 2;
+  }
 }

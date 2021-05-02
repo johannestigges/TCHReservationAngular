@@ -11,6 +11,7 @@ import { ActivationStatus } from '../../user/activation-status.enum';
 import { DateUtil } from '../../date/date-util';
 import { ErrorAware } from '../../error/error-aware';
 import { Observable, timer, Subscription } from 'rxjs';
+import { ReservationType } from '../reservationtype';
 
 
 @Component({
@@ -50,7 +51,8 @@ export class OccupationTableComponent extends ErrorAware implements OnInit, OnDe
         this.userService.getLoggedInUser().subscribe(
           user => {
             this.occupationTable.setUser(
-              new User(user.id, user.name, UserRole['' + user.role], '', '', ActivationStatus['' + user.status]));
+              new User(user.id, user.name, UserRole['' + user.role], '', '',
+                ActivationStatus['' + user.status]));
             // update occupation table
             this.update(this.occupationTable.date);
           },
@@ -94,7 +96,6 @@ export class OccupationTableComponent extends ErrorAware implements OnInit, OnDe
   }
 
   canModify(occupation: Occupation): boolean {
-
     if (!this.isLoggedIn()) {
       return false;
     }
@@ -122,8 +123,12 @@ export class OccupationTableComponent extends ErrorAware implements OnInit, OnDe
     return occupation.reservation.user.id === this.occupationTable.user.id;
   }
 
-  canAdd(date: number): boolean {
+  canShowText(occupation: Occupation) {
+    return ReservationType[occupation.type] !== ReservationType[ReservationType.Quickbuchung] 
+      || this.isLoggedIn();
+  }
 
+  canAdd(date: number): boolean {
     if (!this.isLoggedIn()) {
       return false;
     }
@@ -138,7 +143,7 @@ export class OccupationTableComponent extends ErrorAware implements OnInit, OnDe
       return false;
     }
 
-    // only for tis and the next day
+    // only for this and the next day
     return (date - this.lastUpdated < 1 * DateUtil.DAY);
   }
 

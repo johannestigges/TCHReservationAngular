@@ -11,6 +11,9 @@
   <div *ngIf="!isLoggedIn()">
     <a class="btn btn-secondary" href="../../login">login</a>
   </div>
+  <div *ngIf="isLoggedIn() && canLogout()">
+    <a class="btn btn-secondary" href="../../logout">logout</a>
+  </div>
 </div>
 
 <table *ngIf="occupationTable.systemConfig" class="occupation_table">
@@ -39,16 +42,15 @@
             <td *ngIf="cell.data.text && canModify(cell.data)" [attr.rowspan]="cell.rowspan"
               [attr.colspan]="cell.colspan" class="type{{cell.data.type}} deletable">
               <a routerLink='/modify/{{occupationTable.systemConfig.id}}/{{cell.data.reservation.id}}'>
-                <span *ngIf="isLoggedIn()">{{cell.data.text}}</span>
-                <span *ngIf="!isLoggedIn()">Reserviert</span>
+                <span>{{cell.data.text}}</span>
               </a>
             </td>
 
             <!-- occupation entry -->
             <td *ngIf="cell.data.text && !canModify(cell.data)" [attr.rowspan]="cell.rowspan"
               [attr.colspan]="cell.colspan" class="type{{cell.data.type}}">
-              <span *ngIf="isLoggedIn()">{{cell.data.text}}</span>
-              <span *ngIf="!isLoggedIn()">Reserviert</span>
+              <span *ngIf="canShowText(cell.data)">{{cell.data.text}}</span>
+              <span *ngIf="!canShowText(cell.data)">Reserviert</span>
             </td>
 
             <!-- available cell with link to add reservation -->
@@ -80,9 +82,6 @@
 <!-- show menu -->
 <div class="col-md-12">
   <span *ngIf="isLoggedIn()">
-    <span *ngIf="canLogout()">
-      <a class="menu_link" href='../../logout'>logout</a>
-    </span>
     <span *ngIf="canChangePassword()">
       <a class="menu_link" href='../user/modify/{{occupationTable.user.id}}'>Kennwort ändern</a>
     </span>

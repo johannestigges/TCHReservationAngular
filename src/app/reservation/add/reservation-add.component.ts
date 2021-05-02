@@ -37,6 +37,7 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
 
   showType: boolean;
   showText: boolean;
+  showSimpleDuration: boolean;
   showDuration: boolean;
   showRepeat: boolean;
   showDouble: boolean;
@@ -58,6 +59,7 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
 
     this.showType = false;
     this.showText = false;
+    this.showSimpleDuration = false;
     this.showDuration = false;
     this.showRepeat = false;
     this.focus = 'date';
@@ -68,7 +70,7 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
       this.user.name,                 // text = user name
       DateUtil.getDatePart(start),    // reservation Date
       DateUtil.getTimePart(start),    // reservation start
-      2,                              // duration default
+      1,                              // duration default
       court,                          // court
       ReservationType.Quickbuchung,   // default type
     );
@@ -100,7 +102,10 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
     // this depends on the user role
     this.showType = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
     this.showText = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
-    this.showDuration = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
+    this.showSimpleDuration = this.systemConfig.durationUnitInMinutes === 30
+      && !this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
+    this.showDuration = !this.showSimpleDuration
+      && this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
     this.showRepeat = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
     if (this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER)) { this.focus = 'date'; }
     if (this.user.hasRole(UserRole.TRAINER)) { this.focus = 'duration'; }
@@ -129,9 +134,10 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
       this.type = ReservationType[ReservationType.Training];
       this.reservation.text = this.user.name;
     }
-
     this.time = this.reservation.start;
+    this.reservation.duration = this.systemConfig.getDurationDefault();
     this.type = ReservationType[this.reservation.type];
+    console.log("blabla ", this.showDuration, this.showSimpleDuration);
   }
 
   getDate() {
