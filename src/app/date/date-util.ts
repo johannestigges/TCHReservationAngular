@@ -63,7 +63,12 @@ export class DateUtil {
   static now(): number {
     return new Date().getTime();
   }
-  static show(date: number): string {
-    return this.toDate(date).toLocaleString();
+  static showDate(date: number): string {
+    return this.toDate(date).toLocaleDateString();
+  }
+
+  static addDays(date: Date, days: number): Date {
+    date.setDate(date.getDate() + days);
+    return date;
   }
 }

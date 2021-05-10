@@ -124,7 +124,7 @@ export class OccupationTableComponent extends ErrorAware implements OnInit, OnDe
   }
 
   canShowText(occupation: Occupation) {
-    return ReservationType[occupation.type] !== ReservationType[ReservationType.Quickbuchung] 
+    return ReservationType[occupation.type] !== ReservationType[ReservationType.Quickbuchung]
       || this.isLoggedIn();
   }
 

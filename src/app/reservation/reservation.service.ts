@@ -19,6 +19,10 @@ export class ReservationService {
     return this.httpClient.get<Reservation>(`${this.url()}get/${id}`);
   }
 
+  getOccupation(id: number) {
+    return this.httpClient.get<Occupation>(`${this.url()}get/occupation/${id}`);
+  }
+
   getOccupations(systemConfigId: number, date: number): Observable<Occupation[]> {
     return this.httpClient.get<Occupation[]>(`${this.url()}getOccupations/${systemConfigId}/${date}`);
   }
@@ -27,16 +31,16 @@ export class ReservationService {
     return this.httpClient.post<Reservation>(`${this.url()}add`, reservation);
   }
 
-  updateReservation(reservation: Reservation): Observable<Reservation> {
-    return this.httpClient.put<Reservation>(`${this.url()}update`, reservation);
+  updateOccupation(occupation: Occupation): Observable<Occupation> {
+    return this.httpClient.put<Occupation>(`${this.url()}update/occupation`, occupation);
   }
 
   terminateReservation(reservation: Reservation): Observable<Reservation> {
     return this.httpClient.put<Reservation>(this.url() + 'terminate', reservation);
   }
 
-  deleteReservation(id: number): Observable<Reservation> {
-    return this.httpClient.delete<Reservation>(`${this.url()}delete/${id}`);
+  deleteOccupation(id: number): Observable<Occupation> {
+    return this.httpClient.delete<Occupation>(`${this.url()}delete/occupation/${id}`);
   }
 
   getSystemConfig(systemId: number): Observable<ReservationSystemConfig> {

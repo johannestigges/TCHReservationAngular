@@ -3,7 +3,9 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CookieService } from 'ngx-cookie-service';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -21,6 +23,7 @@ import { AutofocusDirective } from './autofocus.directive';
 import { LoginComponent } from './login/login.component';
 import { ShowErrorComponent } from './show-error/show-error.component';
 import { CorsInterceptor } from './cors-interceptor';
+import { from } from 'rxjs';
 // import { KeyPipe } from './key-pipe';
 
 
@@ -40,6 +43,8 @@ import { CorsInterceptor } from './cors-interceptor';
     ],
     imports: [
         BrowserModule,
+        BrowserAnimationsModule,
+        BsDatepickerModule.forRoot(),
         AppRoutingModule,
         RouterModule,
         FormsModule,
@@ -51,11 +56,11 @@ import { CorsInterceptor } from './cors-interceptor';
         ProtocolService,
         CookieService,
         {
-        provide: HTTP_INTERCEPTORS,
-        useClass: CorsInterceptor,
-        multi: true
-    }
-],
+            provide: HTTP_INTERCEPTORS,
+            useClass: CorsInterceptor,
+            multi: true
+        }
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

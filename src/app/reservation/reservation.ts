@@ -1,9 +1,11 @@
 import { ReservationType } from './reservationtype';
 import { User } from './../user/user';
+import { Occupation } from './occupation';
 
 export class Reservation {
 
   public id: number;
+  public occupations: Occupation[];
 
   constructor(
     public systemConfigId: number, //
@@ -14,7 +16,8 @@ export class Reservation {
     public duration: number, //
     public courts: string, //
     public type: ReservationType, //
-    public weeklyRepeatUntil?: number) {
+    public repeatType?: string, // null, daily, weekly
+    public repeatUntil?: number) {
     this.id = Math.floor(Math.random() * 100000000);
   }
 

@@ -13,6 +13,7 @@ import { User } from '../../user/user';
 import { UserRole } from '../../user/user-role.enum';
 import { DateUtil } from '../../date/date-util';
 import { CookieService } from 'ngx-cookie-service';
+import { ActivationStatus } from 'src/app/user/activation-status.enum';
 
 @Component({
   selector: 'tch-reservation-add',
@@ -25,7 +26,8 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
   user: User;
   reservation: Reservation;
 
-  repeat: number;
+  repeatUntil: Date;
+  repeatMinDate: Date;
   time: number;
   type: string;
   player1: string;
@@ -57,6 +59,8 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
     const start = parseInt(this.route.snapshot.params.date, 10);
     const court = this.route.snapshot.params.court;
 
+    this.repeatMinDate = DateUtil.addDays(new Date(), 1);
+
     this.showType = false;
     this.showText = false;
     this.showSimpleDuration = false;
@@ -66,7 +70,7 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
     this.user = new User(0, '', UserRole.ANONYMOUS);
     this.reservation = new Reservation(
       0,                              // Reservarion System Config Id
-      this.user,                      // user
+      null,                           // user
       this.user.name,                 // text = user name
       DateUtil.getDatePart(start),    // reservation Date
       DateUtil.getTimePart(start),    // reservation start
@@ -86,8 +90,8 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
         this.reservation.systemConfigId = this.systemConfig.id;
         this.userService.getLoggedInUser().subscribe(
           user => {
-            this.user = new User(user.id, user.name, UserRole['' + user.role]);
-            this.reservation.user = this.user;
+            this.user = new User(user.id, user.name,
+              UserRole['' + user.role], ActivationStatus['' + user.status]);
             this.init(start);
           },
           usererror => this.httpError = usererror
@@ -137,7 +141,6 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
     this.time = this.reservation.start;
     this.reservation.duration = this.systemConfig.getDurationDefault();
     this.type = ReservationType[this.reservation.type];
-    console.log("blabla ", this.showDuration, this.showSimpleDuration);
   }
 
   getDate() {
@@ -167,6 +170,7 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
     this.clearError();
     this.reservation.type = ReservationType[this.type];
     this.reservation.start = this.time;
+    this.reservation.repeatUntil = this.repeatUntil?.getTime();
     if (!this.showText) {
       this.cookieService.set('player1', this.player1, 30);
       this.cookieService.set('player2', this.player2, 30);
@@ -181,12 +185,17 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
       this.cookieService.set('text', this.reservation.text, 30);
     }
     this.service.addReservation(this.reservation).subscribe(
-        data => {
-          this.reservation = data;
-          this.onBack();
-        },
-        err => this.httpError = err
-      );
+      data => {
+        this.reservation = data;
+        let msg = `Es wurden ${this.reservation.occupations.length} Platzbelegungen angelegt.`;
+        for (const o of this.reservation.occupations) {
+          msg += `\n${DateUtil.showDate(o.date)} ${o.start}`;
+        }
+        alert(msg);
+        this.onBack();
+      },
+      err => this.httpError = err
+    );
   }
 
   onBack() {

@@ -14,7 +14,7 @@ const routes: Routes = [
     { path: 'table/:system', component: OccupationTableComponent },
     { path: 'table/:system/:date', component: OccupationTableComponent },
     { path: 'add/:system/:court/:date', component: ReservationAddComponent },
-    { path: 'modify/:system/:reservation', component: ReservationModifyComponent },
+    { path: 'modify/:system/:occupation', component: ReservationModifyComponent },
     { path: 'user', component: UserTableComponent },
     { path: 'protocol', component: ProtocolTableComponent },
     { path: 'user/add', component: UserAddComponent },

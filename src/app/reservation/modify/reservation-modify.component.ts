@@ -5,13 +5,14 @@ import { Router } from '@angular/router';
 import { ReservationType } from '../reservationtype';
 import { ReservationService } from '../reservation.service';
 import { ReservationSystemConfig } from '../reservation-system-config';
-import { Reservation } from '../reservation';
 import { ErrorAware } from '../../error/error-aware';
 
 import { UserService } from '../../user/user.service';
 import { User } from '../../user/user';
 import { UserRole } from '../../user/user-role.enum';
 import { DateUtil } from '../../date/date-util';
+import { Occupation } from '../occupation';
+import { ActivationStatus } from 'src/app/user/activation-status.enum';
 
 @Component({
     selector: 'tch-reservation-modify',
@@ -22,16 +23,14 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit, On
 
     systemConfig: ReservationSystemConfig;
     user: User;
-    reservation: Reservation;
+    occupation: Occupation;
 
-    repeat: number;
     time: number;
     type: string;
 
     types: string[];
 
     showType: boolean;
-    showRepeat: boolean;
     focus: string;
 
     constructor(
@@ -44,12 +43,11 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit, On
 
     ngOnInit() {
         const systemId = this.route.snapshot.params.system;
-        const reservationId: number = this.route.snapshot.params.reservation;
+        const occupationId: number = this.route.snapshot.params.occupation;
         this.showType = false;
-        this.showRepeat = false;
         this.focus = 'date';
 
-        // create option list of occupation types
+        // create option list of reservation types
         this.types = Object.keys(ReservationType).map(key => ReservationType[key])
             .filter(value => typeof value === 'string');
 
@@ -58,15 +56,15 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit, On
                 this.systemConfig = ReservationSystemConfig.of(config);
                 this.userService.getLoggedInUser().subscribe(
                     user => {
-                        this.user = new User(user.id, user.name, UserRole['' + user.role]);
-                        this.service.getReservation(reservationId).subscribe(
-                            reservation => {
-                                this.reservation = reservation;
-                                this.time = this.reservation.start;
-                                this.type = ReservationType[this.reservation.type];
+                        this.user = new User(user.id, user.name, UserRole['' + user.role], ActivationStatus['' + user.status]);
+                        this.service.getOccupation(occupationId).subscribe(
+                            occupation => {
+                                this.occupation = occupation;
+                                this.time = this.occupation.start;
+                                this.type = ReservationType[this.occupation.type];
                                 this.update();
                             },
-                            reservationerror => this.httpError = reservationerror
+                            occupationerror => this.httpError = occupationerror
                         );
                     },
                     usererror => this.httpError = usererror
@@ -77,7 +75,7 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit, On
     }
 
     ngOnDestroy(): void {
-        this.reservation = undefined;
+        this.occupation = undefined;
         this.user = undefined;
         this.systemConfig = undefined;
         this.clearError();
@@ -87,7 +85,6 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit, On
         // decide which parts of the layout are visible
         // this depends on the user role
         this.showType = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
-        this.showRepeat = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
         if (this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER)) { this.focus = 'date'; }
         if (this.user.hasRole(UserRole.TRAINER)) { this.focus = 'duration'; }
         if (this.user.hasRole(UserRole.REGISTERED)) { this.focus = 'duration'; }
@@ -95,38 +92,38 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit, On
     }
 
     public canEdit(): boolean {
-        if (!this.reservation) {
+        if (!this.occupation) {
             return false;
         }
         if (this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER)) {
             return true;
         }
-        if (this.user.id === this.reservation.user.id) {
+        if (this.user.id === this.occupation.reservation.user.id) {
             return true;
         }
         return false;
     }
 
     public canTerminate() {
-        if (!this.reservation) {
+        if (!this.occupation) {
             return false;
         }
-        const start = DateUtil.ofDateAndTime(this.reservation.date, this.reservation.start).getTime();
-        const end = this.systemConfig.getReservationEnd(this.reservation);
+        const start = DateUtil.ofDateAndTime(this.occupation.date, this.occupation.start).getTime();
+        const end = this.systemConfig.getReservationEnd(this.occupation.reservation);
         const now = DateUtil.now();
         return start < now && end > now;
     }
 
     canDelete() {
-        if (!this.reservation) {
+        if (!this.occupation) {
             return false;
         }
         return this.canEdit();
     }
 
     getDate() {
-        if (this.reservation) {
-            return DateUtil.toDate(this.reservation.date).toLocaleDateString();
+        if (this.occupation) {
+            return DateUtil.toDate(this.occupation.date).toLocaleDateString();
         }
     }
 
@@ -135,7 +132,7 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit, On
     }
 
     onDurationChanged(duration: number) {
-        this.reservation.duration = duration;
+        this.occupation.duration = duration;
     }
 
     getTimes() {
@@ -150,17 +147,9 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit, On
         }
     }
 
-
-    //    getDate( date: number ) {
-    //        const d = new Date();
-    //        d.setTime( date );
-    //        return d;
-    //    }
-
-
     onDelete() {
         this.clearError();
-        this.service.deleteReservation(this.reservation.id)
+        this.service.deleteOccupation(this.occupation.id)
             .subscribe(
                 data => this.onBack(),
                 err => this.httpError = err
@@ -170,17 +159,17 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit, On
     onTerminate() {
         this.clearError();
         const now = new Date().getTime();
-        while (this.systemConfig.getReservationEnd(this.reservation) > now) {
-            this.reservation.duration--;
+        while (this.systemConfig.getOccupationEnd(this.occupation) > now) {
+            this.occupation.duration--;
         }
-        if (this.reservation.duration > 0) {
-            this.service.updateReservation(this.reservation)
+        if (this.occupation.duration > 0) {
+            this.service.updateOccupation(this.occupation)
                 .subscribe(
                     data => this.onBack(),
                     error => this.httpError = error
                 );
         } else {
-            this.service.deleteReservation(this.reservation.id)
+            this.service.deleteOccupation(this.occupation.id)
                 .subscribe(
                     data => this.onBack(),
                     error => this.httpError = error
@@ -190,9 +179,9 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit, On
 
     onUpdate() {
         this.clearError();
-        this.reservation.type = ReservationType[this.type];
-        this.reservation.start = this.time;
-        this.service.updateReservation(this.reservation)
+        this.occupation.type = ReservationType[this.type];
+        this.occupation.start = this.time;
+        this.service.updateOccupation(this.occupation)
             .subscribe(
                 data => this.onBack(),
                 err => this.httpError = err
@@ -200,6 +189,6 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit, On
     }
 
     onBack() {
-        this.router.navigate(['/table', this.systemConfig.id, this.reservation.date]);
+        this.router.navigate(['/table', this.systemConfig.id, this.occupation.date]);
     }
 }

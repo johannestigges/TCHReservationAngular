@@ -1,4 +1,4 @@
-<div *ngIf="reservation" class="container">
+<div *ngIf="occupation" class="container">
 
 	<form class="form-horizontal">
 
@@ -29,7 +29,7 @@
 			<div class="row col-sm-10">
 				<div class="col-sm-4">
 					<select class="form-control" id="court" 
-						[(ngModel)]="reservation.courts" name="court">
+						[(ngModel)]="occupation.court" name="court">
 						<option *ngFor="let court of systemConfig.getCourtsArray()" [value]="court">
 							{{court}}</option>
 					</select>
@@ -51,7 +51,7 @@
 		<div class="form-group">
 			<label class="col-sm-2 control-label">Text:</label>
 			<div class="col-sm-10">
-				<input type="text" class="form-control" [(ngModel)]="reservation.text" name='text' required
+				<input type="text" class="form-control" [(ngModel)]="occupation.text" name='text' required
 					[tchAppAutofocus]='( focus === "text" )'>
 			</div>
 		</div>
@@ -61,7 +61,7 @@
 			<label class="col-sm-2 control-label">Dauer:</label>
 			<div class="row col-sm-10">
 				<div class="col-sm-4">
-					<input type="text" class="form-control" [(ngModel)]="reservation.duration" 
+					<input type="text" class="form-control" [(ngModel)]="occupation.duration" 
 						name="duration" size="1" [tchAppAutofocus]='( focus === "duration" )'>
 				</div>
 				<div class="col-sm-8">
@@ -69,16 +69,6 @@
 				</div>
 			</div>
 		</div>
-
-		<!-- duration repeat -->
-		<!--  not working yet
-		<div *ngIf='showRepeat' class="form-group">
-			<label class="col-sm-2 control-label">Wiederholung bis:</label>
-			<div class="col-sm-10">
-				<input type="text" class="form-control" [(ngModel)]="repeat" name='repeat'>
-			</div>
-		</div>
-		-->
 
 		<!-- error -->
 		<div class="form-group">
