@@ -66,6 +66,9 @@ export class DateUtil {
   static showDate(date: number): string {
     return this.toDate(date).toLocaleDateString();
   }
+  static showTime(time: number): string {
+    return this.toDate(time).toLocaleTimeString();
+  }
 
   static addDays(date: Date, days: number): Date {
     date.setDate(date.getDate() + days);

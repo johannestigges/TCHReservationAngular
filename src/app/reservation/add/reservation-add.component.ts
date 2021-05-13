@@ -187,11 +187,13 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
     this.service.addReservation(this.reservation).subscribe(
       data => {
         this.reservation = data;
-        let msg = `Es wurden ${this.reservation.occupations.length} Platzbelegungen angelegt.`;
-        for (const o of this.reservation.occupations) {
-          msg += `\n${DateUtil.showDate(o.date)} ${o.start}`;
+        if (this.reservation.occupations.length > 1) {
+          let msg = `Es wurden ${this.reservation.occupations.length} Platzbelegungen angelegt.`;
+          for (const o of this.reservation.occupations) {
+            msg += `\n${DateUtil.showDate(o.date)} ${DateUtil.showTime(o.start)}`;
+          }
+          alert(msg);
         }
-        alert(msg);
         this.onBack();
       },
       err => this.httpError = err
