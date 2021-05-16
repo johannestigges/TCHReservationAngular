@@ -9,10 +9,10 @@
     <button (click)="onNextWeek()" title="Eine Woche vor" class="btn btn-space">&gt;&gt;</button>
   </div>
   <div *ngIf="!isLoggedIn()">
-    <a class="btn btn-secondary" href="../../login">login</a>
+    <a class="btn btn-outline-secondary" href="../../login">login</a>
   </div>
   <div *ngIf="isLoggedIn() && canLogout()">
-    <a class="btn btn-secondary" href="../../logout">logout</a>
+    <a class="btn btn-outline-secondary" href="../../logout">logout</a>
   </div>
 </div>
 

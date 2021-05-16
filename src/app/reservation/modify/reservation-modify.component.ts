@@ -27,6 +27,7 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit, On
 
     time: number;
     type: string;
+    court: number;
 
     types: string[];
 
@@ -62,6 +63,7 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit, On
                                 this.occupation = occupation;
                                 this.time = this.occupation.start;
                                 this.type = ReservationType[this.occupation.type];
+                                this.court = this.occupation.court;
                                 this.update();
                             },
                             occupationerror => this.httpError = occupationerror
@@ -181,6 +183,10 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit, On
         this.clearError();
         this.occupation.type = ReservationType[this.type];
         this.occupation.start = this.time;
+        if (this.court != this.occupation.court) {
+            this.occupation.court = this.court;
+            this.occupation.lastCourt = this.court;
+        }
         this.service.updateOccupation(this.occupation)
             .subscribe(
                 data => this.onBack(),

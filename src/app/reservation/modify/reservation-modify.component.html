@@ -29,7 +29,7 @@
 			<div class="row col-sm-10">
 				<div class="col-sm-4">
 					<select class="form-control" id="court" 
-						[(ngModel)]="occupation.court" name="court">
+						[(ngModel)]="court" name="court">
 						<option *ngFor="let court of systemConfig.getCourtsArray()" [value]="court">
 							{{court}}</option>
 					</select>
@@ -80,15 +80,15 @@
 		<!-- Buttons -->
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
+				<button *ngIf="canEdit()" (click)='onUpdate()'
+					class="btn btn-lg btn-block btn-primary">Speichern</button>
 				<button *ngIf="canDelete()" (click)="onDelete()"
-					class="btn btn-lg btn-block btn-primary">Löschen</button>
+					class="btn btn-lg btn-block btn-outline-secondary">Löschen</button>
 				<!-- not working yet
-						<button *ngIf="canEdit()" (click)='onUpdate()'
-						class="btn btn-lg btn-block btn-primary">Speichern</button>
-						<button *ngIf="canTerminate()" (click)='onTerminate()' class="btn btn-lg btn-block btn-primary">Platz
-							freigeben</button>
-						-->
-				<button (click)="onBack()" class="btn btn-lg btn-block">Zurück</button>
+					<button *ngIf="canTerminate()" (click)='onTerminate()' class="btn btn-lg btn-block btn-outline-secondary">Platz
+						freigeben</button>
+				-->
+				<button (click)="onBack()" class="btn btn-lg btn-block btn-outline-dark">Zurück</button>
 			</div>
 		</div>
 	</form>
