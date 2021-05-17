@@ -17,10 +17,10 @@
 			<td>{{user.email}}</td>
 			<td>{{user.role}}</td>
 			<td>{{user.status}}</td>
-			<td><a class="btn" routerLink='/user/modify/{{user.id}}'>ändern</a></td>
+			<td><a class="btn btn-outline-secondary" routerLink='/user/modify/{{user.id}}'>ändern</a></td>
 		</tr>
 	</tbody>
 </table>
-<a class="btn btn-lg" routerLink='/user/add'>Neuen Benutzer anlegen</a>
-<button class="btn btn-lg btn-primary" (click)="cancel()">Zurück</button>
 <tch-show-error [httpError]="httpError" [errorMessages]="errorMessages"></tch-show-error>
+<a class="btn btn-lg btn-outline-secondary" routerLink='/user/add'>Neuen Benutzer anlegen</a>
+<button class="btn btn-lg btn-outline-dark" (click)="cancel()">Zurück</button>

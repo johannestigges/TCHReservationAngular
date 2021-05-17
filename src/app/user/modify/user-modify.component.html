@@ -10,8 +10,7 @@
 		<div class="form-group">
 			<label class="col-sm-2 control-label">Name:</label>
 			<div class="col-sm-10">
-				<input type="text" class="form-control" name="name"
-					[(ngModel)]="user.name" required>
+				<input type="text" class="form-control" name="name" [(ngModel)]="user.name" required>
 			</div>
 		</div>
 
@@ -19,8 +18,7 @@
 		<div class="form-group">
 			<label class="col-sm-2 control-label">EMail:</label>
 			<div class="col-sm-10">
-				<input type="email" class="form-control" name="email"
-					[(ngModel)]="user.email" required>
+				<input type="email" class="form-control" name="email" [(ngModel)]="user.email" required>
 			</div>
 		</div>
 
@@ -28,8 +26,7 @@
 		<div class="form-group">
 			<label class="col-sm-2 control-label">Password:</label>
 			<div class="col-sm-10">
-				<input type="password" class="form-control" name="password"
-					[(ngModel)]="user.password" required>
+				<input type="password" class="form-control" name="password" [(ngModel)]="user.password" required>
 			</div>
 		</div>
 
@@ -37,8 +34,8 @@
 		<div class="form-group">
 			<label class="col-sm-2 control-label">Passwort bestätigen:</label>
 			<div class="col-sm-10">
-				<input type="password" class="form-control" name="confirmPassword"
-					[(ngModel)]="confirmPassword" required>
+				<input type="password" class="form-control" name="confirmPassword" [(ngModel)]="confirmPassword"
+					required>
 			</div>
 		</div>
 
@@ -56,7 +53,7 @@
 			<label class="col-sm-2 control-label">Status:</label>
 			<div class="col-sm-10">
 				<select class="form-control" id="type" [(ngModel)]="userStatus" name="status">
-					<option *ngFor="let s of statusValues" [value]="s"s>{{s}}</option>
+					<option *ngFor="let s of statusValues" [value]="s" s>{{s}}</option>
 				</select>
 			</div>
 		</div>
@@ -72,7 +69,7 @@
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
 				<button (click)="onClick()" class="btn btn-lg btn-block btn-primary">Daten speichern</button>
-				<button (click)="cancel()" class="btn btn-lg btn-block">Zurück</button>
+				<button (click)="cancel()" class="btn btn-lg btn-block btn-outline-dark">Zurück</button>
 			</div>
 		</div>
 	</form>

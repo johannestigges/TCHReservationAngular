@@ -183,7 +183,7 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit, On
         this.clearError();
         this.occupation.type = ReservationType[this.type];
         this.occupation.start = this.time;
-        if (this.court != this.occupation.court) {
+        if (this.court !== this.occupation.court) {
             this.occupation.court = this.court;
             this.occupation.lastCourt = this.court;
         }
