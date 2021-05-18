@@ -1,5 +1,4 @@
 <h2>Protokolle</h2>
-<button class="btn btn-lg btn-outline-dark" (click)="cancel()">Zurück</button>
 <table class="table table-bordered table-striped">
 	<thead>
 		<tr>
@@ -8,21 +7,27 @@
 			<th>Aktion</th>
 			<th>Datentyp</th>
 			<th>DatenId</th>
-			<th>Wert</th>
 			<th>Benutzer</th>
+			<th>Wert</th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr *ngFor="let protocol of protocols">
 			<td>{{protocol.id}}</td>
-			<td>{{protocol.time}}</td>
+			<td>{{this.date(protocol.time)}}</td>
 			<td>{{protocol.actionType}}</td>
 			<td>{{protocol.entityType}}</td>
 			<td>{{protocol.entityId}}</td>
-			<td>{{protocol.value}}</td>
 			<td>{{protocol.user.name}}</td>
+			<td>
+				<div *ngFor="let kv of value(protocol) | keyvalue">
+					<span class="key">{{kv.key}}</span> = 
+					<span class="value">{{kv.value}}</span>
+				</div>
+			</td>
 		</tr>
 	</tbody>
 </table>
 <tch-show-error [httpError]="httpError" [errorMessages]="errorMessages"></tch-show-error>
+<button class="btn btn-lg btn-primary" (click)="next()">Ältere</button>
 <button class="btn btn-lg btn-outline-dark" (click)="cancel()">Zurück</button>
