@@ -10,7 +10,7 @@ export class ReservationSystemConfig {
   constructor(
     public id: number,              // system configuration id
     public name: string,            // name of reservation system
-    public courts: number,          // number of available courts
+    public courts: string[],    // names of courts
     public durationUnitInMinutes: number, // smallest reservation unit
     public openingHour: number,     // first reservation hour
     public closingHour: number,     // last reservation hour
@@ -31,10 +31,14 @@ export class ReservationSystemConfig {
   }
 
   /**
-   * get array of court [1,2,3,...]
+   * get array of court indices [0,1,2,3,...]
    */
-  public getCourtsArray(): number[] {
-    return Array.from(new Array(this.courts), (val, index) => index + 1);
+  public getCourtIndices(): number[] {
+    return Array.from(new Array(this.courts.length), (val, index) => index);
+  }
+
+  public getCourtName(index: number): string {
+    return this.courts[index];
   }
 
   /**

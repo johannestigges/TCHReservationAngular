@@ -20,7 +20,8 @@
   <thead>
     <tr>
       <th>Zeit</th>
-      <th *ngFor="let court of occupationTable.systemConfig.getCourtsArray()">Platz {{court}}</th>
+      <th *ngFor="let index of occupationTable.systemConfig.getCourtIndices()">
+        {{occupationTable.systemConfig.getCourtName(index)}}</th>
     </tr>
   </thead>
   <tbody>

@@ -67,7 +67,7 @@ export class OccupationTable extends TableData {
             this.setCell(row, 0, 1);
             this.setData(row, 0, { time: this.showTime(row), short_time: this.showShortTime(row) });
             // courts
-            for (let column = 0; column < this.systemConfig.courts; column++) {
+            for (let column = 0; column < this.systemConfig.courts.length; column++) {
                 this.createAvailableEntry(row, column + 1, rowspan);
             }
         }

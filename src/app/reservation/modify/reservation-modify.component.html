@@ -28,10 +28,9 @@
 			<label class="col-sm-2 control-label">Platz:</label>
 			<div class="row col-sm-10">
 				<div class="col-sm-4">
-					<select class="form-control" id="court" 
-						[(ngModel)]="court" name="court">
-						<option *ngFor="let court of systemConfig.getCourtsArray()" [value]="court">
-							{{court}}</option>
+					<select class="form-control" id="court" [(ngModel)]="court" name="court">
+						<option *ngFor="let index of systemConfig.getCourtIndices()" [value]="index + 1">
+							{{systemConfig.getCourtName(index)}}</option>
 					</select>
 				</div>
 			</div>
@@ -61,8 +60,8 @@
 			<label class="col-sm-2 control-label">Dauer:</label>
 			<div class="row col-sm-10">
 				<div class="col-sm-4">
-					<input type="text" class="form-control" [(ngModel)]="occupation.duration" 
-						name="duration" size="1" [tchAppAutofocus]='( focus === "duration" )'>
+					<input type="text" class="form-control" [(ngModel)]="occupation.duration" name="duration" size="1"
+						[tchAppAutofocus]='( focus === "duration" )'>
 				</div>
 				<div class="col-sm-8">
 					mal {{systemConfig.durationUnitInMinutes}} Minuten

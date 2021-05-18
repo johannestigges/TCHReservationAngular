@@ -11,24 +11,12 @@
 			<label class="col-sm-2 control-label">Zeit:</label>
 			<div class="row col-sm-10">
 				<div class="col-sm-6">
-					<input 
-						type="text" 
-						name="date" 
-						class="form-control" 
-						size="8" 
-						readonly 
-						[value]="getDate()"
+					<input type="text" name="date" class="form-control" size="8" readonly [value]="getDate()"
 						[tchAppAutofocus]='(focus === "date")'>
 				</div>
 				<div class="col-sm-6">
-					<select 
-						name="time" 
-						id="time" 
-						class="form-control" 
-						[(ngModel)]="time">
-						<option 
-							*ngFor="let t of getTimes()" 
-							[value]="t">
+					<select name="time" id="time" class="form-control" [(ngModel)]="time">
+						<option *ngFor="let t of getTimes()" [value]="t">
 							{{duration(t)}}
 						</option>
 					</select>
@@ -41,15 +29,9 @@
 			<label class="col-sm-2 control-label">Platz:</label>
 			<div class="row col-sm-10">
 				<div class="col-sm-4">
-					<select 
-						class="form-control" 
-						name="court" 
-						id="court" 
-						[(ngModel)]="reservation.courts">
-						<option 
-							*ngFor="let court of systemConfig.getCourtsArray()"
-							[value]="court">
-							{{court}}
+					<select class="form-control" name="court" id="court" [(ngModel)]="reservation.courts">
+						<option *ngFor="let index of systemConfig.getCourtIndices()" [value]="index + 1">
+							{{systemConfig.getCourtName(index)}}
 						</option>
 					</select>
 				</div>
@@ -60,14 +42,8 @@
 		<div *ngIf="showType" class="form-group">
 			<label class="col-sm-2 control-label">Typ:</label>
 			<div class="col-sm-10">
-				<select 
-					id="type" 
-					name="type" 
-					class="form-control" 
-					[(ngModel)]="type">
-					<option 
-						*ngFor="let type of types" 
-						[value]="type">
+				<select id="type" name="type" class="form-control" [(ngModel)]="type">
+					<option *ngFor="let type of types" [value]="type">
 						{{type}}
 					</option>
 				</select>
@@ -78,53 +54,28 @@
 		<div *ngIf="showText" class="form-group">
 			<label class="col-sm-2 control-label">Text:</label>
 			<div class="col-sm-10">
-				<input 
-					type="text" 
-					class="form-control" 
-					[(ngModel)]="reservation.text" 
-					name="text" 
-					required
+				<input type="text" class="form-control" [(ngModel)]="reservation.text" name="text" required
 					[tchAppAutofocus]='( focus === "text" )'>
 			</div>
 		</div>
 		<div *ngIf="!showText" class="form-group">
 			<label class="col-sm-2 control-label">Spieler 1:</label>
 			<div class="col-sm-10">
-				<input 
-					type="text" 
-					class="form-control" 
-					[(ngModel)]="player1" 
-					name="text" 
-					required
+				<input type="text" class="form-control" [(ngModel)]="player1" name="text" required
 					[tchAppAutofocus]='( focus === "text" )'>
 			</div>
 			<label class="col-sm-2 control-label">Spieler 2:</label>
 			<div class="col-sm-10">
-				<input 
-					type="text" 
-					class="form-control" 
-					[(ngModel)]="player2" 
-					name="spieler2" 
-					required>
+				<input type="text" class="form-control" [(ngModel)]="player2" name="spieler2" required>
 			</div>
 			<div *ngIf="showDouble">
 				<label class="col-sm-2 control-label">Spieler 3:</label>
 				<div class="col-sm-10">
-					<input 
-						type="text" 
-						class="form-control" 
-						[(ngModel)]="player3" 
-						name="spieler3" 
-						required>
+					<input type="text" class="form-control" [(ngModel)]="player3" name="spieler3" required>
 				</div>
 				<label class="col-sm-2 control-label">Spieler 4:</label>
 				<div class="col-sm-10">
-					<input
-						type="text" 
-						class="form-control" 
-						[(ngModel)]="player4" 
-						name="spieler4" 
-						required>
+					<input type="text" class="form-control" [(ngModel)]="player4" name="spieler4" required>
 				</div>
 			</div>
 		</div>
@@ -134,12 +85,7 @@
 			<label class="col-sm-2 control-label">Dauer:</label>
 			<div class="row col-sm-10">
 				<div class="col-sm-4">
-					<input 
-						type="text" 
-						class="form-control" 
-						[(ngModel)]="reservation.duration" 
-						name='duration' 
-						size="1"
+					<input type="text" class="form-control" [(ngModel)]="reservation.duration" name='duration' size="1"
 						[tchAppAutofocus]='( focus === "duration" )'>
 				</div>
 				<div class="col-sm-8">
@@ -154,22 +100,15 @@
 			<div class="row col-sm-10">
 				<div class="col-sm-12 radio">
 					<label>
-						<input 
-							type="radio" 
-							name="duration" 
-							(change)="onDurationChanged(2)" 
-							checked
+						<input type="radio" name="duration" (change)="onDurationChanged(2)" checked
 							[tchAppAutofocus]='( focus === "duration" )'>
-							Einzel (60 Minuten)
+						Einzel (60 Minuten)
 					</label>
 				</div>
 				<div class="col-sm-12 radio">
 					<label>
-						<input 
-							type="radio"
-							name="duration" 
-							(change)="onDurationChanged(3)">
-							Doppel (90 Minuten)
+						<input type="radio" name="duration" (change)="onDurationChanged(3)">
+						Doppel (90 Minuten)
 					</label>
 				</div>
 			</div>
@@ -180,29 +119,20 @@
 			<label class="col-sm-2 control-label">Wiederholung</label>
 			<div class="row col-sm-10">
 				<div class="col-sm-6">
-					<select 
-						id="repeat_type" 
-						name="repeat_type" 
-						class="form-control"
+					<select id="repeat_type" name="repeat_type" class="form-control"
 						[(ngModel)]="reservation.repeatType">
 						<option selected value="">keine</option>
 						<option value="daily">täglich</option>
 						<option value="weekly">wöchentlich</option>
 					</select>
 				</div>
-				<div class="col-sm-6"
-					*ngIf="reservation.repeatType ==='daily' || reservation.repeatType ==='weekly'">
+				<div class="col-sm-6" *ngIf="reservation.repeatType ==='daily' || reservation.repeatType ==='weekly'">
 					<div style='display: flex'>
 						<label class='control-label'>bis &nbsp;&nbsp;</label>
-						<input 
-						name="repeatUntil"
-						[(ngModel)]="repeatUntil"
-						type="text" 
-						placeholder="tt.mm.jjjj" 
-						class="form-control"
-						bsDatepicker
-						[bsConfig]="{ dateInputFormat: 'DD.MM.YYYY', containerClass: 'theme-blue', isAnimated: true }"
-						[minDate]="repeatMinDate">
+						<input name="repeatUntil" [(ngModel)]="repeatUntil" type="text" placeholder="tt.mm.jjjj"
+							class="form-control" bsDatepicker
+							[bsConfig]="{ dateInputFormat: 'DD.MM.YYYY', containerClass: 'theme-blue', isAnimated: true }"
+							[minDate]="repeatMinDate">
 					</div>
 				</div>
 			</div>
