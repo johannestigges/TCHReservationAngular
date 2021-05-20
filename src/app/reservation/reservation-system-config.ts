@@ -12,7 +12,7 @@ export class ReservationSystemConfig {
     public name: string,            // name of reservation system
     public courts: string[],    // names of courts
     public durationUnitInMinutes: number, // smallest reservation unit
-    public maxDaysReservationInFuture:number, // maximum of reservation in the future for normal users
+    public maxDaysReservationInFuture: number, // maximum of reservation in the future for normal users
     public maxDuration: number,     // maximum of duration for normal users
     public openingHour: number,     // first reservation hour
     public closingHour: number,     // last reservation hour

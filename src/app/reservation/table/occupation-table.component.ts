@@ -144,7 +144,7 @@ export class OccupationTableComponent extends ErrorAware implements OnInit, OnDe
     }
 
     // only for this and some days
-    return (date - this.lastUpdated < 
+    return (date - this.lastUpdated <
       this.occupationTable.systemConfig.maxDaysReservationInFuture * DateUtil.DAY);
   }
 
