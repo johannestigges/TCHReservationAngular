@@ -12,10 +12,10 @@ export class ReservationSystemConfig {
     public name: string,            // name of reservation system
     public courts: string[],    // names of courts
     public durationUnitInMinutes: number, // smallest reservation unit
+    public maxDaysReservationInFuture:number, // maximum of reservation in the future for normal users
+    public maxDuration: number,     // maximum of duration for normal users
     public openingHour: number,     // first reservation hour
     public closingHour: number,     // last reservation hour
-    public reservationfrom: number, // reservation possible from
-    public reservationUntil: number // reservation possible until
   ) { }
 
   public static of(config: ReservationSystemConfig) {
@@ -24,10 +24,11 @@ export class ReservationSystemConfig {
       config.name,
       config.courts,
       config.durationUnitInMinutes,
+      config.maxDaysReservationInFuture,
+      config.maxDuration,
       config.openingHour,
-      config.closingHour,
-      config.reservationfrom,
-      config.reservationUntil);
+      config.closingHour
+      );
   }
 
   /**
