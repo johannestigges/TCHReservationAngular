@@ -4,15 +4,14 @@ import { ActivatedRoute } from '@angular/router';
 import { ReservationService } from '../reservation.service';
 import { OccupationTable } from './occupation-table';
 import { Occupation } from '../occupation';
-import { UserService } from '../../user/user.service';
-import { User } from '../../user/user';
-import { UserRole } from '../../user/user-role.enum';
-import { ActivationStatus } from '../../user/activation-status.enum';
-import { DateUtil } from '../../date/date-util';
-import { ErrorAware } from '../../error/error-aware';
+import { UserService } from '../../admin/user/user.service';
+import { User } from '../../admin/user/user';
+import { UserRole } from '../../admin/user/user-role.enum';
+import { ActivationStatus } from '../../admin/user/activation-status.enum';
+import { DateUtil } from '../../util/date/date-util';
+import { ErrorAware } from '../../util/error/error-aware';
 import { Observable, timer, Subscription } from 'rxjs';
 import { ReservationType } from '../reservationtype';
-
 
 @Component({
   selector: 'tch-occupation-table',

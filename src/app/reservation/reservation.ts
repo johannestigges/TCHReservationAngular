@@ -1,5 +1,5 @@
 import { ReservationType } from './reservationtype';
-import { User } from './../user/user';
+import { User } from './../admin/user/user';
 import { Occupation } from './occupation';
 
 export class Reservation {

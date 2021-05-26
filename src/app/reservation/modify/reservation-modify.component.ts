@@ -5,14 +5,14 @@ import { Router } from '@angular/router';
 import { ReservationType } from '../reservationtype';
 import { ReservationService } from '../reservation.service';
 import { ReservationSystemConfig } from '../reservation-system-config';
-import { ErrorAware } from '../../error/error-aware';
+import { ErrorAware } from '../../util/error/error-aware';
 
-import { UserService } from '../../user/user.service';
-import { User } from '../../user/user';
-import { UserRole } from '../../user/user-role.enum';
-import { DateUtil } from '../../date/date-util';
+import { UserService } from '../../admin/user/user.service';
+import { User } from '../../admin/user/user';
+import { UserRole } from '../../admin/user/user-role.enum';
+import { DateUtil } from '../../util/date/date-util';
 import { Occupation } from '../occupation';
-import { ActivationStatus } from 'src/app/user/activation-status.enum';
+import { ActivationStatus } from '../../admin/user/activation-status.enum';
 
 @Component({
     selector: 'tch-reservation-modify',

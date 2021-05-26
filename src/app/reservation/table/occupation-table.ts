@@ -1,10 +1,10 @@
-import { DateUtil } from '../../date/date-util';
-import { TableData } from '../../table/table-data';
+import { DateUtil } from '../../util/date/date-util';
+import { TableData } from '../../util/table/table-data';
 
 import { Occupation } from '../occupation';
 import { AvailableEntry } from './available-entry';
-import { User } from '../../user/user';
-import { UserRole } from '../../user/user-role.enum';
+import { User } from '../../admin/user/user';
+import { UserRole } from '../../admin/user/user-role.enum';
 import { ReservationSystemConfig } from '../reservation-system-config';
 
 export class OccupationTable extends TableData {

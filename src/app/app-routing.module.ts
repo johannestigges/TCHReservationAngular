@@ -3,10 +3,10 @@ import { RouterModule, Routes } from '@angular/router';
 import { OccupationTableComponent } from './reservation/table/occupation-table.component';
 import { ReservationAddComponent } from './reservation/add/reservation-add.component';
 import { ReservationModifyComponent } from './reservation/modify/reservation-modify.component';
-import { UserTableComponent } from './user/table/user-table.component';
-import { UserModifyComponent } from './user/modify/user-modify.component';
-import { UserAddComponent } from './user/add/user-add.component';
-import { ProtocolTableComponent } from './protocol/table/protocol-table.component';
+import { UserTableComponent } from './admin/user/table/user-table.component';
+import { UserModifyComponent } from './admin/user/modify/user-modify.component';
+import { UserAddComponent } from './admin/user/add/user-add.component';
+import { ProtocolTableComponent } from './admin/protocol/table/protocol-table.component';
 import { LoginComponent } from './login/login.component';
 
 const routes: Routes = [

@@ -7,7 +7,7 @@ import { UserService } from '../user.service';
 import { User } from '../user';
 import { UserRole } from '../user-role.enum';
 import { ActivationStatus } from '../activation-status.enum';
-import { ErrorAware } from '../../error/error-aware';
+import { ErrorAware } from '../../../util/error/error-aware';
 
 @Component({
   selector: 'tch-user-add',

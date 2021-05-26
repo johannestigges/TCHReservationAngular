@@ -3,8 +3,8 @@ import { Location } from '@angular/common';
 
 import { ProtocolService } from '../protocol.service';
 import { Protocol } from '../protocol';
-import { ErrorAware } from '../../error/error-aware';
-import { DateUtil } from 'src/app/date/date-util';
+import { ErrorAware } from '../../../util/error/error-aware';
+import { DateUtil } from '../../../util/date/date-util';
 
 @Component({
     selector: 'tch-protocol-table',

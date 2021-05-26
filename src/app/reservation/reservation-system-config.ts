@@ -1,4 +1,4 @@
-import { DateUtil } from '../date/date-util';
+import { DateUtil } from '../util/date/date-util';
 import { Reservation } from './reservation';
 import { Occupation } from './occupation';
 

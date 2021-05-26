@@ -3,7 +3,7 @@ import { Location } from '@angular/common';
 
 import { UserService } from '../../user/user.service';
 import { User } from '../../user/user';
-import { ErrorAware } from '../../error/error-aware';
+import { ErrorAware } from '../../../util/error/error-aware';
 
 @Component({
   selector: 'tch-user-table',

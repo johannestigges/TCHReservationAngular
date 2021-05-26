@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Location } from '@angular/common';
-import { UserService } from '../user/user.service';
+import { UserService } from '../admin/user/user.service';
 
 @Component({
   selector: 'tch-login',
