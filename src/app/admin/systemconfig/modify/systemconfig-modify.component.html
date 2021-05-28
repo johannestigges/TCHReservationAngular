@@ -1,0 +1,114 @@
+<div class="container">
+	<!-- title -->
+	<div class="form-group">
+		<h2 class="col-sm-offset-2 col-sm-10">Systemkonfiguration ändern</h2>
+	</div>
+
+	<form [formGroup]="form" class="form-horizontal">
+		<!-- id -->
+		<div class="form-group">
+			<label class="col-sm-2 control-label">Id:</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" formControlName="id">
+			</div>
+		</div>
+
+		<!-- name -->
+		<div class="form-group">
+			<label class="col-sm-2 control-label">Name:</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" formControlName="name">
+			</div>
+		</div>
+
+		<!-- courts -->
+		<div class="form-group">
+			<label class="col-sm-2 control-label">Plätze:</label>
+			<div class="col-sm-10" formArrayName="courts">
+				<div *ngFor="let court of form.get('courts')['controls']; let i=index">
+					<input type="text" [formControl]="form.get('courts')['controls'][i]">
+					<button class="btn btn-outline-secondary" (click)="removeCourt(i)">-</button>
+				</div>
+				<button type="button" class="btn btn-outline-secondary" (click)="addCourt()">+</button>
+			</div>
+		</div>
+
+		<!-- durationUnit -->
+		<div class="form-group">
+			<label class="col-sm-2 control-label">Buchungseinheit:</label>
+			<div class="col-sm-10">
+				<select class="form-control" formControlName="durationUnitInMinutes">
+					<option *ngFor="let du of durationUnits" [value]="du">
+						{{du}} Minuten
+					</option>
+				</select>
+			</div>
+		</div>
+
+		<!-- maxReservation -->
+		<div class="form-group">
+			<label class="col-sm-2 control-label">im Voraus buchbar:</label>
+			<div class="col-sm-10">
+				<select class="form-control" formControlName="maxDaysReservationInFuture">
+					<option *ngFor="let md of maxDays" [value]="md">
+						{{md}} Tage
+					</option>
+				</select>
+			</div>
+		</div>
+
+		<!-- maxDuration -->
+		<div class="form-group">
+			<label class="col-sm-2 control-label">maximale Buchungsdauer:</label>
+			<div class="col-sm-10">
+				<select class="form-control" formControlName="maxDuration">
+					<option *ngFor="let md of maxDurations" [value]="md">
+						{{md}}
+					</option>
+				</select>
+			</div>
+		</div>
+
+		<!-- openingHour -->
+		<div class="form-group">
+			<label class="col-sm-2 control-label">Buchbar von :</label>
+			<div class="col-sm-10">
+				<select class="form-control" formControlName="openingHour">
+					<option *ngFor="let oh of openingHours" [value]="oh">
+						{{oh}} Uhr
+					</option>
+				</select>
+			</div>
+		</div>
+
+		<!-- closingHour -->
+		<div class="form-group">
+			<label class="col-sm-2 control-label">Buchbar bis :</label>
+			<div class="col-sm-10">
+				<select class="form-control" formControlName="closingHour">
+					<option *ngFor="let ch of closingHours" [value]="ch">
+						{{ch}} Uhr
+					</option>
+				</select>
+			</div>
+		</div>
+
+		<!-- error -->
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+				<tch-show-error [httpError]="httpError" [errorMessages]="errorMessages">
+				</tch-show-error>
+			</div>
+		</div>
+
+		<!-- Buttons -->
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+				<button (click)="onClick()" class="btn btn-lg btn-block btn-primary">
+					Systemkonfiguration ändern</button>
+				<button (click)="delete()" class="btn btn-lg btn-block btn-outline-secondary">Löschen</button>
+				<button (click)="cancel()" class="btn btn-lg btn-block btn-outline-dark">Zurück</button>
+			</div>
+		</div>
+	</form>
+</div>

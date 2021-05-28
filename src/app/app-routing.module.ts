@@ -8,6 +8,9 @@ import { UserModifyComponent } from './admin/user/modify/user-modify.component';
 import { UserAddComponent } from './admin/user/add/user-add.component';
 import { ProtocolTableComponent } from './admin/protocol/table/protocol-table.component';
 import { LoginComponent } from './login/login.component';
+import { SystemconfigTableComponent} from './admin/systemconfig/table/systemconfig-table.component';
+import { SystemconfigAddComponent } from './admin/systemconfig/add/systemconfig-add.component';
+import { SystemconfigModifyComponent } from './admin/systemconfig/modify/systemconfig-modify.component';
 
 const routes: Routes = [
     { path: '', redirectTo: '/table/1', pathMatch: 'full' },
@@ -17,6 +20,9 @@ const routes: Routes = [
     { path: 'modify/:system/:occupation', component: ReservationModifyComponent },
     { path: 'user', component: UserTableComponent },
     { path: 'protocol', component: ProtocolTableComponent },
+    { path: 'systemconfig', component: SystemconfigTableComponent },
+    { path: 'systemconfig/add', component: SystemconfigAddComponent },
+    { path: 'systemconfig/modify/:id', component: SystemconfigModifyComponent },
     { path: 'user/add', component: UserAddComponent },
     { path: 'user/modify/:user', component: UserModifyComponent },
     { path: 'login', component: LoginComponent }

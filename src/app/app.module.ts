@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CookieService } from 'ngx-cookie-service';
@@ -23,9 +23,10 @@ import { AutofocusDirective } from './autofocus.directive';
 import { LoginComponent } from './login/login.component';
 import { ShowErrorComponent } from './util/show-error/show-error.component';
 import { CorsInterceptor } from './cors-interceptor';
-import { from } from 'rxjs';
-// import { KeyPipe } from './key-pipe';
-
+import { SystemconfigTableComponent } from './admin/systemconfig/table/systemconfig-table.component';
+import { SystemconfigService } from './admin/systemconfig/systemconfig.service';
+import { SystemconfigAddComponent } from './admin/systemconfig/add/systemconfig-add.component';
+import { SystemconfigModifyComponent } from './admin/systemconfig/modify/systemconfig-modify.component';
 
 @NgModule({
     declarations: [
@@ -37,6 +38,9 @@ import { from } from 'rxjs';
         UserAddComponent,
         UserModifyComponent,
         ProtocolTableComponent,
+        SystemconfigTableComponent,
+        SystemconfigAddComponent,
+        SystemconfigModifyComponent,
         AutofocusDirective,
         LoginComponent,
         ShowErrorComponent
@@ -48,12 +52,14 @@ import { from } from 'rxjs';
         AppRoutingModule,
         RouterModule,
         FormsModule,
+        ReactiveFormsModule,
         HttpClientModule
     ],
     providers: [
         ReservationService,
         UserService,
         ProtocolService,
+        SystemconfigService,
         CookieService,
         {
             provide: HTTP_INTERCEPTORS,
