@@ -16,38 +16,38 @@ export class ReservationService {
   }
 
   getReservation(id: number): Observable<Reservation> {
-    return this.httpClient.get<Reservation>(`${this.url()}get/${id}`);
+    return this.httpClient.get<Reservation>(`${this.url()}/${id}`);
   }
 
   getOccupation(id: number) {
-    return this.httpClient.get<Occupation>(`${this.url()}get/occupation/${id}`);
+    return this.httpClient.get<Occupation>(`${this.url()}/occupation/${id}`);
   }
 
   getOccupations(systemConfigId: number, date: number): Observable<Occupation[]> {
-    return this.httpClient.get<Occupation[]>(`${this.url()}getOccupations/${systemConfigId}/${date}`);
+    return this.httpClient.get<Occupation[]>(`${this.url()}/getOccupations/${systemConfigId}/${date}`);
   }
 
   addReservation(reservation: Reservation): Observable<Reservation> {
-    return this.httpClient.post<Reservation>(`${this.url()}add`, reservation);
+    return this.httpClient.post<Reservation>(this.url(), reservation);
   }
 
   updateOccupation(occupation: Occupation): Observable<Occupation> {
-    return this.httpClient.put<Occupation>(`${this.url()}update/occupation`, occupation);
+    return this.httpClient.put<Occupation>(`${this.url()}/occupation`, occupation);
   }
 
   terminateReservation(reservation: Reservation): Observable<Reservation> {
-    return this.httpClient.put<Reservation>(this.url() + 'terminate', reservation);
+    return this.httpClient.put<Reservation>(`${this.url()}/terminate`, reservation);
   }
 
   deleteOccupation(id: number): Observable<Occupation> {
-    return this.httpClient.delete<Occupation>(`${this.url()}delete/occupation/${id}`);
+    return this.httpClient.delete<Occupation>(`${this.url()}/occupation/${id}`);
   }
 
   getSystemConfig(systemId: number): Observable<ReservationSystemConfig> {
-    return this.httpClient.get<ReservationSystemConfig>(`${this.url()}systemconfig/${systemId}`);
+    return this.httpClient.get<ReservationSystemConfig>(`${this.url()}/systemconfig/${systemId}`);
   }
 
   private url() {
-    return `${window.location.protocol}//${window.location.host}/reservation/`;
+    return `${window.location.protocol}//${window.location.host}/rest/reservation`;
   }
 }

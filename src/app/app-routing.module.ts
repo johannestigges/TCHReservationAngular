@@ -18,11 +18,11 @@ const routes: Routes = [
     { path: 'table/:system/:date', component: OccupationTableComponent },
     { path: 'add/:system/:court/:date', component: ReservationAddComponent },
     { path: 'modify/:system/:occupation', component: ReservationModifyComponent },
-    { path: 'user', component: UserTableComponent },
     { path: 'protocol', component: ProtocolTableComponent },
     { path: 'systemconfig', component: SystemconfigTableComponent },
     { path: 'systemconfig/add', component: SystemconfigAddComponent },
     { path: 'systemconfig/modify/:id', component: SystemconfigModifyComponent },
+    { path: 'user', component: UserTableComponent },
     { path: 'user/add', component: UserAddComponent },
     { path: 'user/modify/:user', component: UserModifyComponent },
     { path: 'login', component: LoginComponent }

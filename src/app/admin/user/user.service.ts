@@ -42,7 +42,7 @@ export class UserService {
   }
 
   private userUrl() {
-    return `${this.url()}/user/`;
+    return `${this.url()}/rest/user/`;
   }
 
   private loginUrl() {

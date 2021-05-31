@@ -1,20 +1,5 @@
 {
-	"/reservation": {
-		"target": "https://localhost:8443",
-		"secure": false,
-		"logLevel": "debug"
-	},
-	"/user": {
-		"target": "https://localhost:8443",
-		"secure": false,
-		"logLevel": "debug"
-	},
-	"/rest/systemconfig": {
-		"target": "https://localhost:8443",
-		"secure": false,
-		"logLevel": "debug"
-	},
-	"/protocol/get": {
+	"/rest": {
 		"target": "https://localhost:8443",
 		"secure": false,
 		"logLevel": "debug"
