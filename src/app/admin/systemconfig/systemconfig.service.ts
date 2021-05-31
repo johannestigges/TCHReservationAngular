@@ -14,23 +14,23 @@ export class SystemconfigService {
   }
 
   get(id: number): Observable<ReservationSystemConfig> {
-    return this.httpClient.get<ReservationSystemConfig>(`${this.url()}/${id}`);
+    return this.httpClient.get<ReservationSystemConfig>(`${this.url()}/getone/${id}`);
   }
 
   getAll(): Observable<ReservationSystemConfig[]> {
-    return this.httpClient.get<ReservationSystemConfig[]>(`${this.url()}`);
+    return this.httpClient.get<ReservationSystemConfig[]>(`${this.url()}/`);
   }
 
   add(systemconfig: ReservationSystemConfig): Observable<ReservationSystemConfig> {
-    return this.httpClient.post<ReservationSystemConfig>(`${this.url()}/add`, systemconfig);
+    return this.httpClient.post<ReservationSystemConfig>(`${this.url()}/`, systemconfig);
   }
 
   update(systemconfig: ReservationSystemConfig): Observable<ReservationSystemConfig> {
-    return this.httpClient.put<ReservationSystemConfig>(`${this.url()}/update`, systemconfig);
+    return this.httpClient.put<ReservationSystemConfig>(`${this.url()}/`, systemconfig);
   }
 
   delete(id: number): Observable<ReservationSystemConfig> {
-    return this.httpClient.delete<ReservationSystemConfig>(`${this.url()}/delete/${id}`);
+    return this.httpClient.delete<ReservationSystemConfig>(`${this.url()}/${id}`);
   }
 
   private url() {

@@ -10,13 +10,11 @@ export class ProtocolService {
   constructor(private httpClient: HttpClient) {
   }
 
-  getAll(): Observable<Protocol[]> {
-    return this.httpClient.get<Protocol[]>(`${this.url()}/protocol/get`);
-  }
   getSince(date: number): Observable<Protocol[]> {
-    return this.httpClient.get<Protocol[]>(`${this.url()}/protocol/get/${date}`);
+    return this.httpClient.get<Protocol[]>(`${this.url()}/${date}`);
   }
+
   private url() {
-    return `${window.location.protocol}//${window.location.host}`;
+    return `${window.location.protocol}//${window.location.host}/rest/protocol`;
   }
 }
