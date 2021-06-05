@@ -28,6 +28,10 @@ export class ProtocolTableComponent extends ErrorAware implements OnInit {
         return JSON.parse(p.value);
     }
 
+    oldValue(p) {
+        return JSON.parse(p.oldValue);
+    }
+
     ngOnInit() {
         this.show( DateUtil.now() - 7 * DateUtil.DAY);
     }
