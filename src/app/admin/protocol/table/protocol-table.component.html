@@ -9,6 +9,7 @@
 			<th>DatenId</th>
 			<th>Benutzer</th>
 			<th>Wert</th>
+			<th>Alter Wert</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -21,6 +22,12 @@
 			<td>{{protocol.user.name}}</td>
 			<td>
 				<div *ngFor="let kv of value(protocol) | keyvalue">
+					<span class="key">{{kv.key}}</span> = 
+					<span class="value">{{kv.value}}</span>
+				</div>
+			</td>
+			<td>
+				<div *ngFor="let kv of oldValue(protocol) | keyvalue">
 					<span class="key">{{kv.key}}</span> = 
 					<span class="value">{{kv.value}}</span>
 				</div>
