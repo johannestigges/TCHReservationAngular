@@ -1,4 +1,3 @@
-<h2>Systemkonfigurationen</h2>
 <table class="table table-bordered table-striped table-hover">
 	<thead>
 		<tr>
@@ -17,8 +16,7 @@
 			<td>max {{config.maxDuration}} x {{config.durationUnitInMinutes}} Minuten;
 				max {{config.maxDaysReservationInFuture}} Tage im Voraus</td>
 			<td>{{config.openingHour}} - {{config.closingHour}} Uhr</td>
-			<td><a class="btn btn-outline-secondary" 
-				routerLink='/systemconfig/modify/{{config.id}}'>ändern</a></td>
+			<td><a class="btn btn-outline-secondary" routerLink='/systemconfig/modify/{{config.id}}'>ändern</a></td>
 		</tr>
 	</tbody>
 </table>

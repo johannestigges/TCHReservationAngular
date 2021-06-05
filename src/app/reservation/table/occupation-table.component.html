@@ -81,16 +81,8 @@
 <tch-show-error [httpError]="httpError" [errorMessages]="errorMessages"></tch-show-error>
 
 <!-- show menu -->
-<div class="col-md-12">
-  <span *ngIf="isLoggedIn()">
-    <span *ngIf="canChangePassword()">
-      <a class="menu_link" href='../user/modify/{{occupationTable.user.id}}'>Kennwort ändern</a>
-    </span>
-    <span *ngIf="isAdmin()">
-      <a class="menu_link" href="../systemconfig">Systemkonfiguration</a>
-      <a class="menu_link" href='../user'>Benutzerverwaltung</a>
-      <a class="menu_link" href='../protocol'>Historie</a>
-    </span>
-    {{occupationTable.user.name}}
-  </span>
+<div class="col-md-12" *ngIf="isLoggedIn()">
+  <a *ngIf="canChangePassword()" class="menu_link" href='../user/modify/{{occupationTable.user.id}}'>Kennwort ändern</a>
+  <a *ngIf="isAdminOrTrainer()" class="menu_link" href="../admin">Administration</a>
+  {{occupationTable.user.name}}
 </div>

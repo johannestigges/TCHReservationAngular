@@ -90,8 +90,8 @@ export class OccupationTableComponent extends ErrorAware implements OnInit, OnDe
     return this.isLoggedIn() && !this.occupationTable.user.hasRole(UserRole.KIOSK);
   }
 
-  isAdmin() {
-    return this.occupationTable.user.hasRole(UserRole.ADMIN);
+  isAdminOrTrainer() {
+    return this.isLoggedIn() && this.occupationTable.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
   }
 
   canModify(occupation: Occupation): boolean {
@@ -168,7 +168,7 @@ export class OccupationTableComponent extends ErrorAware implements OnInit, OnDe
   showDate() {
     return DateUtil.toDate(this.occupationTable.date).toLocaleDateString(
       'de-DE',
-      {weekday: 'long', year: 'numeric', month: 'numeric', day: 'numeric'});
+      { weekday: 'long', year: 'numeric', month: 'numeric', day: 'numeric' });
   }
 
   private show(occupations: Occupation[]) {
