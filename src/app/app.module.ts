@@ -27,6 +27,7 @@ import { SystemconfigTableComponent } from './admin/systemconfig/table/systemcon
 import { SystemconfigService } from './admin/systemconfig/systemconfig.service';
 import { SystemconfigAddComponent } from './admin/systemconfig/add/systemconfig-add.component';
 import { SystemconfigModifyComponent } from './admin/systemconfig/modify/systemconfig-modify.component';
+import { AdminComponent } from './admin/admin.component';
 
 @NgModule({
     declarations: [
@@ -34,6 +35,7 @@ import { SystemconfigModifyComponent } from './admin/systemconfig/modify/systemc
         OccupationTableComponent,
         ReservationAddComponent,
         ReservationModifyComponent,
+        AdminComponent,
         UserTableComponent,
         UserAddComponent,
         UserModifyComponent,

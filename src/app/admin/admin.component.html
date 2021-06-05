@@ -1,0 +1,22 @@
+<h2>Administration</h2>
+<ul class="nav nav-tabs" id="adminTab" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link" [class.active]="tab === 'user'" (click)="select('user')">Benutzer</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" [class.active]="tab === 'systemconfig'"
+            (click)="select('systemconfig')">Systemkonfiguration</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" [class.active]="tab === 'protocol'" (click)="select('protocol')">Historie</a>
+    </li>
+</ul>
+<div *ngIf="tab === 'user'">
+    <tch-user-table></tch-user-table>
+</div>
+<div *ngIf="tab === 'systemconfig'">
+    <tch-systemconfig-table></tch-systemconfig-table>
+</div>
+<div *ngIf="tab === 'protocol'">
+    <tch-protocol-table></tch-protocol-table>
+</div>
