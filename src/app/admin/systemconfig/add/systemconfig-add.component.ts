@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 
-import { ErrorAware } from '../../../util/error/error-aware';
 import { ReservationSystemConfig } from 'src/app/reservation/reservation-system-config';
 import { SystemconfigService } from '../systemconfig.service';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ErrorAware } from 'src/app/util/error/error-aware';
 
 @Component({
   selector: 'tch-systemconfig-add',
@@ -13,14 +13,13 @@ import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@ang
 })
 export class SystemconfigAddComponent extends ErrorAware implements OnInit {
 
-  form: FormGroup;
-  courts: FormArray;
-
   durationUnits = [30, 60];
   maxDays = [1, 2, 3, 4, 5, 6, 7, 14, 21, 31, 62, 365];
   maxDurations = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
   openingHours = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
   closingHours = [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 1, 2, 3, 4, 5, 6];
+
+  form: FormGroup;
 
   constructor(
     private location: Location,
@@ -57,13 +56,15 @@ export class SystemconfigAddComponent extends ErrorAware implements OnInit {
   }
 
   addCourt(): void {
-    this.courts = this.form.get('courts') as FormArray;
-    this.courts.push(new FormControl(''));
+    this.getCourts().push(new FormControl(''));
   }
 
   removeCourt(i: number): void {
-    this.courts = this.form.get('courts') as FormArray;
-    this.courts.removeAt(i);
+    this.getCourts().removeAt(i);
+  }
+
+  getCourts(): FormArray {
+    return this.form.get('courts') as FormArray;
   }
 
   onClick() {
@@ -84,7 +85,6 @@ export class SystemconfigAddComponent extends ErrorAware implements OnInit {
       err => this.httpError = err
     );
   }
-
   cancel() {
     this.location.back();
   }

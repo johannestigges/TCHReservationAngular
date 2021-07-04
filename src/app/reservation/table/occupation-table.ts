@@ -22,7 +22,7 @@ export class OccupationTable extends TableData {
         this.date = DateUtil.getDatePart(date);
     }
 
-    setUser(user) {
+    setUser(user: User) {
         this.user = user;
         this.show();
     }

@@ -133,7 +133,7 @@ export class OccupationTableComponent extends ErrorAware implements OnInit, OnDe
     }
 
     // admin and trainer can add everything
-    if (this.occupationTable.user.hasRole(UserRole.ADMIN, UserRole.TRAINER)) {
+    if (this.occupationTable.user.hasRole(UserRole.ADMIN, UserRole.TRAINER, UserRole.TEAMSTER)) {
       return true;
     }
 
