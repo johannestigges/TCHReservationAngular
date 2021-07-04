@@ -20,20 +20,9 @@ export class ProtocolTableComponent extends ErrorAware implements OnInit {
         super();
     }
 
-    date(t: number[]) {
-        return `${t[2]}.${t[1]}.${t[0]} ${t[3]}:${t[4]}`;
-    }
-
-    value(p) {
-        return JSON.parse(p.value);
-    }
-
-    oldValue(p) {
-        return JSON.parse(p.oldValue);
-    }
-
     ngOnInit() {
-        this.show( DateUtil.now() - 7 * DateUtil.DAY);
+        this.since = DateUtil.now();
+        this.next();
     }
 
     next() {
@@ -46,6 +35,14 @@ export class ProtocolTableComponent extends ErrorAware implements OnInit {
             data => this.protocols = data,
             err => this.httpError = err
         );
+    }
+
+    date(t: number[]) {
+        return `${t[2]}.${t[1]}.${t[0]} ${t[3]}:${t[4]}`;
+    }
+
+    parseJson(o) {
+        return JSON.parse(o);
     }
 
     cancel() {

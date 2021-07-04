@@ -104,15 +104,15 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
   private init(start: number) {
     // decide which parts of the layout are visible
     // this depends on the user role
-    this.showType = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
-    this.showText = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
+    this.showType = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER, UserRole.TEAMSTER);
+    this.showText = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER, UserRole.TEAMSTER);
     this.showSimpleDuration = this.systemConfig.durationUnitInMinutes === 30
-      && !this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
+      && !this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER, UserRole.TEAMSTER);
     this.showDuration = !this.showSimpleDuration
-      && this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
+      && this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER, UserRole.TEAMSTER);
     this.showRepeat = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
     if (this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER)) { this.focus = 'date'; }
-    if (this.user.hasRole(UserRole.TRAINER)) { this.focus = 'duration'; }
+    if (this.user.hasRole(UserRole.TRAINER, UserRole.TEAMSTER)) { this.focus = 'duration'; }
     if (this.user.hasRole(UserRole.REGISTERED)) { this.focus = 'duration'; }
     if (this.user.hasRole(UserRole.KIOSK, UserRole.TECHNICAL)) { this.focus = 'text'; }
 
@@ -135,8 +135,12 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
       }
     }
     if (this.user.hasRole(UserRole.TRAINER)) {
-      this.type = ReservationType[ReservationType.Training];
+      this.reservation.type = ReservationType.Training;
       this.reservation.text = this.user.name;
+    }
+    if (this.user.hasRole(UserRole.TEAMSTER)) {
+      this.reservation.type = ReservationType.Meisterschaft;
+      this.reservation.text = this.cookieService.get('myTeam');
     }
     this.time = this.reservation.start;
     this.reservation.duration = this.systemConfig.getDurationDefault();

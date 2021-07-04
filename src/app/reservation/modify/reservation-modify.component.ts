@@ -86,8 +86,8 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit, On
     private update() {
         // decide which parts of the layout are visible
         // this depends on the user role
-        this.showType = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
-        if (this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER)) { this.focus = 'date'; }
+        this.showType = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER, UserRole.TEAMSTER);
+        if (this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER, UserRole.TEAMSTER)) { this.focus = 'date'; }
         if (this.user.hasRole(UserRole.TRAINER)) { this.focus = 'duration'; }
         if (this.user.hasRole(UserRole.REGISTERED)) { this.focus = 'duration'; }
         if (this.user.hasRole(UserRole.KIOSK)) { this.focus = 'text'; }

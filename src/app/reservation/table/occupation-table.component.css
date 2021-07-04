@@ -6,7 +6,7 @@ table.occupation_table {
 	border-spacing: 10px;
 	text-align: center;
 	color: #000;
-  background-color: #fcfefd;
+  background-color:white;
 }
 
 /* all rows have equal height */
@@ -23,7 +23,7 @@ table.occupation_table a {
 	display:block;
 	width: 100%;
 	height: 100%;
-	vertical-align: middle;
+	color: black;
 	text-decoration: none;
 }
 
@@ -32,19 +32,19 @@ table.occupation_table a {
 }
 
 .available {
-	background-color: #eee;
+	background-color: rgba(250, 250, 250, 0.7);
 }
 
 .available_light {
-	background-color: #eee;
+	background-color: rgba(250, 250, 250, 0.7);
 }
 
 .available_reservable {
-  background-color: #777;
+  background-color: rgba(200, 200, 200, 0.5);
 }
 
 .available_light_reservable {
-  background-color: #888;
+  background-color: rgba(200, 200, 200, 0.4);
 }
 
 .deletable {
@@ -52,21 +52,21 @@ table.occupation_table a {
 }
 
 .type0 { /* Quickbuchung */
-	background-color: #def;
+	background-color: rgba(0, 0, 250, 0.3);
 }
 
 .type1 { /* Training */
-	background-color: #edd;
+	background-color: rgba(0, 250, 00, 0.15);
 }
 
 .type2 { /* Meisterschaft */
-	background-color: #ddf;
+	background-color: rgba(20, 180, 220, 0.2);
 }
 
 .type3 { /* Dauerbuchung */
-	background-color: #eea;
+	background-color: rgba(250, 250, 20, 0.1);
 }
 
 .type4 { /* Gesperrt */
-	background-color: #ccc;
+	background-color: rgba(255, 0, 0, 0.6);
 }

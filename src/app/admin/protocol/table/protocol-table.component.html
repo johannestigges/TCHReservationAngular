@@ -12,21 +12,21 @@
 		</tr>
 	</thead>
 	<tbody>
-		<tr *ngFor="let protocol of protocols">
-			<td>{{protocol.id}}</td>
-			<td>{{this.date(protocol.time)}}</td>
-			<td>{{protocol.actionType}}</td>
-			<td>{{protocol.entityType}}</td>
-			<td>{{protocol.entityId}}</td>
-			<td>{{protocol.user.name}}</td>
+		<tr *ngFor="let p of protocols">
+			<td>{{p.id}}</td>
+			<td>{{this.date(p.time)}}</td>
+			<td>{{p.actionType}}</td>
+			<td>{{p.entityType}}</td>
+			<td>{{p.entityId}}</td>
+			<td>{{p.user.name}}</td>
 			<td>
-				<div *ngFor="let kv of value(protocol) | keyvalue">
+				<div *ngFor="let kv of parseJson(p.value) | keyvalue">
 					<span class="key">{{kv.key}}</span> =
 					<span class="value">{{kv.value}}</span>
 				</div>
 			</td>
 			<td>
-				<div *ngFor="let kv of oldValue(protocol) | keyvalue">
+				<div *ngFor="let kv of parseJson(p.oldValue) | keyvalue">
 					<span class="key">{{kv.key}}</span> = 
 					<span class="value">{{kv.value}}</span>
 				</div>

@@ -14,14 +14,13 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class SystemconfigModifyComponent extends ErrorAware implements OnInit {
 
-  form: FormGroup;
-  courts: FormArray;
-
   durationUnits = [30, 60];
   maxDays = [1, 2, 3, 4, 5, 6, 7, 14, 21, 31, 62, 365];
   maxDurations = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
   openingHours = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
   closingHours = [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 1, 2, 3, 4, 5, 6];
+
+  form: FormGroup;
 
   constructor(
     private location: Location,
@@ -68,17 +67,19 @@ export class SystemconfigModifyComponent extends ErrorAware implements OnInit {
   }
 
   add(court: string): void {
-    this.courts = this.form.get('courts') as FormArray;
-    this.courts.push(new FormControl(court));
+    this.getCourts().push(new FormControl(court));
   }
 
   addCourt(): void {
     this.add('');
   }
 
+  getCourts(): FormArray {
+    return this.form.get('courts') as FormArray;
+  }
+
   removeCourt(i: number): void {
-    this.courts = this.form.get('courts') as FormArray;
-    this.courts.removeAt(i);
+    this.getCourts().removeAt(i);
   }
 
   delete() {
@@ -87,7 +88,7 @@ export class SystemconfigModifyComponent extends ErrorAware implements OnInit {
     this.systemconfigService.delete(this.form.get('id').value).subscribe(
       data => {
         alert(`Systemkonfiguration ${data.name} wurde gelöscht.`);
-        this.location.back();
+        this.cancel();
       },
       error => this.httpError = error
     );
