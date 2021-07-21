@@ -9,7 +9,7 @@ import { DateUtil } from '../../../util/date/date-util';
 @Component({
     selector: 'tch-protocol-table',
     templateUrl: './protocol-table.component.html',
-    styleUrls: ['./protocol-table.component.css']
+    styleUrls: ['./protocol-table.component.scss']
 })
 export class ProtocolTableComponent extends ErrorAware implements OnInit {
 

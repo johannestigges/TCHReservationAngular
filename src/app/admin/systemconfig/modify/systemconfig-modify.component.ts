@@ -10,7 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'tch-systemconfig-modify',
   templateUrl: './systemconfig-modify.component.html',
-  styleUrls: ['./systemconfig-modify.component.css']
+  styleUrls: ['./systemconfig-modify.component.scss']
 })
 export class SystemconfigModifyComponent extends ErrorAware implements OnInit {
 

@@ -16,7 +16,7 @@ import { ReservationType } from '../reservationtype';
 @Component({
   selector: 'tch-occupation-table',
   templateUrl: './occupation-table.component.html',
-  styleUrls: ['./occupation-table.component.css']
+  styleUrls: ['./occupation-table.component.scss']
 })
 export class OccupationTableComponent extends ErrorAware implements OnInit, OnDestroy {
 

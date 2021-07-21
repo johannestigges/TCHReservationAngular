@@ -9,7 +9,7 @@ import { ErrorAware } from 'src/app/util/error/error-aware';
 @Component({
   selector: 'tch-systemconfig-add',
   templateUrl: './systemconfig-add.component.html',
-  styleUrls: ['./systemconfig-add.component.css']
+  styleUrls: ['./systemconfig-add.component.scss']
 })
 export class SystemconfigAddComponent extends ErrorAware implements OnInit {
 

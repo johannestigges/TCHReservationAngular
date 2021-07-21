@@ -10,7 +10,7 @@ import { ErrorAware } from '../../../util/error/error-aware';
 @Component({
   selector: 'tch-user-add',
   templateUrl: './user-add.component.html',
-  styleUrls: ['./user-add.component.css']
+  styleUrls: ['./user-add.component.scss']
 })
 export class UserAddComponent extends ErrorAware implements OnInit {
 
