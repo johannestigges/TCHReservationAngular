@@ -17,7 +17,7 @@ import { ActivationStatus } from '../../admin/user/activation-status.enum';
 @Component({
     selector: 'tch-reservation-modify',
     templateUrl: './reservation-modify.component.html',
-    styleUrls: ['./reservation-modify.component.css']
+    styleUrls: ['./reservation-modify.component.scss']
 })
 export class ReservationModifyComponent extends ErrorAware implements OnInit, OnDestroy {
 
