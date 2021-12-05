@@ -1,24 +1,24 @@
-import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
-import { Router } from "@angular/router";
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 
-import { ReservationType } from "../reservationtype";
-import { ReservationService } from "../reservation.service";
-import { ReservationSystemConfig } from "../reservation-system-config";
-import { Reservation } from "../reservation";
-import { ErrorAware } from "../../util/error/error-aware";
+import { ReservationType } from '../reservationtype';
+import { ReservationService } from '../reservation.service';
+import { ReservationSystemConfig } from '../reservation-system-config';
+import { Reservation } from '../reservation';
+import { ErrorAware } from '../../util/error/error-aware';
 
-import { UserService } from "../../admin/user/user.service";
-import { User } from "../../admin/user/user";
-import { UserRole } from "../../admin/user/user-role.enum";
-import { DateUtil } from "../../util/date/date-util";
-import { CookieService } from "ngx-cookie-service";
-import { ActivationStatus } from "../../admin/user/activation-status.enum";
+import { UserService } from '../../admin/user/user.service';
+import { User } from '../../admin/user/user';
+import { UserRole } from '../../admin/user/user-role.enum';
+import { DateUtil } from '../../util/date/date-util';
+import { CookieService } from 'ngx-cookie-service';
+import { ActivationStatus } from '../../admin/user/activation-status.enum';
 
 @Component({
-  selector: "tch-reservation-add",
-  templateUrl: "./reservation-add.component.html",
-  styleUrls: ["./reservation-add.component.scss"],
+  selector: 'tch-reservation-add',
+  templateUrl: './reservation-add.component.html',
+  styleUrls: ['./reservation-add.component.scss'],
 })
 export class ReservationAddComponent extends ErrorAware implements OnInit {
   systemConfig: ReservationSystemConfig;
@@ -66,8 +66,8 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
     this.showSimpleDuration = false;
     this.showDuration = false;
     this.showRepeat = false;
-    this.focus = "date";
-    this.user = new User(0, "", UserRole.ANONYMOUS);
+    this.focus = 'date';
+    this.user = new User(0, '', UserRole.ANONYMOUS);
     this.reservation = new Reservation(
       0, // Reservarion System Config Id
       null, // user
@@ -82,7 +82,7 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
     // create option list of occupation types
     this.types = Object.keys(ReservationType)
       .map((key) => ReservationType[key])
-      .filter((value) => typeof value === "string");
+      .filter((value) => typeof value === 'string');
 
     this.service.getSystemConfig(systemId).subscribe(
       (config) => {
@@ -93,8 +93,8 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
             this.user = new User(
               user.id,
               user.name,
-              UserRole["" + user.role],
-              ActivationStatus["" + user.status]
+              UserRole['' + user.role],
+              ActivationStatus['' + user.status]
             );
             this.init(start);
           },
@@ -121,9 +121,9 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
     this.service.checkReservation(this.reservation).subscribe(
       (reservation) => {
         console.log(
-          "checked reservation with ",
+          'checked reservation with ',
           reservation.occupations.length,
-          " occupations."
+          ' occupations.'
         );
         this.reservation = reservation;
       },
@@ -146,25 +146,25 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
     this.showDuration = !this.showSimpleDuration && this._isAtLeastTeamster();
     this.showRepeat = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
     if (this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER)) {
-      this.focus = "date";
+      this.focus = 'date';
     }
     if (this.user.hasRole(UserRole.TRAINER, UserRole.TEAMSTER)) {
-      this.focus = "duration";
+      this.focus = 'duration';
     }
     if (this.user.hasRole(UserRole.REGISTERED)) {
-      this.focus = "duration";
+      this.focus = 'duration';
     }
     if (this.user.hasRole(UserRole.KIOSK, UserRole.TECHNICAL)) {
-      this.focus = "text";
+      this.focus = 'text';
     }
 
     if (this.showText) {
-      this.reservation.text = this._getCookie("text");
+      this.reservation.text = this._getCookie('text');
     } else {
-      this.player1 = this._getCookie("player1");
-      this.player2 = this._getCookie("player2");
-      this.player3 = this._getCookie("player3");
-      this.player4 = this._getCookie("player4");
+      this.player1 = this._getCookie('player1');
+      this.player2 = this._getCookie('player2');
+      this.player3 = this._getCookie('player3');
+      this.player4 = this._getCookie('player4');
     }
     if (this.user.hasRole(UserRole.TRAINER)) {
       this.reservation.type = ReservationType.Training;
@@ -172,7 +172,7 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
     }
     if (this.user.hasRole(UserRole.TEAMSTER)) {
       this.reservation.type = ReservationType.Meisterschaft;
-      this.reservation.text = this._getCookie("myTeam");
+      this.reservation.text = this._getCookie('myTeam');
     }
     this.time = this.reservation.start;
     this.reservation.duration = this.systemConfig.getDurationDefault();
@@ -224,17 +224,17 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
     this.reservation.start = this.time;
     this.reservation.repeatUntil = this.repeatUntil?.getTime();
     if (!this.showText) {
-      this._setCookie("player1", this.player1);
-      this._setCookie("player2", this.player2);
+      this._setCookie('player1', this.player1);
+      this._setCookie('player2', this.player2);
       if (this.showDouble) {
         this.reservation.text = `${this.player1} ${this.player2} ${this.player3} ${this.player4}`;
-        this._setCookie("player3", this.player3);
-        this._setCookie("playerr4", this.player4);
+        this._setCookie('player3', this.player3);
+        this._setCookie('playerr4', this.player4);
       } else {
         this.reservation.text = `${this.player1} ${this.player2}`;
       }
     } else {
-      this._setCookie("text", this.reservation.text);
+      this._setCookie('text', this.reservation.text);
     }
     this.service.addReservation(this.reservation).subscribe(
       (data) => {
@@ -256,7 +256,7 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
 
   onBack() {
     this.router.navigate([
-      "/table",
+      '/table',
       this.systemConfig.id,
       this.reservation.date,
     ]);
@@ -264,8 +264,8 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
 
   private _getCookie(name) {
     return this.cookieService.check(name)
-      ? this.cookieService.get(name) ?? ""
-      : "";
+      ? this.cookieService.get(name) ?? ''
+      : '';
   }
 
   private _setCookie(name, value) {

@@ -1,10 +1,10 @@
-import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
-import { Reservation } from "./reservation";
-import { ReservationSystemConfig } from "./reservation-system-config";
-import { Occupation } from "./occupation";
-import { Observable } from "rxjs";
+import { Reservation } from './reservation';
+import { ReservationSystemConfig } from './reservation-system-config';
+import { Occupation } from './occupation';
+import { Observable } from 'rxjs';
 
 /**
  * reservation service

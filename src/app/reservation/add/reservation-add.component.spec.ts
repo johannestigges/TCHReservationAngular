@@ -1,9 +1,9 @@
-import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
-import { RouterTestingModule } from "@angular/router/testing";
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
-import { ReservationAddComponent } from "./reservation-add.component";
+import { ReservationAddComponent } from './reservation-add.component';
 
-describe("ReservationAddComponent", () => {
+describe('ReservationAddComponent', () => {
   let component: ReservationAddComponent;
   let fixture: ComponentFixture<ReservationAddComponent>;
 
@@ -22,7 +22,7 @@ describe("ReservationAddComponent", () => {
     fixture.detectChanges();
   });
 
-  it("should create", () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });
