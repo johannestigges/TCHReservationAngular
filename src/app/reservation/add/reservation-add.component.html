@@ -114,19 +114,19 @@
 			</div>
 		</div>
 
-		<!-- duration repeat -->
+		<!-- repeat with multiple occupations -->
 		<div *ngIf='showRepeat' class="form-group">
 			<label class="col-sm-2 control-label">Wiederholung</label>
 			<div class="row col-sm-10">
 				<div class="col-sm-6">
 					<select id="repeat_type" name="repeat_type" class="form-control"
-						[(ngModel)]="reservation.repeatType">
+						[(ngModel)]="reservation.repeatType" (change)="onRepeatTypeChanged($event)">
 						<option selected value="">keine</option>
 						<option value="daily">täglich</option>
 						<option value="weekly">wöchentlich</option>
 					</select>
 				</div>
-				<div class="col-sm-6" *ngIf="reservation.repeatType ==='daily' || reservation.repeatType ==='weekly'">
+				<div class="col-sm-4" *ngIf="reservation.repeatType ==='daily' || reservation.repeatType ==='weekly'">
 					<div style='display: flex'>
 						<label class='control-label'>bis &nbsp;&nbsp;</label>
 						<input name="repeatUntil" [(ngModel)]="repeatUntil" type="text" placeholder="tt.mm.jjjj"
@@ -134,6 +134,15 @@
 							[bsConfig]="{ dateInputFormat: 'DD.MM.YYYY', containerClass: 'theme-blue', isAnimated: true }"
 							[minDate]="repeatMinDate">
 					</div>
+				</div>
+				<div class="col-2" *ngIf="reservation.repeatType ==='daily' || reservation.repeatType ==='weekly'">
+					<button title="Reservierungen generieren" (click)="onGenerateOccupations()" class="btn btn-primary">+</button>
+				</div>
+			</div>
+			<div class="row col-sm-10 mb-2 border-button" *ngFor="let occupation of reservation.occupations; let i=index">
+				<div class="col">Reservierung am {{toDate(occupation.date)}}</div>
+				<div class="col">
+					<button title="Diese Reservierung löschen" class="btn btn-outline-dark" (click)="onDeleteOccupation(i)">-</button>
 				</div>
 			</div>
 		</div>
