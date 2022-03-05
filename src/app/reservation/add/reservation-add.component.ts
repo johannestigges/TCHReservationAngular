@@ -12,7 +12,7 @@ import { UserService } from '../../admin/user/user.service';
 import { User } from '../../admin/user/user';
 import { UserRole } from '../../admin/user/user-role.enum';
 import { DateUtil } from '../../util/date/date-util';
-import { CookieService } from 'ngx-cookie-service';
+//import { CookieService } from 'ngx-cookie-service';
 import { ActivationStatus } from '../../admin/user/activation-status.enum';
 
 @Component({
@@ -48,8 +48,7 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private service: ReservationService,
-    private userService: UserService,
-    private cookieService: CookieService
+    private userService: UserService //    private cookieService: CookieService
   ) {
     super();
   }
@@ -263,13 +262,14 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
   }
 
   private _getCookie(name) {
-    return this.cookieService.check(name)
-      ? this.cookieService.get(name) ?? ''
-      : '';
+    //    return this.cookieService.check(name)
+    //      ? this.cookieService.get(name) ?? ''
+    //      :
+    return '';
   }
 
   private _setCookie(name, value) {
-    this.cookieService.set(name, value, 30);
+    //    this.cookieService.set(name, value, 30);
   }
 
   private _isAtLeastTeamster() {
