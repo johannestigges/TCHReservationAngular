@@ -12,7 +12,6 @@ import { UserService } from '../../admin/user/user.service';
 import { User } from '../../admin/user/user';
 import { UserRole } from '../../admin/user/user-role.enum';
 import { DateUtil } from '../../util/date/date-util';
-//import { CookieService } from 'ngx-cookie-service';
 import { ActivationStatus } from '../../admin/user/activation-status.enum';
 
 @Component({
@@ -262,14 +261,11 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
   }
 
   private _getCookie(name) {
-    //    return this.cookieService.check(name)
-    //      ? this.cookieService.get(name) ?? ''
-    //      :
-    return '';
+    return localStorage.getItem(name) || '';
   }
 
   private _setCookie(name, value) {
-    //    this.cookieService.set(name, value, 30);
+    localStorage.setItem(name, value);
   }
 
   private _isAtLeastTeamster() {
