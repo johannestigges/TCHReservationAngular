@@ -210,7 +210,7 @@ export class OccupationTableComponent
   showDateShort() {
     return DateUtil.toDate(this.occupationTable.date).toLocaleDateString(
       'de-DE',
-      { weekday: 'short', month: 'numeric', day: 'numeric' }
+      { weekday: 'short', year: 'numeric', month: 'numeric', day: 'numeric' }
     );
   }
 
