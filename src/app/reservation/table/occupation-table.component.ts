@@ -16,10 +16,12 @@ import { ReservationType } from '../reservationtype';
 @Component({
   selector: 'tch-occupation-table',
   templateUrl: './occupation-table.component.html',
-  styleUrls: ['./occupation-table.component.scss']
+  styleUrls: ['./occupation-table.component.scss'],
 })
-export class OccupationTableComponent extends ErrorAware implements OnInit, OnDestroy {
-
+export class OccupationTableComponent
+  extends ErrorAware
+  implements OnInit, OnDestroy
+{
   occupationTable: OccupationTable;
   lastUpdated: number;
   private timer: Observable<number>;
@@ -28,14 +30,17 @@ export class OccupationTableComponent extends ErrorAware implements OnInit, OnDe
   constructor(
     private reservationService: ReservationService,
     private userService: UserService,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute
+  ) {
     super();
   }
 
   ngOnInit() {
     const systemId = this.route.snapshot.params.system;
     const date = this.route.snapshot.params.date;
-    this.occupationTable = new OccupationTable(new User(0, '', UserRole.ANONYMOUS));
+    this.occupationTable = new OccupationTable(
+      new User(0, '', UserRole.ANONYMOUS)
+    );
     // set date
     if (date) {
       this.occupationTable.setDate(parseInt(date, 10));
@@ -43,31 +48,38 @@ export class OccupationTableComponent extends ErrorAware implements OnInit, OnDe
 
     // read system config
     this.reservationService.getSystemConfig(systemId).subscribe(
-      systemConfig => {
+      (systemConfig) => {
         this.occupationTable.setSystemConfig(systemConfig);
 
         // get logged in user
         this.userService.getLoggedInUser().subscribe(
-          user => {
+          (user) => {
             this.occupationTable.setUser(
-              new User(user.id, user.name, UserRole['' + user.role], '', '',
-                ActivationStatus['' + user.status]));
+              new User(
+                user.id,
+                user.name,
+                UserRole['' + user.role],
+                '',
+                '',
+                ActivationStatus['' + user.status]
+              )
+            );
             // update occupation table
             this.update(this.occupationTable.date);
           },
-          usererror => this.httpError = usererror,
+          (usererror) => (this.httpError = usererror),
           () => {
             // reload system when user is 'kiosk' every 5 Minutes
             if (this.occupationTable.user.hasRole(UserRole.KIOSK)) {
               this.timer = timer(300000, 300000);
-              this.timerSubscription = this.timer.subscribe(
-                () => this.update(this.occupationTable.date)
+              this.timerSubscription = this.timer.subscribe(() =>
+                this.update(this.occupationTable.date)
               );
             }
           }
         );
       },
-      configerror => this.httpError = configerror
+      (configerror) => (this.httpError = configerror)
     );
   }
 
@@ -83,15 +95,23 @@ export class OccupationTableComponent extends ErrorAware implements OnInit, OnDe
   }
 
   canChangePassword() {
-    return this.isLoggedIn() && !this.occupationTable.user.hasRole(UserRole.KIOSK, UserRole.TECHNICAL);
+    return (
+      this.isLoggedIn() &&
+      !this.occupationTable.user.hasRole(UserRole.KIOSK, UserRole.TECHNICAL)
+    );
   }
 
   canLogout() {
-    return this.isLoggedIn() && !this.occupationTable.user.hasRole(UserRole.KIOSK);
+    return (
+      this.isLoggedIn() && !this.occupationTable.user.hasRole(UserRole.KIOSK)
+    );
   }
 
   isAdminOrTrainer() {
-    return this.isLoggedIn() && this.occupationTable.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
+    return (
+      this.isLoggedIn() &&
+      this.occupationTable.user.hasRole(UserRole.ADMIN, UserRole.TRAINER)
+    );
   }
 
   canModify(occupation: Occupation): boolean {
@@ -105,7 +125,10 @@ export class OccupationTableComponent extends ErrorAware implements OnInit, OnDe
     }
 
     const now = new Date().getTime();
-    const start = DateUtil.ofDateAndTime(occupation.date, occupation.start).getTime();
+    const start = DateUtil.ofDateAndTime(
+      occupation.date,
+      occupation.start
+    ).getTime();
     const end = this.occupationTable.systemConfig.getOccupationEnd(occupation);
 
     // everyone can terminate current reservation
@@ -123,8 +146,10 @@ export class OccupationTableComponent extends ErrorAware implements OnInit, OnDe
   }
 
   canShowText(occupation: Occupation) {
-    return ReservationType[occupation.type] !== ReservationType[ReservationType.Quickbuchung]
-      || this.isLoggedIn();
+    return (
+      ReservationType[occupation.type] !==
+        ReservationType[ReservationType.Quickbuchung] || this.isLoggedIn()
+    );
   }
 
   canAdd(date: number): boolean {
@@ -133,7 +158,13 @@ export class OccupationTableComponent extends ErrorAware implements OnInit, OnDe
     }
 
     // admin and trainer can add everything
-    if (this.occupationTable.user.hasRole(UserRole.ADMIN, UserRole.TRAINER, UserRole.TEAMSTER)) {
+    if (
+      this.occupationTable.user.hasRole(
+        UserRole.ADMIN,
+        UserRole.TRAINER,
+        UserRole.TEAMSTER
+      )
+    ) {
       return true;
     }
 
@@ -143,8 +174,11 @@ export class OccupationTableComponent extends ErrorAware implements OnInit, OnDe
     }
 
     // only for this and some days
-    return (date - this.lastUpdated <
-      this.occupationTable.systemConfig.maxDaysReservationInFuture * DateUtil.DAY);
+    return (
+      date - this.lastUpdated <
+      this.occupationTable.systemConfig.maxDaysReservationInFuture *
+        DateUtil.DAY
+    );
   }
 
   /**
@@ -152,23 +186,32 @@ export class OccupationTableComponent extends ErrorAware implements OnInit, OnDe
    */
   private update(date: number) {
     this.clearError();
-    this.reservationService.getOccupations(this.occupationTable.systemConfig.id, date)
+    this.reservationService
+      .getOccupations(this.occupationTable.systemConfig.id, date)
       .subscribe(
-        data => {
+        (data) => {
           this.lastUpdated = new Date().getTime();
           this.occupationTable.setDate(date);
           this.show(data);
         },
-        err => {
+        (err) => {
           this.httpError = err;
-        },
+        }
       );
   }
 
   showDate() {
     return DateUtil.toDate(this.occupationTable.date).toLocaleDateString(
       'de-DE',
-      { weekday: 'long', year: 'numeric', month: 'numeric', day: 'numeric' });
+      { weekday: 'long', year: 'numeric', month: 'numeric', day: 'numeric' }
+    );
+  }
+
+  showDateShort() {
+    return DateUtil.toDate(this.occupationTable.date).toLocaleDateString(
+      'de-DE',
+      { weekday: 'short', month: 'numeric', day: 'numeric' }
+    );
   }
 
   private show(occupations: Occupation[]) {
