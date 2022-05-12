@@ -203,14 +203,14 @@ export class OccupationTableComponent
   showDate() {
     return DateUtil.toDate(this.occupationTable.date).toLocaleDateString(
       'de-DE',
-      { weekday: 'long', year: 'numeric', month: 'numeric', day: 'numeric' }
+      { weekday: 'long', year: 'numeric', month: '2-digit', day: '2-digit' }
     );
   }
 
   showDateShort() {
     return DateUtil.toDate(this.occupationTable.date).toLocaleDateString(
       'de-DE',
-      { weekday: 'short', month: 'numeric', day: 'numeric' }
+      { weekday: 'short', year: '2-digit', month: '2-digit', day: '2-digit' }
     );
   }
 
