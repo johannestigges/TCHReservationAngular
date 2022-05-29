@@ -60,7 +60,7 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
     this.repeatMinDate = DateUtil.addDays(new Date(), 1);
 
     this.showType = false;
-    this.showText = false;
+    this.showText = true;
     this.showSimpleDuration = false;
     this.showDuration = false;
     this.showRepeat = false;
@@ -137,7 +137,11 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
     // decide which parts of the layout are visible
     // this depends on the user role
     this.showType = this._isAtLeastTeamster();
-    this.showText = this._isAtLeastTeamster();
+    /** not used without corona restrictions
+     this.showText =
+     this.systemConfig.durationUnitInMinutes !== 30 ||
+     this._isAtLeastTeamster();
+     */
     this.showSimpleDuration =
       this.systemConfig.durationUnitInMinutes === 30 &&
       !this._isAtLeastTeamster();
