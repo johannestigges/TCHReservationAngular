@@ -8,7 +8,7 @@ import { SystemconfigService } from '../systemconfig.service';
 @Component({
   selector: 'tch-systemconfig-table',
   templateUrl: './systemconfig-table.component.html',
-  styleUrls: ['./systemconfig-table.component.css']
+  styleUrls: ['./systemconfig-table.component.scss']
 })
 export class SystemconfigTableComponent extends ErrorAware implements OnInit {
 

@@ -8,7 +8,7 @@ import { ErrorAware } from '../../../util/error/error-aware';
 @Component({
   selector: 'tch-user-table',
   templateUrl: './user-table.component.html',
-  styleUrls: ['./user-table.component.css']
+  styleUrls: ['./user-table.component.scss']
 })
 export class UserTableComponent extends ErrorAware implements OnInit {
 

@@ -1,94 +1,131 @@
 <div *ngIf="occupation" class="container">
+  <form class="form-horizontal">
+    <!-- title -->
+    <div class="form-group mb-3">
+      <h2 class="col-sm-offset-2 col-sm-10">Reservierung bearbeiten</h2>
+    </div>
 
-	<form class="form-horizontal">
+    <!-- Date and Time -->
+    <div class="form-group mb-3">
+      <label class="col-sm-2 control-label">Zeit:</label>
+      <div class="row col-sm-10">
+        <div class="col-sm-6">
+          <input
+            type="text"
+            name="date"
+            class="form-control"
+            [value]="getDate()"
+            size="8"
+            readonly
+            [tchAppAutofocus]="focus === 'date'"
+          />
+        </div>
+        <div class="col-sm-6">
+          <select class="form-control" id="time" [(ngModel)]="time" name="time">
+            <option *ngFor="let t of getTimes()" [value]="t">
+              {{ duration(t) }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
 
-		<!-- title -->
-		<div class="form-group">
-			<h2 class="col-sm-offset-2 col-sm-10">Reservierung bearbeiten</h2>
-		</div>
+    <!-- court -->
+    <div class="form-group mb-3">
+      <label class="col-sm-2 control-label">Platz:</label>
+      <div class="row col-sm-10">
+        <div class="col-sm-4">
+          <select
+            class="form-control"
+            id="court"
+            [(ngModel)]="court"
+            name="court"
+          >
+            <option
+              *ngFor="let index of systemConfig.getCourtIndices()"
+              [value]="index + 1"
+            >
+              {{ systemConfig.getCourtName(index) }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
 
-		<!-- Date and Time -->
-		<div class="form-group">
-			<label class="col-sm-2 control-label">Zeit:</label>
-			<div class="row col-sm-10">
-				<div class="col-sm-6">
-					<input type="text" name="date" class="form-control" [value]="getDate()" size="8" readonly
-						[tchAppAutofocus]='(focus ==="date" )'>
-				</div>
-				<div class="col-sm-6">
-					<select class="form-control" id="time" [(ngModel)]="time" name="time">
-						<option *ngFor="let t of getTimes()" [value]="t">{{duration(t)}}</option>
-					</select>
-				</div>
-			</div>
-		</div>
+    <!-- occupation type -->
+    <div *ngIf="showType" class="form-group mb-3">
+      <label class="col-sm-2 control-label">Typ:</label>
+      <div class="col-sm-10">
+        <select class="form-control" id="type" [(ngModel)]="type" name="type">
+          <option *ngFor="let type of types" [value]="type">{{ type }}</option>
+        </select>
+      </div>
+    </div>
 
-		<!-- court -->
-		<div class="form-group">
-			<label class="col-sm-2 control-label">Platz:</label>
-			<div class="row col-sm-10">
-				<div class="col-sm-4">
-					<select class="form-control" id="court" [(ngModel)]="court" name="court">
-						<option *ngFor="let index of systemConfig.getCourtIndices()" [value]="index + 1">
-							{{systemConfig.getCourtName(index)}}</option>
-					</select>
-				</div>
-			</div>
-		</div>
+    <!-- occupation text -->
+    <div class="form-group mb-3">
+      <label class="col-sm-2 control-label">Text:</label>
+      <div class="col-sm-10">
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="occupation.text"
+          name="text"
+          required
+          [tchAppAutofocus]="focus === 'text'"
+        />
+      </div>
+    </div>
 
-		<!-- occupation type -->
-		<div *ngIf="showType" class="form-group">
-			<label class="col-sm-2 control-label">Typ:</label>
-			<div class="col-sm-10">
-				<select class="form-control" id="type" [(ngModel)]="type" name="type">
-					<option *ngFor="let type of types" [value]="type">{{type}}</option>
-				</select>
-			</div>
-		</div>
+    <!-- duration -->
+    <div class="form-group mb-3">
+      <label class="col-sm-2 control-label">Dauer:</label>
+      <div class="row col-sm-10">
+        <div class="col-sm-4">
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="occupation.duration"
+            name="duration"
+            size="1"
+            [tchAppAutofocus]="focus === 'duration'"
+          />
+        </div>
+        <div class="col-sm-8">
+          mal {{ systemConfig.durationUnitInMinutes }} Minuten
+        </div>
+      </div>
+    </div>
 
-		<!-- occupation text -->
-		<div class="form-group">
-			<label class="col-sm-2 control-label">Text:</label>
-			<div class="col-sm-10">
-				<input type="text" class="form-control" [(ngModel)]="occupation.text" name='text' required
-					[tchAppAutofocus]='( focus === "text" )'>
-			</div>
-		</div>
+    <!-- error -->
+    <div class="form-group mb-3">
+      <div class="col-sm-offset-2 col-sm-10">
+        <tch-show-error
+          [httpError]="httpError"
+          [errorMessages]="errorMessages"
+        ></tch-show-error>
+      </div>
+    </div>
 
-		<!-- duration -->
-		<div class="form-group">
-			<label class="col-sm-2 control-label">Dauer:</label>
-			<div class="row col-sm-10">
-				<div class="col-sm-4">
-					<input type="text" class="form-control" [(ngModel)]="occupation.duration" name="duration" size="1"
-						[tchAppAutofocus]='( focus === "duration" )'>
-				</div>
-				<div class="col-sm-8">
-					mal {{systemConfig.durationUnitInMinutes}} Minuten
-				</div>
-			</div>
-		</div>
-
-		<!-- error -->
-		<div class="form-group">
-			<div class="col-sm-offset-2 col-sm-10">
-				<tch-show-error [httpError]="httpError" [errorMessages]="errorMessages"></tch-show-error>
-			</div>
-		</div>
-
-		<!-- Buttons -->
-		<div class="form-group">
-			<div class="col-sm-offset-2 col-sm-10">
-				<button *ngIf="canEdit()" (click)='onUpdate()'
-					class="btn btn-lg btn-block btn-primary">Speichern</button>
-				<button *ngIf="canDelete()" (click)="onDelete()"
-					class="btn btn-lg btn-block btn-outline-secondary">Löschen</button>
-				<!-- not working yet
+    <!-- Buttons -->
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button *ngIf="canEdit()" (click)="onUpdate()" class="btn btn-primary">
+          Speichern
+        </button>
+        <button
+          *ngIf="canDelete()"
+          (click)="onDelete()"
+          class="btn btn-outline-secondary"
+        >
+          Löschen
+        </button>
+        <!-- not working yet
 					<button *ngIf="canTerminate()" (click)='onTerminate()' class="btn btn-lg btn-block btn-outline-secondary">Platz
 						freigeben</button>
 				-->
-				<button (click)="onBack()" class="btn btn-lg btn-block btn-outline-dark">Zurück</button>
-			</div>
-		</div>
-	</form>
+        <button (click)="onBack()" class="btn btn-outline-dark">Zurück</button>
+      </div>
+    </div>
+  </form>
 </div>

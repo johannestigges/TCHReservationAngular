@@ -1,25 +1,39 @@
 <table class="table table-bordered table-striped table-hover">
-	<thead>
-		<tr>
-			<th>Id</th>
-			<th>Name</th>
-			<th>Plätze</th>
-			<th>Reservierung</th>
-			<th>Öffnungszeit</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr *ngFor="let config of systemconfigs">
-			<td>{{config.id}}</td>
-			<td>{{config.name}}</td>
-			<td>{{config.courts}}</td>
-			<td>max {{config.maxDuration}} x {{config.durationUnitInMinutes}} Minuten;
-				max {{config.maxDaysReservationInFuture}} Tage im Voraus</td>
-			<td>{{config.openingHour}} - {{config.closingHour}} Uhr</td>
-			<td><a class="btn btn-outline-secondary" routerLink='/systemconfig/modify/{{config.id}}'>ändern</a></td>
-		</tr>
-	</tbody>
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Name</th>
+      <th>Plätze</th>
+      <th>Reservierung</th>
+      <th>Öffnungszeit</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let config of systemconfigs">
+      <td>{{ config.id }}</td>
+      <td>{{ config.name }}</td>
+      <td>{{ config.courts }}</td>
+      <td>
+        max {{ config.maxDuration }} x
+        {{ config.durationUnitInMinutes }} Minuten; max
+        {{ config.maxDaysReservationInFuture }} Tage im Voraus
+      </td>
+      <td>{{ config.openingHour }} - {{ config.closingHour }} Uhr</td>
+      <td>
+        <a
+          class="btn btn-outline-secondary"
+          routerLink="/systemconfig/modify/{{ config.id }}"
+          >ändern</a
+        >
+      </td>
+    </tr>
+  </tbody>
 </table>
-<tch-show-error [httpError]="httpError" [errorMessages]="errorMessages"></tch-show-error>
-<a class="btn btn-lg btn-outline-secondary" routerLink='/systemconfig/add'>+</a>
-<button class="btn btn-lg btn-outline-dark" (click)="cancel()">Zurück</button>
+<tch-show-error
+  [httpError]="httpError"
+  [errorMessages]="errorMessages"
+></tch-show-error>
+<a class="btn btn-primary" routerLink="/systemconfig/add"
+  >Systemkonfiguration anlegen</a
+>
+<button class="btn btn-outline-dark" (click)="cancel()">Zurück</button>

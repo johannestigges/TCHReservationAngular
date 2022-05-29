@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 
 import { UserService } from '../user.service';
@@ -12,7 +10,7 @@ import { ErrorAware } from '../../../util/error/error-aware';
 @Component({
   selector: 'tch-user-add',
   templateUrl: './user-add.component.html',
-  styleUrls: ['./user-add.component.css']
+  styleUrls: ['./user-add.component.scss']
 })
 export class UserAddComponent extends ErrorAware implements OnInit {
 

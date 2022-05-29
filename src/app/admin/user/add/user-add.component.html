@@ -1,78 +1,113 @@
 <div class="container">
-	<form class="form-horizontal">
+  <form class="form-horizontal">
+    <!-- title -->
+    <div class="form-group mb-3">
+      <h2 class="col-sm-offset-2 col-sm-10">Benutzer anlegen</h2>
+    </div>
 
-		<!-- title -->
-		<div class="form-group">
-			<h2 class="col-sm-offset-2 col-sm-10">Benutzer anlegen</h2>
-		</div>
+    <!-- user name -->
+    <div class="form-group mb-3">
+      <label class="col-sm-2 control-label">Name:</label>
+      <div class="col-sm-10">
+        <input
+          type="text"
+          class="form-control"
+          name="name"
+          [(ngModel)]="user.name"
+          required
+        />
+      </div>
+    </div>
 
-		<!-- user name -->
-		<div class="form-group">
-			<label class="col-sm-2 control-label">Name:</label>
-			<div class="col-sm-10">
-				<input type="text" class="form-control" name="name" [(ngModel)]="user.name" required>
-			</div>
-		</div>
+    <!-- user email -->
+    <div class="form-group mb-3">
+      <label class="col-sm-2 control-label">EMail:</label>
+      <div class="col-sm-10">
+        <input
+          type="email"
+          class="form-control"
+          name="email"
+          [(ngModel)]="user.email"
+          required
+        />
+      </div>
+    </div>
 
-		<!-- user email -->
-		<div class="form-group">
-			<label class="col-sm-2 control-label">EMail:</label>
-			<div class="col-sm-10">
-				<input type="email" class="form-control" name="email" [(ngModel)]="user.email" required>
-			</div>
-		</div>
+    <!-- user password -->
+    <div class="form-group mb-3">
+      <label class="col-sm-2 control-label">Password:</label>
+      <div class="col-sm-10">
+        <input
+          type="password"
+          class="form-control"
+          name="password"
+          [(ngModel)]="user.password"
+          required
+        />
+      </div>
+    </div>
 
-		<!-- user password -->
-		<div class="form-group">
-			<label class="col-sm-2 control-label">Password:</label>
-			<div class="col-sm-10">
-				<input type="password" class="form-control" name="password" [(ngModel)]="user.password" required>
-			</div>
-		</div>
+    <!-- user confirm passowrd -->
+    <div class="form-group mb-3">
+      <label class="col-sm-2 control-label">Passwort bestätigen:</label>
+      <div class="col-sm-10">
+        <input
+          type="password"
+          class="form-control"
+          name="confirmPassword"
+          [(ngModel)]="confirmPassword"
+          required
+        />
+      </div>
+    </div>
 
-		<!-- user confirm passowrd -->
-		<div class="form-group">
-			<label class="col-sm-2 control-label">Passwort bestätigen:</label>
-			<div class="col-sm-10">
-				<input type="password" class="form-control" name="confirmPassword" [(ngModel)]="confirmPassword"
-					required>
-			</div>
-		</div>
+    <!-- user role -->
+    <div class="form-group mb-3">
+      <label class="col-sm-2 control-label">Rolle:</label>
+      <div class="col-sm-10">
+        <select
+          class="form-control"
+          id="type"
+          [(ngModel)]="userRole"
+          name="role"
+        >
+          <option *ngFor="let role of roleValues" [value]="role">
+            {{ role }}
+          </option>
+        </select>
+      </div>
+    </div>
+    <!-- user status -->
+    <div class="form-group mb-3">
+      <label class="col-sm-2 control-label">Status:</label>
+      <div class="col-sm-10">
+        <select
+          class="form-control"
+          id="type"
+          [(ngModel)]="userStatus"
+          name="status"
+        >
+          <option *ngFor="let s of statusValues" [value]="s">{{ s }}</option>
+        </select>
+      </div>
+    </div>
 
-		<!-- user role -->
-		<div class='form-group'>
-			<label class="col-sm-2 control-label">Rolle:</label>
-			<div class="col-sm-10">
-				<select class='form-control' id='type' [(ngModel)]="userRole" name="role">
-					<option *ngFor='let role of roleValues' [value]='role'>{{role}}</option>
-				</select>
-			</div>
-		</div>
-		<!-- user status -->
-		<div class='form-group'>
-			<label class="col-sm-2 control-label">Status:</label>
-			<div class="col-sm-10">
-				<select class='form-control' id='type' [(ngModel)]="userStatus" name="status">
-					<option *ngFor='let s of statusValues' [value]='s'>{{s}}</option>
-				</select>
-			</div>
-		</div>
+    <!-- error -->
+    <div class="form-group mb-3">
+      <div class="col-sm-offset-2 col-sm-10">
+        <tch-show-error [httpError]="httpError" [errorMessages]="errorMessages">
+        </tch-show-error>
+      </div>
+    </div>
 
-		<!-- error -->
-		<div class="form-group">
-			<div class="col-sm-offset-2 col-sm-10">
-				<tch-show-error [httpError]="httpError" [errorMessages]="errorMessages">
-				</tch-show-error>
-			</div>
-		</div>
-
-		<!-- Buttons -->
-		<div class="form-group">
-			<div class="col-sm-offset-2 col-sm-10">
-				<button (click)="onClick()" class="btn btn-lg btn-block btn-primary">
-					Benutzer anlegen</button>
-				<button (click)="cancel()" class="btn btn-lg btn-block btn-outline-dark">Zurück</button>
-			</div>
-		</div>
-	</form>
+    <!-- Buttons -->
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button (click)="onClick()" class="btn btn-primary">
+          Benutzer anlegen
+        </button>
+        <button (click)="cancel()" class="btn btn-outline-dark">Zurück</button>
+      </div>
+    </div>
+  </form>
 </div>

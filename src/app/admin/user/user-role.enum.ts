@@ -4,5 +4,6 @@ export enum UserRole {
   KIOSK,
   TRAINER,
   ADMIN,
-  TECHNICAL
+  TECHNICAL,
+  TEAMSTER
 }

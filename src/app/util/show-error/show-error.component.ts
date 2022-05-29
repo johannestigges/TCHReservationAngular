@@ -4,15 +4,12 @@ import { HttpErrorResponse } from '@angular/common/http';
 @Component({
     selector: 'tch-show-error',
     templateUrl: './show-error.component.html',
-    styleUrls: ['./show-error.component.css']
+    styleUrls: ['./show-error.component.scss']
 })
-export class ShowErrorComponent implements OnInit, OnChanges {
+export class ShowErrorComponent implements OnChanges {
 
     @Input() httpError: HttpErrorResponse;
     @Input() errorMessages: string[];
-
-    constructor() { }
-    ngOnInit() { }
 
     ngOnChanges() {
         this.analyzeHttpError();
