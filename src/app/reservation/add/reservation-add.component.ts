@@ -137,7 +137,9 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
     // decide which parts of the layout are visible
     // this depends on the user role
     this.showType = this._isAtLeastTeamster();
-    this.showText = this._isAtLeastTeamster();
+    this.showText =
+      this.systemConfig.durationUnitInMinutes !== 30 ||
+      this._isAtLeastTeamster();
     this.showSimpleDuration =
       this.systemConfig.durationUnitInMinutes === 30 &&
       !this._isAtLeastTeamster();
