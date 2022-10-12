@@ -12,7 +12,8 @@
         "ecmaVersion": "latest"
     },
     "plugins": [
-        "@typescript-eslint"
+        "@typescript-eslint",
+        "eslint-plugin-html"
     ],
     "rules": {
         "indent": [

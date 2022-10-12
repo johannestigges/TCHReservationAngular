@@ -6,29 +6,30 @@ import { Occupation } from './occupation';
  * reservation system configuration data
  */
 export class ReservationSystemConfig {
-
   constructor(
-    public id: number,              // system configuration id
-    public name: string,            // name of reservation system
-    public courts: string[],    // names of courts
+    public id: number, // system configuration id
+    public name: string, // name of reservation system
+    public title: string, // title of reservation system
+    public courts: string[], // names of courts
     public durationUnitInMinutes: number, // smallest reservation unit
     public maxDaysReservationInFuture: number, // maximum of reservation in the future for normal users
-    public maxDuration: number,     // maximum of duration for normal users
-    public openingHour: number,     // first reservation hour
-    public closingHour: number,     // last reservation hour
-  ) { }
+    public maxDuration: number, // maximum of duration for normal users
+    public openingHour: number, // first reservation hour
+    public closingHour: number // last reservation hour
+  ) {}
 
   public static of(config: ReservationSystemConfig) {
     return new ReservationSystemConfig(
       config.id,
       config.name,
+      config.title,
       config.courts,
       config.durationUnitInMinutes,
       config.maxDaysReservationInFuture,
       config.maxDuration,
       config.openingHour,
       config.closingHour
-      );
+    );
   }
 
   /**
@@ -46,11 +47,16 @@ export class ReservationSystemConfig {
    * get the number of rows from opening hour to closing hour
    */
   public getRows(): number {
-    return (this.closingHour - this.openingHour) * 60 / this.durationUnitInMinutes;
+    return (
+      ((this.closingHour - this.openingHour) * 60) / this.durationUnitInMinutes
+    );
   }
 
   public toRow(date: number): number {
-    return (DateUtil.getDayMinutesPart(date) - this.openingHour * 60) / this.durationUnitInMinutes;
+    return (
+      (DateUtil.getDayMinutesPart(date) - this.openingHour * 60) /
+      this.durationUnitInMinutes
+    );
   }
 
   public toMinutes(row: number) {
@@ -67,7 +73,11 @@ export class ReservationSystemConfig {
   }
 
   public getReservationEnd(reservation: Reservation) {
-    return this.getEnd(reservation.date, reservation.start, reservation.duration);
+    return this.getEnd(
+      reservation.date,
+      reservation.start,
+      reservation.duration
+    );
   }
 
   public getOccupationEnd(occupation: Occupation) {

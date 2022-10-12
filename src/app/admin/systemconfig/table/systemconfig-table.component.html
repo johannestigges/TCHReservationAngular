@@ -3,6 +3,7 @@
     <tr>
       <th>Id</th>
       <th>Name</th>
+      <th>Titel</th>
       <th>Plätze</th>
       <th>Reservierung</th>
       <th>Öffnungszeit</th>
@@ -12,6 +13,7 @@
     <tr *ngFor="let config of systemconfigs">
       <td>{{ config.id }}</td>
       <td>{{ config.name }}</td>
+      <td>{{ config.title }}</td>
       <td>{{ config.courts }}</td>
       <td>
         max {{ config.maxDuration }} x
