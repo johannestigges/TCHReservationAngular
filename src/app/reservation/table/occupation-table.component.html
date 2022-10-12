@@ -1,7 +1,9 @@
 <router-outlet></router-outlet>
 <div class="d-flex justify-content-between mb-1 mt-1">
   <h3>
-    <span class="d-none d-lg-inline"> Platzbelegungen </span>
+    <span class="d-none d-lg-inline">
+      {{ occupationTable?.systemConfig?.name }}
+    </span>
     <span class="d-none d-md-inline"> {{ showDate() }} &nbsp; </span>
     <span class="d-inline d-md-none"> {{ showDateShort() }} &nbsp; </span>
   </h3>
