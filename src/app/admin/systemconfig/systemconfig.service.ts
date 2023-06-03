@@ -10,30 +10,30 @@ import { ReservationSystemConfig } from '../../reservation/reservation-system-co
 @Injectable()
 export class SystemconfigService {
 
-  constructor(private httpClient: HttpClient) {
-  }
+	constructor(private httpClient: HttpClient) {
+	}
 
-  get(id: number): Observable<ReservationSystemConfig> {
-    return this.httpClient.get<ReservationSystemConfig>(`${this.url()}/getone/${id}`);
-  }
+	get(id: number): Observable<ReservationSystemConfig> {
+		return this.httpClient.get<ReservationSystemConfig>(`${this.url()}/getone/${id}`);
+	}
 
-  getAll(): Observable<ReservationSystemConfig[]> {
-    return this.httpClient.get<ReservationSystemConfig[]>(`${this.url()}/`);
-  }
+	getAll(): Observable<ReservationSystemConfig[]> {
+		return this.httpClient.get<ReservationSystemConfig[]>(this.url());
+	}
 
-  add(systemconfig: ReservationSystemConfig): Observable<ReservationSystemConfig> {
-    return this.httpClient.post<ReservationSystemConfig>(`${this.url()}/`, systemconfig);
-  }
+	add(systemconfig: ReservationSystemConfig): Observable<ReservationSystemConfig> {
+		return this.httpClient.post<ReservationSystemConfig>(this.url(), systemconfig);
+	}
 
-  update(systemconfig: ReservationSystemConfig): Observable<ReservationSystemConfig> {
-    return this.httpClient.put<ReservationSystemConfig>(`${this.url()}/`, systemconfig);
-  }
+	update(systemconfig: ReservationSystemConfig): Observable<ReservationSystemConfig> {
+		return this.httpClient.put<ReservationSystemConfig>(this.url(), systemconfig);
+	}
 
-  delete(id: number): Observable<ReservationSystemConfig> {
-    return this.httpClient.delete<ReservationSystemConfig>(`${this.url()}/${id}`);
-  }
+	delete(id: number): Observable<ReservationSystemConfig> {
+		return this.httpClient.delete<ReservationSystemConfig>(`${this.url()}/${id}`);
+	}
 
-  private url() {
-    return `${window.location.protocol}//${window.location.host}/rest/systemconfig`;
-  }
+	private url() {
+		return `${window.location.protocol}//${window.location.host}/rest/systemconfig`;
+	}
 }

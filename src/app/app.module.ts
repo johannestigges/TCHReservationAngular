@@ -4,9 +4,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-// import { CookieService } from 'ngx-cookie-service';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
-
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { ReservationService } from './reservation/reservation.service';
@@ -19,7 +17,6 @@ import { UserAddComponent } from './admin/user/add/user-add.component';
 import { ProtocolTableComponent } from './admin/protocol/table/protocol-table.component';
 import { ProtocolService } from './admin/protocol/protocol.service';
 import { UserService } from './admin/user/user.service';
-import { AutofocusDirective } from './autofocus.directive';
 import { LoginComponent } from './login/login.component';
 import { ShowErrorComponent } from './util/show-error/show-error.component';
 import { CorsInterceptor } from './cors-interceptor';
@@ -30,45 +27,44 @@ import { SystemconfigModifyComponent } from './admin/systemconfig/modify/systemc
 import { AdminComponent } from './admin/admin.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    OccupationTableComponent,
-    ReservationAddComponent,
-    ReservationModifyComponent,
-    AdminComponent,
-    UserTableComponent,
-    UserAddComponent,
-    UserModifyComponent,
-    ProtocolTableComponent,
-    SystemconfigTableComponent,
-    SystemconfigAddComponent,
-    SystemconfigModifyComponent,
-    AutofocusDirective,
-    LoginComponent,
-    ShowErrorComponent,
-  ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    BsDatepickerModule.forRoot(),
-    AppRoutingModule,
-    RouterModule,
-    FormsModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-  ],
-  providers: [
-    ReservationService,
-    UserService,
-    ProtocolService,
-    SystemconfigService,
-    //        CookieService,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: CorsInterceptor,
-      multi: true,
-    },
-  ],
-  bootstrap: [AppComponent],
+	declarations: [
+		AppComponent,
+		OccupationTableComponent,
+		ReservationAddComponent,
+		ReservationModifyComponent,
+		AdminComponent,
+		UserTableComponent,
+		UserAddComponent,
+		UserModifyComponent,
+		ProtocolTableComponent,
+		SystemconfigTableComponent,
+		SystemconfigAddComponent,
+		SystemconfigModifyComponent,
+		LoginComponent,
+		ShowErrorComponent,
+	],
+	imports: [
+		BrowserModule,
+		BrowserAnimationsModule,
+		BsDatepickerModule.forRoot(),
+		AppRoutingModule,
+		RouterModule,
+		FormsModule,
+		ReactiveFormsModule,
+		HttpClientModule,
+	],
+	providers: [
+		ReservationService,
+		UserService,
+		ProtocolService,
+		SystemconfigService,
+		//        CookieService,
+		{
+			provide: HTTP_INTERCEPTORS,
+			useClass: CorsInterceptor,
+			multi: true,
+		},
+	],
+	bootstrap: [AppComponent],
 })
 export class AppModule {}
