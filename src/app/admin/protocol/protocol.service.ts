@@ -15,6 +15,6 @@ export class ProtocolService {
   }
 
   private url() {
-    return `${window.location.protocol}//${window.location.host}/rest/protocol`;
+    return '/rest/protocol';
   }
 }

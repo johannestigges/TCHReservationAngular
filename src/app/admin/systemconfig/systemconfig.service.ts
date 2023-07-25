@@ -34,6 +34,6 @@ export class SystemconfigService {
 	}
 
 	private url() {
-		return `${window.location.protocol}//${window.location.host}/rest/systemconfig`;
+		return '/rest/systemconfig';
 	}
 }

@@ -4,7 +4,6 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { ReservationService } from './reservation/reservation.service';
@@ -25,6 +24,7 @@ import { SystemconfigService } from './admin/systemconfig/systemconfig.service';
 import { SystemconfigAddComponent } from './admin/systemconfig/add/systemconfig-add.component';
 import { SystemconfigModifyComponent } from './admin/systemconfig/modify/systemconfig-modify.component';
 import { AdminComponent } from './admin/admin.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
 	declarations: [
@@ -46,19 +46,18 @@ import { AdminComponent } from './admin/admin.component';
 	imports: [
 		BrowserModule,
 		BrowserAnimationsModule,
-		BsDatepickerModule.forRoot(),
 		AppRoutingModule,
 		RouterModule,
 		FormsModule,
 		ReactiveFormsModule,
 		HttpClientModule,
+  NgbModule,
 	],
 	providers: [
 		ReservationService,
 		UserService,
 		ProtocolService,
 		SystemconfigService,
-		//        CookieService,
 		{
 			provide: HTTP_INTERCEPTORS,
 			useClass: CorsInterceptor,
