@@ -158,19 +158,18 @@ export class OccupationTableComponent
     }
 
     // admin and trainer can add everything
-    if (
-      this.occupationTable.user.hasRole(
-        UserRole.ADMIN,
-        UserRole.TRAINER,
-        UserRole.TEAMSTER
-      )
-    ) {
+    if (this.occupationTable.user.hasRole(UserRole.ADMIN, UserRole.TRAINER)) {
       return true;
     }
 
     // cannot add occupation in the past
     if (date < this.lastUpdated) {
       return false;
+    }
+
+    // teamster can add in the future
+    if (this.occupationTable.user.hasRole(UserRole.TEAMSTER)) {
+      return true;
     }
 
     // only for this and some days

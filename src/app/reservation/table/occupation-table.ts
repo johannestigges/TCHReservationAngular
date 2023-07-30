@@ -88,16 +88,7 @@ export class OccupationTable extends TableData {
     }
 
     canMakeReservation() {
-        if (!this.user || this.user.hasRole(UserRole.ANONYMOUS)) {
-            return false;
-        }
-        if (this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER)) {
-            return true;
-        }
-        if (this.user.hasRole(UserRole.KIOSK, UserRole.REGISTERED, UserRole.TECHNICAL)) {
-            return true;
-        }
-        return false;
+       return this.user && !this.user.hasRole(UserRole.ANONYMOUS);
     }
 
     private showTime(row: number): string {
