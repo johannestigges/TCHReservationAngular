@@ -66,6 +66,6 @@ export class ReservationService {
   }
 
   private url() {
-    return `${window.location.protocol}//${window.location.host}/rest/reservation`;
+    return '/rest/reservation';
   }
 }

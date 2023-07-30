@@ -17,7 +17,6 @@
             size="8"
             readonly
             [value]="getDate()"
-            [tchAppAutofocus]="focus === 'date'"
           />
         </div>
         <div class="col-sm-6">
@@ -74,7 +73,6 @@
           [(ngModel)]="reservation.text"
           name="text"
           required
-          [tchAppAutofocus]="focus === 'text'"
         />
       </div>
     </div>
@@ -87,7 +85,6 @@
           [(ngModel)]="player1"
           name="text"
           required
-          [tchAppAutofocus]="focus === 'text'"
         />
       </div>
       <label class="col-sm-2 control-label">Spieler 2:</label>
@@ -135,7 +132,6 @@
             [(ngModel)]="reservation.duration"
             name="duration"
             size="1"
-            [tchAppAutofocus]="focus === 'duration'"
           />
         </div>
         <div class="col-sm-8">
@@ -155,7 +151,6 @@
               name="duration"
               (change)="onDurationChanged(2)"
               checked
-              [tchAppAutofocus]="focus === 'duration'"
             />
             Einzel (60 Minuten)
           </label>
@@ -199,20 +194,11 @@
         >
           <div style="display: flex">
             <label class="control-label">bis &nbsp;&nbsp;</label>
-            <input
-              name="repeatUntil"
-              [(ngModel)]="repeatUntil"
-              type="text"
-              placeholder="tt.mm.jjjj"
-              class="form-control"
-              bsDatepicker
-              [bsConfig]="{
-                dateInputFormat: 'DD.MM.YYYY',
-                containerClass: 'theme-blue',
-                isAnimated: true
-              }"
-              [minDate]="repeatMinDate"
-            />
+            <ngb-datepicker
+            [(ngModel)]="repeatUntil"
+            [minDate]="repeatMinDate"
+            [ngModelOptions]="{standalone: true}"
+            > #d</ngb-datepicker>
           </div>
         </div>
         <div

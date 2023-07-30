@@ -9,13 +9,10 @@ export class UserService {
 	constructor(private httpClient: HttpClient) {}
 
 	getLoggedInUser(): Observable<User> {
-		return this.httpClient.get<User>(this.userUrl() + 'me');
+		return this.httpClient.get<User>(this.userUrl() + '/me');
 	}
 
 	login(user, password): Observable<unknown> {
-		// const headers = new HttpHeaders().set('authorization', 'Basic ' + btoa(user + ':' + password));
-		// return this.httpClient.get('/user', {headers});
-
 		const params = new HttpParams()
 			.set('username', user)
 			.set('password', password)
@@ -24,11 +21,11 @@ export class UserService {
 	}
 
 	getAll(): Observable<User[]> {
-		return this.httpClient.get<User[]>(this.userUrl() + 'all');
+		return this.httpClient.get<User[]>(this.userUrl() + '/all');
 	}
 
 	getUser(id: number): Observable<User> {
-		return this.httpClient.get<User>(this.userUrl() + id);
+		return this.httpClient.get<User>(this.userUrl() + '/' + id);
 	}
 
 	addUser(user: User): Observable<User> {
@@ -40,14 +37,10 @@ export class UserService {
 	}
 
 	private userUrl() {
-		return `${this.url()}/rest/user/`;
+		return '/rest/user';
 	}
 
 	private loginUrl() {
-		return `${this.url()}/login`;
-	}
-
-	private url() {
-		return `${window.location.protocol}//${window.location.host}`;
+		return '/login';
 	}
 }

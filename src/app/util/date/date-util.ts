@@ -1,3 +1,5 @@
+import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+
 /**
  * Utility class with helper methods concerning date and time
  */
@@ -17,6 +19,14 @@ export class DateUtil {
     d2.setMonth(d1.getMonth());
     d2.setFullYear(d1.getFullYear());
     return d1.getTime() - d2.getTime();
+  }
+
+  static convertFromNgbDateStruct(dateStruct: NgbDateStruct): Date {
+    console.log(dateStruct.year, dateStruct.month, dateStruct.day);
+    const date = new Date(dateStruct.year, dateStruct.month - 1, dateStruct.day, 12);
+    console.log(date);
+    date.setFullYear(dateStruct.year);
+    return date;
   }
 
   static getDatePart(date: number): number {

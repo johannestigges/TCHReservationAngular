@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
+import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 
 import { ReservationType } from '../reservationtype';
 import { ReservationService } from '../reservation.service';
@@ -24,7 +25,7 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
 	user: User;
 	reservation: Reservation;
 
-	repeatUntil: Date;
+	repeatUntil: NgbDateStruct;
 	repeatMinDate: Date;
 	time: number;
 	type: string;
@@ -108,7 +109,8 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
 		this.reservation.occupations = null;
 		this.reservation.type = ReservationType[this.type];
 		this.reservation.start = this.time;
-		this.reservation.repeatUntil = this.repeatUntil.getTime();
+		this.reservation.repeatUntil = DateUtil.convertFromNgbDateStruct(this.repeatUntil).getTime();
+		console.log('repeat until', this.repeatUntil, this.reservation.repeatUntil);
 		if (!this.showText) {
 			if (this.showDouble) {
 				this.reservation.text = `${this.player1} ${this.player2} ${this.player3} ${this.player4}`;
@@ -224,7 +226,9 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
 		this.clearError();
 		this.reservation.type = ReservationType[this.type];
 		this.reservation.start = this.time;
-		this.reservation.repeatUntil = this.repeatUntil?.getTime();
+		if (this.repeatUntil) {
+		  this.reservation.repeatUntil = DateUtil.convertFromNgbDateStruct(this.repeatUntil).getTime();
+		}
 		if (!this.showText) {
 			this._setCookie('player1', this.player1);
 			this._setCookie('player2', this.player2);
