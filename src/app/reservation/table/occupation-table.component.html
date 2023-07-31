@@ -34,10 +34,11 @@
   </div>
   <div class="d-none d-sm-inline">
     <div class="col text-right" *ngIf="!isLoggedIn()">
-      <a class="btn btn-outline-secondary" href="../../login">login</a>
+      <a class="btn btn-outline-secondary" routerLink="/login">login</a>
     </div>
     <div class="col text-right" *ngIf="isLoggedIn() && canLogout()">
-      <a class="btn btn-outline-secondary" href="../../logout">logout</a>
+      <a class="btn btn-outline-secondary" routerLink="/login" [queryParams]="{ logout:true }">
+        logout</a>
     </div>
   </div>
 </div>
@@ -147,19 +148,19 @@
 
 <!-- show menu -->
 <span *ngIf="!isLoggedIn()">
-  <a class="btn btn-sm btn-link" href="../../login">Login</a>
+  <a class="btn btn-sm btn-link" routerLink="/login">Login</a>
 </span>
 <span *ngIf="isLoggedIn()">
-  <a class="btn btn-sm btn-link" *ngIf="canLogout()" href="../../logout"
+  <a class="btn btn-sm btn-link" *ngIf="canLogout()" routerLink="/login" [queryParams]="{logout:true}"
     >Logout</a
   >
   <a
     class="btn btn-sm btn-link"
     *ngIf="canChangePassword()"
-    href="../user/modify/{{ occupationTable.user.id }}"
+    routerLink="/user/modify/{{ occupationTable.user.id }}"
     >Kennwort ändern</a
   >
-  <a *ngIf="isAdminOrTrainer()" class="btn btn-sm btn-link" href="../admin"
+  <a *ngIf="isAdminOrTrainer()" class="btn btn-sm btn-link" routerLink="/admin"
     >Administration</a
   >
   {{ occupationTable.user.name }}

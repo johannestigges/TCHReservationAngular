@@ -1,23 +1,27 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 import { User } from './user';
 import { Observable } from 'rxjs';
 
 @Injectable()
 export class UserService {
-	constructor(private httpClient: HttpClient) {}
+	constructor(private httpClient: HttpClient) { }
 
 	getLoggedInUser(): Observable<User> {
 		return this.httpClient.get<User>(this.userUrl() + '/me');
 	}
 
-	login(user, password): Observable<unknown> {
-		const params = new HttpParams()
-			.set('username', user)
-			.set('password', password)
-			.set('submit', 'Login');
-		return this.httpClient.post<User>(this.loginUrl(), params);
+	login(user, password) {
+		const headers = new HttpHeaders(
+			{ 'content-type': 'application/x-www-form-urlencoded' });
+
+		return this.httpClient.post('/login', `username=${user}&password=${password}`,
+			{ headers: headers, responseType: 'text' });
+	}
+
+	logout() {
+		return this.httpClient.get('/logout', { responseType:'text'});
 	}
 
 	getAll(): Observable<User[]> {
