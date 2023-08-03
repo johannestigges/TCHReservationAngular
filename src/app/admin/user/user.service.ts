@@ -12,16 +12,17 @@ export class UserService {
 		return this.httpClient.get<User>(this.userUrl() + '/me');
 	}
 
-	login(user, password) {
+	login(user, password, rememberMe) {
 		const headers = new HttpHeaders(
 			{ 'content-type': 'application/x-www-form-urlencoded' });
 
-		return this.httpClient.post('/login', `username=${user}&password=${password}`,
+		return this.httpClient.post('/login',
+			`username=${user}&password=${password}&remember-me=${rememberMe}`,
 			{ headers: headers, responseType: 'text' });
 	}
 
 	logout() {
-		return this.httpClient.get('/logout', { responseType:'text'});
+		return this.httpClient.get('/logout', { responseType: 'text' });
 	}
 
 	getAll(): Observable<User[]> {

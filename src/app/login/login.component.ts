@@ -14,7 +14,8 @@ export class LoginComponent implements OnInit {
 
 	form = this.fb.group({
 		user: ['', Validators.required],
-		password: ['', Validators.required]
+		password: ['', Validators.required],
+		rememberMe: ['']
 	});
 
 	constructor(
@@ -29,7 +30,7 @@ export class LoginComponent implements OnInit {
 			const username: string | null = params.get('username');
 			const pw: string | null = params.get('password');
 			if (username && pw) {
-				this.userService.login(username, pw).subscribe({
+				this.userService.login(username, pw, true).subscribe({
 					next: () => this.router.navigateByUrl('/'),
 					error: (error) => this.setError(error)
 				});
@@ -49,7 +50,7 @@ export class LoginComponent implements OnInit {
 
 	onSubmit() {
 		if (this.form.valid) {
-			this.userService.login(this.form.controls.user.value!, this.form.controls.password.value!)
+			this.userService.login(this.form.controls.user.value!, this.form.controls.password.value!, this.form.controls.rememberMe.value)
 				.subscribe({
 					next: () => this.router.navigate(['/']),
 					error: (error) => {
