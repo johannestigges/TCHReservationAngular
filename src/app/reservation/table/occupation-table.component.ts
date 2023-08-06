@@ -12,6 +12,7 @@ import { DateUtil } from '../../util/date/date-util';
 import { ErrorAware } from '../../util/error/error-aware';
 import { Observable, timer, Subscription } from 'rxjs';
 import { ReservationType } from '../reservationtype';
+import { ReservationSystemConfig } from '../reservation-system-config';
 
 @Component({
   selector: 'tch-occupation-table',
@@ -20,67 +21,77 @@ import { ReservationType } from '../reservationtype';
 })
 export class OccupationTableComponent
   extends ErrorAware
-  implements OnInit, OnDestroy
-{
+  implements OnInit, OnDestroy {
   occupationTable: OccupationTable;
   lastUpdated: number;
   private timer: Observable<number>;
   private timerSubscription: Subscription;
+  systemConfigs: ReservationSystemConfig[] = [];
+  systemConfigId;
 
   constructor(
     private reservationService: ReservationService,
     private userService: UserService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) {
     super();
   }
 
   ngOnInit() {
-    const systemId = this.route.snapshot.params.system;
-    const date = this.route.snapshot.params.date;
     this.occupationTable = new OccupationTable(
       new User(0, '', UserRole.ANONYMOUS)
     );
-    // set date
+
+    const date = this.route.snapshot.params.date;
     if (date) {
       this.occupationTable.setDate(parseInt(date, 10));
     }
 
-    // read system config
-    this.reservationService.getSystemConfig(systemId).subscribe(
-      (systemConfig) => {
-        this.occupationTable.setSystemConfig(systemConfig);
+    this.reservationService.getAllSystemConfigs().subscribe(systemConfigs => {
+      this.systemConfigs = systemConfigs;
+      this.systemConfigId = Number(this.route.snapshot.params.system || systemConfigs[0].id);
+      var systemConfig = systemConfigs.find(e => e.id === this.systemConfigId);
+      if (!systemConfig) {
+        systemConfig = this.systemConfigs[0];
+        this.systemConfigId = systemConfig.id;
+      }
+      this.initTable(systemConfig);
+    });
 
-        // get logged in user
-        this.userService.getLoggedInUser().subscribe(
-          (user) => {
-            this.occupationTable.setUser(
-              new User(
-                user.id,
-                user.name,
-                UserRole['' + user.role],
-                '',
-                '',
-                ActivationStatus['' + user.status]
-              )
+  }
+
+  private initTable(systemConfig: ReservationSystemConfig) {
+
+    this.occupationTable.setSystemConfig(systemConfig);
+
+    // get logged in user
+    this.userService.getLoggedInUser().subscribe(
+      {
+        next: (user) => {
+          this.occupationTable.setUser(
+            new User(
+              user.id,
+              user.name,
+              UserRole['' + user.role],
+              '',
+              '',
+              ActivationStatus['' + user.status]
+            )
+          );
+          // update occupation table
+          this.update(this.occupationTable.date);
+        },
+        error: (usererror) => (this.httpError = usererror),
+        complete: () => {
+          // reload system when user is 'kiosk' every 5 Minutes
+          if (this.occupationTable.user.hasRole(UserRole.KIOSK)) {
+            this.timer = timer(300000, 300000);
+            this.timerSubscription = this.timer.subscribe(() =>
+              this.update(this.occupationTable.date)
             );
-            // update occupation table
-            this.update(this.occupationTable.date);
-          },
-          (usererror) => (this.httpError = usererror),
-          () => {
-            // reload system when user is 'kiosk' every 5 Minutes
-            if (this.occupationTable.user.hasRole(UserRole.KIOSK)) {
-              this.timer = timer(300000, 300000);
-              this.timerSubscription = this.timer.subscribe(() =>
-                this.update(this.occupationTable.date)
-              );
-            }
           }
-        );
-      },
-      (configerror) => (this.httpError = configerror)
-    );
+        }
+      });
   }
 
   ngOnDestroy() {
@@ -148,7 +159,7 @@ export class OccupationTableComponent
   canShowText(occupation: Occupation) {
     return (
       ReservationType[occupation.type] !==
-        ReservationType[ReservationType.Quickbuchung] || this.isLoggedIn()
+      ReservationType[ReservationType.Quickbuchung] || this.isLoggedIn()
     );
   }
 
@@ -176,7 +187,7 @@ export class OccupationTableComponent
     return (
       date - this.lastUpdated <
       this.occupationTable.systemConfig.maxDaysReservationInFuture *
-        DateUtil.DAY
+      DateUtil.DAY
     );
   }
 
@@ -209,8 +220,16 @@ export class OccupationTableComponent
   showDateShort() {
     return DateUtil.toDate(this.occupationTable.date).toLocaleDateString(
       'de-DE',
-      { weekday: 'short', year: '2-digit', month: '2-digit', day: '2-digit' }
+      { weekday: 'short', month: '2-digit', day: '2-digit' }
     );
+  }
+
+  navigateTo(id) {
+    if (this.systemConfigs) {
+      this.systemConfigId = id;
+      const config = this.systemConfigs.find(c => c.id === id);
+      this.initTable(config);
+    }
   }
 
   private show(occupations: Occupation[]) {

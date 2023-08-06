@@ -61,8 +61,15 @@ export class ReservationService {
 
   getSystemConfig(systemId: number): Observable<ReservationSystemConfig> {
     return this.httpClient.get<ReservationSystemConfig>(
-      `${this.url()}/systemconfig/${systemId}`
+      `/rest/systemconfig/getone/${systemId}`
     );
+  }
+
+  getAllSystemConfigs() {
+    return this.httpClient.get<ReservationSystemConfig[]>(
+      `/rest/systemconfig/getall`
+    );
+
   }
 
   private url() {

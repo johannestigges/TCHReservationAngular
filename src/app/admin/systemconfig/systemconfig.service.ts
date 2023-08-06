@@ -18,7 +18,7 @@ export class SystemconfigService {
 	}
 
 	getAll(): Observable<ReservationSystemConfig[]> {
-		return this.httpClient.get<ReservationSystemConfig[]>(this.url());
+		return this.httpClient.get<ReservationSystemConfig[]>(`${this.url()}/getall`);
 	}
 
 	add(systemconfig: ReservationSystemConfig): Observable<ReservationSystemConfig> {

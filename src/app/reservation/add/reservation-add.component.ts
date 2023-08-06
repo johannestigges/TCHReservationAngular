@@ -45,10 +45,10 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
 	focus: string;
 
 	constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private service: ReservationService,
-    private userService: UserService //    private cookieService: CookieService
+		private route: ActivatedRoute,
+		private router: Router,
+		private service: ReservationService,
+		private userService: UserService //    private cookieService: CookieService
 	) {
 		super();
 	}
@@ -83,12 +83,12 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
 			.map((key) => ReservationType[key])
 			.filter((value) => typeof value === 'string');
 
-		this.service.getSystemConfig(systemId).subscribe(
-			(config) => {
+		this.service.getSystemConfig(systemId).subscribe({
+			next: (config) => {
 				this.systemConfig = ReservationSystemConfig.of(config);
 				this.reservation.systemConfigId = this.systemConfig.id;
-				this.userService.getLoggedInUser().subscribe(
-					(user) => {
+				this.userService.getLoggedInUser().subscribe({
+					next: (user) => {
 						this.user = new User(
 							user.id,
 							user.name,
@@ -97,11 +97,11 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
 						);
 						this.init();
 					},
-					(usererror) => (this.httpError = usererror)
-				);
+					error: (usererror) => (this.httpError = usererror)
+				});
 			},
-			(configerror) => (this.httpError = configerror)
-		);
+			error: (configerror) => (this.httpError = configerror)
+		});
 	}
 
 	onGenerateOccupations() {
@@ -140,13 +140,13 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
 		// this depends on the user role
 		this.showType = this._isAtLeastTeamster();
 		/** not used without corona restrictions
-     this.showText =
-     this.systemConfig.durationUnitInMinutes !== 30 ||
-     this._isAtLeastTeamster();
-     */
+	 this.showText =
+	 this.systemConfig.durationUnitInMinutes !== 30 ||
+	 this._isAtLeastTeamster();
+	 */
 		this.showSimpleDuration =
-      this.systemConfig.durationUnitInMinutes === 30 &&
-      !this._isAtLeastTeamster();
+			this.systemConfig.durationUnitInMinutes === 30 &&
+			!this._isAtLeastTeamster();
 		this.showDuration = !this.showSimpleDuration && this._isAtLeastTeamster();
 		this.showRepeat = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
 		if (this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER)) {
@@ -227,7 +227,7 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
 		this.reservation.type = ReservationType[this.type];
 		this.reservation.start = this.time;
 		if (this.repeatUntil) {
-		  this.reservation.repeatUntil = DateUtil.convertFromNgbDateStruct(this.repeatUntil).getTime();
+			this.reservation.repeatUntil = DateUtil.convertFromNgbDateStruct(this.repeatUntil).getTime();
 		}
 		if (!this.showText) {
 			this._setCookie('player1', this.player1);

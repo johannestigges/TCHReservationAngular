@@ -14,7 +14,8 @@ import { SystemconfigModifyComponent } from './admin/systemconfig/modify/systemc
 import { AdminComponent } from './admin/admin.component';
 
 const routes: Routes = [
-    { path: '', redirectTo: '/table/1', pathMatch: 'full' },
+    { path: '', redirectTo: '/table', pathMatch: 'full' },
+    { path: 'table', component: OccupationTableComponent },
     { path: 'table/:system', component: OccupationTableComponent },
     { path: 'table/:system/:date', component: OccupationTableComponent },
     { path: 'add/:system/:court/:date', component: ReservationAddComponent },
