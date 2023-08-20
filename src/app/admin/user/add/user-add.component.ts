@@ -50,13 +50,13 @@ export class UserAddComponent extends ErrorAware implements OnInit {
     this.user.role = UserRole[this.userRole];
     this.user.status = ActivationStatus[this.userStatus];
 
-    this.userService.addUser(this.user).subscribe(
-      data => {
+    this.userService.addUser(this.user).subscribe({
+      next: data => {
         this.user = data;
         this.cancel();
       },
-      err => this.httpError = err
-    );
+      error: err => this.httpError = err
+    });
   }
 
   cancel() {

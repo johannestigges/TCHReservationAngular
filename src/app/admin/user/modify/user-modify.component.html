@@ -15,6 +15,7 @@
           name="name"
           [(ngModel)]="user.name"
           required
+          [disabled]="!isAdmin"
         />
       </div>
     </div>
@@ -28,7 +29,6 @@
           class="form-control"
           name="email"
           [(ngModel)]="user.email"
-          required
         />
       </div>
     </div>

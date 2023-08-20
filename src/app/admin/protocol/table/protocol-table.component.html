@@ -1,24 +1,24 @@
 <table class="table table-bordered table-striped">
   <thead>
     <tr>
-      <th>Id</th>
+      <th class="d-none d-lg-table-cell">Id</th>
       <th>Zeitpunkt</th>
       <th>Aktion</th>
       <th>Datentyp</th>
-      <th>DatenId</th>
-      <th>Benutzer</th>
+      <th class="d-none d-lg-table-cell">DatenId</th>
+      <th class="d-none d-sm-table-cell">Benutzer</th>
       <th>Wert</th>
       <th>Alter Wert</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let p of protocols">
-      <td>{{ p.id }}</td>
+      <td class="d-none d-lg-table-cell">{{ p.id }}</td>
       <td>{{ this.date(p.time) }}</td>
       <td>{{ p.actionType }}</td>
       <td>{{ p.entityType }}</td>
-      <td>{{ p.entityId }}</td>
-      <td>{{ p.user.name }}</td>
+      <td class="d-none d-lg-table-cell">{{ p.entityId }}</td>
+      <td class="d-none d-sm-table-cell">{{ p.user.name }}</td>
       <td>
         <div *ngFor="let kv of parseJson(p.value) | keyvalue">
           <span class="key">{{ kv.key }}</span> =

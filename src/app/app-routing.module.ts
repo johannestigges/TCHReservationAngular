@@ -12,6 +12,7 @@ import { SystemconfigTableComponent } from './admin/systemconfig/table/systemcon
 import { SystemconfigAddComponent } from './admin/systemconfig/add/systemconfig-add.component';
 import { SystemconfigModifyComponent } from './admin/systemconfig/modify/systemconfig-modify.component';
 import { AdminComponent } from './admin/admin.component';
+import { QrComponent } from './admin/user/qr/qr.component';
 
 const routes: Routes = [
     { path: '', redirectTo: '/table', pathMatch: 'full' },
@@ -28,6 +29,7 @@ const routes: Routes = [
     { path: 'user', component: UserTableComponent },
     { path: 'user/add', component: UserAddComponent },
     { path: 'user/modify/:user', component: UserModifyComponent },
+    { path: 'user/qr', component: QrComponent },
     { path: 'login', component: LoginComponent }
 ];
 

@@ -25,6 +25,8 @@ import { SystemconfigAddComponent } from './admin/systemconfig/add/systemconfig-
 import { SystemconfigModifyComponent } from './admin/systemconfig/modify/systemconfig-modify.component';
 import { AdminComponent } from './admin/admin.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { QRCodeModule } from 'angularx-qrcode';
+import { QrComponent } from './admin/user/qr/qr.component';
 
 @NgModule({
 	declarations: [
@@ -36,6 +38,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 		UserTableComponent,
 		UserAddComponent,
 		UserModifyComponent,
+		QrComponent,
 		ProtocolTableComponent,
 		SystemconfigTableComponent,
 		SystemconfigAddComponent,
@@ -51,7 +54,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 		FormsModule,
 		ReactiveFormsModule,
 		HttpClientModule,
-  NgbModule,
+		QRCodeModule,
+  		NgbModule,
 	],
 	providers: [
 		ReservationService,
