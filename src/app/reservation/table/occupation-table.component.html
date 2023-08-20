@@ -1,42 +1,43 @@
 <router-outlet></router-outlet>
 <div class="d-flex flex-wrap justify-content-between mt-1">
-  <div *ngIf="systemConfigs?.length > 1" class="dropdown mb-1">
-    <button class="btn btn-outline-primary dropdown-toggle" type="button"data-bs-toggle="dropdown">
-      {{ systemConfig.title }}
-    </button>
-    <ul class="dropdown-menu">
-      <li *ngFor="let config of systemConfigs">
-        <button class="dropdown-item" (click)="navigateTo(config.id)">{{ config.title }}</button>
-      </li>
-    </ul>
-  </div>
-  <div class="mb-1" *ngIf="systemConfigs?.length === 1">
+  <div class="d-flex mb-1">
+    <div *ngIf="systemConfigs?.length > 1" class="dropdown me-1">
+      <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+        {{ systemConfig.title }}
+      </button>
+      <ul class="dropdown-menu">
+        <li *ngFor="let config of systemConfigs">
+          <button class="dropdown-item" (click)="navigateTo(config.id)">{{ config.title }}</button>
+        </li>
+      </ul>
+    </div>
+    <div class="me-1" *ngIf="systemConfigs?.length === 1">
       {{systemConfigs[0].title}}
-  </div>
+    </div>
 
-  <div *ngIf="isLoggedIn()" class="dropdown m-1">
-    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-      {{occupationTable.user.name}}
+    <div *ngIf="isLoggedIn()" class="dropdown">
+      <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+        {{occupationTable.user.name}}
+      </button>
+      <ul class="dropdown-menu">
+        <li *ngIf="isLoggedIn() && canLogout()">
+          <a class="dropdown-item" routerLink="/login" [queryParams]="{logout:true}">Logout</a>
+        </li>
+        <li *ngIf="canChangePassword()">
+          <a class="dropdown-item" routerLink="/user/modify/{{ occupationTable.user.id }}">Kennwort ändern</a>
+        </li>
+        <li *ngIf="isAdminOrTrainer()">
+          <a class="dropdown-item" routerLink="/admin">Administration</a>
+        </li>
+      </ul>
+    </div>
+    <button *ngIf="!isLoggedIn()" (click)="onLogin()" class="btn btn-outline-secondary">
+      Login
     </button>
-    <ul class="dropdown-menu">
-      <li *ngIf="isLoggedIn() && canLogout()">
-        <a class="dropdown-item" routerLink="/login" [queryParams]="{logout:true}">Logout</a>
-      </li>
-      <li *ngIf="canChangePassword()">
-        <a class="dropdown-item" routerLink="/user/modify/{{ occupationTable.user.id }}">Kennwort ändern</a>
-      </li>
-      <li *ngIf="isAdminOrTrainer()">
-        <a class="dropdown-item" routerLink="/admin">Administration</a>
-      </li>
-    </ul>
   </div>
-  <button *ngIf="!isLoggedIn()" (click)="onLogin()" class="btn btn-outline-secondary mb-1">
-    Login
-  </button>
-
   <h3 class="m-1">
-    <div class="d-none d-md-inline"> {{ showDate() }} &nbsp; </div>
-    <div class="d-inline d-md-none"> {{ showDateShort() }} &nbsp; </div>
+    <div class="d-none d-md-inline"> {{ showDate() }} &nbsp;</div>
+    <div class="d-inline d-md-none"> {{ showDateShort() }} &nbsp;</div>
   </h3>
   <div class="mb-1">
     <button (click)="onBackWeek()" title="Eine Woche zurück" class="btn btn-space">
@@ -59,67 +60,67 @@
 
 <table *ngIf="occupationTable.systemConfig" class="occupation_table">
   <thead>
-    <tr>
-      <th>Zeit</th>
-      <th *ngFor="let index of occupationTable.systemConfig.getCourtIndices()">
-        {{ occupationTable.systemConfig.getCourtName(index) }}
-      </th>
-    </tr>
+  <tr>
+    <th>Zeit</th>
+    <th *ngFor="let index of occupationTable.systemConfig.getCourtIndices()">
+      {{ occupationTable.systemConfig.getCourtName(index) }}
+    </th>
+  </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let row of occupationTable.table">
-      <ng-container *ngFor="let cell of row">
-        <ng-container *ngIf="cell.rowspan > 0 && cell.colspan > 0">
-          <!-- first column with time data -->
-          <ng-container *ngIf="cell.data; else noCellData">
-            <td *ngIf="cell.data.time" [attr.rowspan]="cell.rowspan" [attr.colspan]="cell.colspan"
+  <tr *ngFor="let row of occupationTable.table">
+    <ng-container *ngFor="let cell of row">
+      <ng-container *ngIf="cell.rowspan > 0 && cell.colspan > 0">
+        <!-- first column with time data -->
+        <ng-container *ngIf="cell.data; else noCellData">
+          <td *ngIf="cell.data.time" [attr.rowspan]="cell.rowspan" [attr.colspan]="cell.colspan"
               class="d-none d-sm-block">
-              {{ cell.data.time }}
-            </td>
-            <td *ngIf="cell.data.time" [attr.rowspan]="cell.rowspan" [attr.colspan]="cell.colspan"
+            {{ cell.data.time }}
+          </td>
+          <td *ngIf="cell.data.time" [attr.rowspan]="cell.rowspan" [attr.colspan]="cell.colspan"
               class="d-block d-sm-none">
-              {{ cell.data.short_time }}
-            </td>
+            {{ cell.data.short_time }}
+          </td>
 
-            <!-- occupation entry with link to modify or delete occupation -->
-            <td *ngIf="cell.data.text && canModify(cell.data)" [attr.rowspan]="cell.rowspan"
+          <!-- occupation entry with link to modify or delete occupation -->
+          <td *ngIf="cell.data.text && canModify(cell.data)" [attr.rowspan]="cell.rowspan"
               [attr.colspan]="cell.colspan" class="type{{ cell.data.type }} deletable">
-              <a routerLink="/modify/{{ occupationTable.systemConfig.id }}/{{
+            <a routerLink="/modify/{{ occupationTable.systemConfig.id }}/{{
                   cell.data.id
                 }}">
-                <span>{{ cell.data.text }}</span>
-              </a>
-            </td>
+              <span>{{ cell.data.text }}</span>
+            </a>
+          </td>
 
-            <!-- occupation entry -->
-            <td *ngIf="cell.data.text && !canModify(cell.data)" [attr.rowspan]="cell.rowspan"
+          <!-- occupation entry -->
+          <td *ngIf="cell.data.text && !canModify(cell.data)" [attr.rowspan]="cell.rowspan"
               [attr.colspan]="cell.colspan" class="type{{ cell.data.type }}">
-              <span *ngIf="canShowText(cell.data)">{{ cell.data.text }}</span>
-              <span *ngIf="!canShowText(cell.data)">Reserviert</span>
-            </td>
+            <span *ngIf="canShowText(cell.data)">{{ cell.data.text }}</span>
+            <span *ngIf="!canShowText(cell.data)">Reserviert</span>
+          </td>
 
-            <!-- available cell with link to add reservation -->
-            <td *ngIf="cell.data.css && canAdd(cell.data.date)" [attr.rowspan]="cell.rowspan"
+          <!-- available cell with link to add reservation -->
+          <td *ngIf="cell.data.css && canAdd(cell.data.date)" [attr.rowspan]="cell.rowspan"
               [attr.colspan]="cell.colspan" class="{{ cell.data.css }}_reservable">
-              <a routerLink="/add/{{ occupationTable.systemConfig.id }}/{{
+            <a routerLink="/add/{{ occupationTable.systemConfig.id }}/{{
                   cell.data.court
                 }}/{{ cell.data.date }}">
-                &nbsp;
-              </a>
-            </td>
+              &nbsp;
+            </a>
+          </td>
 
-            <!-- available cell without link to add reservation -->
-            <td *ngIf="cell.data.css && !canAdd(cell.data.date)" [attr.rowspan]="cell.rowspan"
+          <!-- available cell without link to add reservation -->
+          <td *ngIf="cell.data.css && !canAdd(cell.data.date)" [attr.rowspan]="cell.rowspan"
               [attr.colspan]="cell.colspan" class="{{ cell.data.css }}" style="height: 100%; width: 100%"></td>
-          </ng-container>
-
-          <ng-template #noCellData>
-            <!-- no data? available cell without link -->
-            <td [attr.rowspan]="cell.rowspan" [attr.colspan]="cell.colspan" class="available"></td>
-          </ng-template>
         </ng-container>
+
+        <ng-template #noCellData>
+          <!-- no data? available cell without link -->
+          <td [attr.rowspan]="cell.rowspan" [attr.colspan]="cell.colspan" class="available"></td>
+        </ng-template>
       </ng-container>
-    </tr>
+    </ng-container>
+  </tr>
   </tbody>
 </table>
 <tch-show-error [httpError]="httpError" [errorMessages]="errorMessages"></tch-show-error>
