@@ -1,22 +1,44 @@
 <router-outlet></router-outlet>
-<div class="d-flex flex-wrap justify-content-between mb-1 mt-1">
-  <h3>
-    <div class="me-3">
-      <select *ngIf="systemConfigs?.length > 1" (change)="navigateTo($event.target.value)">
-        <option *ngFor="let config of systemConfigs" [selected]="config.id === systemConfigId" [value]="config.id">
-          {{config.title}}
-        </option>
-      </select>
-    </div>
-    <div class="d-none d-lg-inline" *ngIf="systemConfigs?.length === 1">
+<div class="d-flex flex-wrap justify-content-between mt-1">
+  <div *ngIf="systemConfigs?.length > 1" class="dropdown mb-1">
+    <button class="btn btn-outline-primary dropdown-toggle" type="button"data-bs-toggle="dropdown">
+      {{ systemConfig.title }}
+    </button>
+    <ul class="dropdown-menu">
+      <li *ngFor="let config of systemConfigs">
+        <button class="dropdown-item" (click)="navigateTo(config.id)">{{ config.title }}</button>
+      </li>
+    </ul>
+  </div>
+  <div class="mb-1" *ngIf="systemConfigs?.length === 1">
       {{systemConfigs[0].title}}
-    </div>
-  </h3>
-  <h3>
+  </div>
+
+  <div *ngIf="isLoggedIn()" class="dropdown m-1">
+    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+      {{occupationTable.user.name}}
+    </button>
+    <ul class="dropdown-menu">
+      <li *ngIf="isLoggedIn() && canLogout()">
+        <a class="dropdown-item" routerLink="/login" [queryParams]="{logout:true}">Logout</a>
+      </li>
+      <li *ngIf="canChangePassword()">
+        <a class="dropdown-item" routerLink="/user/modify/{{ occupationTable.user.id }}">Kennwort ändern</a>
+      </li>
+      <li *ngIf="isAdminOrTrainer()">
+        <a class="dropdown-item" routerLink="/admin">Administration</a>
+      </li>
+    </ul>
+  </div>
+  <button *ngIf="!isLoggedIn()" (click)="onLogin()" class="btn btn-outline-secondary mb-1">
+    Login
+  </button>
+
+  <h3 class="m-1">
     <div class="d-none d-md-inline"> {{ showDate() }} &nbsp; </div>
     <div class="d-inline d-md-none"> {{ showDateShort() }} &nbsp; </div>
   </h3>
-  <div>
+  <div class="mb-1">
     <button (click)="onBackWeek()" title="Eine Woche zurück" class="btn btn-space">
       &lt;&lt;
     </button>
@@ -32,15 +54,6 @@
     <button (click)="onNextWeek()" title="Eine Woche vor" class="btn btn-space">
       &gt;&gt;
     </button>
-  </div>
-  <div class="d-none d-sm-inline">
-    <div class="col text-right" *ngIf="!isLoggedIn()">
-      <a class="btn btn-outline-secondary" routerLink="/login">login</a>
-    </div>
-    <div class="col text-right" *ngIf="isLoggedIn() && canLogout()">
-      <a class="btn btn-outline-secondary" routerLink="/login" [queryParams]="{ logout:true }">
-        logout</a>
-    </div>
   </div>
 </div>
 
@@ -110,15 +123,3 @@
   </tbody>
 </table>
 <tch-show-error [httpError]="httpError" [errorMessages]="errorMessages"></tch-show-error>
-
-<!-- show menu -->
-<span *ngIf="!isLoggedIn()">
-  <a class="btn btn-sm btn-link" routerLink="/login">Login</a>
-</span>
-<span *ngIf="isLoggedIn()">
-  <a class="btn btn-sm btn-link" *ngIf="canLogout()" routerLink="/login" [queryParams]="{logout:true}">Logout</a>
-  <a class="btn btn-sm btn-link" *ngIf="canChangePassword()"
-    routerLink="/user/modify/{{ occupationTable.user.id }}">Kennwort ändern</a>
-  <a *ngIf="isAdminOrTrainer()" class="btn btn-sm btn-link" routerLink="/admin">Administration</a>
-  {{ occupationTable.user.name }}
-</span>

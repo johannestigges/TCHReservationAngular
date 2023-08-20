@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-
+import { Router, ActivatedRoute } from '@angular/router';
 import { ReservationService } from '../reservation.service';
 import { OccupationTable } from './occupation-table';
 import { Occupation } from '../occupation';
@@ -27,12 +26,13 @@ export class OccupationTableComponent
   private timer: Observable<number>;
   private timerSubscription: Subscription;
   systemConfigs: ReservationSystemConfig[] = [];
-  systemConfigId;
+  systemConfig: ReservationSystemConfig|null = null;
 
   constructor(
     private reservationService: ReservationService,
     private userService: UserService,
     private route: ActivatedRoute,
+    private router: Router
   ) {
     super();
   }
@@ -49,13 +49,12 @@ export class OccupationTableComponent
 
     this.reservationService.getAllSystemConfigs().subscribe(systemConfigs => {
       this.systemConfigs = systemConfigs;
-      this.systemConfigId = Number(this.route.snapshot.params.system || systemConfigs[0].id);
-      var systemConfig = systemConfigs.find(e => e.id === this.systemConfigId);
-      if (!systemConfig) {
-        systemConfig = this.systemConfigs[0];
-        this.systemConfigId = systemConfig.id;
+      var systemConfigId = Number(this.route.snapshot.params.system || systemConfigs[0].id);
+      this.systemConfig = systemConfigs.find(e => e.id === systemConfigId);
+      if (!this.systemConfig) {
+        this.systemConfig = this.systemConfigs[0];
       }
-      this.initTable(systemConfig);
+      this.initTable(this.systemConfig);
     });
 
   }
@@ -224,11 +223,14 @@ export class OccupationTableComponent
     );
   }
 
+  onLogin() {
+    this.router.navigate(['/login']);
+  }
+
   navigateTo(id) {
     if (this.systemConfigs) {
-      this.systemConfigId = id;
-      const config = this.systemConfigs.find(c => c.id === id);
-      this.initTable(config);
+      this.systemConfig = this.systemConfigs.find(c => +c.id === +id);
+      this.initTable(this.systemConfig);
     }
   }
 
