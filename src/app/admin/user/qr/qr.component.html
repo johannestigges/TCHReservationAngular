@@ -1,53 +1,67 @@
 <div *ngIf="!qrUrl" class="container">
-    <form class="form-horizontal">
-      <!-- title -->
-      <div class="form-group mb-3">
-        <h2 class="col-sm-offset-2 col-sm-10">Benutzer anlegen oder Kennwort ändern</h2>
+  <form class="form-horizontal">
+    <div class="form-group mb-3">
+      <div class="col-sm-offset-2 col-sm-10">
+        <tch-show-error [errorMessages]="errorMessages" [httpError]="httpError">
+        </tch-show-error>
       </div>
-  
-      <!-- user name -->
-      <div class="form-group mb-3">
-        <label class="col-sm-2 control-label">Name:</label>
-        <div class="col-sm-10">
-          <input
-            type="text"
-            class="form-control"
-            name="name"
-            [(ngModel)]="user.name"
-            required
-          />
-        </div>
-      </div>
-  
-      <!-- error -->
-      <div class="form-group mb-3">
-        <div class="col-sm-offset-2 col-sm-10">
-          <tch-show-error [httpError]="httpError" [errorMessages]="errorMessages">
-          </tch-show-error>
-        </div>
-      </div>
-  
-      <!-- Buttons -->
-      <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
-          <button (click)="onClick()" class="btn btn-primary">
-            QR-Code für Benutzer erzeugen
-          </button>
-          <button (click)="onClose()" class="btn btn-outline-dark">Zurück</button>
-        </div>
-      </div>
-    </form>
-  </div>
-  
-
-<div *ngIf="qrUrl" class="d-flex flex-column align-items-center">
-    <h2 class="mt-3">QR-Code</h2>
-    <qrcode [qrdata]="qrUrl"></qrcode>
-    <div class="mx-3 text-center">
-        Dieser QR-Code enthält den Link zum Anmelden für den Benutzer
-        <i>{{user.name}}</i>
-        mit dem generierten Kennwort
-        <i>{{user.password}}</i>
     </div>
-    <button class="btn btn-outline-primary my-3" (click)="onClose()">Schließen</button>
+    <div class="form-group mb-3">
+      <h2 class="col-sm-offset-2 col-sm-10">Benutzer anlegen</h2>
+    </div>
+    <div class="form-group mb-3">
+      <label class="col-sm-2 control-label">Name:</label>
+      <div class="col-sm-10">
+        <input
+          [(ngModel)]="user.name"
+          class="form-control"
+          name="name"
+          type="text"
+        />
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button (click)="onClickNewUser()" class="btn btn-primary">
+          Benutzer anlegen
+        </button>
+      </div>
+    </div>
+    <div class="form-group mt-5 mb-3">
+      <h2 class="col-sm-offset-2 col-sm-10">Kennwort zurücksetzen</h2>
+    </div>
+
+    <div class="form-group mb-3">
+      <label class="col-sm-2 control-label">Benutzer:</label>
+      <div class="col-sm-10">
+        <select class="form-control">
+        <option *ngFor="let u of activeUsers">{{u.name}}</option>
+      </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button (click)="onClickNewPassword()" class="btn btn-primary">
+          neues Passwort
+        </button>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button (click)="onClose()" class="btn btn-outline-dark mt-1">Zurück</button>
+      </div>
+    </div>
+  </form>
+</div>
+<div *ngIf="qrUrl" class="d-flex flex-column align-items-center">
+  <h2 class="mt-3">QR-Code</h2>
+  <qrcode [qrdata]="qrUrl"></qrcode>
+  <div class="mx-3 text-center">
+    Dieser QR-Code enthält den Link zum Anmelden für den Benutzer
+    <h4>{{user.name}}</h4>
+    mit dem generierten Kennwort
+    <h4>{{user.password}}</h4>
+  </div>
+  <button (click)="onClose()" class="btn btn-outline-primary my-3">Schließen</button>
 </div>
