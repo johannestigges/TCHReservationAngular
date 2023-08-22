@@ -63,6 +63,7 @@
     <h4>{{user.name}}</h4>
     mit dem generierten Kennwort
     <h4>{{user.password}}</h4>
+    <a [href]="qrUrl" target="_blank">{{qrUrl}}</a>
   </div>
   <button (click)="onClose()" class="btn btn-outline-primary my-3">Schließen</button>
 </div>

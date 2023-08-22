@@ -40,7 +40,7 @@
             type="text"
             [formControl]="form.get('courts')['controls'][i]"
           />
-          <button class="btn btn-outline-secondary" (click)="removeCourt(i)">
+          <button class="btn btn-outline-secondary m-1" (click)="removeCourt(i)">
             -
           </button>
         </div>
@@ -129,10 +129,10 @@
         <button (click)="onClick()" class="btn btn-primary">
           Systemkonfiguration ändern
         </button>
-        <button (click)="delete()" class="btn btn-outline-secondary">
+        <button (click)="delete()" class="btn btn-outline-secondary ms-1">
           Löschen
         </button>
-        <button (click)="cancel()" class="btn btn-outline-dark">Zurück</button>
+        <button (click)="cancel()" class="btn btn-outline-dark ms-1">Zurück</button>
       </div>
     </div>
   </form>

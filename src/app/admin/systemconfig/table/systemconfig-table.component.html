@@ -22,20 +22,11 @@
       </td>
       <td class="d-none d-sm-table-cell">{{ config.openingHour }} - {{ config.closingHour }} Uhr</td>
       <td>
-        <a
-          class="btn btn-outline-secondary"
-          routerLink="/systemconfig/modify/{{ config.id }}"
-          >ändern</a
-        >
+        <a class="btn btn-outline-secondary" routerLink="/systemconfig/modify/{{ config.id }}">ändern</a>
       </td>
     </tr>
   </tbody>
 </table>
-<tch-show-error
-  [httpError]="httpError"
-  [errorMessages]="errorMessages"
-></tch-show-error>
-<a class="btn btn-primary" routerLink="/systemconfig/add"
-  >Systemkonfiguration anlegen</a
->
-<button class="btn btn-outline-dark" (click)="cancel()">Zurück</button>
+<tch-show-error [httpError]="httpError" [errorMessages]="errorMessages"></tch-show-error>
+<a class="btn btn-primary" routerLink="/systemconfig/add">Systemkonfiguration anlegen</a>
+<button class="btn btn-outline-dark ms-1" (click)="cancel()">Zurück</button>
