@@ -5,6 +5,7 @@ import { ActivationStatus } from '../activation-status.enum';
 import { UserService } from '../user.service';
 import { ErrorAware } from 'src/app/util/error/error-aware';
 import { Location } from '@angular/common';
+import { error } from 'console';
 
 @Component({
   selector: 'tch-qr',
@@ -13,12 +14,13 @@ import { Location } from '@angular/common';
 export class QrComponent extends ErrorAware implements OnInit {
   users: User[] = [];
   activeUsers: User[] = [];
-  user: User
+  user: User;
+  selectedUserId: number;
   qrUrl = '';
 
   constructor(private readonly location: Location, private readonly userService: UserService) {
     super();
-    this.user = new User(0, '', UserRole.REGISTERED, null, this.createPassword(), ActivationStatus.ACTIVE);
+    this.user = new User(0, '', UserRole.REGISTERED, null, this.generatePassword(), ActivationStatus.ACTIVE);
   }
 
   ngOnInit() {
@@ -31,6 +33,10 @@ export class QrComponent extends ErrorAware implements OnInit {
 
   private isActive(status) {
     return 'ACTIVE' === status.toString();
+  }
+
+  onSelectUser(event) {
+    this.selectedUserId = event.target.value;
   }
 
   onClickNewUser() {
@@ -51,13 +57,28 @@ export class QrComponent extends ErrorAware implements OnInit {
   }
 
   onClickNewPassword() {
+    if (this.selectedUserId) {
+      this.userService.getUser(this.selectedUserId).subscribe({
+        next: (user) => {
+          user.password = this.generatePassword();
+          this.userService.updateUser(user).subscribe({
+            next: () => {
+              this.user = user;
+              this.qrUrl = this.generateUrl()
+            },
+            error: (error) => this.setError(error)
+          })
+        },
+        error: (error) => this.setError(error)
+      })
+    }
   }
 
   onClose() {
     this.location.back();
   }
 
-  private createPassword() {
+  private generatePassword() {
     return Array(20)
       .fill("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz")
       .map(function (x) { return x[Math.floor(Math.random() * x.length)] })
