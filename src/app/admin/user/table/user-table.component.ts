@@ -6,26 +6,26 @@ import { User } from '../../user/user';
 import { ErrorAware } from '../../../util/error/error-aware';
 
 @Component({
-  selector: 'tch-user-table',
-  templateUrl: './user-table.component.html',
-  styleUrls: ['./user-table.component.scss']
+	selector: 'tch-user-table',
+	templateUrl: './user-table.component.html',
+	styleUrls: ['./user-table.component.scss']
 })
 export class UserTableComponent extends ErrorAware implements OnInit {
 
-  users: User[];
+	users: User[];
 
-  constructor(private userService: UserService, private location: Location) {
-    super();
-  }
+	constructor(private userService: UserService, private location: Location) {
+		super();
+	}
 
-  ngOnInit() {
-    this.userService.getAll().subscribe({
-      next: data => this.users = data,
-      error: err => this.httpError = err
-    });
-  }
+	ngOnInit() {
+		this.userService.getAll().subscribe({
+			next: data => this.users = data,
+			error: err => this.httpError = err
+		});
+	}
 
-  cancel() {
-    this.location.back();
-  }
+	cancel() {
+		this.location.back();
+	}
 }

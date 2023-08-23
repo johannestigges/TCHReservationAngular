@@ -15,27 +15,27 @@ import { AdminComponent } from './admin/admin.component';
 import { QrComponent } from './admin/user/qr/qr.component';
 
 const routes: Routes = [
-    { path: '', redirectTo: '/table', pathMatch: 'full' },
-    { path: 'table', component: OccupationTableComponent },
-    { path: 'table/:system', component: OccupationTableComponent },
-    { path: 'table/:system/:date', component: OccupationTableComponent },
-    { path: 'add/:system/:court/:date', component: ReservationAddComponent },
-    { path: 'modify/:system/:occupation', component: ReservationModifyComponent },
-    { path: 'admin', component: AdminComponent },
-    { path: 'protocol', component: ProtocolTableComponent },
-    { path: 'systemconfig', component: SystemconfigTableComponent },
-    { path: 'systemconfig/add', component: SystemconfigAddComponent },
-    { path: 'systemconfig/modify/:id', component: SystemconfigModifyComponent },
-    { path: 'user', component: UserTableComponent },
-    { path: 'user/add', component: UserAddComponent },
-    { path: 'user/modify/:user', component: UserModifyComponent },
-    { path: 'user/qr', component: QrComponent },
-    { path: 'login', component: LoginComponent }
+	{ path: '', redirectTo: '/table', pathMatch: 'full' },
+	{ path: 'table', component: OccupationTableComponent },
+	{ path: 'table/:system', component: OccupationTableComponent },
+	{ path: 'table/:system/:date', component: OccupationTableComponent },
+	{ path: 'add/:system/:court/:date', component: ReservationAddComponent },
+	{ path: 'modify/:system/:occupation', component: ReservationModifyComponent },
+	{ path: 'admin', component: AdminComponent },
+	{ path: 'protocol', component: ProtocolTableComponent },
+	{ path: 'systemconfig', component: SystemconfigTableComponent },
+	{ path: 'systemconfig/add', component: SystemconfigAddComponent },
+	{ path: 'systemconfig/modify/:id', component: SystemconfigModifyComponent },
+	{ path: 'user', component: UserTableComponent },
+	{ path: 'user/add', component: UserAddComponent },
+	{ path: 'user/modify/:user', component: UserModifyComponent },
+	{ path: 'user/qr', component: QrComponent },
+	{ path: 'login', component: LoginComponent }
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes, { useHash: true })],
-    exports: [RouterModule]
+	imports: [RouterModule.forRoot(routes, { useHash: true })],
+	exports: [RouterModule]
 })
 
 export class AppRoutingModule {

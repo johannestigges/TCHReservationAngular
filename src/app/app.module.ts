@@ -55,7 +55,7 @@ import { QrComponent } from './admin/user/qr/qr.component';
 		ReactiveFormsModule,
 		HttpClientModule,
 		QRCodeModule,
-  		NgbModule,
+		NgbModule,
 	],
 	providers: [
 		ReservationService,

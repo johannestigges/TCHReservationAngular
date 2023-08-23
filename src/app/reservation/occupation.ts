@@ -6,9 +6,9 @@ import { ReservationType } from './reservationtype';
  */
 export class Occupation {
 
-  public id: number;
+	public id: number;
 
-  constructor(
+	constructor(
     public systemConfigId: number, //
     public reservation: Reservation, //
     public text: string, //
@@ -18,6 +18,6 @@ export class Occupation {
     public court: number, //
     public lastCourt: number = court, //
     public type: ReservationType) {
-    this.id = Math.floor(Math.random() * 100000000 );
-  }
+		this.id = Math.floor(Math.random() * 100000000 );
+	}
 }
