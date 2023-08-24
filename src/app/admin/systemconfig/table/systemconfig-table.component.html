@@ -1,41 +1,32 @@
 <table class="table table-bordered table-striped table-hover">
   <thead>
     <tr>
-      <th>Id</th>
+      <th class="d-none d-lg-table-cell">Id</th>
       <th>Name</th>
-      <th>Titel</th>
-      <th>Plätze</th>
-      <th>Reservierung</th>
-      <th>Öffnungszeit</th>
+      <th class="d-none d-lg-table-cell">Titel</th>
+      <th class="d-none d-sm-table-cell">Plätze</th>
+      <th class="d-none d-sm-table-cell">Reservierung</th>
+      <th class="d-none d-sm-table-cell">Öffnungszeit</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let config of systemconfigs">
-      <td>{{ config.id }}</td>
+      <td class="d-none d-lg-table-cell">{{ config.id }}</td>
       <td>{{ config.name }}</td>
-      <td>{{ config.title }}</td>
-      <td>{{ config.courts }}</td>
-      <td>
+      <td class="d-none d-lg-table-cell">{{ config.title }}</td>
+      <td class="d-none d-sm-table-cell">{{ config.courts }}</td>
+      <td class="d-none d-sm-table-cell">
         max {{ config.maxDuration }} x
         {{ config.durationUnitInMinutes }} Minuten; max
         {{ config.maxDaysReservationInFuture }} Tage im Voraus
       </td>
-      <td>{{ config.openingHour }} - {{ config.closingHour }} Uhr</td>
+      <td class="d-none d-sm-table-cell">{{ config.openingHour }} - {{ config.closingHour }} Uhr</td>
       <td>
-        <a
-          class="btn btn-outline-secondary"
-          routerLink="/systemconfig/modify/{{ config.id }}"
-          >ändern</a
-        >
+        <a class="btn btn-outline-secondary" routerLink="/systemconfig/modify/{{ config.id }}">ändern</a>
       </td>
     </tr>
   </tbody>
 </table>
-<tch-show-error
-  [httpError]="httpError"
-  [errorMessages]="errorMessages"
-></tch-show-error>
-<a class="btn btn-primary" routerLink="/systemconfig/add"
-  >Systemkonfiguration anlegen</a
->
-<button class="btn btn-outline-dark" (click)="cancel()">Zurück</button>
+<tch-show-error [httpError]="httpError" [errorMessages]="errorMessages"></tch-show-error>
+<a class="btn btn-primary" routerLink="/systemconfig/add">Systemkonfiguration anlegen</a>
+<button class="btn btn-outline-dark ms-1" (click)="cancel()">Zurück</button>

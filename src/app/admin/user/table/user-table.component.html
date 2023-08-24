@@ -1,9 +1,14 @@
+<div class="d-flex justify-content-end my-2">
+<a class="btn btn-primary mx-2" routerLink="/user/qr">QR-Code</a>
+<a class="btn btn-primary" routerLink="/user/add">Benutzer anlegen</a>
+</div>
+
 <table class="table table-bordered table-hover">
   <thead>
     <tr>
-      <th>Id</th>
+      <th class="d-none d-lg-table-cell">Id</th>
       <th>Name</th>
-      <th>EMail</th>
+      <th class="d-none d-sm-table-cell">EMail</th>
       <th>Rolle</th>
       <th>Status</th>
       <th>Aktion</th>
@@ -11,24 +16,16 @@
   </thead>
   <tbody>
     <tr *ngFor="let user of users">
-      <td>{{ user.id }}</td>
+      <td class="d-none d-lg-table-cell">{{ user.id }}</td>
       <td>{{ user.name }}</td>
-      <td>{{ user.email }}</td>
+      <td class="d-none d-sm-table-cell">{{ user.email }}</td>
       <td>{{ user.role }}</td>
       <td>{{ user.status }}</td>
       <td>
-        <a
-          class="btn btn-outline-secondary"
-          routerLink="/user/modify/{{ user.id }}"
-          >ändern</a
-        >
+        <a class="btn btn-outline-secondary" routerLink="/user/modify/{{ user.id }}">ändern</a>
       </td>
     </tr>
   </tbody>
 </table>
-<tch-show-error
-  [httpError]="httpError"
-  [errorMessages]="errorMessages"
-></tch-show-error>
-<a class="btn btn-primary" routerLink="/user/add">Benutzer anlegen</a>
-<button class="btn btn-outline-dark" (click)="cancel()">Zurück</button>
+<tch-show-error [httpError]="httpError" [errorMessages]="errorMessages"></tch-show-error>
+<button class="btn btn-outline-dark m-3" (click)="cancel()">Zurück</button>

@@ -8,4 +8,9 @@ export class ErrorAware {
 		this.httpError = undefined;
 		this.errorMessages = [];
 	}
+	public setError(httpError: HttpErrorResponse) {
+		this.httpError = httpError;
+		this.errorMessages = [JSON.stringify(httpError)];
+
+	}
 }

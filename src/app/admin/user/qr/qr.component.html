@@ -1,0 +1,69 @@
+<div *ngIf="!qrUrl" class="container">
+  <form class="form-horizontal">
+    <div class="form-group mb-3">
+      <div class="col-sm-offset-2 col-sm-10">
+        <tch-show-error [errorMessages]="errorMessages" [httpError]="httpError">
+        </tch-show-error>
+      </div>
+    </div>
+    <div class="form-group mb-3">
+      <h2 class="col-sm-offset-2 col-sm-10">Benutzer anlegen</h2>
+    </div>
+    <div class="form-group mb-3">
+      <label class="col-sm-2 control-label">Name:</label>
+      <div class="col-sm-10">
+        <input
+          [(ngModel)]="user.name"
+          class="form-control"
+          name="name"
+          type="text"
+        />
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button (click)="onClickNewUser()" class="btn btn-primary">
+          Benutzer anlegen
+        </button>
+      </div>
+    </div>
+    <div class="form-group mt-5 mb-3">
+      <h2 class="col-sm-offset-2 col-sm-10">Kennwort zurücksetzen</h2>
+    </div>
+
+    <div class="form-group mb-3">
+      <label class="col-sm-2 control-label">Benutzer:</label>
+      <div class="col-sm-10">
+        <select class="form-control" (change)="onSelectUser($event)">
+          <option value="0"></option>
+        <option *ngFor="let u of activeUsers" [value]="u.id">{{u.name}}</option>
+      </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button (click)="onClickNewPassword()" class="btn btn-primary">
+          neues Passwort
+        </button>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button (click)="onClose()" class="btn btn-outline-dark mt-1">Zurück</button>
+      </div>
+    </div>
+  </form>
+</div>
+<div *ngIf="qrUrl" class="d-flex flex-column align-items-center">
+  <h2 class="mt-3">QR-Code</h2>
+  <qrcode [qrdata]="qrUrl"></qrcode>
+  <div class="mx-3 text-center">
+    Dieser QR-Code enthält den Link zum Anmelden für den Benutzer
+    <h4>{{user.name}}</h4>
+    mit dem generierten Kennwort
+    <h4>{{user.password}}</h4>
+    <a [href]="qrUrl" target="_blank">{{qrUrl}}</a>
+  </div>
+  <button (click)="onClose()" class="btn btn-outline-primary my-3">Schließen</button>
+</div>

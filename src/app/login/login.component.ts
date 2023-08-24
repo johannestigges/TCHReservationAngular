@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Location } from '@angular/common';
 import { UserService } from '../admin/user/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
@@ -54,10 +53,10 @@ export class LoginComponent implements OnInit {
 				.subscribe({
 					next: () => this.router.navigate(['/']),
 					error: (error) => {
-						console.log("error from login service", JSON.stringify(error));
+						console.log('error from login service', JSON.stringify(error));
 						this.error = error.status === 401
 							? 'ungültige Anmeldedaten'
-							: 'Fehler bei der Anmeldung'
+							: 'Fehler bei der Anmeldung';
 					}
 				});
 		}

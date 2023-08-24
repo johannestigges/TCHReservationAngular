@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" *ngIf="user">
   <form class="form-horizontal">
     <!-- title -->
     <div class="form-group mb-3">
@@ -15,6 +15,7 @@
           name="name"
           [(ngModel)]="user.name"
           required
+          [disabled]="!isAdmin"
         />
       </div>
     </div>
@@ -28,7 +29,6 @@
           class="form-control"
           name="email"
           [(ngModel)]="user.email"
-          required
         />
       </div>
     </div>
@@ -109,7 +109,7 @@
         <button (click)="onClick()" class="btn btn-primary">
           Daten speichern
         </button>
-        <button (click)="cancel()" class="btn btn-outline-dark">Zurück</button>
+        <button (click)="cancel()" class="btn btn-outline-dark ms-1">Zurück</button>
       </div>
     </div>
   </form>

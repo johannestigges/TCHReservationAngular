@@ -40,7 +40,7 @@
             type="text"
             [formControl]="form.get('courts')['controls'][i]"
           />
-          <button class="btn btn-outline-secondary" (click)="removeCourt(i)">
+          <button class="btn btn-outline-secondary m-1" (click)="removeCourt(i)">
             -
           </button>
         </div>
@@ -127,7 +127,7 @@
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-10">
         <button class="btn btn-primary">Systemkonfiguration anlegen</button>
-        <button (click)="cancel()" class="btn btn-outline-dark">Zurück</button>
+        <button (click)="cancel()" class="btn btn-outline-dark ms-1">Zurück</button>
       </div>
     </div>
   </form>

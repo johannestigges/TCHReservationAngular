@@ -2,6 +2,14 @@
 
 Reservation System for our tennis courts.
 
+## ToDo
+
+- create user with qr code
+- reset password with qr code
+- select resertation system not working
+- migrate from mysql to postgres
+- add cancellation time to system config
+
 ## Development server
 
 Run `npm start` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
