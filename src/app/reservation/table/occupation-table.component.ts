@@ -38,6 +38,7 @@ export class OccupationTableComponent
 	}
 
 	ngOnInit() {
+		this.setTheme();
 		this.occupationTable = new OccupationTable(
 			new User(0, '', UserRole.ANONYMOUS)
 		);
@@ -232,6 +233,16 @@ export class OccupationTableComponent
 			this.systemConfig = this.systemConfigs.find(c => +c.id === +id);
 			this.initTable(this.systemConfig);
 		}
+	}
+
+	toggleTheme() {
+		const theme = localStorage.getItem('theme') === 'dark' ? 'light' : 'dark';
+		localStorage.setItem('theme', theme);
+		this.setTheme();
+	}
+
+	setTheme() {
+		document.documentElement.setAttribute('data-bs-theme', localStorage.getItem('theme'));
 	}
 
 	private show(occupations: Occupation[]) {

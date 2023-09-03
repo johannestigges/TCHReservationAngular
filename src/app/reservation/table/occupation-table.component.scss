@@ -1,7 +1,3 @@
-select {
-  background-color: white;
-}
-
 table.occupation_table {
   table-layout: fixed; /* all columns have equal width */
   width: 100%;
@@ -9,8 +5,6 @@ table.occupation_table {
   border-collapse: separate;
   border-spacing: 10px;
   text-align: center;
-  color: #000;
-  background-color: white;
 }
 
 /* all rows have equal height */
@@ -27,57 +21,56 @@ table.occupation_table a {
   display: block;
   width: 100%;
   height: 100%;
-  color: black;
+  color: var(--bs-black);
   text-decoration: none;
 }
 
 .menu_link {
-  color: black;
+  color: var(--bs-black);
   text-decoration: none;
   padding-right: 0.3em;
 }
 
 .available {
-  background-color: rgba(250, 250, 250, 0.7);
+  background-color: rgba(160, 160, 160, 0.1);
 }
 
 .available_light {
-  background-color: rgba(250, 250, 250, 0.7);
+  background-color: rgba(120, 120, 120, 0.1);
 }
 
 .available_reservable {
-  background-color: rgba(200, 200, 200, 0.5);
+  background-color: rgba(160, 160, 160, 0.3);
 }
 
 .available_light_reservable {
-  background-color: rgba(200, 200, 200, 0.4);
+  background-color: rgba(160, 160, 160, 0.4);
 }
-
 .deletable {
-  color: #000;
+  color: var(--bs-black);
 }
 
 .type0 {
   /* Quickbuchung */
-  background-color: rgba(50, 150, 255, 0.15);
+  background-color: rgba(30, 120, 225, 0.3);
 }
 
 .type1 {
   /* Training */
-  background-color: rgba(0, 150, 00, 0.1);
+  background-color: rgba(0, 130, 00, 0.3);
 }
 
 .type2 {
   /* Meisterschaft */
-  background-color: rgba(20, 100, 120, 0.15);
+  background-color: rgba(00, 80, 100, 0.30);
 }
 
 .type3 {
   /* Dauerbuchung */
-  background-color: rgba(200, 200, 20, 0.1);
+  background-color: rgba(160, 160, 0, 0.3);
 }
 
 .type4 {
   /* Gesperrt */
-  background-color: rgba(255, 0, 0, 0.2);
+  background-color: rgba(225, 0, 0, 0.3);
 }

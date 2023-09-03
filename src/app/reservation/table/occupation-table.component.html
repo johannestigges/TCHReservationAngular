@@ -35,7 +35,7 @@
       Login
     </button>
   </div>
-  <h3 class="m-1">
+    <h3 class="m-1">
     <div class="d-none d-md-inline"> {{ showDate() }} &nbsp;</div>
     <div class="d-inline d-md-none"> {{ showDateShort() }} &nbsp;</div>
   </h3>
@@ -55,6 +55,7 @@
     <button (click)="onNextWeek()" title="Eine Woche vor" class="btn btn-space">
       &gt;&gt;
     </button>
+    <button class="btn btn-space" (click)="toggleTheme()">&#8251;</button>
   </div>
 </div>
 
