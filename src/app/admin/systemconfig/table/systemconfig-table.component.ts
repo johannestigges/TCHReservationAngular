@@ -15,16 +15,16 @@ export class SystemconfigTableComponent extends ErrorAware implements OnInit {
 	systemconfigs: ReservationSystemConfig[];
 
 	constructor(
-    private systemconfigService: SystemconfigService,
-    private location: Location) {
+		private systemconfigService: SystemconfigService,
+		private location: Location) {
 		super();
 	}
 
 	ngOnInit() {
-		this.systemconfigService.getAll().subscribe(
-			data => this.systemconfigs = data,
-			err => this.httpError = err
-		);
+		this.systemconfigService.getAll().subscribe({
+			next: (data) => this.systemconfigs = data,
+			error: (error) => this.setError(error)
+		});
 	}
 
 	cancel() {

@@ -26,13 +26,13 @@ export class OccupationTableComponent
 	private timer: Observable<number>;
 	private timerSubscription: Subscription;
 	systemConfigs: ReservationSystemConfig[] = [];
-	systemConfig: ReservationSystemConfig|null = null;
+	systemConfig: ReservationSystemConfig | null = null;
 
 	constructor(
-    private reservationService: ReservationService,
-    private userService: UserService,
-    private route: ActivatedRoute,
-    private router: Router
+		private reservationService: ReservationService,
+		private userService: UserService,
+		private route: ActivatedRoute,
+		private router: Router
 	) {
 		super();
 	}
@@ -65,33 +65,32 @@ export class OccupationTableComponent
 		this.occupationTable.setSystemConfig(systemConfig);
 
 		// get logged in user
-		this.userService.getLoggedInUser().subscribe(
-			{
-				next: (user) => {
-					this.occupationTable.setUser(
-						new User(
-							user.id,
-							user.name,
-							UserRole['' + user.role],
-							'',
-							'',
-							ActivationStatus['' + user.status]
-						)
+		this.userService.getLoggedInUser().subscribe({
+			next: (user) => {
+				this.occupationTable.setUser(
+					new User(
+						user.id,
+						user.name,
+						UserRole['' + user.role],
+						'',
+						'',
+						ActivationStatus['' + user.status]
+					)
+				);
+				// update occupation table
+				this.update(this.occupationTable.date);
+			},
+			error: (usererror) => this.setError(usererror),
+			complete: () => {
+				// reload system when user is 'kiosk' every 5 Minutes
+				if (this.occupationTable.user.hasRole(UserRole.KIOSK)) {
+					this.timer = timer(300000, 300000);
+					this.timerSubscription = this.timer.subscribe(() =>
+						this.update(this.occupationTable.date)
 					);
-					// update occupation table
-					this.update(this.occupationTable.date);
-				},
-				error: (usererror) => (this.httpError = usererror),
-				complete: () => {
-					// reload system when user is 'kiosk' every 5 Minutes
-					if (this.occupationTable.user.hasRole(UserRole.KIOSK)) {
-						this.timer = timer(300000, 300000);
-						this.timerSubscription = this.timer.subscribe(() =>
-							this.update(this.occupationTable.date)
-						);
-					}
 				}
-			});
+			}
+		});
 	}
 
 	ngOnDestroy() {
@@ -108,7 +107,7 @@ export class OccupationTableComponent
 	canChangePassword() {
 		return (
 			this.isLoggedIn() &&
-      !this.occupationTable.user.hasRole(UserRole.KIOSK, UserRole.TECHNICAL)
+			!this.occupationTable.user.hasRole(UserRole.KIOSK, UserRole.TECHNICAL)
 		);
 	}
 
@@ -121,7 +120,7 @@ export class OccupationTableComponent
 	isAdminOrTrainer() {
 		return (
 			this.isLoggedIn() &&
-      this.occupationTable.user.hasRole(UserRole.ADMIN, UserRole.TRAINER)
+			this.occupationTable.user.hasRole(UserRole.ADMIN, UserRole.TRAINER)
 		);
 	}
 
@@ -159,7 +158,7 @@ export class OccupationTableComponent
 	canShowText(occupation: Occupation) {
 		return (
 			ReservationType[occupation.type] !==
-      ReservationType[ReservationType.Quickbuchung] || this.isLoggedIn()
+			ReservationType[ReservationType.Quickbuchung] || this.isLoggedIn()
 		);
 	}
 
@@ -186,8 +185,8 @@ export class OccupationTableComponent
 		// only for this and some days
 		return (
 			date - this.lastUpdated <
-      this.occupationTable.systemConfig.maxDaysReservationInFuture *
-      DateUtil.DAY
+			this.occupationTable.systemConfig.maxDaysReservationInFuture *
+			DateUtil.DAY
 		);
 	}
 
@@ -198,16 +197,14 @@ export class OccupationTableComponent
 		this.clearError();
 		this.reservationService
 			.getOccupations(this.occupationTable.systemConfig.id, date)
-			.subscribe(
-				(data) => {
+			.subscribe({
+				next: (data) => {
 					this.lastUpdated = new Date().getTime();
 					this.occupationTable.setDate(date);
 					this.show(data);
 				},
-				(err) => {
-					this.httpError = err;
-				}
-			);
+				error: (error) => this.setError(error)
+			});
 	}
 
 	showDate() {

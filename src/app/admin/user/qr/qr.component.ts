@@ -23,10 +23,9 @@ export class QrComponent extends ErrorAware implements OnInit {
 	}
 
 	ngOnInit() {
-		this.userService.getAll().subscribe(users=>{
-			this.users=users;
+		this.userService.getAll().subscribe(users => {
+			this.users = users;
 			this.activeUsers = this.users.filter(u => this.isActive(u.status));
-			console.log('users', this.users.length, this.activeUsers.length, this.users);
 		});
 	}
 
@@ -43,7 +42,7 @@ export class QrComponent extends ErrorAware implements OnInit {
 			this.clearError();
 			if (this.users.find(u => this.user.name === u.name)) {
 				this.errorMessages.push('Den Benutzer gibt es bereits.');
-				this.qrUrl='';
+				this.qrUrl = '';
 				return;
 			}
 			this.userService.addUser(this.user).subscribe({
@@ -83,6 +82,7 @@ export class QrComponent extends ErrorAware implements OnInit {
 			.map(function (x) { return x[Math.floor(Math.random() * x.length)]; })
 			.join('');
 	}
+	
 	private generateUrl() {
 		return `${window.location.origin}/#/login?username=${this.user.name}&password=${this.user.password}`;
 	}

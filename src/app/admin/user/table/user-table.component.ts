@@ -20,8 +20,8 @@ export class UserTableComponent extends ErrorAware implements OnInit {
 
 	ngOnInit() {
 		this.userService.getAll().subscribe({
-			next: data => this.users = data,
-			error: err => this.httpError = err
+			next: (data) => this.users = data,
+			error: (error) => this.httpError = error
 		});
 	}
 

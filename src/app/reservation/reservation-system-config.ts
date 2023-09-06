@@ -15,7 +15,8 @@ export class ReservationSystemConfig {
     public maxDaysReservationInFuture: number, // maximum of reservation in the future for normal users
     public maxDuration: number, // maximum of duration for normal users
     public openingHour: number, // first reservation hour
-    public closingHour: number // last reservation hour
+    public closingHour: number, // last reservation hour
+	public types: SystemConfigReservationType[]
 	) {}
 
 	public static of(config: ReservationSystemConfig) {
@@ -28,7 +29,8 @@ export class ReservationSystemConfig {
 			config.maxDaysReservationInFuture,
 			config.maxDuration,
 			config.openingHour,
-			config.closingHour
+			config.closingHour,
+			config.types
 		);
 	}
 
@@ -89,5 +91,29 @@ export class ReservationSystemConfig {
 			return 1;
 		}
 		return 2;
+	}
+}
+
+export class SystemConfigReservationType {
+	constructor(
+		public id: number,
+		public type: number,
+		public name: string,
+		public maxDuration: number,
+		public maxDaysReservationInFuture: number,
+		public maxCancelInHours: number,
+		public roles: string[]
+	) {}
+
+	public static of(type:SystemConfigReservationType ) {
+		return new SystemConfigReservationType(
+			type.id,
+			type.type,
+			type.name,
+			type.maxDuration,
+			type.maxDaysReservationInFuture,
+			type.maxCancelInHours,
+			type.roles
+		);
 	}
 }

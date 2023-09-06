@@ -48,18 +48,16 @@ export class LoginComponent implements OnInit {
 	}
 
 	onSubmit() {
-		if (this.form.valid) {
-			this.userService.login(this.form.controls.user.value!, this.form.controls.password.value!, this.form.controls.rememberMe.value)
-				.subscribe({
-					next: () => this.router.navigate(['/']),
-					error: (error) => {
-						console.log('error from login service', JSON.stringify(error));
-						this.error = error.status === 401
-							? 'ungültige Anmeldedaten'
-							: 'Fehler bei der Anmeldung';
-					}
-				});
+		if (this.form.invalid) {
+			return;
 		}
+		const value = this.form.value;
+		this.userService.login(value.user, value.password, value.rememberMe).subscribe({
+			next: () => this.onCancel(),
+			error: (error) => this.error = error.status === 401
+				? 'ungültige Anmeldedaten'
+				: 'Fehler bei der Anmeldung'
+		});
 	}
 
 	onCancel() {
