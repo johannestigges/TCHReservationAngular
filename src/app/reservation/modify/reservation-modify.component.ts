@@ -21,8 +21,7 @@ import { ActivationStatus } from '../../admin/user/activation-status.enum';
 })
 export class ReservationModifyComponent
 	extends ErrorAware
-	implements OnInit, OnDestroy
-{
+	implements OnInit, OnDestroy {
 	systemConfig: ReservationSystemConfig;
 	user: User;
 	occupation: Occupation;
@@ -37,10 +36,10 @@ export class ReservationModifyComponent
 	focus: string;
 
 	constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private service: ReservationService,
-    private userService: UserService
+		private route: ActivatedRoute,
+		private router: Router,
+		private service: ReservationService,
+		private userService: UserService
 	) {
 		super();
 	}
@@ -56,33 +55,33 @@ export class ReservationModifyComponent
 			.map((key) => ReservationType[key])
 			.filter((value) => typeof value === 'string');
 
-		this.service.getSystemConfig(systemId).subscribe(
-			(config) => {
+		this.service.getSystemConfig(systemId).subscribe({
+			next: (config) => {
 				this.systemConfig = ReservationSystemConfig.of(config);
-				this.userService.getLoggedInUser().subscribe(
-					(user) => {
+				this.userService.getLoggedInUser().subscribe({
+					next: (user) => {
 						this.user = new User(
 							user.id,
 							user.name,
 							UserRole['' + user.role],
 							ActivationStatus['' + user.status]
 						);
-						this.service.getOccupation(occupationId).subscribe(
-							(occupation) => {
+						this.service.getOccupation(occupationId).subscribe({
+							next: (occupation) => {
 								this.occupation = occupation;
 								this.time = this.occupation.start;
 								this.type = ReservationType[this.occupation.type];
 								this.court = this.occupation.court;
 								this.update();
 							},
-							(occupationerror) => (this.httpError = occupationerror)
-						);
+							error: (occupationerror) => this.setError(occupationerror)
+						});
 					},
-					(usererror) => (this.httpError = usererror)
-				);
+					error: (usererror) => this.setError(usererror)
+				});
 			},
-			(configerror) => (this.httpError = configerror)
-		);
+			error: (configerror) => this.setError(configerror)
+		});
 	}
 
 	ngOnDestroy(): void {
@@ -187,10 +186,10 @@ export class ReservationModifyComponent
 
 	onDelete() {
 		this.clearError();
-		this.service.deleteOccupation(this.occupation.id).subscribe(
-			() => this.onBack(),
-			(err) => (this.httpError = err)
-		);
+		this.service.deleteOccupation(this.occupation.id).subscribe({
+			next: () => this.onBack(),
+			error: (error) => this.setError(error)
+		});
 	}
 
 	onTerminate() {
@@ -200,15 +199,15 @@ export class ReservationModifyComponent
 			this.occupation.duration--;
 		}
 		if (this.occupation.duration > 0) {
-			this.service.updateOccupation(this.occupation).subscribe(
-				() => this.onBack(),
-				(error) => (this.httpError = error)
-			);
+			this.service.updateOccupation(this.occupation).subscribe({
+				next: () => this.onBack(),
+				error: (error) => this.setError(error)
+			});
 		} else {
-			this.service.deleteOccupation(this.occupation.id).subscribe(
-				() => this.onBack(),
-				(error) => (this.httpError = error)
-			);
+			this.service.deleteOccupation(this.occupation.id).subscribe({
+				next: () => this.onBack(),
+				error: (error) => this.setError(error)
+			});
 		}
 	}
 
@@ -220,17 +219,13 @@ export class ReservationModifyComponent
 			this.occupation.court = this.court;
 			this.occupation.lastCourt = this.court;
 		}
-		this.service.updateOccupation(this.occupation).subscribe(
-			() => this.onBack(),
-			(err) => (this.httpError = err)
-		);
+		this.service.updateOccupation(this.occupation).subscribe({
+			next: () => this.onBack(),
+			error: (error) => this.setError(error)
+		});
 	}
 
 	onBack() {
-		this.router.navigate([
-			'/table',
-			this.systemConfig.id,
-			this.occupation.date,
-		]);
+		this.router.navigate(['/table', this.systemConfig.id, this.occupation.date]);
 	}
 }

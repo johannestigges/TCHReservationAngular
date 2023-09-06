@@ -31,10 +31,10 @@ export class ProtocolTableComponent extends ErrorAware implements OnInit {
 
 	private show(since) {
 		this.since = since;
-		this.protocolService.getSince(this.since).subscribe(
-			data => this.protocols = data,
-			err => this.httpError = err
-		);
+		this.protocolService.getSince(this.since).subscribe({
+			next: (data) => this.protocols = data,
+			error: (error) => this.setError(error)
+		});
 	}
 
 	date(t: number[]) {

@@ -51,11 +51,11 @@ export class UserAddComponent extends ErrorAware implements OnInit {
 		this.user.status = ActivationStatus[this.userStatus];
 
 		this.userService.addUser(this.user).subscribe({
-			next: data => {
+			next: (data) => {
 				this.user = data;
 				this.cancel();
 			},
-			error: err => this.httpError = err
+			error: (error) => this.setError(error)
 		});
 	}
 

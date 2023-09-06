@@ -34,9 +34,9 @@ export class SystemconfigAddComponent extends ErrorAware implements OnInit {
 	form: UntypedFormGroup;
 
 	constructor(
-    private location: Location,
-    private formBuilder: UntypedFormBuilder,
-    private systemconfigService: SystemconfigService
+		private location: Location,
+		private formBuilder: UntypedFormBuilder,
+		private systemconfigService: SystemconfigService
 	) {
 		super();
 	}
@@ -96,12 +96,13 @@ export class SystemconfigAddComponent extends ErrorAware implements OnInit {
 			this.form.get('maxDaysReservationInFuture').value,
 			this.form.get('maxDuration').value,
 			this.form.get('openingHour').value,
-			this.form.get('closingHour').value
+			this.form.get('closingHour').value,
+			[]
 		);
-		this.systemconfigService.add(newconfig).subscribe(
-			() => this.cancel(),
-			(err) => (this.httpError = err)
-		);
+		this.systemconfigService.add(newconfig).subscribe({
+			next: () => this.cancel(),
+			error: (error) => this.setError(error)
+		});
 	}
 	cancel() {
 		this.location.back();

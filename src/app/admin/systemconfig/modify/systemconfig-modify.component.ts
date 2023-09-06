@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
-
 import { ErrorAware } from '../../../util/error/error-aware';
 import { ReservationSystemConfig } from 'src/app/reservation/reservation-system-config';
 import { SystemconfigService } from '../systemconfig.service';
@@ -36,10 +35,10 @@ export class SystemconfigModifyComponent extends ErrorAware implements OnInit {
 	form: UntypedFormGroup;
 
 	constructor(
-    private location: Location,
-    private route: ActivatedRoute,
-    private formBuilder: UntypedFormBuilder,
-    private systemconfigService: SystemconfigService
+		private location: Location,
+		private route: ActivatedRoute,
+		private formBuilder: UntypedFormBuilder,
+		private systemconfigService: SystemconfigService
 	) {
 		super();
 	}
@@ -61,8 +60,8 @@ export class SystemconfigModifyComponent extends ErrorAware implements OnInit {
 		});
 
 		const id = this.route.snapshot.params.id;
-		this.systemconfigService.get(id).subscribe(
-			(data) => {
+		this.systemconfigService.get(id).subscribe({
+			next: (data) => {
 				this.form.get('id').setValue(data.id);
 				this.form.get('name').setValue(data.name);
 				this.form.get('title').setValue(data.title);
@@ -79,8 +78,8 @@ export class SystemconfigModifyComponent extends ErrorAware implements OnInit {
 				this.form.get('openingHour').setValue(data.openingHour);
 				this.form.get('closingHour').setValue(data.closingHour);
 			},
-			(error) => (this.httpError = error)
-		);
+			error: (error) => (this.httpError = error)
+		});
 	}
 
 	createCourt(): UntypedFormGroup {
@@ -108,13 +107,13 @@ export class SystemconfigModifyComponent extends ErrorAware implements OnInit {
 	delete() {
 		this.clearError();
 
-		this.systemconfigService.delete(this.form.get('id').value).subscribe(
-			(data) => {
+		this.systemconfigService.delete(this.form.get('id').value).subscribe({
+			next: (data) => {
 				alert(`Systemkonfiguration ${data.name} wurde gelöscht.`);
 				this.cancel();
 			},
-			(error) => (this.httpError = error)
-		);
+			error: (error) => (this.httpError = error)
+		});
 	}
 
 	onClick() {
@@ -129,16 +128,17 @@ export class SystemconfigModifyComponent extends ErrorAware implements OnInit {
 			this.form.get('maxDaysReservationInFuture').value,
 			this.form.get('maxDuration').value,
 			this.form.get('openingHour').value,
-			this.form.get('closingHour').value
+			this.form.get('closingHour').value,
+			[]
 		);
 
-		this.systemconfigService.update(newconfig).subscribe(
-			(data) => {
+		this.systemconfigService.update(newconfig).subscribe({
+			next: (data) => {
 				alert(`Systemkonfiguration ${data.name} wurde geändert.`);
 				this.cancel();
 			},
-			(err) => (this.httpError = err)
-		);
+			error: (err) => (this.httpError = err)
+		});
 	}
 
 	cancel() {

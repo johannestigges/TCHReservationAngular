@@ -48,7 +48,7 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
 		private route: ActivatedRoute,
 		private router: Router,
 		private service: ReservationService,
-		private userService: UserService //    private cookieService: CookieService
+		private userService: UserService
 	) {
 		super();
 	}
@@ -97,10 +97,10 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
 						);
 						this.init();
 					},
-					error: (usererror) => (this.httpError = usererror)
+					error: (usererror) => this.setError(usererror)
 				});
 			},
-			error: (configerror) => (this.httpError = configerror)
+			error: (configerror) => this.setError(configerror)
 		});
 	}
 
@@ -110,7 +110,6 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
 		this.reservation.type = ReservationType[this.type];
 		this.reservation.start = this.time;
 		this.reservation.repeatUntil = DateUtil.convertFromNgbDateStruct(this.repeatUntil).getTime();
-		console.log('repeat until', this.repeatUntil, this.reservation.repeatUntil);
 		if (!this.showText) {
 			if (this.showDouble) {
 				this.reservation.text = `${this.player1} ${this.player2} ${this.player3} ${this.player4}`;
@@ -118,17 +117,10 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
 				this.reservation.text = `${this.player1} ${this.player2}`;
 			}
 		}
-		this.service.checkReservation(this.reservation).subscribe(
-			(reservation) => {
-				console.log(
-					'checked reservation with ',
-					reservation.occupations.length,
-					' occupations.'
-				);
-				this.reservation = reservation;
-			},
-			(error) => (this.httpError = error)
-		);
+		this.service.checkReservation(this.reservation).subscribe({
+			next: (reservation) => this.reservation = reservation,
+			error: (error) => (this.httpError = error)
+		});
 	}
 
 	onDeleteOccupation(i: number) {
@@ -139,14 +131,7 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
 		// decide which parts of the layout are visible
 		// this depends on the user role
 		this.showType = this._isAtLeastTeamster();
-		/** not used without corona restrictions
-	 this.showText =
-	 this.systemConfig.durationUnitInMinutes !== 30 ||
-	 this._isAtLeastTeamster();
-	 */
-		this.showSimpleDuration =
-			this.systemConfig.durationUnitInMinutes === 30 &&
-			!this._isAtLeastTeamster();
+		this.showSimpleDuration = this.systemConfig.durationUnitInMinutes === 30 && !this._isAtLeastTeamster();
 		this.showDuration = !this.showSimpleDuration && this._isAtLeastTeamster();
 		this.showRepeat = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
 		if (this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER)) {
@@ -242,30 +227,24 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
 		} else {
 			this._setCookie('text', this.reservation.text);
 		}
-		this.service.addReservation(this.reservation).subscribe(
-			(data) => {
+		this.service.addReservation(this.reservation).subscribe({
+			next: (data) => {
 				this.reservation = data;
 				if (this.reservation.occupations.length > 1) {
 					let msg = `Es wurden ${this.reservation.occupations.length} Platzbelegungen angelegt.`;
 					for (const o of this.reservation.occupations) {
-						msg += `\n${DateUtil.showDate(o.date)} ${DateUtil.showTime(
-							o.start
-						)}`;
+						msg += `\n${DateUtil.showDate(o.date)} ${DateUtil.showTime(o.start)}`;
 					}
 					alert(msg);
 				}
 				this.onBack();
 			},
-			(err) => (this.httpError = err)
-		);
+			error: (error) => (this.httpError = error)
+		});
 	}
 
 	onBack() {
-		this.router.navigate([
-			'/table',
-			this.systemConfig.id,
-			this.reservation.date,
-		]);
+		this.router.navigate(['/table', this.systemConfig.id, this.reservation.date]);
 	}
 
 	private _getCookie(name) {
