@@ -13,7 +13,6 @@ import { UserRole } from '../../admin/user/user-role.enum';
 import { DateUtil } from '../../util/date/date-util';
 import { Occupation } from '../occupation';
 import { ActivationStatus } from '../../admin/user/activation-status.enum';
-import { error } from 'console';
 
 @Component({
 	selector: 'tch-reservation-modify',
