@@ -4,7 +4,7 @@
     <h2 class="col-sm-offset-2 col-sm-10">Systemkonfiguration anlegen</h2>
   </div>
 
-  <form [formGroup]="form" (ngSubmit)="onClick()" class="form-horizontal">
+  <form [formGroup]="form" class="form-horizontal">
     <!-- id -->
     <div class="form-group mb-3">
       <label class="col-sm-2 control-label">Id:</label>
@@ -33,19 +33,13 @@
     <div class="form-group mb-3">
       <label class="col-sm-2 control-label">Plätze:</label>
       <div class="col-sm-10" formArrayName="courts">
-        <div
-          *ngFor="let court of form.controls.courts.controls; let i = index"
-        >
+        <div *ngFor="let court of form.controls.courts.controls; let i = index">
           <input type="text" [formControl]="court" />
           <button class="btn btn-outline-secondary m-1" (click)="removeCourt(i)">
             -
           </button>
         </div>
-        <button
-          type="button"
-          class="btn btn-outline-secondary"
-          (click)="addCourt()"
-        >
+        <button class="btn btn-outline-secondary" (click)="addCourt()">
           +
         </button>
       </div>
@@ -123,8 +117,8 @@
     <!-- Buttons -->
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-10">
-        <button class="btn btn-primary">Systemkonfiguration anlegen</button>
-        <button (click)="cancel()" class="btn btn-outline-secondary ms-1">Zurück</button>
+        <button (click)="onSubmit()" class="btn btn-primary">Systemkonfiguration anlegen</button>
+        <button (click)="onCancel()" class="btn btn-outline-secondary ms-1">Zurück</button>
       </div>
     </div>
   </form>

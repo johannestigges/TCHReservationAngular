@@ -59,27 +59,27 @@ export class SystemconfigAddComponent extends ErrorAware implements OnInit {
 		return this.form.controls.courts;
 	}
 
-	onClick() {
+	onSubmit() {
 		this.clearError();
 
 		const newconfig = new ReservationSystemConfig(
-			this.form.get('id').value,
-			this.form.get('name').value,
-			this.form.get('title').value,
-			this.form.get('courts').value,
-			this.form.get('durationUnitInMinutes').value,
-			this.form.get('maxDaysReservationInFuture').value,
-			this.form.get('maxDuration').value,
-			this.form.get('openingHour').value,
-			this.form.get('closingHour').value,
+			this.form.controls.id.value,
+			this.form.controls.name.value,
+			this.form.controls.title.value,
+			this.form.controls.courts.controls.filter(c => c.value).map(c => c.value),
+			this.form.controls.durationUnitInMinutes.value,
+			this.form.controls.maxDaysReservationInFuture.value,
+			this.form.controls.maxDuration.value,
+			this.form.controls.openingHour.value,
+			this.form.controls.closingHour.value,
 			[]
 		);
 		this.systemconfigService.add(newconfig).subscribe({
-			next: () => this.cancel(),
+			next: () => this.onCancel(),
 			error: (error) => this.setError(error)
 		});
 	}
-	cancel() {
+	onCancel() {
 		this.location.back();
 	}
 }

@@ -38,7 +38,7 @@ export class SystemconfigModifyComponent extends ErrorAware implements OnInit {
 	}
 
 	ngOnInit() {
-		this.form = createSystemConfigForm(); 
+		this.form = createSystemConfigForm();
 
 		const id = this.route.snapshot.params.id;
 		this.systemconfigService.get(id).subscribe({
@@ -78,44 +78,44 @@ export class SystemconfigModifyComponent extends ErrorAware implements OnInit {
 		this.courts.removeAt(i);
 	}
 
-	delete() {
+	onDelete() {
 		this.clearError();
 
-		this.systemconfigService.delete(this.form.get('id').value).subscribe({
+		this.systemconfigService.delete(this.form.controls.id.value).subscribe({
 			next: (data) => {
 				alert(`Systemkonfiguration ${data.name} wurde gelöscht.`);
-				this.cancel();
+				this.onCancel();
 			},
 			error: (error) => this.setError(error)
 		});
 	}
 
-	onClick() {
+	onSubmit() {
 		this.clearError();
 
 		const newconfig = new ReservationSystemConfig(
-			this.form.get('id').value,
-			this.form.get('name').value,
-			this.form.get('title').value,
-			this.form.get('courts').value,
-			this.form.get('durationUnitInMinutes').value,
-			this.form.get('maxDaysReservationInFuture').value,
-			this.form.get('maxDuration').value,
-			this.form.get('openingHour').value,
-			this.form.get('closingHour').value,
+			this.form.controls.id.value,
+			this.form.controls.name.value,
+			this.form.controls.title.value,
+			this.form.controls.courts.controls.filter(c => c.value).map(c => c.value),
+			this.form.controls.durationUnitInMinutes.value,
+			this.form.controls.maxDaysReservationInFuture.value,
+			this.form.controls.maxDuration.value,
+			this.form.controls.openingHour.value,
+			this.form.controls.closingHour.value,
 			[]
 		);
 
 		this.systemconfigService.update(newconfig).subscribe({
 			next: (data) => {
 				alert(`Systemkonfiguration ${data.name} wurde geändert.`);
-				this.cancel();
+				this.onCancel();
 			},
 			error: (error) => this.setError(error)
 		});
 	}
 
-	cancel() {
+	onCancel() {
 		this.location.back();
 	}
 }
