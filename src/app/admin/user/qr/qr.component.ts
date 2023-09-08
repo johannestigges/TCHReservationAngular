@@ -78,7 +78,7 @@ export class QrComponent extends ErrorAware implements OnInit {
 	}
 
 	private generatePassword() {
-		const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789()[]{}#-+.,:;<>|!$&=?';
+		const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 		const length = 20;
 		const buffer = new Uint8Array(length);
 		crypto.getRandomValues(buffer);
