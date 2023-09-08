@@ -3,14 +3,9 @@ import { Location } from '@angular/common';
 import { ErrorAware } from '../../../util/error/error-aware';
 import { ReservationSystemConfig } from 'src/app/reservation/reservation-system-config';
 import { SystemconfigService } from '../systemconfig.service';
-import {
-	UntypedFormArray,
-	UntypedFormBuilder,
-	UntypedFormControl,
-	UntypedFormGroup,
-	Validators,
-} from '@angular/forms';
+import { FormArray,	FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { SystemconfigForm, createSystemConfigForm } from '../systemconfig-form';
 
 @Component({
 	selector: 'tch-systemconfig-modify',
@@ -32,76 +27,55 @@ export class SystemconfigModifyComponent extends ErrorAware implements OnInit {
 		3, 4, 5, 6,
 	];
 
-	form: UntypedFormGroup;
+	form: FormGroup<SystemconfigForm>;
 
 	constructor(
 		private location: Location,
 		private route: ActivatedRoute,
-		private formBuilder: UntypedFormBuilder,
 		private systemconfigService: SystemconfigService
 	) {
 		super();
 	}
 
 	ngOnInit() {
-		this.form = this.formBuilder.group({
-			id: new UntypedFormControl('', Validators.required),
-			name: new UntypedFormControl('', Validators.required),
-			title: new UntypedFormControl(''),
-			courts: new UntypedFormArray([]),
-			durationUnitInMinutes: new UntypedFormControl('', Validators.required),
-			maxDaysReservationInFuture: new UntypedFormControl(
-				'',
-				Validators.required
-			),
-			maxDuration: new UntypedFormControl('', Validators.required),
-			openingHour: new UntypedFormControl('', Validators.required),
-			closingHour: new UntypedFormControl('', Validators.required),
-		});
+		this.form = createSystemConfigForm(); 
 
 		const id = this.route.snapshot.params.id;
 		this.systemconfigService.get(id).subscribe({
 			next: (data) => {
-				this.form.get('id').setValue(data.id);
-				this.form.get('name').setValue(data.name);
-				this.form.get('title').setValue(data.title);
+				this.form.controls.id.setValue(data.id);
+				this.form.controls.name.setValue(data.name);
+				this.form.controls.title.setValue(data.title);
 				for (const court of data.courts) {
 					this.add(court);
 				}
-				this.form
-					.get('durationUnitInMinutes')
+				this.form.controls.durationUnitInMinutes
 					.setValue(data.durationUnitInMinutes);
-				this.form
-					.get('maxDaysReservationInFuture')
+				this.form.controls.maxDaysReservationInFuture
 					.setValue(data.maxDaysReservationInFuture);
-				this.form.get('maxDuration').setValue(data.maxDuration);
-				this.form.get('openingHour').setValue(data.openingHour);
-				this.form.get('closingHour').setValue(data.closingHour);
+				this.form.controls.maxDuration.setValue(data.maxDuration);
+				this.form.controls.openingHour.setValue(data.openingHour);
+				this.form.controls.closingHour.setValue(data.closingHour);
 			},
-			error: (error) => (this.httpError = error)
+			error: (error) => this.setError(error)
 		});
 	}
 
-	createCourt(): UntypedFormGroup {
-		return this.formBuilder.group({
-			court: '',
-		});
-	}
 
 	add(court: string): void {
-		this.getCourts().push(new UntypedFormControl(court));
+		this.courts.controls.push(new FormControl(court));
 	}
 
 	addCourt(): void {
 		this.add('');
 	}
 
-	getCourts(): UntypedFormArray {
-		return this.form.get('courts') as UntypedFormArray;
+	get courts(): FormArray<FormControl<string>> {
+		return this.form.controls.courts;
 	}
 
 	removeCourt(i: number): void {
-		this.getCourts().removeAt(i);
+		this.courts.removeAt(i);
 	}
 
 	delete() {
@@ -112,7 +86,7 @@ export class SystemconfigModifyComponent extends ErrorAware implements OnInit {
 				alert(`Systemkonfiguration ${data.name} wurde gelöscht.`);
 				this.cancel();
 			},
-			error: (error) => (this.httpError = error)
+			error: (error) => this.setError(error)
 		});
 	}
 
@@ -137,7 +111,7 @@ export class SystemconfigModifyComponent extends ErrorAware implements OnInit {
 				alert(`Systemkonfiguration ${data.name} wurde geändert.`);
 				this.cancel();
 			},
-			error: (err) => (this.httpError = err)
+			error: (error) => this.setError(error)
 		});
 	}
 

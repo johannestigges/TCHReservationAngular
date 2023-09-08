@@ -2,14 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { ReservationSystemConfig } from 'src/app/reservation/reservation-system-config';
 import { SystemconfigService } from '../systemconfig.service';
-import {
-	UntypedFormArray,
-	UntypedFormBuilder,
-	UntypedFormControl,
-	UntypedFormGroup,
-	Validators,
-} from '@angular/forms';
+import { FormArray,	FormControl, FormGroup } from '@angular/forms';
 import { ErrorAware } from 'src/app/util/error/error-aware';
+import { SystemconfigForm, createSystemConfigForm } from '../systemconfig-form';
 
 @Component({
 	selector: 'tch-systemconfig-add',
@@ -31,57 +26,37 @@ export class SystemconfigAddComponent extends ErrorAware implements OnInit {
 		3, 4, 5, 6,
 	];
 
-	form: UntypedFormGroup;
+	form: FormGroup<SystemconfigForm>;
 
 	constructor(
 		private location: Location,
-		private formBuilder: UntypedFormBuilder,
 		private systemconfigService: SystemconfigService
 	) {
 		super();
 	}
 
 	ngOnInit() {
-		this.form = this.formBuilder.group({
-			id: new UntypedFormControl('', Validators.required),
-			name: new UntypedFormControl('', Validators.required),
-			title: new UntypedFormControl(''),
-			courts: new UntypedFormArray([]),
-			durationUnitInMinutes: new UntypedFormControl('', Validators.required),
-			maxDaysReservationInFuture: new UntypedFormControl(
-				'',
-				Validators.required
-			),
-			maxDuration: new UntypedFormControl('', Validators.required),
-			openingHour: new UntypedFormControl('', Validators.required),
-			closingHour: new UntypedFormControl('', Validators.required),
-		});
+		this.form = createSystemConfigForm();
 
-		this.form.get('id').setValue(1);
+		this.form.controls.id.setValue(1);
 		this.addCourt();
-		this.form.get('durationUnitInMinutes').setValue(60);
-		this.form.get('maxDaysReservationInFuture').setValue(1);
-		this.form.get('maxDuration').setValue(1);
-		this.form.get('openingHour').setValue(8);
-		this.form.get('closingHour').setValue(22);
-	}
-
-	createCourt(): UntypedFormGroup {
-		return this.formBuilder.group({
-			court: '',
-		});
+		this.form.controls.durationUnitInMinutes.setValue(60);
+		this.form.controls.maxDaysReservationInFuture.setValue(1);
+		this.form.controls.maxDuration.setValue(1);
+		this.form.controls.openingHour.setValue(8);
+		this.form.controls.closingHour.setValue(22);
 	}
 
 	addCourt(): void {
-		this.getCourts().push(new UntypedFormControl(''));
+		this.courts.controls.push(new FormControl(''));
 	}
 
 	removeCourt(i: number): void {
-		this.getCourts().removeAt(i);
+		this.courts.removeAt(i);
 	}
 
-	getCourts(): UntypedFormArray {
-		return this.form.get('courts') as UntypedFormArray;
+	get courts(): FormArray<FormControl<string>> {
+		return this.form.controls.courts;
 	}
 
 	onClick() {

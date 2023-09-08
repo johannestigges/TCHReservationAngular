@@ -1,4 +1,8 @@
-<table class="table table-bordered table-striped table-hover">
+<div class="d-flex justify-content-end my-2">
+  <a class="btn btn-outline-primary" routerLink="/systemconfig/add">Systemkonfiguration anlegen</a>
+  <button class="btn btn-outline-secondary ms-1" (click)="cancel()">Zurück</button>
+</div>
+<table class="table table-bordered table-striped table-hover mt-1">
   <thead>
     <tr>
       <th class="d-none d-lg-table-cell">Id</th>
@@ -28,5 +32,3 @@
   </tbody>
 </table>
 <tch-show-error [httpError]="httpError" [errorMessages]="errorMessages"></tch-show-error>
-<a class="btn btn-primary" routerLink="/systemconfig/add">Systemkonfiguration anlegen</a>
-<button class="btn btn-outline-secondary ms-1" (click)="cancel()">Zurück</button>

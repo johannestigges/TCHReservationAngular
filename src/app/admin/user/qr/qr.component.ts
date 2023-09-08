@@ -56,6 +56,7 @@ export class QrComponent extends ErrorAware implements OnInit {
 
 	onClickNewPassword() {
 		if (this.selectedUserId) {
+			this.clearError();
 			this.userService.getUser(this.selectedUserId).subscribe({
 				next: (user) => {
 					user.password = this.generatePassword();
@@ -77,10 +78,15 @@ export class QrComponent extends ErrorAware implements OnInit {
 	}
 
 	private generatePassword() {
-		return Array(20)
-			.fill('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz')
-			.map(function (x) { return x[Math.floor(Math.random() * x.length)]; })
-			.join('');
+		const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789()[]{}#-+.,:;<>|!$&=?';
+		const length = 20;
+		const buffer = new Uint8Array(length);
+		crypto.getRandomValues(buffer);
+		let password = '';
+		for (let i=0 ; i < length; i++) {
+			password += chars[buffer[i] % chars.length];
+		}
+		return password;
 	}
 	
 	private generateUrl() {

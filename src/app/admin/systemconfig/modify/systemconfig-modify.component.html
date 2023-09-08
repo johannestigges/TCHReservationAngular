@@ -34,12 +34,9 @@
       <label class="col-sm-2 control-label">Plätze:</label>
       <div class="col-sm-10" formArrayName="courts">
         <div
-          *ngFor="let court of form.get('courts')['controls']; let i = index"
+          *ngFor="let court of courts.controls; let i = index"
         >
-          <input
-            type="text"
-            [formControl]="form.get('courts')['controls'][i]"
-          />
+          <input type="text" [formControl]="court" />
           <button class="btn btn-outline-secondary m-1" (click)="removeCourt(i)">
             -
           </button>
