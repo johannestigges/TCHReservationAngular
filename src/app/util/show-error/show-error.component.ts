@@ -8,8 +8,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class ShowErrorComponent implements OnChanges {
 
-	@Input() httpError: HttpErrorResponse;
-	@Input() errorMessages: string[];
+	@Input() httpError?: HttpErrorResponse;
+	@Input() errorMessages: string[] = [];
 
 	ngOnChanges() {
 		this.analyzeHttpError();
@@ -20,7 +20,7 @@ export class ShowErrorComponent implements OnChanges {
 			if (this.httpError.error) {
 				this.errorMessages.push(this.httpError.error.message);
 				if (this.httpError.error.fieldErrors) {
-					this.httpError.error.fieldErrors.forEach((fe) => {
+					this.httpError.error.fieldErrors.forEach((fe: FieldMessage) => {
 						this.errorMessages.push('Fehler im Feld ' + fe.field + ': ' + fe.message);
 					});
 				}
@@ -29,4 +29,9 @@ export class ShowErrorComponent implements OnChanges {
 			}
 		}
 	}
+}
+
+interface FieldMessage {
+  field: string;
+  message: string;
 }

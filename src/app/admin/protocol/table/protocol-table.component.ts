@@ -13,8 +13,8 @@ import { DateUtil } from '../../../util/date/date-util';
 })
 export class ProtocolTableComponent extends ErrorAware implements OnInit {
 
-	protocols: Protocol[];
-	since: number;
+	protocols: Protocol[] = [];
+	since = 0;
 
 	constructor(private protocolService: ProtocolService, private location: Location) {
 		super();
@@ -29,7 +29,7 @@ export class ProtocolTableComponent extends ErrorAware implements OnInit {
 		this.show(this.since - 7 * DateUtil.DAY);
 	}
 
-	private show(since) {
+	private show(since: number) {
 		this.since = since;
 		this.protocolService.getSince(this.since).subscribe({
 			next: (data) => this.protocols = data,
@@ -41,7 +41,7 @@ export class ProtocolTableComponent extends ErrorAware implements OnInit {
 		return `${t[2]}.${t[1]}.${t[0]} ${t[3]}:${t[4]}`;
 	}
 
-	parseJson(o) {
+	parseJson(o: string) {
 		return JSON.parse(o);
 	}
 

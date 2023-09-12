@@ -5,3 +5,11 @@ export enum ActivationStatus {
   LOCKED, // locked due to too many login failures
   REMOVED // removed by user or by admin
 }
+
+export type ActivationStatusType = keyof typeof ActivationStatus;
+
+export const activationStatusValues = Object.keys(ActivationStatus)
+	.filter(key => isNaN(Number(key))) as ActivationStatusType[];
+
+export const activationStatusFrom =
+  (status: unknown): ActivationStatus => ActivationStatus[status as ActivationStatusType];

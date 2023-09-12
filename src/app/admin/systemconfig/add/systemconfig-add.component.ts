@@ -4,7 +4,7 @@ import { ReservationSystemConfig } from 'src/app/reservation/reservation-system-
 import { SystemconfigService } from '../systemconfig.service';
 import { FormArray,	FormControl, FormGroup } from '@angular/forms';
 import { ErrorAware } from 'src/app/util/error/error-aware';
-import { SystemconfigForm, createSystemConfigForm } from '../systemconfig-form';
+import { ReservationTypeForm, SystemconfigForm, createSystemConfigForm } from '../systemconfig-form';
 
 @Component({
 	selector: 'tch-systemconfig-add',
@@ -33,11 +33,11 @@ export class SystemconfigAddComponent extends ErrorAware implements OnInit {
 		private systemconfigService: SystemconfigService
 	) {
 		super();
+		this.form = createSystemConfigForm();
 	}
 
 	ngOnInit() {
-		this.form = createSystemConfigForm();
-
+	
 		this.form.controls.id.setValue(1);
 		this.addCourt();
 		this.form.controls.durationUnitInMinutes.setValue(60);
@@ -48,7 +48,7 @@ export class SystemconfigAddComponent extends ErrorAware implements OnInit {
 	}
 
 	addCourt(): void {
-		this.courts.controls.push(new FormControl(''));
+		this.courts.controls.push(new FormControl('') as FormControl<string>);
 	}
 
 	removeCourt(i: number): void {
@@ -57,6 +57,13 @@ export class SystemconfigAddComponent extends ErrorAware implements OnInit {
 
 	get courts(): FormArray<FormControl<string>> {
 		return this.form.controls.courts;
+	}
+
+	onAddType() {
+		this.form.controls.types.controls.push(new FormGroup<ReservationTypeForm>({}));
+	}
+	onRemoveType(i: number) {
+		this.form.controls.types.removeAt(i);
 	}
 
 	onSubmit() {

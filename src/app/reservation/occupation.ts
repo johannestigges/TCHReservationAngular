@@ -20,4 +20,6 @@ export class Occupation {
     public type: ReservationType) {
 		this.id = Math.floor(Math.random() * 100000000 );
 	}
+
+	static readonly EMPTY = new Occupation(0,Reservation.EMPTY,'',0,0,0,0,0,ReservationType.Quickbuchung);
 }

@@ -5,8 +5,8 @@ import { OccupationTable } from './occupation-table';
 import { Occupation } from '../occupation';
 import { UserService } from '../../admin/user/user.service';
 import { User } from '../../admin/user/user';
-import { UserRole } from '../../admin/user/user-role.enum';
-import { ActivationStatus } from '../../admin/user/activation-status.enum';
+import { UserRole, userRoleFrom } from '../../admin/user/user-role.enum';
+import { activationStatusFrom } from '../../admin/user/activation-status.enum';
 import { DateUtil } from '../../util/date/date-util';
 import { ErrorAware } from '../../util/error/error-aware';
 import { Observable, timer, Subscription } from 'rxjs';
@@ -18,15 +18,12 @@ import { ReservationSystemConfig } from '../reservation-system-config';
 	templateUrl: './occupation-table.component.html',
 	styleUrls: ['./occupation-table.component.scss'],
 })
-export class OccupationTableComponent
-	extends ErrorAware
-	implements OnInit, OnDestroy {
-	occupationTable: OccupationTable;
-	lastUpdated: number;
-	private timer: Observable<number>;
-	private timerSubscription: Subscription;
+export class OccupationTableComponent extends ErrorAware implements OnInit, OnDestroy {
+	occupationTable = new OccupationTable(User.EMPTY);
+	lastUpdated = 0;
+	private timer?: Observable<number>;
+	private timerSubscription?: Subscription;
 	systemConfigs: ReservationSystemConfig[] = [];
-	systemConfig: ReservationSystemConfig | null = null;
 
 	constructor(
 		private reservationService: ReservationService,
@@ -39,56 +36,45 @@ export class OccupationTableComponent
 
 	ngOnInit() {
 		this.setTheme();
-		this.occupationTable = new OccupationTable(
-			new User(0, '', UserRole.ANONYMOUS)
-		);
-
-		const date = this.route.snapshot.params.date;
-		if (date) {
-			this.occupationTable.setDate(parseInt(date, 10));
-		}
-
-		this.reservationService.getAllSystemConfigs().subscribe(systemConfigs => {
-			this.systemConfigs = systemConfigs;
-			const systemConfigId = Number(this.route.snapshot.params.system || systemConfigs[0].id);
-			this.systemConfig = systemConfigs.find(e => e.id === systemConfigId);
-			if (!this.systemConfig) {
-				this.systemConfig = this.systemConfigs[0];
+		this.route.paramMap.subscribe(params => {
+			const date = params.get('date');
+			if (date) {
+				this.occupationTable.setDate(parseInt(date, 10));
 			}
-			this.initTable(this.systemConfig);
+			this.reservationService.getAllSystemConfigs().subscribe(systemConfigs => {
+				this.systemConfigs = systemConfigs;
+				const systemConfigId = Number(params.get('system') ?? systemConfigs[0].id);
+				const systemConfig = systemConfigs.find(e => e.id === systemConfigId) ?? this.systemConfigs[0];
+				this.initTable(systemConfig);
+			});
 		});
-
 	}
 
 	private initTable(systemConfig: ReservationSystemConfig) {
-
-		this.occupationTable.setSystemConfig(systemConfig);
+		this.occupationTable.systemConfig = ReservationSystemConfig.of(systemConfig);
 
 		// get logged in user
 		this.userService.getLoggedInUser().subscribe({
 			next: (user) => {
-				this.occupationTable.setUser(
-					new User(
-						user.id,
-						user.name,
-						UserRole['' + user.role],
-						'',
-						'',
-						ActivationStatus['' + user.status]
-					)
+				this.occupationTable.user = new User(
+					user.id,
+					user.name,
+					userRoleFrom(user.role),
+					'',
+					'',
+					activationStatusFrom(user.status)
 				);
 				// update occupation table
 				this.update(this.occupationTable.date);
 			},
-			error: (usererror) => this.setError(usererror),
-			complete: () => {
-				// reload system when user is 'kiosk' every 5 Minutes
-				if (this.occupationTable.user.hasRole(UserRole.KIOSK)) {
-					this.timer = timer(300000, 300000);
-					this.timerSubscription = this.timer.subscribe(() =>
-						this.update(this.occupationTable.date)
-					);
-				}
+			error: (usererror) => this.setError(usererror)
+		}).add(() => {
+			// reload system when user is 'kiosk' every 5 Minutes
+			if (this.occupationTable.user.hasRole(UserRole.KIOSK)) {
+				this.timer = timer(300000, 300000);
+				this.timerSubscription = this.timer.subscribe(() =>
+					this.update(this.occupationTable.date)
+				);
 			}
 		});
 	}
@@ -225,11 +211,8 @@ export class OccupationTableComponent
 		this.router.navigate(['/login']);
 	}
 
-	navigateTo(id) {
-		if (this.systemConfigs) {
-			this.systemConfig = this.systemConfigs.find(c => +c.id === +id);
-			this.initTable(this.systemConfig);
-		}
+	navigateTo(id: number) {
+		this.router.navigate(['table', id, this.occupationTable.date]);
 	}
 
 	toggleTheme() {
@@ -239,7 +222,7 @@ export class OccupationTableComponent
 	}
 
 	setTheme() {
-		document.documentElement.setAttribute('data-bs-theme', localStorage.getItem('theme'));
+		document.documentElement.setAttribute('data-bs-theme', localStorage.getItem('theme') ?? 'light');
 	}
 
 	private show(occupations: Occupation[]) {

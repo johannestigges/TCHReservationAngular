@@ -9,19 +9,26 @@ export interface SystemconfigForm {
     maxDaysReservationInFuture: FormControl<number>,
     maxDuration: FormControl<number>,
     openingHour: FormControl<number>,
-    closingHour: FormControl<number>
+    closingHour: FormControl<number>,
+	types: FormArray<FormGroup<ReservationTypeForm>>
+}
+
+export interface ReservationTypeForm {
+
 }
 
 export function createSystemConfigForm(): FormGroup<SystemconfigForm> {
-	return new FormGroup({
-		id: new FormControl(0, Validators.required),
-		name: new FormControl('', Validators.required),
-		title: new FormControl('', Validators.required),
-		courts: new FormArray([]),
-		durationUnitInMinutes: new FormControl(60, Validators.required),
-		maxDaysReservationInFuture: new FormControl(0, Validators.required),
-		maxDuration: new FormControl(1, Validators.required),
-		openingHour: new FormControl(8, Validators.required),
-		closingHour: new FormControl(22, Validators.required)
-	});
+	const systemConfigForm: SystemconfigForm = {
+		id: new FormControl(0, Validators.required) as FormControl<number>,
+		name: new FormControl('', Validators.required) as FormControl<string>,
+		title: new FormControl('', Validators.required) as FormControl<string>,
+		courts: new FormArray([]) as unknown as  FormArray<FormControl<string>>,
+		durationUnitInMinutes: new FormControl(60, Validators.required) as FormControl<number>,
+		maxDaysReservationInFuture: new FormControl(0, Validators.required) as FormControl<number>,
+		maxDuration: new FormControl(1, Validators.required) as FormControl<number>,
+		openingHour: new FormControl(8, Validators.required) as FormControl<number>,
+		closingHour: new FormControl(22, Validators.required) as FormControl<number>,
+		types: new FormArray([]) as unknown as FormArray<FormGroup<ReservationTypeForm>>
+	};
+	return new FormGroup(systemConfigForm);
 }

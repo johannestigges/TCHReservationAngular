@@ -5,7 +5,7 @@ import { Occupation } from './occupation';
 export class Reservation {
 
 	public id: number;
-	public occupations: Occupation[];
+	public occupations: Occupation[] = [];
 
 	constructor(
     public systemConfigId: number, //
@@ -34,4 +34,6 @@ export class Reservation {
 			return parseInt(court, 10);
 		});
 	}
+
+	static readonly EMPTY = new Reservation(0,User.EMPTY,'',0,0,0,'',ReservationType.Quickbuchung,undefined,undefined);
 }

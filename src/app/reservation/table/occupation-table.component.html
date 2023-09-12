@@ -3,7 +3,7 @@
   <div class="d-flex mb-1">
     <div *ngIf="systemConfigs?.length > 1" class="dropdown me-1">
       <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-        {{ systemConfig.title }}
+        {{ occupationTable?.systemConfig?.title }}
       </button>
       <ul class="dropdown-menu">
         <li *ngFor="let config of systemConfigs">

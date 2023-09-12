@@ -12,7 +12,7 @@ import { ErrorAware } from '../../../util/error/error-aware';
 })
 export class UserTableComponent extends ErrorAware implements OnInit {
 
-	users: User[];
+	users: User[] = [];
 
 	constructor(private userService: UserService, private location: Location) {
 		super();

@@ -3,7 +3,7 @@ import { Location } from '@angular/common';
 import { ErrorAware } from '../../../util/error/error-aware';
 import { ReservationSystemConfig } from 'src/app/reservation/reservation-system-config';
 import { SystemconfigService } from '../systemconfig.service';
-import { FormArray,	FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { SystemconfigForm, createSystemConfigForm } from '../systemconfig-form';
 
@@ -35,11 +35,10 @@ export class SystemconfigModifyComponent extends ErrorAware implements OnInit {
 		private systemconfigService: SystemconfigService
 	) {
 		super();
+		this.form = createSystemConfigForm();
 	}
 
 	ngOnInit() {
-		this.form = createSystemConfigForm();
-
 		const id = this.route.snapshot.params.id;
 		this.systemconfigService.get(id).subscribe({
 			next: (data) => {
@@ -63,7 +62,7 @@ export class SystemconfigModifyComponent extends ErrorAware implements OnInit {
 
 
 	add(court: string): void {
-		this.courts.controls.push(new FormControl(court));
+		this.courts.controls.push(new FormControl(court) as FormControl<string>);
 	}
 
 	addCourt(): void {

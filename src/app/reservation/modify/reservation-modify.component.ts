@@ -2,17 +2,17 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 
-import { ReservationType } from '../reservationtype';
+import { ReservationType, reservationTypeFrom, reservationTypeValues } from '../reservationtype';
 import { ReservationService } from '../reservation.service';
 import { ReservationSystemConfig } from '../reservation-system-config';
 import { ErrorAware } from '../../util/error/error-aware';
 
 import { UserService } from '../../admin/user/user.service';
 import { User } from '../../admin/user/user';
-import { UserRole } from '../../admin/user/user-role.enum';
+import { UserRole, userRoleFrom } from '../../admin/user/user-role.enum';
 import { DateUtil } from '../../util/date/date-util';
 import { Occupation } from '../occupation';
-import { ActivationStatus } from '../../admin/user/activation-status.enum';
+import { activationStatusFrom } from '../../admin/user/activation-status.enum';
 
 @Component({
 	selector: 'tch-reservation-modify',
@@ -22,18 +22,18 @@ import { ActivationStatus } from '../../admin/user/activation-status.enum';
 export class ReservationModifyComponent
 	extends ErrorAware
 	implements OnInit, OnDestroy {
-	systemConfig: ReservationSystemConfig;
-	user: User;
-	occupation: Occupation;
+	systemConfig = ReservationSystemConfig.EMPTY;
+	user = User.EMPTY;
+	occupation = Occupation.EMPTY;
 
-	time: number;
-	type: string;
-	court: number;
+	time = 0;
+	type = '';
+	court = 0;
 
-	types: string[];
+	types = reservationTypeValues;
 
-	showType: boolean;
-	focus: string;
+	showType: boolean = false;
+	focus = 'date';
 
 	constructor(
 		private route: ActivatedRoute,
@@ -47,13 +47,6 @@ export class ReservationModifyComponent
 	ngOnInit() {
 		const systemId = this.route.snapshot.params.system;
 		const occupationId: number = this.route.snapshot.params.occupation;
-		this.showType = false;
-		this.focus = 'date';
-
-		// create option list of reservation types
-		this.types = Object.keys(ReservationType)
-			.map((key) => ReservationType[key])
-			.filter((value) => typeof value === 'string');
 
 		this.service.getSystemConfig(systemId).subscribe({
 			next: (config) => {
@@ -63,8 +56,10 @@ export class ReservationModifyComponent
 						this.user = new User(
 							user.id,
 							user.name,
-							UserRole['' + user.role],
-							ActivationStatus['' + user.status]
+							userRoleFrom(user.role),
+							'',
+							'',
+							activationStatusFrom(user.status),
 						);
 						this.service.getOccupation(occupationId).subscribe({
 							next: (occupation) => {
@@ -85,9 +80,9 @@ export class ReservationModifyComponent
 	}
 
 	ngOnDestroy(): void {
-		this.occupation = undefined;
-		this.user = undefined;
-		this.systemConfig = undefined;
+		this.occupation = Occupation.EMPTY;
+		this.user = User.EMPTY;
+		this.systemConfig = ReservationSystemConfig.EMPTY;
 		this.clearError();
 	}
 
@@ -213,7 +208,7 @@ export class ReservationModifyComponent
 
 	onUpdate() {
 		this.clearError();
-		this.occupation.type = ReservationType[this.type];
+		this.occupation.type = reservationTypeFrom(this.type);
 		this.occupation.start = this.time;
 		if (this.court !== this.occupation.court) {
 			this.occupation.court = this.court;

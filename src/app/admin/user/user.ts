@@ -3,12 +3,12 @@ import { ActivationStatus } from './activation-status.enum';
 
 export class User {
 	constructor(
-    public id: number,
-    public name: string,
-    public role: UserRole,
-    public email = '',
-    public password = '',
-    public status: ActivationStatus = ActivationStatus.CREATED) {
+		public id: number,
+		public name: string,
+		public role: UserRole,
+		public email: string = '',
+		public password: string = '',
+		public status = ActivationStatus.ACTIVE) {
 	}
 
 	/**
@@ -26,4 +26,6 @@ export class User {
 	is(user: User) {
 		return this.id === user.id;
 	}
+
+	static readonly EMPTY = new User(0, '', UserRole.ANONYMOUS, '', '', ActivationStatus.CREATED);
 }

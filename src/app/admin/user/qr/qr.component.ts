@@ -14,12 +14,12 @@ export class QrComponent extends ErrorAware implements OnInit {
 	users: User[] = [];
 	activeUsers: User[] = [];
 	user: User;
-	selectedUserId: number;
+	selectedUserId = 0;
 	qrUrl = '';
 
 	constructor(private readonly location: Location, private readonly userService: UserService) {
 		super();
-		this.user = new User(0, '', UserRole.REGISTERED, null, this.generatePassword(), ActivationStatus.ACTIVE);
+		this.user = new User(0, '', UserRole.REGISTERED, '', this.generatePassword(), ActivationStatus.ACTIVE);
 	}
 
 	ngOnInit() {
@@ -29,12 +29,13 @@ export class QrComponent extends ErrorAware implements OnInit {
 		});
 	}
 
-	private isActive(status) {
-		return 'ACTIVE' === status.toString();
+
+	private isActive(status: unknown) {
+		return 'ACTIVE' === status;
 	}
 
-	onSelectUser(event) {
-		this.selectedUserId = event.target.value;
+	onSelectUser(id:string) {
+		this.selectedUserId = Number(id);
 	}
 
 	onClickNewUser() {
@@ -88,7 +89,7 @@ export class QrComponent extends ErrorAware implements OnInit {
 		}
 		return password;
 	}
-	
+
 	private generateUrl() {
 		return `${window.location.origin}/#/login?username=${this.user.name}&password=${this.user.password}`;
 	}
