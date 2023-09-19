@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { ErrorAware } from '../../../util/error/error-aware';
-import { ReservationSystemConfig } from 'src/app/reservation/reservation-system-config';
+import { ReservationSystemConfig, SystemConfigReservationType } from 'src/app/reservation/reservation-system-config';
 import { SystemconfigService } from '../systemconfig.service';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { SystemconfigForm, createSystemConfigForm } from '../systemconfig-form';
+import { SystemconfigForm, createReservationTypeForm, createSystemConfigForm } from '../systemconfig-form';
+import { ReservationType } from 'src/app/reservation/reservationtype';
+import { userRoleValues } from '../../user/user-role.enum';
 
 @Component({
 	selector: 'tch-systemconfig-modify',
@@ -55,11 +57,28 @@ export class SystemconfigModifyComponent extends ErrorAware implements OnInit {
 				this.form.controls.maxDuration.setValue(data.maxDuration);
 				this.form.controls.openingHour.setValue(data.openingHour);
 				this.form.controls.closingHour.setValue(data.closingHour);
+				this.form.controls.types.clear();
+				for (const type of data.types) {
+					this.form.controls.types.push(this.initType(type));
+				}
 			},
 			error: (error) => this.setError(error)
 		});
 	}
 
+
+	private initType(type: SystemConfigReservationType) {
+		const form = createReservationTypeForm();
+		form.controls.id.setValue(type.type);
+		form.controls.name.setValue(type.name);
+		form.controls.maxDuration.setValue(type.maxDuration);
+		form.controls.maxDaysReservationInFuture.setValue(type.maxDaysReservationInFuture);
+		form.controls.maxCancelInHours.setValue(type.maxCancelInHours);
+		for (let i = 0; i < userRoleValues.length; i++) {
+			form.controls.roles.at(i).setValue(type.roles.includes(userRoleValues[i]));
+		}
+		return form;
+	}
 
 	add(court: string): void {
 		this.courts.controls.push(new FormControl(court) as FormControl<string>);
@@ -102,7 +121,7 @@ export class SystemconfigModifyComponent extends ErrorAware implements OnInit {
 			this.form.controls.maxDuration.value,
 			this.form.controls.openingHour.value,
 			this.form.controls.closingHour.value,
-			[]
+			this.getTypesFromForm()
 		);
 
 		this.systemconfigService.update(newconfig).subscribe({
@@ -116,5 +135,30 @@ export class SystemconfigModifyComponent extends ErrorAware implements OnInit {
 
 	onCancel() {
 		this.location.back();
+	}
+
+	private getTypesFromForm() {
+		const types: SystemConfigReservationType[] = [];
+		this.form.controls.types.controls.forEach(type =>
+			types.push({
+				id: 0,
+				type: type.controls.id.value,
+				name: type.controls.name.value,
+				maxDuration: type.controls.maxDuration.value,
+				maxDaysReservationInFuture: type.controls.maxDaysReservationInFuture.value,
+				maxCancelInHours: type.controls.maxCancelInHours.value,
+				roles: this.getRolesFromForm(type.controls.roles)
+			})
+			);
+		return types;
+	}
+	private getRolesFromForm(form: FormArray<FormControl<boolean>>) {
+		const roles: string[] = [];
+		for (let i = 0; i < userRoleValues.length; i++) {
+			if (form.at(i).value) {
+				roles.push(userRoleValues[i]);
+			}
+		}
+		return roles;
 	}
 }

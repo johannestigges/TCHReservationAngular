@@ -33,8 +33,9 @@
     <div class="form-group mb-3">
       <label class="col-sm-2 control-label">Plätze:</label>
       <div class="col-sm-10" formArrayName="courts">
-        <div *ngFor="let court of form.controls.courts.controls; let i = index">
-          <input type="text" [formControl]="court" />
+        <div class="d-flex flex-row align-items-center"
+          *ngFor="let court of form.controls.courts.controls; let i = index">
+          <input class="flex-grow-1" type="text" [formControl]="court" />
           <button class="btn btn-outline-secondary m-1" (click)="removeCourt(i)">
             -
           </button>
@@ -47,18 +48,7 @@
 
     <!-- reservation types -->
     <div class="form-group mb-3">
-      <label class="col-sm-2 control-label">Reservierungsarten:</label>
-      <div class="col-sm-10" formArrayName="types">
-        <div class="d-flex" *ngFor="let type of form.controls.types.controls; let i = index">
-          <tch-reservation-type></tch-reservation-type>
-          <button class="btn btn-outline-secondary m-1" (click)="onRemoveType(i)">
-            -
-          </button>
-        </div>
-        <button class="btn btn-outline-secondary" (click)="onAddType()">
-          +
-        </button>
-      </div>
+      <tch-reservation-types [form]="form.controls.types"></tch-reservation-types>
     </div>
 
     <!-- durationUnit -->
@@ -77,10 +67,7 @@
     <div class="form-group mb-3">
       <label class="col-sm-2 control-label">im Voraus buchbar:</label>
       <div class="col-sm-10">
-        <select
-          class="form-control"
-          formControlName="maxDaysReservationInFuture"
-        >
+        <select class="form-control" formControlName="maxDaysReservationInFuture">
           <option *ngFor="let md of maxDays" [value]="md">{{ md }} Tage</option>
         </select>
       </div>

@@ -28,6 +28,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { QRCodeModule } from 'angularx-qrcode';
 import { QrComponent } from './admin/user/qr/qr.component';
 import { ReservationTypeComponent } from './admin/systemconfig/reservation-type/reservation-type.component';
+import { ReservationTypesComponent } from './admin/systemconfig/reservation-types/reservation-types.component';
 
 @NgModule({
 	declarations: [
@@ -47,6 +48,7 @@ import { ReservationTypeComponent } from './admin/systemconfig/reservation-type/
 		LoginComponent,
 		ShowErrorComponent,
 		ReservationTypeComponent,
+  ReservationTypesComponent,
 	],
 	imports: [
 		BrowserModule,
@@ -57,7 +59,7 @@ import { ReservationTypeComponent } from './admin/systemconfig/reservation-type/
 		ReactiveFormsModule,
 		HttpClientModule,
 		QRCodeModule,
-		NgbModule,
+		NgbModule
 	],
 	providers: [
 		ReservationService,

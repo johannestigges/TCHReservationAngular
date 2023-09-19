@@ -1,0 +1,34 @@
+<div class="form-group mb-3">
+  <label class="h4">Reservierungsarten:</label>
+  <div>
+    <div *ngFor="let type of form.controls; let i = index">
+
+        <tch-reservation-type *ngIf="reservationTypeInEdit === i"
+            [value]="getValues(type)" 
+            (finished)="onFinishedReservationType($event)">
+        </tch-reservation-type>
+
+      <div *ngIf="reservationTypeInEdit === NO_RESERVATION_IN_EDIT"
+           class="d-flex flex-row align-items-center" >
+        <div class="flex-grow-1">
+          <strong><em>{{type.controls.name.value}}</em></strong>,
+          ({{type.controls.id.value}}), 
+          <strong>Reservierbar:</strong> {{type.controls.maxDaysReservationInFuture.value}} Tage im Voraus,
+          <strong>Stornierbar:</strong> {{type.controls.maxCancelInHours.value}} Stunden vor Beginn,
+          <strong>Buchbar von:</strong> {{getRoles(type.controls.roles)}}
+        </div>
+        <button class="btn btn-outline-primary m-1" (click)="onEditType(i)">ändern</button>
+        <button class="btn btn-outline-secondary m-1" (click)="onRemoveType(i)">-</button>
+      </div>
+    </div>
+
+    <tch-reservation-type *ngIf="reservationTypeInEdit === form.length + 1"
+        (finished)="onFinishedReservationType($event)">
+    </tch-reservation-type>
+    <button *ngIf="reservationTypeInEdit === NO_RESERVATION_IN_EDIT" 
+        class="btn btn-outline-secondary" 
+        (click)="onAddType()">
+      +
+    </button>
+  </div>
+</div>
