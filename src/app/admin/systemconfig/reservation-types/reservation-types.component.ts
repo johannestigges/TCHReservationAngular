@@ -9,7 +9,7 @@ import { userRoleNames, userRoleValues } from '../../user/user-role.enum';
 	styleUrls: ['./reservation-types.component.scss']
 })
 export class ReservationTypesComponent {
-	readonly NO_RESERVATION_IN_EDIT = -1
+	readonly NO_RESERVATION_IN_EDIT = -1;
 
 	@Input() form!: FormArray<FormGroup<ReservationTypeForm>>;
 
@@ -38,7 +38,6 @@ export class ReservationTypesComponent {
 			.join(', ');
 	}
 	getValues(form:FormGroup<ReservationTypeForm>) {
-		const c=this.form.controls
 		return form.getRawValue();
 	}
 }

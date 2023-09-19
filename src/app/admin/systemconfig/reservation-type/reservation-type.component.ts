@@ -1,8 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ReservationTypeForm, ReservationTypeValues, createReservationTypeForm } from '../systemconfig-form';
-import { UserRole, userRoleNames, userRoleValues } from '../../user/user-role.enum';
-import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import { userRoleNames } from '../../user/user-role.enum';
 
 @Component({
 	selector: 'tch-reservation-type',

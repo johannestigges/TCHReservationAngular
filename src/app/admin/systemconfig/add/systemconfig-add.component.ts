@@ -4,7 +4,7 @@ import { ReservationSystemConfig } from 'src/app/reservation/reservation-system-
 import { SystemconfigService } from '../systemconfig.service';
 import { FormArray,	FormControl, FormGroup } from '@angular/forms';
 import { ErrorAware } from 'src/app/util/error/error-aware';
-import { ReservationTypeForm, SystemconfigForm, createReservationTypeForm, createSystemConfigForm } from '../systemconfig-form';
+import { SystemconfigForm, createSystemConfigForm } from '../systemconfig-form';
 
 @Component({
 	selector: 'tch-systemconfig-add',

@@ -6,7 +6,6 @@ import { SystemconfigService } from '../systemconfig.service';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { SystemconfigForm, createReservationTypeForm, createSystemConfigForm } from '../systemconfig-form';
-import { ReservationType } from 'src/app/reservation/reservationtype';
 import { userRoleValues } from '../../user/user-role.enum';
 
 @Component({
@@ -149,7 +148,7 @@ export class SystemconfigModifyComponent extends ErrorAware implements OnInit {
 				maxCancelInHours: type.controls.maxCancelInHours.value,
 				roles: this.getRolesFromForm(type.controls.roles)
 			})
-			);
+		);
 		return types;
 	}
 	private getRolesFromForm(form: FormArray<FormControl<boolean>>) {

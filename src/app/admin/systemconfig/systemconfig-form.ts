@@ -56,7 +56,7 @@ export function createReservationTypeForm(): FormGroup<ReservationTypeForm> {
 		maxDaysReservationInFuture: new FormControl(0, { nonNullable: true }),
 		maxCancelInHours: new FormControl(0, { nonNullable: true }),
 		roles: new FormArray<FormControl<boolean>>(createUserRoles())
-	}
+	};
 	return new FormGroup(reservationTypeForm);
 }
 export function createUserRoles() {

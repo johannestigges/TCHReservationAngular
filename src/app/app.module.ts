@@ -48,7 +48,7 @@ import { ReservationTypesComponent } from './admin/systemconfig/reservation-type
 		LoginComponent,
 		ShowErrorComponent,
 		ReservationTypeComponent,
-  ReservationTypesComponent,
+		ReservationTypesComponent,
 	],
 	imports: [
 		BrowserModule,
