@@ -16,6 +16,7 @@ export class QrComponent extends ErrorAware implements OnInit {
 	user: User;
 	selectedUserId = 0;
 	qrUrl = '';
+	UserRole = UserRole;
 
 	constructor(private readonly location: Location, private readonly userService: UserService) {
 		super();
@@ -24,6 +25,7 @@ export class QrComponent extends ErrorAware implements OnInit {
 
 	ngOnInit() {
 		this.userService.getAll().subscribe(users => {
+			this.user.role = UserRole.REGISTERED;
 			this.users = users;
 			this.activeUsers = this.users.filter(u => this.isActive(u.status));
 		});
@@ -34,7 +36,7 @@ export class QrComponent extends ErrorAware implements OnInit {
 		return 'ACTIVE' === status;
 	}
 
-	onSelectUser(id:string) {
+	onSelectUser(id: string) {
 		this.selectedUserId = Number(id);
 	}
 
@@ -84,7 +86,7 @@ export class QrComponent extends ErrorAware implements OnInit {
 		const buffer = new Uint8Array(length);
 		crypto.getRandomValues(buffer);
 		let password = '';
-		for (let i=0 ; i < length; i++) {
+		for (let i = 0; i < length; i++) {
 			password += chars[buffer[i] % chars.length];
 		}
 		return password;

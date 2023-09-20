@@ -1,33 +1,37 @@
 <div class="form-group mb-3">
-  <label class="h4">Reservierungsarten:</label>
+  <label class="h4 mb-3">Reservierungsarten:</label>
   <div>
     <div *ngFor="let type of form.controls; let i = index">
 
-        <tch-reservation-type *ngIf="reservationTypeInEdit === i"
-            [value]="getValues(type)" 
-            (finished)="onFinishedReservationType($event)">
-        </tch-reservation-type>
+      <tch-reservation-type *ngIf="reservationTypeInEdit === i" [value]="getValues(type)"
+        (finished)="onFinishedReservationType($event)">
+      </tch-reservation-type>
 
-      <div *ngIf="reservationTypeInEdit === NO_RESERVATION_IN_EDIT"
-           class="d-flex flex-row align-items-center" >
-        <div class="flex-grow-1">
-          <strong><em>{{type.controls.name.value}}</em></strong>,
-          ({{type.controls.id.value}}), 
-          <strong>Reservierbar:</strong> {{type.controls.maxDaysReservationInFuture.value}} Tage im Voraus,
-          <strong>Stornierbar:</strong> {{type.controls.maxCancelInHours.value}} Stunden vor Beginn,
-          <strong>Buchbar von:</strong> {{getRoles(type.controls.roles)}}
+      <div *ngIf="reservationTypeInEdit === NO_RESERVATION_IN_EDIT" class="row mb-3">
+        <div class="col-6 col-sm-3">
+          ({{type.controls.id.value}}) <span class="fw-bold">{{type.controls.name.value}}</span>
         </div>
-        <button class="btn btn-outline-primary m-1" (click)="onEditType(i)">ändern</button>
-        <button class="btn btn-outline-secondary m-1" (click)="onRemoveType(i)">-</button>
+        <div class="col-6 col-sm-2">
+          <span *ngIf="type.controls.maxDaysReservationInFuture.value">Reservierbar
+            {{type.controls.maxDaysReservationInFuture.value}} Tage im Voraus </span>
+          <span *ngIf="type.controls.maxCancelInHours.value">Stornierbar {{type.controls.maxCancelInHours.value}}
+            Stunden vor Beginn </span>
+        </div>
+        <div class="col-8 col-sm-5">
+          {{getRoles(type.controls.roles)}}
+        </div>
+        <div class="col-4 col-sm-2">
+          <button class="btn btn-outline-secondary m-1" (click)="onEditType(i)">ändern</button>
+          <button class="btn btn-outline-secondary m-1" (click)="onRemoveType(i)">-</button>
+        </div>
       </div>
     </div>
 
     <tch-reservation-type *ngIf="reservationTypeInEdit === form.length + 1"
-        (finished)="onFinishedReservationType($event)">
+      (finished)="onFinishedReservationType($event)">
     </tch-reservation-type>
-    <button *ngIf="reservationTypeInEdit === NO_RESERVATION_IN_EDIT" 
-        class="btn btn-outline-secondary" 
-        (click)="onAddType()">
+    <button *ngIf="reservationTypeInEdit === NO_RESERVATION_IN_EDIT" class="btn btn-outline-secondary"
+      (click)="onAddType()">
       +
     </button>
   </div>
