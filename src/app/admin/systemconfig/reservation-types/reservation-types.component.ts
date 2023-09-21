@@ -9,26 +9,25 @@ import { userRoleNames, userRoleValues } from '../../user/user-role.enum';
 	styleUrls: ['./reservation-types.component.scss']
 })
 export class ReservationTypesComponent {
-	readonly NO_RESERVATION_IN_EDIT = -1;
+	readonly NOT_IN_EDIT = -1;
 
 	@Input() form!: FormArray<FormGroup<ReservationTypeForm>>;
 
-	reservationTypeInEdit = this.NO_RESERVATION_IN_EDIT;
+	inEdit = this.NOT_IN_EDIT;
 
-	onAddType() {
-		this.reservationTypeInEdit = this.form.length + 1;
+	onStartEdit(i: number) {
+		this.inEdit = i;
 	}
-	onEditType(i: number) {
-		this.reservationTypeInEdit = i;
-	}
-	onRemoveType(i: number) {
+
+	onRemove(i: number) {
 		this.form.removeAt(i);
 	}
+
 	onFinishedReservationType(form: FormGroup<ReservationTypeForm>) {
 		if (form) {
-			this.form.setControl(this.reservationTypeInEdit, form);
+			this.form.setControl(this.inEdit, form);
 		}
-		this.reservationTypeInEdit = this.NO_RESERVATION_IN_EDIT;
+		this.inEdit = this.NOT_IN_EDIT;
 	}
 
 	getRoles(roles: FormArray<FormControl<boolean>>): string {
@@ -36,8 +35,5 @@ export class ReservationTypesComponent {
 			.map((role, index) => roles.at(index).value ? userRoleNames[index] : null)
 			.filter(role => role)
 			.join(', ');
-	}
-	getValues(form:FormGroup<ReservationTypeForm>) {
-		return form.getRawValue();
 	}
 }

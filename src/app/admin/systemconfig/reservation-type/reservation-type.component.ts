@@ -10,15 +10,17 @@ import { userRoleNames } from '../../user/user-role.enum';
 })
 export class ReservationTypeComponent implements OnInit {
 	@Input() value?: ReservationTypeValues;
+	@Output() finished = new EventEmitter<FormGroup<ReservationTypeForm> | null>();
+
 	form: FormGroup<ReservationTypeForm> | null = null;
 
 	readonly maxDays = [0, 1, 2, 3, 4, 5, 6, 7, 14, 21, 31, 62, 365];
-	readonly maxCancel = [0,1,2,3,4,5,6,7,8];
+	readonly maxCancel = [0, 1, 2, 3, 4, 5, 6, 7, 8];
 	readonly maxDurations = [
-		0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+		0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20
 	];
 
-	userRoleNames = userRoleNames;
+	readonly userRoleNames = userRoleNames;
 
 	ngOnInit(): void {
 		this.form = createReservationTypeForm();
@@ -26,11 +28,12 @@ export class ReservationTypeComponent implements OnInit {
 			this.form.setValue(this.value);
 		}
 	}
-	@Output() finished = new EventEmitter<FormGroup<ReservationTypeForm> | null>();
 
 	onSubmit() {
-
 		this.finished.emit(this.form);
 	}
-	onCancel() { this.finished.emit(null);}
+
+	onCancel() {
+		this.finished.emit(null);
+	}
 }
