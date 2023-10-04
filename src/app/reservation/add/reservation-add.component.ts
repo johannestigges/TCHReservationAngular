@@ -28,7 +28,7 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
 	repeatUntil?: NgbDateStruct;
 	repeatMinDate?: Date;
 	time?: number;
-	type = -1;;
+	type = -1;
 
 	showSimpleDuration = false;
 	showDuration = false;
@@ -105,7 +105,7 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
 		if (!this.reservation || !this.systemConfig) {
 			return;
 		}
-		this._setTypes()
+		this._setTypes();
 
 		// decide which parts of the layout are visible
 		// this depends on the user role
@@ -119,7 +119,7 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
 		this.reservation.text = this._getCookie('text') ?? this.user.name;
 		this.reservation.duration = this.systemConfig.getDurationDefault();
 		this.time = this.reservation.start;
-		this.setDefaultFocus()
+		this.setDefaultFocus();
 	}
 
 	private setDefaultFocus() {
