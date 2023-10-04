@@ -3,9 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 
-import { ReservationType, reservationTypeFrom, reservationTypeValues } from '../reservationtype';
 import { ReservationService } from '../reservation.service';
-import { ReservationSystemConfig } from '../reservation-system-config';
+import { ReservationSystemConfig, SystemConfigReservationType } from '../reservation-system-config';
 import { Reservation } from '../reservation';
 import { ErrorAware } from '../../util/error/error-aware';
 
@@ -24,20 +23,13 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
 	systemConfig = ReservationSystemConfig.EMPTY;
 	user = User.EMPTY;
 	reservation = Reservation.EMPTY;
+	reservationTypes: SystemConfigReservationType[] = [];
 
 	repeatUntil?: NgbDateStruct;
 	repeatMinDate?: Date;
 	time?: number;
-	type?: string;
-	player1 = '';
-	player2 = '';
-	player3 = '';
-	player4 = '';
+	type = -1;;
 
-	types = reservationTypeValues;
-
-	showType = false;
-	showText = true;
 	showSimpleDuration = false;
 	showDuration = false;
 	showRepeat = false;
@@ -63,7 +55,7 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
 		this.reservation.date = DateUtil.getDatePart(start);
 		this.reservation.start = DateUtil.getTimePart(start);
 		this.reservation.duration = 1;
-		this.reservation.type = ReservationType.Quickbuchung;
+		this.reservation.type = 0;
 		this.reservation.courts = court;
 
 		this.service.getSystemConfig(systemId).subscribe({
@@ -91,21 +83,14 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
 	}
 
 	onGenerateOccupations() {
-		if (!this.repeatUntil || !this.time || !this.reservation || !this.type) {
+		if (!this.repeatUntil || !this.time || !this.reservation || this.type < 0) {
 			return;
 		}
 		this.clearError();
 		this.reservation.occupations = [];
-		this.reservation.type = reservationTypeFrom(this.type);
+		this.reservation.type = this.type;
 		this.reservation.start = this.time;
 		this.reservation.repeatUntil = DateUtil.convertFromNgbDateStruct(this.repeatUntil).getTime();
-		if (!this.showText) {
-			if (this.showDouble) {
-				this.reservation.text = `${this.player1} ${this.player2} ${this.player3} ${this.player4}`;
-			} else {
-				this.reservation.text = `${this.player1} ${this.player2}`;
-			}
-		}
 		this.service.checkReservation(this.reservation).subscribe({
 			next: (reservation) => this.reservation = reservation,
 			error: (error) => (this.httpError = error)
@@ -120,12 +105,24 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
 		if (!this.reservation || !this.systemConfig) {
 			return;
 		}
+		this._setTypes()
+
 		// decide which parts of the layout are visible
 		// this depends on the user role
-		this.showType = this._isAtLeastTeamster();
 		this.showSimpleDuration = this.systemConfig?.durationUnitInMinutes === 30 && !this._isAtLeastTeamster();
-		this.showDuration = !this.showSimpleDuration && this._isAtLeastTeamster();
 		this.showRepeat = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
+
+		this.setDefaultValues();
+	}
+
+	private setDefaultValues() {
+		this.reservation.text = this._getCookie('text') ?? this.user.name;
+		this.reservation.duration = this.systemConfig.getDurationDefault();
+		this.time = this.reservation.start;
+		this.setDefaultFocus()
+	}
+
+	private setDefaultFocus() {
 		if (this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER)) {
 			this.focus = 'date';
 		}
@@ -138,26 +135,6 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
 		if (this.user.hasRole(UserRole.KIOSK, UserRole.TECHNICAL)) {
 			this.focus = 'text';
 		}
-
-		if (this.showText) {
-			this.reservation.text = this._getCookie('text');
-		} else {
-			this.player1 = this._getCookie('player1');
-			this.player2 = this._getCookie('player2');
-			this.player3 = this._getCookie('player3');
-			this.player4 = this._getCookie('player4');
-		}
-		if (this.user.hasRole(UserRole.TRAINER)) {
-			this.reservation.type = ReservationType.Training;
-			this.reservation.text = this.user.name;
-		}
-		if (this.user.hasRole(UserRole.TEAMSTER)) {
-			this.reservation.type = ReservationType.Meisterschaft;
-			this.reservation.text = this._getCookie('myTeam');
-		}
-		this.time = this.reservation.start;
-		this.reservation.duration = this.systemConfig.getDurationDefault();
-		this.type = ReservationType[this.reservation.type];
 	}
 
 	getDate() {
@@ -201,24 +178,12 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
 
 	onClick() {
 		this.clearError();
-		this.reservation!.type = reservationTypeFrom(this.type);
+		this.reservation!.type = this.type ?? -1;
 		this.reservation!.start = this.time!;
 		if (this.repeatUntil) {
 			this.reservation!.repeatUntil = DateUtil.convertFromNgbDateStruct(this.repeatUntil).getTime();
 		}
-		if (!this.showText) {
-			this._setCookie('player1', this.player1);
-			this._setCookie('player2', this.player2);
-			if (this.showDouble) {
-				this.reservation!.text = `${this.player1} ${this.player2} ${this.player3} ${this.player4}`;
-				this._setCookie('player3', this.player3);
-				this._setCookie('playerr4', this.player4);
-			} else {
-				this.reservation!.text = `${this.player1} ${this.player2}`;
-			}
-		} else {
-			this._setCookie('text', this.reservation!.text);
-		}
+		this._setCookie('text', this.reservation!.text);
 		this.service.addReservation(this.reservation!).subscribe({
 			next: (data) => {
 				this.reservation = data;
@@ -253,5 +218,9 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
 			UserRole.TRAINER,
 			UserRole.TEAMSTER
 		);
+	}
+	private _setTypes() {
+		this.reservationTypes = this.systemConfig.types.filter(type => type.roles.includes(UserRole[this.user.role]));
+		console.log('set types ', this.systemConfig.types, UserRole[this.user.role], this.reservationTypes);
 	}
 }

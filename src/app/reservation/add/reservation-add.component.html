@@ -52,19 +52,19 @@
     </div>
 
     <!-- occupation type -->
-    <div *ngIf="showType" class="form-group mb-3">
+    <div class="form-group mb-3">
       <label class="col-sm-2 control-label">Typ:</label>
       <div class="col-sm-10">
         <select id="type" name="type" class="form-control" [(ngModel)]="type">
-          <option *ngFor="let type of types" [value]="type">
-            {{ type }}
+          <option *ngFor="let reservationType of reservationTypes" [value]="reservationType.type">
+            {{ reservationType.name }}
           </option>
         </select>
       </div>
     </div>
 
     <!-- occupation text -->
-    <div *ngIf="showText" class="form-group mb-3">
+    <div class="form-group mb-3">
       <label class="col-sm-2 control-label">Text:</label>
       <div class="col-sm-10">
         <input
@@ -76,53 +76,9 @@
         />
       </div>
     </div>
-    <div *ngIf="!showText" class="form-group mb-3">
-      <label class="col-sm-2 control-label">Spieler 1:</label>
-      <div class="col-sm-10">
-        <input
-          type="text"
-          class="form-control"
-          [(ngModel)]="player1"
-          name="text"
-          required
-        />
-      </div>
-      <label class="col-sm-2 control-label">Spieler 2:</label>
-      <div class="col-sm-10">
-        <input
-          type="text"
-          class="form-control"
-          [(ngModel)]="player2"
-          name="spieler2"
-          required
-        />
-      </div>
-      <div *ngIf="showDouble">
-        <label class="col-sm-2 control-label">Spieler 3:</label>
-        <div class="col-sm-10">
-          <input
-            type="text"
-            class="form-control"
-            [(ngModel)]="player3"
-            name="spieler3"
-            required
-          />
-        </div>
-        <label class="col-sm-2 control-label">Spieler 4:</label>
-        <div class="col-sm-10">
-          <input
-            type="text"
-            class="form-control"
-            [(ngModel)]="player4"
-            name="spieler4"
-            required
-          />
-        </div>
-      </div>
-    </div>
 
     <!-- duration -->
-    <div *ngIf="showDuration" class="form-group mb-3">
+    <div *ngIf="!showSimpleDuration" class="form-group mb-3">
       <label class="col-sm-2 control-label">Dauer:</label>
       <div class="row col-sm-10">
         <div class="col-sm-4">

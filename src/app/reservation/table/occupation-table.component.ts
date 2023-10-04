@@ -10,7 +10,6 @@ import { activationStatusFrom } from '../../admin/user/activation-status.enum';
 import { DateUtil } from '../../util/date/date-util';
 import { ErrorAware } from '../../util/error/error-aware';
 import { Observable, timer, Subscription } from 'rxjs';
-import { ReservationType } from '../reservationtype';
 import { ReservationSystemConfig } from '../reservation-system-config';
 
 @Component({
@@ -143,8 +142,7 @@ export class OccupationTableComponent extends ErrorAware implements OnInit, OnDe
 
 	canShowText(occupation: Occupation) {
 		return (
-			ReservationType[occupation.type] !==
-			ReservationType[ReservationType.Quickbuchung] || this.isLoggedIn()
+			occupation.type !== 0 || this.isLoggedIn()
 		);
 	}
 

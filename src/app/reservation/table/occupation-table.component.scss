@@ -52,25 +52,30 @@ table.occupation_table a {
 
 .type0 {
   /* Quickbuchung */
-  background-color: rgba(30, 120, 225, 0.3);
+  background-color: rgba(210, 240, 255, 0.7);
 }
 
 .type1 {
   /* Training */
-  background-color: rgba(0, 130, 00, 0.3);
+  background-color: rgba(220, 240, 225, 0.7);
 }
 
 .type2 {
   /* Meisterschaft */
-  background-color: rgba(00, 80, 100, 0.30);
+  background-color: rgba(250, 240, 200, 0.7);
 }
 
 .type3 {
   /* Dauerbuchung */
-  background-color: rgba(160, 160, 0, 0.3);
+  background-color: rgba(255, 210, 180, 0.5);
 }
 
 .type4 {
   /* Gesperrt */
-  background-color: rgba(225, 0, 0, 0.3);
+  background-color: rgba(225, 120, 120, 0.7);
+}
+
+.type5 {
+  /* Jugendtraining */
+  background-color: rgba(180, 230, 255, 0.6);
 }

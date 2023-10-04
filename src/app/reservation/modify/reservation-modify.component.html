@@ -52,11 +52,13 @@
     </div>
 
     <!-- occupation type -->
-    <div *ngIf="showType" class="form-group mb-3">
+    <div class="form-group mb-3">
       <label class="col-sm-2 control-label">Typ:</label>
       <div class="col-sm-10">
-        <select class="form-control" id="type" [(ngModel)]="type" name="type">
-          <option *ngFor="let type of types" [value]="type">{{ type }}</option>
+        <select id="type" name="type" class="form-control" [(ngModel)]="type">
+          <option *ngFor="let reservationType of types" [value]="reservationType.type">
+            {{ reservationType.name }}
+          </option>
         </select>
       </div>
     </div>

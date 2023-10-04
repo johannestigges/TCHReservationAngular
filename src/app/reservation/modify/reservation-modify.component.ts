@@ -2,9 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 
-import { ReservationType, reservationTypeFrom, reservationTypeValues } from '../reservationtype';
 import { ReservationService } from '../reservation.service';
-import { ReservationSystemConfig } from '../reservation-system-config';
+import { ReservationSystemConfig, SystemConfigReservationType } from '../reservation-system-config';
 import { ErrorAware } from '../../util/error/error-aware';
 
 import { UserService } from '../../admin/user/user.service';
@@ -27,10 +26,10 @@ export class ReservationModifyComponent
 	occupation = Occupation.EMPTY;
 
 	time = 0;
-	type = '';
+	type = -1;
 	court = 0;
 
-	types = reservationTypeValues;
+	types: SystemConfigReservationType[] = [];
 
 	showType: boolean = false;
 	focus = 'date';
@@ -61,11 +60,12 @@ export class ReservationModifyComponent
 							'',
 							activationStatusFrom(user.status),
 						);
+						this.types = this.systemConfig.types.filter(type => type.roles.includes(user.role.toString()));
 						this.service.getOccupation(occupationId).subscribe({
 							next: (occupation) => {
 								this.occupation = occupation;
 								this.time = this.occupation.start;
-								this.type = ReservationType[this.occupation.type];
+								this.type = this.occupation.type;
 								this.court = this.occupation.court;
 								this.update();
 							},
@@ -208,7 +208,7 @@ export class ReservationModifyComponent
 
 	onUpdate() {
 		this.clearError();
-		this.occupation.type = reservationTypeFrom(this.type);
+		this.occupation.type = this.type;
 		this.occupation.start = this.time;
 		if (this.court !== this.occupation.court) {
 			this.occupation.court = this.court;
