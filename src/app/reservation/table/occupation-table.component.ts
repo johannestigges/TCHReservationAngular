@@ -142,7 +142,7 @@ export class OccupationTableComponent extends ErrorAware implements OnInit, OnDe
 
 	canShowText(occupation: Occupation) {
 		return (
-			occupation.type !== 0 || this.isLoggedIn()
+			(occupation.type !== 0 && occupation.type !== 5) || this.isLoggedIn()
 		);
 	}
 
