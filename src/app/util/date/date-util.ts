@@ -55,6 +55,12 @@ export class DateUtil {
 		return d;
 	}
 
+	static time(hour: number, minute: number): number {
+		const now = new Date()
+		now.setHours(hour,minute,0,0);
+		return DateUtil.getTimePart(now.getTime());
+	}
+
 	static ofDateAndTime(date: number, time: number): Date {
 		const d1 = DateUtil.toDate(date);
 		const d2 = DateUtil.toDate(time);
@@ -73,9 +79,11 @@ export class DateUtil {
 	static now(): number {
 		return new Date().getTime();
 	}
+
 	static showDate(date: number): string {
 		return this.toDate(date).toLocaleDateString();
 	}
+
 	static showTime(time: number): string {
 		return this.toDate(time).toLocaleTimeString();
 	}

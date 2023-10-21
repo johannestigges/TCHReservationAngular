@@ -4,19 +4,19 @@ Reservation System for our tennis courts.
 
 ## ToDo
 
-(/) create user with qr code
-(/) reset password with qr code
-(/) select reservation system not working
-- migrate from mysql to postgres
-(/) add cancellation time to system config
-- repeated Occupations: improve Button Handling
-- repeated Occupations: skip overlap; generate all others
-- Field Error Messages
-- Logo
-(/) Colors
-- add 'hideText' to reservationType
-- remove maxDuration, MaxReservationInFututr from systemconfig
-- use hours instead of days for all max values
+- [x] create user with qr code
+- [x] reset password with qr code
+- [x] select reservation system not working
+- [ ] migrate from mysql to postgres
+- [ ] add cancellation time to system config
+- [ ] repeated Occupations: improve Button Handling
+- [ ] repeated Occupations: skip overlap; generate all others
+- [ ] Field Error Messages
+- [ ] Logo
+- [x] Colors
+- [ ] add 'hideText' to reservationType
+- [ ] remove maxDuration, MaxReservationInFututr from systemconfig
+- [ ] use hours instead of days for all max values
 
 ## Development server
 

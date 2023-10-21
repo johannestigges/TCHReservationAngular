@@ -18,9 +18,7 @@ import { activationStatusFrom } from '../../admin/user/activation-status.enum';
 	templateUrl: './reservation-modify.component.html',
 	styleUrls: ['./reservation-modify.component.scss'],
 })
-export class ReservationModifyComponent
-	extends ErrorAware
-	implements OnInit, OnDestroy {
+export class ReservationModifyComponent	extends ErrorAware implements OnInit, OnDestroy {
 	systemConfig = ReservationSystemConfig.EMPTY;
 	user = User.EMPTY;
 	occupation = Occupation.EMPTY;
@@ -31,7 +29,6 @@ export class ReservationModifyComponent
 
 	types: SystemConfigReservationType[] = [];
 
-	showType: boolean = false;
 	focus = 'date';
 
 	constructor(
@@ -67,7 +64,7 @@ export class ReservationModifyComponent
 								this.time = this.occupation.start;
 								this.type = this.occupation.type;
 								this.court = this.occupation.court;
-								this.update();
+								this.setFocus();
 							},
 							error: (occupationerror) => this.setError(occupationerror)
 						});
@@ -86,14 +83,7 @@ export class ReservationModifyComponent
 		this.clearError();
 	}
 
-	private update() {
-		// decide which parts of the layout are visible
-		// this depends on the user role
-		this.showType = this.user.hasRole(
-			UserRole.ADMIN,
-			UserRole.TRAINER,
-			UserRole.TEAMSTER
-		);
+	private setFocus() {
 		if (
 			this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER, UserRole.TEAMSTER)
 		) {
@@ -151,8 +141,8 @@ export class ReservationModifyComponent
 		}
 	}
 
-	duration(d: number) {
-		return new Date(d).toLocaleTimeString();
+	showTime(d: number) {
+		return DateUtil.showTime(d);
 	}
 
 	onDurationChanged(duration: number) {
@@ -172,7 +162,7 @@ export class ReservationModifyComponent
 					minute < 60;
 					minute += this.systemConfig.durationUnitInMinutes
 				) {
-					times.push((hour * 60 + minute) * DateUtil.MINUTE);
+					times.push(DateUtil.time(hour, minute));
 				}
 			}
 			return times;

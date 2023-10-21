@@ -170,7 +170,7 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
 				minute < 60;
 				minute += this.systemConfig!.durationUnitInMinutes
 			) {
-				times.push((hour * 60 + minute) * DateUtil.MINUTE);
+				times.push(DateUtil.time(hour,minute));
 			}
 		}
 		return times;
