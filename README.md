@@ -7,7 +7,7 @@ Reservation System for our tennis courts.
 - [x] create user with qr code
 - [x] reset password with qr code
 - [x] select reservation system not working
-- [ ] migrate from mysql to postgres
+- [x] migrate from mysql to postgres
 - [ ] add cancellation time to system config
 - [ ] repeated Occupations: improve Button Handling
 - [ ] repeated Occupations: skip overlap; generate all others
