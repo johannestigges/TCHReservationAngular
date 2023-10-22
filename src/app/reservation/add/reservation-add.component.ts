@@ -93,7 +93,7 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
 		this.reservation.repeatUntil = DateUtil.convertFromNgbDateStruct(this.repeatUntil).getTime();
 		this.service.checkReservation(this.reservation).subscribe({
 			next: (reservation) => this.reservation = reservation,
-			error: (error) => (this.httpError = error)
+			error: (error) => this.setError(error)
 		});
 	}
 
@@ -118,6 +118,7 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
 	private setDefaultValues() {
 		this.reservation.text = this._getCookie('text') ?? this.user.name;
 		this.reservation.duration = this.systemConfig.getDurationDefault();
+		this.type = this.reservationTypes[0].type;
 		this.time = this.reservation.start;
 		this.setDefaultFocus();
 	}
@@ -145,9 +146,10 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
 		return DateUtil.toDate(date).toLocaleDateString();
 	}
 
-	duration(d: number) {
-		return new Date(d).toLocaleTimeString();
+	showTime(d: number) {
+		return DateUtil.showTime(d);
 	}
+
 
 	onRepeatTypeChanged() {
 		this.reservation!.occupations = [];

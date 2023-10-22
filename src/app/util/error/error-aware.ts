@@ -10,7 +10,6 @@ export class ErrorAware {
 	}
 	public setError(httpError: HttpErrorResponse) {
 		this.httpError = httpError;
-		this.errorMessages = [JSON.stringify(httpError)];
-
+		// this.errorMessages = [JSON.stringify(httpError)];
 	}
 }
