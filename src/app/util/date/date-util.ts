@@ -44,8 +44,6 @@ export class DateUtil {
 
 	static getDayMinutesPart(date: number): number {
 		const d = DateUtil.toDate(date);
-		//    console.log("get day minutes " + date + " " + DateUtil.toDate(date).toLocaleString()
-		//      + " " + DateUtil.getTimePart(date) / DateUtil.MINUTE);
 		return d.getHours() * 60 + d.getMinutes();
 	}
 
@@ -56,7 +54,7 @@ export class DateUtil {
 	}
 
 	static time(hour: number, minute: number): number {
-		const now = new Date()
+		const now = new Date();
 		now.setHours(hour,minute,0,0);
 		return DateUtil.getTimePart(now.getTime());
 	}
