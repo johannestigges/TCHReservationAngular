@@ -92,17 +92,19 @@ export class ReservationSystemConfig {
 		}
 		return 2;
 	}
+
+	static readonly EMPTY = new ReservationSystemConfig(0,'','',[],0,0,0,0,0,[]);
 }
 
 export class SystemConfigReservationType {
 	constructor(
-		public id: number,
-		public type: number,
-		public name: string,
-		public maxDuration: number,
-		public maxDaysReservationInFuture: number,
-		public maxCancelInHours: number,
-		public roles: string[]
+		public id = 0,
+		public type = 0,
+		public name = '',
+		public maxDuration = 0,
+		public maxDaysReservationInFuture = 0,
+		public maxCancelInHours = 0,
+		public roles: string[] = []
 	) {}
 
 	public static of(type:SystemConfigReservationType ) {

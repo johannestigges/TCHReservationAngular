@@ -1,8 +1,8 @@
 import { HttpErrorResponse } from '@angular/common/http';
 
 export class ErrorAware {
-	public httpError: HttpErrorResponse;
-	public errorMessages: string[];
+	public httpError?: HttpErrorResponse;
+	public errorMessages: string[] = [];
 
 	public clearError() {
 		this.httpError = undefined;
@@ -10,7 +10,6 @@ export class ErrorAware {
 	}
 	public setError(httpError: HttpErrorResponse) {
 		this.httpError = httpError;
-		this.errorMessages = [JSON.stringify(httpError)];
-
+		// this.errorMessages = [JSON.stringify(httpError)];
 	}
 }

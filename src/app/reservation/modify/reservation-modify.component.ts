@@ -2,38 +2,34 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 
-import { ReservationType } from '../reservationtype';
 import { ReservationService } from '../reservation.service';
-import { ReservationSystemConfig } from '../reservation-system-config';
+import { ReservationSystemConfig, SystemConfigReservationType } from '../reservation-system-config';
 import { ErrorAware } from '../../util/error/error-aware';
 
 import { UserService } from '../../admin/user/user.service';
 import { User } from '../../admin/user/user';
-import { UserRole } from '../../admin/user/user-role.enum';
+import { UserRole, userRoleFrom } from '../../admin/user/user-role.enum';
 import { DateUtil } from '../../util/date/date-util';
 import { Occupation } from '../occupation';
-import { ActivationStatus } from '../../admin/user/activation-status.enum';
+import { activationStatusFrom } from '../../admin/user/activation-status.enum';
 
 @Component({
 	selector: 'tch-reservation-modify',
 	templateUrl: './reservation-modify.component.html',
 	styleUrls: ['./reservation-modify.component.scss'],
 })
-export class ReservationModifyComponent
-	extends ErrorAware
-	implements OnInit, OnDestroy {
-	systemConfig: ReservationSystemConfig;
-	user: User;
-	occupation: Occupation;
+export class ReservationModifyComponent	extends ErrorAware implements OnInit, OnDestroy {
+	systemConfig = ReservationSystemConfig.EMPTY;
+	user = User.EMPTY;
+	occupation = Occupation.EMPTY;
 
-	time: number;
-	type: string;
-	court: number;
+	time = 0;
+	type = -1;
+	court = 0;
 
-	types: string[];
+	types: SystemConfigReservationType[] = [];
 
-	showType: boolean;
-	focus: string;
+	focus = 'date';
 
 	constructor(
 		private route: ActivatedRoute,
@@ -47,13 +43,6 @@ export class ReservationModifyComponent
 	ngOnInit() {
 		const systemId = this.route.snapshot.params.system;
 		const occupationId: number = this.route.snapshot.params.occupation;
-		this.showType = false;
-		this.focus = 'date';
-
-		// create option list of reservation types
-		this.types = Object.keys(ReservationType)
-			.map((key) => ReservationType[key])
-			.filter((value) => typeof value === 'string');
 
 		this.service.getSystemConfig(systemId).subscribe({
 			next: (config) => {
@@ -63,16 +52,19 @@ export class ReservationModifyComponent
 						this.user = new User(
 							user.id,
 							user.name,
-							UserRole['' + user.role],
-							ActivationStatus['' + user.status]
+							userRoleFrom(user.role),
+							'',
+							'',
+							activationStatusFrom(user.status),
 						);
+						this.types = this.systemConfig.types.filter(type => type.roles.includes(user.role.toString()));
 						this.service.getOccupation(occupationId).subscribe({
 							next: (occupation) => {
 								this.occupation = occupation;
 								this.time = this.occupation.start;
-								this.type = ReservationType[this.occupation.type];
+								this.type = this.occupation.type;
 								this.court = this.occupation.court;
-								this.update();
+								this.setFocus();
 							},
 							error: (occupationerror) => this.setError(occupationerror)
 						});
@@ -85,20 +77,13 @@ export class ReservationModifyComponent
 	}
 
 	ngOnDestroy(): void {
-		this.occupation = undefined;
-		this.user = undefined;
-		this.systemConfig = undefined;
+		this.occupation = Occupation.EMPTY;
+		this.user = User.EMPTY;
+		this.systemConfig = ReservationSystemConfig.EMPTY;
 		this.clearError();
 	}
 
-	private update() {
-		// decide which parts of the layout are visible
-		// this depends on the user role
-		this.showType = this.user.hasRole(
-			UserRole.ADMIN,
-			UserRole.TRAINER,
-			UserRole.TEAMSTER
-		);
+	private setFocus() {
 		if (
 			this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER, UserRole.TEAMSTER)
 		) {
@@ -156,8 +141,8 @@ export class ReservationModifyComponent
 		}
 	}
 
-	duration(d: number) {
-		return new Date(d).toLocaleTimeString();
+	showTime(d: number) {
+		return DateUtil.showTime(d);
 	}
 
 	onDurationChanged(duration: number) {
@@ -177,7 +162,7 @@ export class ReservationModifyComponent
 					minute < 60;
 					minute += this.systemConfig.durationUnitInMinutes
 				) {
-					times.push((hour * 60 + minute) * DateUtil.MINUTE);
+					times.push(DateUtil.time(hour, minute));
 				}
 			}
 			return times;
@@ -213,7 +198,7 @@ export class ReservationModifyComponent
 
 	onUpdate() {
 		this.clearError();
-		this.occupation.type = ReservationType[this.type];
+		this.occupation.type = this.type;
 		this.occupation.start = this.time;
 		if (this.court !== this.occupation.court) {
 			this.occupation.court = this.court;

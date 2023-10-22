@@ -1,3 +1,7 @@
+<div class="d-flex justify-content-end my-2">
+  <button class="btn btn-outline-primary" (click)="next()">Ältere</button>
+  <button class="btn btn-outline-secondary ms-1" (click)="cancel()">Zurück</button>
+</div>
 <table class="table table-bordered table-striped">
   <thead>
     <tr>
@@ -8,7 +12,7 @@
       <th class="d-none d-lg-table-cell">DatenId</th>
       <th class="d-none d-sm-table-cell">Benutzer</th>
       <th>Wert</th>
-      <th>Alter Wert</th>
+      <th class="d-none d-sm-table-cell">Alter Wert</th>
     </tr>
   </thead>
   <tbody>
@@ -25,7 +29,7 @@
           <span class="value">{{ kv.value }}</span>
         </div>
       </td>
-      <td>
+      <td class="d-none d-sm-table-cell">
         <div *ngFor="let kv of parseJson(p.oldValue) | keyvalue">
           <span class="key">{{ kv.key }}</span> =
           <span class="value">{{ kv.value }}</span>
@@ -34,9 +38,4 @@
     </tr>
   </tbody>
 </table>
-<tch-show-error
-  [httpError]="httpError"
-  [errorMessages]="errorMessages"
-></tch-show-error>
-<button class="btn btn-primary" (click)="next()">Ältere</button>
-<button class="btn btn-outline-secondary ms-1" (click)="cancel()">Zurück</button>
+<tch-show-error [httpError]="httpError" [errorMessages]="errorMessages"></tch-show-error>

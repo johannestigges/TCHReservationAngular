@@ -11,39 +11,39 @@
     </div>
     <div class="form-group mb-3">
       <label class="col-sm-2 control-label">Name:</label>
-      <div class="col-sm-10">
-        <input
-          [(ngModel)]="user.name"
-          class="form-control"
-          name="name"
-          type="text"
-        />
-      </div>
-    </div>
-    <div class="form-group">
-      <div class="col-sm-offset-2 col-sm-10">
-        <button (click)="onClickNewUser()" class="btn btn-primary">
+      <div class="col-sm-10 d-flex">
+        <input [(ngModel)]="user.name" class="form-control" name="name" type="text" />
+        <button (click)="onClickNewUser()" class="btn btn-outline-primary ms-3">
           Benutzer anlegen
         </button>
       </div>
-    </div>
-    <div class="form-group mt-5 mb-3">
-      <h2 class="col-sm-offset-2 col-sm-10">Kennwort zurücksetzen</h2>
-    </div>
-
-    <div class="form-group mb-3">
-      <label class="col-sm-2 control-label">Benutzer:</label>
-      <div class="col-sm-10">
-        <select class="form-control" (change)="onSelectUser($event)">
-          <option value="0"></option>
-        <option *ngFor="let u of activeUsers" [value]="u.id">{{u.name}}</option>
-      </select>
+      <div class="form-check form-check-inline mt-3">
+        <input class="form-check-input" type="radio" checked="checked" name="role" id="select_user"
+          [(ngModel)]="user.role" [value]="UserRole.REGISTERED" selected>
+        <label class="form-check-label" for="select_user">
+          Mitglied
+        </label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="role" id="select_guest" [(ngModel)]="user.role"
+          [value]="UserRole.GUEST">
+        <label class="form-check-label" for="select_guest">
+          Gast
+        </label>
       </div>
     </div>
 
-    <div class="form-group">
-      <div class="col-sm-offset-2 col-sm-10">
-        <button (click)="onClickNewPassword()" class="btn btn-primary">
+    <div class="form-group mt-5 mb-3">
+      <h2 class="col-sm-offset-2 col-sm-10">Kennwort zurücksetzen</h2>
+    </div>
+    <div class="form-group mb-3">
+      <label class="col-sm-2 control-label">Benutzer:</label>
+      <div class="col-sm-10 d-flex">
+        <select class="form-control" (change)="onSelectUser($any($event.target).value)">
+          <option value="0"></option>
+          <option *ngFor="let u of activeUsers" [value]="u.id">{{u.name}}</option>
+        </select>
+        <button (click)="onClickNewPassword()" class="btn btn-outline-primary ms-3">
           neues Passwort
         </button>
       </div>

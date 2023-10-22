@@ -14,27 +14,30 @@ export class QrComponent extends ErrorAware implements OnInit {
 	users: User[] = [];
 	activeUsers: User[] = [];
 	user: User;
-	selectedUserId: number;
+	selectedUserId = 0;
 	qrUrl = '';
+	UserRole = UserRole;
 
 	constructor(private readonly location: Location, private readonly userService: UserService) {
 		super();
-		this.user = new User(0, '', UserRole.REGISTERED, null, this.generatePassword(), ActivationStatus.ACTIVE);
+		this.user = new User(0, '', UserRole.REGISTERED, '', this.generatePassword(), ActivationStatus.ACTIVE);
 	}
 
 	ngOnInit() {
 		this.userService.getAll().subscribe(users => {
+			this.user.role = UserRole.REGISTERED;
 			this.users = users;
 			this.activeUsers = this.users.filter(u => this.isActive(u.status));
 		});
 	}
 
-	private isActive(status) {
-		return 'ACTIVE' === status.toString();
+
+	private isActive(status: unknown) {
+		return 'ACTIVE' === status;
 	}
 
-	onSelectUser(event) {
-		this.selectedUserId = event.target.value;
+	onSelectUser(id: string) {
+		this.selectedUserId = Number(id);
 	}
 
 	onClickNewUser() {
@@ -56,6 +59,7 @@ export class QrComponent extends ErrorAware implements OnInit {
 
 	onClickNewPassword() {
 		if (this.selectedUserId) {
+			this.clearError();
 			this.userService.getUser(this.selectedUserId).subscribe({
 				next: (user) => {
 					user.password = this.generatePassword();
@@ -77,12 +81,17 @@ export class QrComponent extends ErrorAware implements OnInit {
 	}
 
 	private generatePassword() {
-		return Array(20)
-			.fill('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz')
-			.map(function (x) { return x[Math.floor(Math.random() * x.length)]; })
-			.join('');
+		const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+		const length = 20;
+		const buffer = new Uint8Array(length);
+		crypto.getRandomValues(buffer);
+		let password = '';
+		for (let i = 0; i < length; i++) {
+			password += chars[buffer[i] % chars.length];
+		}
+		return password;
 	}
-	
+
 	private generateUrl() {
 		return `${window.location.origin}/#/login?username=${this.user.name}&password=${this.user.password}`;
 	}

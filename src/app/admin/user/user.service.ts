@@ -12,7 +12,7 @@ export class UserService {
 		return this.httpClient.get<User>(this.userUrl() + '/me');
 	}
 
-	login(user, password, rememberMe) {
+	login(user:string, password:string, rememberMe:boolean) {
 		const headers = new HttpHeaders(
 			{ 'content-type': 'application/x-www-form-urlencoded' });
 

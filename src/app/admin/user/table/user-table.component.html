@@ -1,6 +1,7 @@
 <div class="d-flex justify-content-end my-2">
-<a class="btn btn-primary mx-2" routerLink="/user/qr">QR-Code</a>
-<a class="btn btn-primary" routerLink="/user/add">Benutzer anlegen</a>
+  <a class="btn btn-outline-primary" routerLink="/user/qr">QR-Code</a>
+  <a class="btn btn-outline-primary mx-2" routerLink="/user/add">Benutzer anlegen</a>
+  <button class="btn btn-outline-secondary" (click)="cancel()">Zurück</button>
 </div>
 
 <table class="table table-bordered table-hover">
@@ -28,4 +29,3 @@
   </tbody>
 </table>
 <tch-show-error [httpError]="httpError" [errorMessages]="errorMessages"></tch-show-error>
-<button class="btn btn-outline-secondary m-3" (click)="cancel()">Zurück</button>

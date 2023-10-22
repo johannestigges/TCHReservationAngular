@@ -10,26 +10,15 @@ import { ReservationSystemConfig } from '../reservation-system-config';
 export class OccupationTable extends TableData {
 
 	occupations: Occupation[] = [];
-	systemConfig: ReservationSystemConfig;
-	date: number; // display occupation table for one day in epoch millies
+	systemConfig = ReservationSystemConfig.EMPTY;
+	date = DateUtil.getDatePart(new Date().getTime()); // display occupation table for one day in epoch millies
 
 	constructor(public user: User) {
 		super();
-		this.setDate(new Date().getTime());
 	}
 
 	setDate(date: number) {
 		this.date = DateUtil.getDatePart(date);
-	}
-
-	setUser(user: User) {
-		this.user = user;
-		this.show();
-	}
-
-	setSystemConfig(systemConfig: ReservationSystemConfig) {
-		this.systemConfig = ReservationSystemConfig.of(systemConfig);
-		this.createEmptyTable();
 	}
 
 	show(date: number = this.date) {
@@ -52,7 +41,7 @@ export class OccupationTable extends TableData {
 		for (let c = column; c < column + colspan; c++) {
 			if (availableRow < this.getRows() &&
                 (!this.getCell(availableRow, c) ||
-                    this.getCell(availableRow, c).rowspan === 0)) {
+                    this.getCell(availableRow, c)?.rowspan === 0)) {
 				this.createAvailableEntry(availableRow, c, 1);
 			}
 		}
@@ -106,7 +95,7 @@ export class OccupationTable extends TableData {
 		return '' + start.getHours();
 	}
 
-	private zeroPad(num, places) {
+	private zeroPad(num: number, places: number) {
 		const zero = places - num.toString().length + 1;
 		return Array(+(zero > 0 && zero)).join('0') + num;
 	}

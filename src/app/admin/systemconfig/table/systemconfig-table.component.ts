@@ -12,7 +12,7 @@ import { SystemconfigService } from '../systemconfig.service';
 })
 export class SystemconfigTableComponent extends ErrorAware implements OnInit {
 
-	systemconfigs: ReservationSystemConfig[];
+	systemconfigs: ReservationSystemConfig[] = [];
 
 	constructor(
 		private systemconfigService: SystemconfigService,

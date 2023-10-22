@@ -9,12 +9,12 @@ import { FormBuilder, Validators } from '@angular/forms';
 	styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
-	error: string;
+	error = '';
 
 	form = this.fb.group({
 		user: ['', Validators.required],
 		password: ['', Validators.required],
-		rememberMe: ['']
+		rememberMe: [false]
 	});
 
 	constructor(
@@ -52,7 +52,7 @@ export class LoginComponent implements OnInit {
 			return;
 		}
 		const value = this.form.value;
-		this.userService.login(value.user, value.password, value.rememberMe).subscribe({
+		this.userService.login(value.user!, value.password!, value.rememberMe!).subscribe({
 			next: () => this.onCancel(),
 			error: (error) => this.error = error.status === 401
 				? 'ungültige Anmeldedaten'
