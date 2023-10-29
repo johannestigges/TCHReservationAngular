@@ -1,5 +1,6 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ErrorMessage } from '../error/error-message';
 
 @Component({
 	selector: 'tch-show-error',
@@ -9,29 +10,18 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class ShowErrorComponent implements OnChanges {
 
 	@Input() httpError?: HttpErrorResponse;
-	@Input() errorMessages: string[] = [];
+	@Input() errorMessages: ErrorMessage[] = [];
 
 	ngOnChanges() {
 		this.analyzeHttpError();
 	}
 
 	private analyzeHttpError() {
-		if (this.httpError) {
-			if (this.httpError.error) {
-				this.errorMessages.push(this.httpError.error.message);
-				if (this.httpError.error.fieldErrors) {
-					this.httpError.error.fieldErrors.forEach((fe: FieldMessage) => {
-						this.errorMessages.push('Fehler im Feld ' + fe.field + ': ' + fe.message);
-					});
-				}
-			} else if (this.httpError.message) {
-				this.errorMessages.push(this.httpError.message);
+		console.log('show error component analyze http error', this.httpError,this.httpError?.error,typeof this.httpError?.error);
+		if (this.httpError?.error) {
+			for (const e of this.httpError.error as ErrorMessage[]) {
+				this.errorMessages.push(e);
 			}
 		}
 	}
-}
-
-interface FieldMessage {
-  field: string;
-  message: string;
 }
