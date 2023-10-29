@@ -223,6 +223,5 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
 	}
 	private _setTypes() {
 		this.reservationTypes = this.systemConfig.types.filter(type => type.roles.includes(UserRole[this.user.role]));
-		console.log('set types ', this.systemConfig.types, UserRole[this.user.role], this.reservationTypes);
 	}
 }

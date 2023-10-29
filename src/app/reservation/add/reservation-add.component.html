@@ -65,16 +65,19 @@
 
     <!-- occupation text -->
     <div class="form-group mb-3">
-      <label class="col-sm-2 control-label">Text:</label>
-      <div class="col-sm-10">
+      <label for="text" class="col-sm-2 form-label">Text:</label>
+      <div class="col-sm-10 input-group has-validation">
         <input
+          id="text"
           type="text"
           class="form-control"
           [(ngModel)]="reservation.text"
           name="text"
           required
+          [ngClass]="{'is-invalid': fieldError('text'), 'is-valid': !fieldError('text')}"
         />
       </div>
+      <div *ngIf="fieldError('text')" class="invalid-feedback">{{fieldError('text')?.message}}</div>
     </div>
 
     <!-- duration -->

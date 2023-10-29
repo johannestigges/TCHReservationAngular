@@ -44,7 +44,7 @@ export class QrComponent extends ErrorAware implements OnInit {
 		if (this.user.name) {
 			this.clearError();
 			if (this.users.find(u => this.user.name === u.name)) {
-				this.errorMessages.push('Den Benutzer gibt es bereits.');
+				this.addError('Den Benutzer gibt es bereits.');
 				this.qrUrl = '';
 				return;
 			}
