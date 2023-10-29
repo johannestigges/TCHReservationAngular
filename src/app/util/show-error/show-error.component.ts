@@ -19,14 +19,9 @@ export class ShowErrorComponent implements OnChanges {
 	private analyzeHttpError() {
 		console.log('show error component analyze http error', this.httpError,this.httpError?.error,typeof this.httpError?.error);
 		if (this.httpError?.error) {
-			for (let e of this.httpError.error as ErrorMessage[]) {
+			for (const e of this.httpError.error as ErrorMessage[]) {
 				this.errorMessages.push(e);
 			}
 		}
 	}
-}
-
-interface FieldMessage {
-	field: string;
-	message: string;
 }

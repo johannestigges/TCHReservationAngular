@@ -74,10 +74,8 @@
           [(ngModel)]="reservation.text"
           name="text"
           required
-          [ngClass]="{'is-invalid': fieldError('text'), 'is-valid': !fieldError('text')}"
         />
       </div>
-      <div *ngIf="fieldError('text')" class="invalid-feedback">{{fieldError('text')?.message}}</div>
     </div>
 
     <!-- duration -->
