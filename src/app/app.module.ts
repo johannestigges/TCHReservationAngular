@@ -29,6 +29,7 @@ import { QRCodeModule } from 'angularx-qrcode';
 import { QrComponent } from './admin/user/qr/qr.component';
 import { ReservationTypeComponent } from './admin/systemconfig/reservation-type/reservation-type.component';
 import { ReservationTypesComponent } from './admin/systemconfig/reservation-types/reservation-types.component';
+import { SelectFilterComponent } from './util/select-filter/select-filter.component';
 
 @NgModule({
 	declarations: [
@@ -41,6 +42,7 @@ import { ReservationTypesComponent } from './admin/systemconfig/reservation-type
 		UserAddComponent,
 		UserModifyComponent,
 		QrComponent,
+		SelectFilterComponent,
 		ProtocolTableComponent,
 		SystemconfigTableComponent,
 		SystemconfigAddComponent,

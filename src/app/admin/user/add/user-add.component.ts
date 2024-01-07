@@ -37,7 +37,7 @@ export class UserAddComponent extends ErrorAware {
 	onClick() {
 		this.clearError();
 		if (this.user.password !== this.confirmPassword) {
-			this.addError('Passwörter stimmen nicht überein!','password');
+			this.addErrorMessage('Passwörter stimmen nicht überein!','password');
 			return;
 		}
 		this.user.role = this.userRole;
