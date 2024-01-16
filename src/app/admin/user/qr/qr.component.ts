@@ -13,6 +13,7 @@ import { Location } from '@angular/common';
 export class QrComponent extends ErrorAware implements OnInit {
 	users: User[] = [];
 	activeUsers: User[] = [];
+	activeUserNames: string[] = [];
 	user: User;
 	selectedUserId = 0;
 	qrUrl = '';
@@ -27,7 +28,8 @@ export class QrComponent extends ErrorAware implements OnInit {
 		this.userService.getAll().subscribe(users => {
 			this.user.role = UserRole.REGISTERED;
 			this.users = users;
-			this.activeUsers = this.users.filter(u => this.isActive(u.status));
+			this.activeUsers = this.users.filter(user => this.isActive(user.status));
+			this.activeUserNames = this.activeUsers.map(user => user.name);
 		});
 	}
 
@@ -36,15 +38,15 @@ export class QrComponent extends ErrorAware implements OnInit {
 		return 'ACTIVE' === status;
 	}
 
-	onSelectUser(id: string) {
-		this.selectedUserId = Number(id);
+	onSelectUser(name: string) {
+		this.selectedUserId = this.activeUsers?.find(user => user?.name === name)?.id || 0;
 	}
 
 	onClickNewUser() {
 		if (this.user.name) {
 			this.clearError();
-			if (this.users.find(u => this.user.name === u.name)) {
-				this.addError('Den Benutzer gibt es bereits.');
+			if (this.users.find(user => this.user.name === user.name)) {
+				this.addErrorMessage('Den Benutzer gibt es bereits.');
 				this.qrUrl = '';
 				return;
 			}

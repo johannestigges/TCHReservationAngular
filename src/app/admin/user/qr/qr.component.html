@@ -13,7 +13,7 @@
       <label class="col-sm-2 control-label">Name:</label>
       <div class="col-sm-10 d-flex">
         <input [(ngModel)]="user.name" class="form-control" name="name" type="text" />
-        <button (click)="onClickNewUser()" class="btn btn-outline-primary ms-3">
+        <button [disabled]="!user.name" (click)="onClickNewUser()" class="btn btn-outline-primary ms-3">
           Benutzer anlegen
         </button>
       </div>
@@ -38,12 +38,12 @@
     </div>
     <div class="form-group mb-3">
       <label class="col-sm-2 control-label">Benutzer:</label>
-      <div class="col-sm-10 d-flex">
-        <select class="form-control" (change)="onSelectUser($any($event.target).value)">
-          <option value="0"></option>
-          <option *ngFor="let u of activeUsers" [value]="u.id">{{u.name}}</option>
-        </select>
-        <button (click)="onClickNewPassword()" class="btn btn-outline-primary ms-3">
+      <div class="col-sm-10 d-flex align-items-start">
+        <div class="w-100">
+          <tch-select-filter [valueList]="activeUserNames" (selected)="onSelectUser($event)">
+          </tch-select-filter>
+        </div>
+        <button [disabled]="!selectedUserId" (click)="onClickNewPassword()" class="btn btn-outline-primary ms-3">
           neues Passwort
         </button>
       </div>
