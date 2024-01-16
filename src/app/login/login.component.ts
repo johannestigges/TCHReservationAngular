@@ -1,47 +1,66 @@
-import { Component } from '@angular/core';
-import { Location } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import { UserService } from '../admin/user/user.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'tch-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+	selector: 'tch-login',
+	templateUrl: './login.component.html',
+	styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
+	error = '';
 
-  userid: string;
-  password: string;
-  error: string;
+	form = this.fb.group({
+		user: ['', Validators.required],
+		password: ['', Validators.required],
+		rememberMe: [false]
+	});
 
-  constructor(
-    private location: Location,
-    private userService: UserService) { }
+	constructor(
+		private userService: UserService,
+		private readonly router: Router,
+		private readonly route: ActivatedRoute,
+		private readonly fb: FormBuilder
+	) { }
 
-  setError(error: any) {
-    this.error = JSON.stringify(error);
-    console.log(this.error);
-  }
+	ngOnInit(): void {
+		this.route.queryParamMap.subscribe(params => {
+			const username: string | null = params.get('username');
+			const pw: string | null = params.get('password');
+			if (username && pw) {
+				this.userService.login(username, pw, true).subscribe({
+					next: () => this.router.navigateByUrl('/'),
+					error: (error) => this.setError(error)
+				});
+			}
+			if (params.get('logout')) {
+				this.userService.logout().subscribe(
+					() => this.onCancel()
+				);
+			}
+		});
+	}
 
-  onClick() {
-    this.error = '';
-    this.userService.login(this.userid, this.password).subscribe(
-      data => {
-        this.cancel();
-      },
-      error => {
-        const url = error.urls;
-        console.log(error);
-        console.log('url: ' + url);
-        if (url.search('http') >= 0 && url.search('login?error') === -1) {
-          this.cancel();
-        } else {
-          this.setError('ungültige Anmeldung!');
-        }
-      }
-    );
-  }
+	setError(error: unknown) {
+		this.error = JSON.stringify(error);
+		console.log(this.error);
+	}
 
-  cancel() {
-    this.location.back();
-  }
+	onSubmit() {
+		if (this.form.invalid) {
+			return;
+		}
+		const value = this.form.value;
+		this.userService.login(value.user!, value.password!, value.rememberMe!).subscribe({
+			next: () => this.onCancel(),
+			error: (error) => this.error = error.status === 401
+				? 'ungültige Anmeldedaten'
+				: 'Fehler bei der Anmeldung'
+		});
+	}
+
+	onCancel() {
+		this.router.navigate(['/']);
+	}
 }

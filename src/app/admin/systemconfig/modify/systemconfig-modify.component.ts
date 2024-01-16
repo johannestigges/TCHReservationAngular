@@ -1,123 +1,163 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
-
 import { ErrorAware } from '../../../util/error/error-aware';
-import { ReservationSystemConfig } from 'src/app/reservation/reservation-system-config';
+import { ReservationSystemConfig, SystemConfigReservationType } from 'src/app/reservation/reservation-system-config';
 import { SystemconfigService } from '../systemconfig.service';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { SystemconfigForm, createReservationTypeForm, createSystemConfigForm } from '../systemconfig-form';
+import { userRoleValues } from '../../user/user-role.enum';
 
 @Component({
-  selector: 'tch-systemconfig-modify',
-  templateUrl: './systemconfig-modify.component.html',
-  styleUrls: ['./systemconfig-modify.component.scss']
+	selector: 'tch-systemconfig-modify',
+	templateUrl: './systemconfig-modify.component.html',
+	styleUrls: ['./systemconfig-modify.component.scss'],
 })
 export class SystemconfigModifyComponent extends ErrorAware implements OnInit {
+	durationUnits = [30, 60];
+	maxDays = [1, 2, 3, 4, 5, 6, 7, 14, 21, 31, 62, 365];
+	maxDurations = [
+		1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+	];
+	openingHours = [
+		0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+		21, 22, 23, 24,
+	];
+	closingHours = [
+		7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 1, 2,
+		3, 4, 5, 6,
+	];
 
-  durationUnits = [30, 60];
-  maxDays = [1, 2, 3, 4, 5, 6, 7, 14, 21, 31, 62, 365];
-  maxDurations = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
-  openingHours = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
-  closingHours = [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 1, 2, 3, 4, 5, 6];
+	form: FormGroup<SystemconfigForm>;
 
-  form: FormGroup;
+	constructor(
+		private location: Location,
+		private route: ActivatedRoute,
+		private systemconfigService: SystemconfigService
+	) {
+		super();
+		this.form = createSystemConfigForm();
+	}
 
-  constructor(
-    private location: Location,
-    private route: ActivatedRoute,
-    private formBuilder: FormBuilder,
-    private systemconfigService: SystemconfigService) {
-    super();
-  }
+	ngOnInit() {
+		const id = this.route.snapshot.params.id;
+		this.systemconfigService.get(id).subscribe({
+			next: (data) => {
+				this.form.controls.id.setValue(data.id);
+				this.form.controls.name.setValue(data.name);
+				this.form.controls.title.setValue(data.title);
+				for (const court of data.courts) {
+					this.add(court);
+				}
+				this.form.controls.durationUnitInMinutes
+					.setValue(data.durationUnitInMinutes);
+				this.form.controls.maxDaysReservationInFuture
+					.setValue(data.maxDaysReservationInFuture);
+				this.form.controls.maxDuration.setValue(data.maxDuration);
+				this.form.controls.openingHour.setValue(data.openingHour);
+				this.form.controls.closingHour.setValue(data.closingHour);
+				this.form.controls.types.clear();
+				for (const type of data.types) {
+					this.form.controls.types.push(this.initType(type));
+				}
+			},
+			error: (error) => this.setError(error)
+		});
+	}
 
-  ngOnInit() {
-    this.form = this.formBuilder.group({
-      id: new FormControl('', Validators.required),
-      name: new FormControl('', Validators.required),
-      courts: new FormArray([]),
-      durationUnitInMinutes: new FormControl('', Validators.required),
-      maxDaysReservationInFuture: new FormControl('', Validators.required),
-      maxDuration: new FormControl('', Validators.required),
-      openingHour: new FormControl('', Validators.required),
-      closingHour: new FormControl('', Validators.required)
-    });
 
-    const id = this.route.snapshot.params.id;
-    this.systemconfigService.get(id).subscribe(
-      data => {
-        this.form.get('id').setValue(data.id);
-        this.form.get('name').setValue(data.name);
-        for (const court of data.courts) {
-          this.add(court);
-        }
-        this.form.get('durationUnitInMinutes').setValue(data.durationUnitInMinutes);
-        this.form.get('maxDaysReservationInFuture').setValue(data.maxDaysReservationInFuture);
-        this.form.get('maxDuration').setValue(data.maxDuration);
-        this.form.get('openingHour').setValue(data.openingHour);
-        this.form.get('closingHour').setValue(data.closingHour);
-      },
-      error => this.httpError = error
-    );
-  }
+	private initType(type: SystemConfigReservationType) {
+		const form = createReservationTypeForm();
+		form.controls.id.setValue(type.type);
+		form.controls.name.setValue(type.name);
+		form.controls.maxDuration.setValue(type.maxDuration);
+		form.controls.maxDaysReservationInFuture.setValue(type.maxDaysReservationInFuture);
+		form.controls.maxCancelInHours.setValue(type.maxCancelInHours);
+		for (let i = 0; i < userRoleValues.length; i++) {
+			form.controls.roles.at(i).setValue(type.roles.includes(userRoleValues[i]));
+		}
+		return form;
+	}
 
-  createCourt(): FormGroup {
-    return this.formBuilder.group({
-      court: ''
-    });
-  }
+	add(court: string): void {
+		this.courts.controls.push(new FormControl(court) as FormControl<string>);
+	}
 
-  add(court: string): void {
-    this.getCourts().push(new FormControl(court));
-  }
+	addCourt(): void {
+		this.add('');
+	}
 
-  addCourt(): void {
-    this.add('');
-  }
+	get courts(): FormArray<FormControl<string>> {
+		return this.form.controls.courts;
+	}
 
-  getCourts(): FormArray {
-    return this.form.get('courts') as FormArray;
-  }
+	removeCourt(i: number): void {
+		this.courts.removeAt(i);
+	}
 
-  removeCourt(i: number): void {
-    this.getCourts().removeAt(i);
-  }
+	onDelete() {
+		this.clearError();
 
-  delete() {
-    this.clearError();
+		this.systemconfigService.delete(this.form.controls.id.value).subscribe({
+			next: (data) => {
+				alert(`Systemkonfiguration ${data.name} wurde gelöscht.`);
+				this.onCancel();
+			},
+			error: (error) => this.setError(error)
+		});
+	}
 
-    this.systemconfigService.delete(this.form.get('id').value).subscribe(
-      data => {
-        alert(`Systemkonfiguration ${data.name} wurde gelöscht.`);
-        this.cancel();
-      },
-      error => this.httpError = error
-    );
-  }
+	onSubmit() {
+		this.clearError();
 
-  onClick() {
-    this.clearError();
+		const newconfig = new ReservationSystemConfig(
+			this.form.controls.id.value,
+			this.form.controls.name.value,
+			this.form.controls.title.value,
+			this.form.controls.courts.controls.filter(c => c.value).map(c => c.value),
+			this.form.controls.durationUnitInMinutes.value,
+			this.form.controls.maxDaysReservationInFuture.value,
+			this.form.controls.maxDuration.value,
+			this.form.controls.openingHour.value,
+			this.form.controls.closingHour.value,
+			this.getTypesFromForm()
+		);
 
-    const newconfig = new ReservationSystemConfig(
-      this.form.get('id').value,
-      this.form.get('name').value,
-      this.form.get('courts').value,
-      this.form.get('durationUnitInMinutes').value,
-      this.form.get('maxDaysReservationInFuture').value,
-      this.form.get('maxDuration').value,
-      this.form.get('openingHour').value,
-      this.form.get('closingHour').value,
-    );
+		this.systemconfigService.update(newconfig).subscribe({
+			next: (data) => {
+				alert(`Systemkonfiguration ${data.name} wurde geändert.`);
+				this.onCancel();
+			},
+			error: (error) => this.setError(error)
+		});
+	}
 
-    this.systemconfigService.update(newconfig).subscribe(
-      data => {
-        alert(`Systemkonfiguration ${data.name} wurde geändert.`);
-        this.cancel();
-      },
-      err => this.httpError = err
-    );
-  }
+	onCancel() {
+		this.location.back();
+	}
 
-  cancel() {
-    this.location.back();
-  }
+	private getTypesFromForm() {
+		const types: SystemConfigReservationType[] = [];
+		this.form.controls.types.controls.forEach(type =>
+			types.push({
+				id: 0,
+				type: type.controls.id.value,
+				name: type.controls.name.value,
+				maxDuration: type.controls.maxDuration.value,
+				maxDaysReservationInFuture: type.controls.maxDaysReservationInFuture.value,
+				maxCancelInHours: type.controls.maxCancelInHours.value,
+				roles: this.getRolesFromForm(type.controls.roles)
+			})
+		);
+		return types;
+	}
+	private getRolesFromForm(form: FormArray<FormControl<boolean>>) {
+		const roles: string[] = [];
+		for (let i = 0; i < userRoleValues.length; i++) {
+			if (form.at(i).value) {
+				roles.push(userRoleValues[i]);
+			}
+		}
+		return roles;
+	}
 }

@@ -1,16 +1,16 @@
 {
 	"/rest": {
-		"target": "https://localhost:8443",
+		"target": "http://localhost:8080",
 		"secure": false,
 		"logLevel": "debug"
 	},
 	"/login": {
-		"target": "https://localhost:8443",
+		"target": "http://localhost:8080",
 		"secure": false,
 		"logLevel": "debug"
 	},
 	"/logout": {
-		"target": "https://localhost:8443",
+		"target": "http://localhost:8080",
 		"secure": false,
 		"logLevel": "debug"
 	}

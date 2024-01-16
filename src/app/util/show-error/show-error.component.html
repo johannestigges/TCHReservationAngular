@@ -1,1 +1,4 @@
-<ul *ngFor="let msg of errorMessages">{{msg}}</ul>
+<ul *ngFor="let errorMessage of errorMessages">
+    <span *ngIf="errorMessage.field">Fehler in Feld {{errorMessage.field}}:</span>
+    {{errorMessage.message}}
+</ul>
