@@ -104,6 +104,8 @@ export class SystemConfigReservationType {
 		public maxDuration = 0,
 		public maxDaysReservationInFuture = 0,
 		public maxCancelInHours = 0,
+		public repeatable = false,
+		public publicVisible = false,
 		public roles: string[] = []
 	) {}
 
@@ -115,6 +117,8 @@ export class SystemConfigReservationType {
 			type.maxDuration,
 			type.maxDaysReservationInFuture,
 			type.maxCancelInHours,
+			type.repeatable,
+			type.publicVisible,
 			type.roles
 		);
 	}

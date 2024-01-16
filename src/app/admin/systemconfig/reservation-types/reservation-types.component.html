@@ -13,9 +13,11 @@
         </div>
         <div class="col-6 col-sm-2">
           <span *ngIf="type.controls.maxDaysReservationInFuture.value">Reservierbar
-            {{type.controls.maxDaysReservationInFuture.value}} Tage im Voraus </span>
+            {{type.controls.maxDaysReservationInFuture.value}} Tage im Voraus;</span>
           <span *ngIf="type.controls.maxCancelInHours.value">Stornierbar {{type.controls.maxCancelInHours.value}}
-            Stunden vor Beginn </span>
+            Stunden vor Beginn;</span>
+          <span *ngIf="type.controls.repeatable.value">Wiederholungen möglich;</span>
+          <span *ngIf="type.controls.publicVisible.value">Text öffentlich sichtbar;</span>
         </div>
         <div class="col-8 col-sm-5">
           {{getRoles(type.controls.roles)}}

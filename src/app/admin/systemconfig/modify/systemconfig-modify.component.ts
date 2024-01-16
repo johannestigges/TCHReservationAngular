@@ -73,6 +73,8 @@ export class SystemconfigModifyComponent extends ErrorAware implements OnInit {
 		form.controls.maxDuration.setValue(type.maxDuration);
 		form.controls.maxDaysReservationInFuture.setValue(type.maxDaysReservationInFuture);
 		form.controls.maxCancelInHours.setValue(type.maxCancelInHours);
+		form.controls.repeatable.setValue(type.repeatable);
+		form.controls.publicVisible.setValue(type.publicVisible);
 		for (let i = 0; i < userRoleValues.length; i++) {
 			form.controls.roles.at(i).setValue(type.roles.includes(userRoleValues[i]));
 		}
@@ -146,6 +148,8 @@ export class SystemconfigModifyComponent extends ErrorAware implements OnInit {
 				maxDuration: type.controls.maxDuration.value,
 				maxDaysReservationInFuture: type.controls.maxDaysReservationInFuture.value,
 				maxCancelInHours: type.controls.maxCancelInHours.value,
+				repeatable: type.controls.repeatable.value,
+				publicVisible: type.controls.publicVisible.value,
 				roles: this.getRolesFromForm(type.controls.roles)
 			})
 		);

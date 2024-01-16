@@ -20,6 +20,8 @@ export interface ReservationTypeForm {
 	maxDuration: FormControl<number>,
 	maxDaysReservationInFuture: FormControl<number>,
 	maxCancelInHours: FormControl<number>,
+	repeatable: FormControl<boolean>,
+	publicVisible: FormControl<boolean>,
 	roles: FormArray<FormControl<boolean>>
 }
 
@@ -29,6 +31,8 @@ export interface ReservationTypeValues {
 	maxDuration: number,
 	maxDaysReservationInFuture: number,
 	maxCancelInHours: number,
+	repeatable: boolean,
+	publicVisible: boolean,
 	roles: boolean[]
 }
 
@@ -55,6 +59,8 @@ export function createReservationTypeForm(): FormGroup<ReservationTypeForm> {
 		maxDuration: new FormControl(0, { nonNullable: true }),
 		maxDaysReservationInFuture: new FormControl(0, { nonNullable: true }),
 		maxCancelInHours: new FormControl(0, { nonNullable: true }),
+		repeatable: new FormControl(true, { nonNullable: true }),
+		publicVisible: new FormControl(true, { nonNullable: true }),
 		roles: new FormArray<FormControl<boolean>>(createUserRoles())
 	};
 	return new FormGroup(reservationTypeForm);
