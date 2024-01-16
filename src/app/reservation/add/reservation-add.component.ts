@@ -82,6 +82,19 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
 		});
 	}
 
+	onTypeSelected() {
+		this.showRepeat =
+			this.reservationTypes.find(type => type.type == this.type)?.repeatable === true &&
+			this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
+		if (!this.showRepeat) {
+			this.repeatMinDate = undefined;
+			this.repeatUntil = undefined;
+			this.reservation.repeatType = undefined;
+			this.reservation.repeatUntil = undefined;
+			this.reservation.occupations = [];
+		}
+	}
+
 	onGenerateOccupations() {
 		if (!this.repeatUntil || !this.time || !this.reservation || this.type < 0) {
 			return;
@@ -108,17 +121,15 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
 		this._setTypes();
 
 		// decide which parts of the layout are visible
-		// this depends on the user role
 		this.showSimpleDuration = this.systemConfig?.durationUnitInMinutes === 30 && !this._isAtLeastTeamster();
-		this.showRepeat = this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER);
-
+		this.onTypeSelected();
 		this.setDefaultValues();
 	}
 
 	private setDefaultValues() {
 		this.reservation.text = this._getCookie('text') ?? this.user.name;
 		this.reservation.duration = this.systemConfig.getDurationDefault();
-		this.type = this.reservationTypes[0].type;
+		this.type = 0;
 		this.time = this.reservation.start;
 		this.setDefaultFocus();
 	}
@@ -172,7 +183,7 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
 				minute < 60;
 				minute += this.systemConfig!.durationUnitInMinutes
 			) {
-				times.push(DateUtil.time(hour,minute));
+				times.push(DateUtil.time(hour, minute));
 			}
 		}
 		return times;
