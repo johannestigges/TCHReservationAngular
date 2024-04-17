@@ -1,6 +1,9 @@
 <h2>Administration</h2>
 <ul class="nav nav-tabs" id="adminTab" role="tablist">
     <li class="nav-item">
+        <a class="nav-link" [class.active]="tab === 'news'" (click)="select('news')">Nachrichten</a>
+    </li>
+    <li class="nav-item">
         <a class="nav-link" [class.active]="tab === 'user'" (click)="select('user')">Benutzer</a>
     </li>
     <li class="nav-item">
@@ -13,6 +16,9 @@
         <a class="nav-link" [class.active]="tab === 'protocol'" (click)="select('protocol')">Historie</a>
     </li>
 </ul>
+<div *ngIf="tab === 'news'">
+    <tch-news-overview></tch-news-overview>
+</div>
 <div *ngIf="tab === 'user'">
     <tch-user-table></tch-user-table>
 </div>

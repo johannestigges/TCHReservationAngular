@@ -37,8 +37,8 @@ export class ProtocolTableComponent extends ErrorAware implements OnInit {
 		});
 	}
 
-	date(t: number[]) {
-		return `${t[2]}.${t[1]}.${t[0]} ${t[3]}:${t[4]}`;
+	date(t: number) {
+		return DateUtil.showDateTime(t);
 	}
 
 	parseJson(o: string) {
