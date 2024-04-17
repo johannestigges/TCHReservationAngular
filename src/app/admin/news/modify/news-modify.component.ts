@@ -7,45 +7,45 @@ import { Location } from '@angular/common';
 
 
 @Component({
-  selector: 'tch-news-modify',
-  standalone: false,
-  templateUrl: './news-modify.component.html',
-  styleUrl: './news-modify.component.scss'
+	selector: 'tch-news-modify',
+	standalone: false,
+	templateUrl: './news-modify.component.html',
+	styleUrl: './news-modify.component.scss'
 })
 export class NewsModifyComponent extends ErrorAware implements OnInit {
 
-  news: News = { id: 0, subject: '', text: '', url: '', createdAt: 0 };
+	news: News = { id: 0, subject: '', text: '', url: '', createdAt: 0 };
 
-  constructor(private route: ActivatedRoute,
+	constructor(private route: ActivatedRoute,
     private newsService: NewsService, private location: Location) {
-    super();
-  }
+		super();
+	}
 
-  ngOnInit(): void {
-    console.log('news modify ngOnInit', this.route.snapshot.params);
-    const id = this.route.snapshot.params.id;
-    this.newsService.getOne(Number(id)).subscribe({
-      next: (data) => this.news = data,
-      error: (error) => this.setError(error)
-    });
-  }
+	ngOnInit(): void {
+		console.log('news modify ngOnInit', this.route.snapshot.params);
+		const id = this.route.snapshot.params.id;
+		this.newsService.getOne(Number(id)).subscribe({
+			next: (data) => this.news = data,
+			error: (error) => this.setError(error)
+		});
+	}
 
 
-  onClick() {
-    this.clearError();
+	onClick() {
+		this.clearError();
 
-    if (this.news.id) {
-      this.newsService.update(this.news).subscribe({
-        next: (data) => {
-          this.news = data;
-          this.cancel();
-        },
-        error: (error) => this.setError(error)
-      });
-    }
-  }
+		if (this.news.id) {
+			this.newsService.update(this.news).subscribe({
+				next: (data) => {
+					this.news = data;
+					this.cancel();
+				},
+				error: (error) => this.setError(error)
+			});
+		}
+	}
 
-  cancel() {
+	cancel() {
 		this.location.back();
 	}
 }
