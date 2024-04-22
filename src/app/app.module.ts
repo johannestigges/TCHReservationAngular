@@ -30,9 +30,12 @@ import { QrComponent } from './admin/user/qr/qr.component';
 import { ReservationTypeComponent } from './admin/systemconfig/reservation-type/reservation-type.component';
 import { ReservationTypesComponent } from './admin/systemconfig/reservation-types/reservation-types.component';
 import { SelectFilterComponent } from './util/select-filter/select-filter.component';
-import { NewsOverviewComponent } from './admin/news/overview/news-overview.component';
 import { NewsAddComponent } from './admin/news/add/news-add.component';
 import { NewsModifyComponent } from './admin/news/modify/news-modify.component';
+import { NewsAdminOverviewComponent } from './admin/news/overview/news-admin-overview.component';
+import { NewsOverviewComponent } from './news/overview/news-overview.component';
+import { NewsDetailComponent } from './news/detail/news-detail.component';
+import { NewsLinkComponent } from './news/link/news-link.component';
 
 @NgModule({
 	declarations: [
@@ -54,9 +57,12 @@ import { NewsModifyComponent } from './admin/news/modify/news-modify.component';
 		ShowErrorComponent,
 		ReservationTypeComponent,
 		ReservationTypesComponent,
-		NewsOverviewComponent,
+		NewsAdminOverviewComponent,
 		NewsAddComponent,
-		NewsModifyComponent
+		NewsModifyComponent,
+		NewsOverviewComponent,
+		NewsDetailComponent,
+		NewsLinkComponent
 	],
 	imports: [
 		BrowserModule,

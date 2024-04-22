@@ -13,9 +13,10 @@ import { SystemconfigAddComponent } from './admin/systemconfig/add/systemconfig-
 import { SystemconfigModifyComponent } from './admin/systemconfig/modify/systemconfig-modify.component';
 import { AdminComponent } from './admin/admin.component';
 import { QrComponent } from './admin/user/qr/qr.component';
-import { NewsOverviewComponent } from './admin/news/overview/news-overview.component';
 import { NewsAddComponent } from './admin/news/add/news-add.component';
 import { NewsModifyComponent } from './admin/news/modify/news-modify.component';
+import { NewsOverviewComponent } from './news/overview/news-overview.component';
+import { NewsDetailComponent } from './news/detail/news-detail.component';
 
 const routes: Routes = [
 	{ path: '', redirectTo: '/table', pathMatch: 'full' },
@@ -33,9 +34,11 @@ const routes: Routes = [
 	{ path: 'user/add', component: UserAddComponent },
 	{ path: 'user/modify/:user', component: UserModifyComponent },
 	{ path: 'user/qr', component: QrComponent },
+	{ path: 'admin/news', component: NewsOverviewComponent },
+	{ path: 'admin/news/add', component: NewsAddComponent },
+	{ path: 'admin/news/modify/:id', component: NewsModifyComponent },
 	{ path: 'news', component: NewsOverviewComponent },
-	{ path: 'news/add', component: NewsAddComponent },
-	{ path: 'news/modify/:id', component: NewsModifyComponent },
+	{ path: 'news/:id', component: NewsDetailComponent },
 	{ path: 'login', component: LoginComponent }
 ];
 

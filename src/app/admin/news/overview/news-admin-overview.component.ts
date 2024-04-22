@@ -1,18 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { Location } from '@angular/common';
 import { News } from '../news';
-import { ErrorAware } from 'src/app/util/error/error-aware';
-import { NewsService } from '../news.service';
 import { DateUtil } from 'src/app/util/date/date-util';
+import { NewsService } from '../news.service';
+import { ErrorAware } from 'src/app/util/error/error-aware';
+import { Location } from '@angular/common';
+
 
 @Component({
-	selector: 'tch-news-overview',
+	selector: 'tch-news-admin-overview',
 	standalone: false,
-	templateUrl: './news-overview.component.html',
-	styleUrl: './news-overview.component.scss'
+	templateUrl: './news-admin-overview.component.html',
+	styleUrl: './news-admin-overview.component.scss'
 })
-export class NewsOverviewComponent extends ErrorAware implements OnInit {
-
+export class NewsAdminOverviewComponent extends ErrorAware implements OnInit {
 	newsList: News[] = [];
 
 	constructor(private newsService: NewsService, private location: Location) {
@@ -40,4 +40,5 @@ export class NewsOverviewComponent extends ErrorAware implements OnInit {
 	date(t: number) {
 		return DateUtil.showDateTime(t);
 	}
+
 }
