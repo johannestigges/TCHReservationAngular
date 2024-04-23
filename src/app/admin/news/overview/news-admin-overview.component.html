@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-end my-2">
-    <a class="btn btn-outline-primary mx-2" routerLink="/news/add">Nachricht anlegen</a>
+    <a class="btn btn-outline-primary mx-2" routerLink="/admin/news/add">Nachricht anlegen</a>
     <button class="btn btn-outline-secondary" (click)="cancel()">Zurück</button>
   </div>
   
@@ -17,11 +17,11 @@
       <tr *ngFor="let news of newsList">
         <td class="d-none d-lg-table-cell">{{ news.id }}</td>
         <td>{{ news.subject }}</td>
-        <td class="d-none d-sm-table-cell">{{ news.text }}</td>
+        <td class="d-none d-sm-table-cell" style="white-space:pre-wrap;">{{ news.text }}</td>
         <td>{{ date(news.createdAt) }}</td>
-        <td>
-          <a class="btn btn-outline-secondary mb-2" routerLink="/news/modify/{{ news.id }}">ändern</a>
-          <a class="btn btn-outline-secondary" (click)="onDelete(news.id)">löschen</a>
+        <td class="">
+          <a class="btn btn-outline-secondary me-1 mb-1" routerLink="/admin/news/modify/{{ news.id }}">ändern</a>
+          <a class="btn btn-outline-secondary me-1 mb-1" (click)="onDelete(news.id)">löschen</a>
         </td>
       </tr>
     </tbody>
