@@ -3,7 +3,7 @@ import { News } from '../news';
 import { DateUtil } from 'src/app/util/date/date-util';
 import { NewsService } from '../news.service';
 import { ErrorAware } from 'src/app/util/error/error-aware';
-import { Location } from '@angular/common';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -15,7 +15,7 @@ import { Location } from '@angular/common';
 export class NewsAdminOverviewComponent extends ErrorAware implements OnInit {
 	newsList: News[] = [];
 
-	constructor(private newsService: NewsService, private location: Location) {
+	constructor(private newsService: NewsService, private router: Router) {
 		super();
 	}
 
@@ -34,7 +34,7 @@ export class NewsAdminOverviewComponent extends ErrorAware implements OnInit {
 	}
 
 	cancel() {
-		this.location.back();
+		this.router.navigateByUrl('/');
 	}
 
 	date(t: number) {

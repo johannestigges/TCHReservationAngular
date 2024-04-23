@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { Location } from '@angular/common';
 
 import { UserService } from '../user.service';
 import { User } from '../user';
 import { UserRole, userRoleValues } from '../user-role.enum';
 import { ActivationStatus, activationStatusValues } from '../activation-status.enum';
 import { ErrorAware } from '../../../util/error/error-aware';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'tch-user-add',
@@ -23,7 +23,7 @@ export class UserAddComponent extends ErrorAware {
 	confirmPassword = '';
 
 	constructor(
-		private location: Location,
+		private router:Router,
 		private userService: UserService) {
 		super();
 
@@ -53,6 +53,7 @@ export class UserAddComponent extends ErrorAware {
 	}
 
 	cancel() {
-		this.location.back();
+		this.router.navigateByUrl('/admin?tab=user');
+		//this.router.navigate(['/admin'], {queryParams: { tab: 'user'}});
 	}
 }

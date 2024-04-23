@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Location } from '@angular/common';
 import { ErrorAware } from '../../../util/error/error-aware';
 import { ReservationSystemConfig, SystemConfigReservationType } from 'src/app/reservation/reservation-system-config';
 import { SystemconfigService } from '../systemconfig.service';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SystemconfigForm, createReservationTypeForm, createSystemConfigForm } from '../systemconfig-form';
 import { userRoleValues } from '../../user/user-role.enum';
 
@@ -31,7 +30,7 @@ export class SystemconfigModifyComponent extends ErrorAware implements OnInit {
 	form: FormGroup<SystemconfigForm>;
 
 	constructor(
-		private location: Location,
+		private router:Router,
 		private route: ActivatedRoute,
 		private systemconfigService: SystemconfigService
 	) {
@@ -135,7 +134,7 @@ export class SystemconfigModifyComponent extends ErrorAware implements OnInit {
 	}
 
 	onCancel() {
-		this.location.back();
+		this.router.navigateByUrl('admin?tab=systemconfig');
 	}
 
 	private getTypesFromForm() {

@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Location } from '@angular/common';
 import { ReservationSystemConfig } from 'src/app/reservation/reservation-system-config';
 import { SystemconfigService } from '../systemconfig.service';
 import { FormArray,	FormControl, FormGroup } from '@angular/forms';
 import { ErrorAware } from 'src/app/util/error/error-aware';
 import { SystemconfigForm, createSystemConfigForm } from '../systemconfig-form';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'tch-systemconfig-add',
@@ -30,7 +30,7 @@ export class SystemconfigAddComponent extends ErrorAware implements OnInit {
 	reservationTypeInEdit = -1;
 
 	constructor(
-		private location: Location,
+		private router:Router,
 		private systemconfigService: SystemconfigService
 	) {
 		super();
@@ -81,6 +81,6 @@ export class SystemconfigAddComponent extends ErrorAware implements OnInit {
 		});
 	}
 	onCancel() {
-		this.location.back();
+		this.router.navigateByUrl('admin?tab=systemconfig');
 	}
 }
