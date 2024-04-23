@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { News } from 'src/app/admin/news/news';
 import { NewsService } from 'src/app/admin/news/news.service';
 import { UserNews } from 'src/app/admin/news/usernews';
 import { ErrorAware } from 'src/app/util/error/error-aware';
@@ -33,7 +32,7 @@ export class NewsOverviewComponent extends ErrorAware implements OnInit {
 	addAcknowledges(userNews: UserNews[]): void {
 		console.log('news:', this.news);
 		console.log('user news:', userNews);
-		 this.news.forEach(n => n.acknowledged = userNews.find(u => u.newsId === n.id)?.acknowledged ?? false);
+		this.news.forEach(n => n.acknowledged = userNews.find(u => u.newsId === n.id)?.acknowledged ?? false);
 	}
 }
 
