@@ -2,9 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ErrorAware } from 'src/app/util/error/error-aware';
 import { NewsService } from '../news.service';
 import { News } from '../news';
-import { ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
-
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
 	selector: 'tch-news-modify',
@@ -17,7 +15,7 @@ export class NewsModifyComponent extends ErrorAware implements OnInit {
 	news: News = { id: 0, subject: '', text: '', url: '', createdAt: 0 };
 
 	constructor(private route: ActivatedRoute,
-    private newsService: NewsService, private location: Location) {
+    private newsService: NewsService, private router: Router) {
 		super();
 	}
 
@@ -46,6 +44,6 @@ export class NewsModifyComponent extends ErrorAware implements OnInit {
 	}
 
 	cancel() {
-		this.location.back();
+		this.router.navigateByUrl('admin?tab=news');
 	}
 }

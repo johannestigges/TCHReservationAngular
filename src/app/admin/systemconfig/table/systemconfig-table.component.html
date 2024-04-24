@@ -9,6 +9,7 @@
       <th>Name</th>
       <th class="d-none d-lg-table-cell">Titel</th>
       <th class="d-none d-sm-table-cell">Plätze</th>
+      <th class="d-none d-sm-table-cell">Reservierungsarten</th>
       <th class="d-none d-sm-table-cell">Reservierung</th>
       <th class="d-none d-sm-table-cell">Öffnungszeit</th>
     </tr>
@@ -18,11 +19,17 @@
       <td class="d-none d-lg-table-cell">{{ config.id }}</td>
       <td>{{ config.name }}</td>
       <td class="d-none d-lg-table-cell">{{ config.title }}</td>
-      <td class="d-none d-sm-table-cell">{{ config.courts }}</td>
       <td class="d-none d-sm-table-cell">
-        max {{ config.maxDuration }} x
-        {{ config.durationUnitInMinutes }} Minuten; max
-        {{ config.maxDaysReservationInFuture }} Tage im Voraus
+        <div *ngFor="let court of config.courts">{{court}}</div>
+      </td>
+      <td class="d-none d-sm-table-cell">
+        <div *ngFor="let type of config.types">
+          {{type.id}} {{ type.name }}
+        </div>
+      </td>
+      <td class="d-none d-sm-table-cell">
+        max {{ config.maxDuration }} x {{ config.durationUnitInMinutes }} Minuten;
+        max {{ config.maxDaysReservationInFuture }} Tage im Voraus
       </td>
       <td class="d-none d-sm-table-cell">{{ config.openingHour }} - {{ config.closingHour }} Uhr</td>
       <td>

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Location } from '@angular/common';
 
 import { UserService } from '../../user/user.service';
 import { User } from '../../user/user';
 import { ErrorAware } from '../../../util/error/error-aware';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'tch-user-table',
@@ -14,7 +14,7 @@ export class UserTableComponent extends ErrorAware implements OnInit {
 
 	users: User[] = [];
 
-	constructor(private userService: UserService, private location: Location) {
+	constructor(private userService: UserService, private router: Router) {
 		super();
 	}
 
@@ -26,6 +26,6 @@ export class UserTableComponent extends ErrorAware implements OnInit {
 	}
 
 	cancel() {
-		this.location.back();
+		this.router.navigateByUrl('/');
 	}
 }

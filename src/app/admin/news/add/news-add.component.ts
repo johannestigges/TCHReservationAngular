@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { News } from '../news';
 import { NewsService } from '../news.service';
 import { ErrorAware } from 'src/app/util/error/error-aware';
-import { Location } from '@angular/common';
 import { DateUtil } from 'src/app/util/date/date-util';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'tch-news-add',
@@ -15,7 +15,7 @@ export class NewsAddComponent extends ErrorAware {
 
 	news: News;
 
-	constructor(private location: Location, private newsService: NewsService) {
+	constructor(private router:Router, private newsService: NewsService) {
 		super();
 
 		this.news = { id: 0, subject: '', text: '', url: '', createdAt: 0 };
@@ -35,6 +35,6 @@ export class NewsAddComponent extends ErrorAware {
 	}
 
 	cancel() {
-		this.location.back();
+		this.router.navigateByUrl('admin?tab=news');
 	}
 }

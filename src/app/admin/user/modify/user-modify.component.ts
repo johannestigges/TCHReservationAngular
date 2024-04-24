@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { UserService } from '../../user/user.service';
 import { User } from '../../user/user';
@@ -30,7 +29,7 @@ export class UserModifyComponent extends ErrorAware implements OnInit {
 	constructor(
 		private route: ActivatedRoute,
 		private userService: UserService,
-		private location: Location) {
+		private router: Router) {
 		super();
 	}
 
@@ -58,7 +57,7 @@ export class UserModifyComponent extends ErrorAware implements OnInit {
 	onClick() {
 		this.clearError();
 		if (this.user.password !== this.confirmPassword) {
-			this.addErrorMessage('Passwörter stimmen nicht überein!','password');
+			this.addErrorMessage('Passwörter stimmen nicht überein!', 'password');
 			return;
 		}
 		this.user.role = this.userRole;
@@ -71,6 +70,6 @@ export class UserModifyComponent extends ErrorAware implements OnInit {
 	}
 
 	cancel() {
-		this.location.back();
+		this.router.navigateByUrl('/admin?tab=user');
 	}
 }

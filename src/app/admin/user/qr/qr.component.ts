@@ -4,7 +4,7 @@ import { UserRole } from '../user-role.enum';
 import { ActivationStatus } from '../activation-status.enum';
 import { UserService } from '../user.service';
 import { ErrorAware } from 'src/app/util/error/error-aware';
-import { Location } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'tch-qr',
@@ -19,7 +19,7 @@ export class QrComponent extends ErrorAware implements OnInit {
 	qrUrl = '';
 	UserRole = UserRole;
 
-	constructor(private readonly location: Location, private readonly userService: UserService) {
+	constructor(private readonly router: Router, private readonly userService: UserService) {
 		super();
 		this.user = new User(0, '', UserRole.REGISTERED, '', this.generatePassword(), ActivationStatus.ACTIVE);
 	}
@@ -79,7 +79,7 @@ export class QrComponent extends ErrorAware implements OnInit {
 	}
 
 	onClose() {
-		this.location.back();
+		this.router.navigateByUrl('/admin?tab=user');
 	}
 
 	private generatePassword() {
