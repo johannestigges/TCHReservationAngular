@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, FormGroupDirective } from '@angular/forms';
 import { ReservationTypeForm } from '../systemconfig-form';
 import { userRoleNames, userRoleValues } from '../../user/user-role.enum';
