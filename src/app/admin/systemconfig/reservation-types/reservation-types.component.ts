@@ -1,5 +1,5 @@
-import { Component, Input } from '@angular/core';
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { FormArray, FormControl, FormGroup, FormGroupDirective } from '@angular/forms';
 import { ReservationTypeForm } from '../systemconfig-form';
 import { userRoleNames, userRoleValues } from '../../user/user-role.enum';
 
@@ -8,24 +8,32 @@ import { userRoleNames, userRoleValues } from '../../user/user-role.enum';
 	templateUrl: './reservation-types.component.html',
 	styleUrls: ['./reservation-types.component.scss']
 })
-export class ReservationTypesComponent {
+export class ReservationTypesComponent implements OnInit {
 	readonly NOT_IN_EDIT = -1;
 
-	@Input() form!: FormArray<FormGroup<ReservationTypeForm>>;
+	form?: FormArray;
+	@Input() formGroupName = '';
 
 	inEdit = this.NOT_IN_EDIT;
+
+	constructor(private formGroupDirective: FormGroupDirective) {
+	}
+
+	ngOnInit(): void {
+		this.form = this.formGroupDirective.control.get(this.formGroupName) as FormArray;
+	}
 
 	onStartEdit(i: number) {
 		this.inEdit = i;
 	}
 
 	onRemove(i: number) {
-		this.form.removeAt(i);
+		this.form?.removeAt(i);
 	}
 
 	onFinishedReservationType(form: FormGroup<ReservationTypeForm>) {
 		if (form) {
-			this.form.setControl(this.inEdit, form);
+			this.form?.setControl(this.inEdit, form);
 		}
 		this.inEdit = this.NOT_IN_EDIT;
 	}
