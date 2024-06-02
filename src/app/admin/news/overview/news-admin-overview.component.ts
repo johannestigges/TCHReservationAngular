@@ -40,5 +40,4 @@ export class NewsAdminOverviewComponent extends ErrorAware implements OnInit {
 	date(t: number) {
 		return DateUtil.showDateTime(t);
 	}
-
 }
