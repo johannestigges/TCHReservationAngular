@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NewsService } from 'src/app/admin/news/news.service';
+import { UserNewsService } from 'src/app/admin/news/user-news.service';
 import { UserNews } from 'src/app/admin/news/usernews';
 import { ErrorAware } from 'src/app/util/error/error-aware';
 
@@ -13,7 +14,9 @@ export class NewsOverviewComponent extends ErrorAware implements OnInit {
 
 	news: AcknoledgedNews[] = [];
 
-	constructor(private newsService: NewsService) {
+	constructor(
+		private newsService: NewsService,
+		private userNewsServise: UserNewsService) {
 		super();
 	}
 
@@ -21,7 +24,7 @@ export class NewsOverviewComponent extends ErrorAware implements OnInit {
 		this.newsService.getAll().subscribe({
 			next: (data) => {
 				this.news = data.map(n => new AcknoledgedNews(n.id, n.subject, n.url, n.text, false));
-				this.newsService.getUserNews().subscribe({
+				this.userNewsServise.getUserNews().subscribe({
 					next: (data) => this.addAcknowledges(data),
 					error: () => this.news.forEach(n => n.acknowledged = true)
 				});
@@ -29,10 +32,11 @@ export class NewsOverviewComponent extends ErrorAware implements OnInit {
 			error: (error) => this.setError(error)
 		});
 	}
+
 	addAcknowledges(userNews: UserNews[]): void {
-		console.log('news:', this.news);
-		console.log('user news:', userNews);
-		this.news.forEach(n => n.acknowledged = userNews.find(u => u.newsId === n.id)?.acknowledged ?? false);
+		this.news.forEach(
+			news => news.acknowledged = userNews
+				.find(userNews => userNews.newsId === news.id)?.acknowledged ?? false);
 	}
 }
 
