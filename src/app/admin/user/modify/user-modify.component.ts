@@ -34,8 +34,8 @@ export class UserModifyComponent extends ErrorAware implements OnInit {
 	}
 
 	ngOnInit() {
-		const id = this.route.snapshot.params.user;
-		this.userService.getUser(id).subscribe({
+		const userId = this.route.snapshot.params.user;
+		this.userService.getUser(userId).subscribe({
 			next: (user) => {
 				this.user = user;
 				this.confirmPassword = this.user.password;
@@ -70,6 +70,10 @@ export class UserModifyComponent extends ErrorAware implements OnInit {
 	}
 
 	cancel() {
-		this.router.navigateByUrl('/admin?tab=user');
+		if (this.isAdmin) {
+			this.router.navigateByUrl('/admin?tab=user');
+		} else {
+			this.router.navigateByUrl('/');
+		}
 	}
 }

@@ -14,20 +14,20 @@ export class NewsModifyComponent extends ErrorAware implements OnInit {
 
 	news: News = { id: 0, subject: '', text: '', url: '', createdAt: 0 };
 
-	constructor(private route: ActivatedRoute,
-    private newsService: NewsService, private router: Router) {
+	constructor(
+		private route: ActivatedRoute,
+		private newsService: NewsService,
+		private router: Router) {
 		super();
 	}
 
 	ngOnInit(): void {
-		console.log('news modify ngOnInit', this.route.snapshot.params);
 		const id = this.route.snapshot.params.id;
 		this.newsService.getOne(Number(id)).subscribe({
 			next: (data) => this.news = data,
 			error: (error) => this.setError(error)
 		});
 	}
-
 
 	onClick() {
 		this.clearError();
