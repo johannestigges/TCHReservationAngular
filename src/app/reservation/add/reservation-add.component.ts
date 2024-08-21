@@ -209,7 +209,7 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
 				}
 				this.onBack();
 			},
-			error: (error) => (this.httpError = error)
+			error: (error) => this.setError(error)
 		});
 	}
 

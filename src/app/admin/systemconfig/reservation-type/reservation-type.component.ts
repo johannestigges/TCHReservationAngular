@@ -5,8 +5,7 @@ import { userRoleNames } from '../../user/user-role.enum';
 
 @Component({
 	selector: 'tch-reservation-type',
-	templateUrl: './reservation-type.component.html',
-	styleUrls: ['./reservation-type.component.scss']
+	templateUrl: './reservation-type.component.html'
 })
 export class ReservationTypeComponent implements OnInit {
 	@Input() value?: ReservationTypeValues;

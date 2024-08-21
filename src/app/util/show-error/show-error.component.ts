@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ErrorMessage } from '../error/error-message';
 
@@ -7,20 +7,9 @@ import { ErrorMessage } from '../error/error-message';
 	templateUrl: './show-error.component.html',
 	styleUrls: ['./show-error.component.scss']
 })
-export class ShowErrorComponent implements OnChanges {
+export class ShowErrorComponent {
 
 	@Input() httpError?: HttpErrorResponse;
 	@Input() errorMessages: ErrorMessage[] = [];
-
-	ngOnChanges() {
-		this.analyzeHttpError();
-	}
-
-	private analyzeHttpError() {
-		if (this.httpError?.error) {
-			for (const e of this.httpError.error as ErrorMessage[]) {
-				this.errorMessages.push(e);
-			}
-		}
-	}
+	@Input() fieldErrors: Map<string, string> = new Map();
 }

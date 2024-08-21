@@ -9,8 +9,7 @@ import { Router } from '@angular/router';
 
 @Component({
 	selector: 'tch-user-add',
-	templateUrl: './user-add.component.html',
-	styleUrls: ['./user-add.component.scss']
+	templateUrl: './user-add.component.html'
 })
 export class UserAddComponent extends ErrorAware {
 
@@ -23,7 +22,7 @@ export class UserAddComponent extends ErrorAware {
 	confirmPassword = '';
 
 	constructor(
-		private router:Router,
+		private router: Router,
 		private userService: UserService) {
 		super();
 
@@ -37,7 +36,7 @@ export class UserAddComponent extends ErrorAware {
 	onClick() {
 		this.clearError();
 		if (this.user.password !== this.confirmPassword) {
-			this.addErrorMessage('Passwörter stimmen nicht überein!','password');
+			this.addFieldError('confirmPassword', 'Passwörter stimmen nicht überein!');
 			return;
 		}
 		this.user.role = this.userRole;
@@ -54,6 +53,5 @@ export class UserAddComponent extends ErrorAware {
 
 	cancel() {
 		this.router.navigateByUrl('/admin?tab=user');
-		//this.router.navigate(['/admin'], {queryParams: { tab: 'user'}});
 	}
 }

@@ -2,7 +2,7 @@
     <a class="btn btn-outline-primary mx-2" routerLink="/admin/news/add">Nachricht anlegen</a>
     <button class="btn btn-outline-secondary" (click)="cancel()">Zurück</button>
   </div>
-  
+
   <table class="table table-bordered table-hover">
     <thead>
       <tr>
@@ -26,4 +26,4 @@
       </tr>
     </tbody>
   </table>
-  <tch-show-error [httpError]="httpError" [errorMessages]="errorMessages"></tch-show-error>
+  <tch-show-error [httpError]="httpError" [errorMessages]="errorMessages" [fieldErrors]="fieldErrors"></tch-show-error>

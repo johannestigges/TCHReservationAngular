@@ -1,5 +1,5 @@
 <div class="container">
-  <form class="form-horizontal">
+  <form class="form-horizontal" novalidate="">
     <!-- title -->
     <div class="form-group mb-3">
       <h2 class="col-sm-offset-2 col-sm-10">Reservierung anlegen</h2>
@@ -10,14 +10,8 @@
       <label class="col-sm-2 control-label">Zeit:</label>
       <div class="row col-sm-10">
         <div class="col-6">
-          <input
-            type="text"
-            name="date"
-            class="form-control"
-            size="8"
-            readonly
-            [value]="getDate()"
-          />
+          <input type="text" name="date" class="form-control" size="8" readonly [value]="getDate()" />
+          <tch-field-error [fieldErrors]="fieldErrors" field="date" />
         </div>
         <div class="col-6">
           <select name="time" id="time" class="form-control" [(ngModel)]="time">
@@ -25,6 +19,7 @@
               {{ showTime(t) }}
             </option>
           </select>
+          <tch-field-error [fieldErrors]="fieldErrors" field="start" />
         </div>
       </div>
     </div>
@@ -34,19 +29,12 @@
       <label class="col-sm-2 control-label">Platz:</label>
       <div class="row col-sm-10">
         <div class="col-sm-4">
-          <select
-            class="form-control"
-            name="court"
-            id="court"
-            [(ngModel)]="reservation.courts"
-          >
-            <option
-              *ngFor="let index of systemConfig.getCourtIndices()"
-              [value]="index + 1"
-            >
+          <select class="form-control" name="court" id="court" [(ngModel)]="reservation.courts">
+            <option *ngFor="let index of systemConfig.getCourtIndices()" [value]="index + 1">
               {{ systemConfig.getCourtName(index) }}
             </option>
           </select>
+          <tch-field-error [fieldErrors]="fieldErrors" field="court" />
         </div>
       </div>
     </div>
@@ -60,6 +48,7 @@
             {{ reservationType.name }}
           </option>
         </select>
+        <tch-field-error [fieldErrors]="fieldErrors" field="type" />
       </div>
     </div>
 
@@ -67,14 +56,8 @@
     <div class="form-group mb-3">
       <label for="text" class="col-sm-2 form-label">Text:</label>
       <div class="col-sm-10 input-group has-validation">
-        <input
-          id="text"
-          type="text"
-          class="form-control"
-          [(ngModel)]="reservation.text"
-          name="text"
-          required
-        />
+        <input id="text" type="text" class="form-control" [(ngModel)]="reservation.text" name="text" required />
+        <tch-field-error [fieldErrors]="fieldErrors" field="text" />
       </div>
     </div>
 
@@ -83,13 +66,8 @@
       <label class="col-sm-2 control-label">Dauer:</label>
       <div class="row col-sm-10 align-items-center">
         <div class="col-4">
-          <input
-            type="text"
-            class="form-control"
-            [(ngModel)]="reservation.duration"
-            name="duration"
-            size="1"
-          />
+          <input type="text" class="form-control" [(ngModel)]="reservation.duration" name="duration" size="1" />
+          <tch-field-error [fieldErrors]="fieldErrors" field="duration"/>
         </div>
         <div class="col-8">
           mal {{ systemConfig.durationUnitInMinutes }} Minuten
@@ -103,22 +81,13 @@
       <div class="row col-sm-10">
         <div class="col-sm-12 radio">
           <label>
-            <input
-              type="radio"
-              name="duration"
-              (change)="onDurationChanged(2)"
-              checked
-            />
+            <input type="radio" name="duration" (change)="onDurationChanged(2)" checked />
             Einzel (60 Minuten)
           </label>
         </div>
         <div class="col-sm-12 radio">
           <label>
-            <input
-              type="radio"
-              name="duration"
-              (change)="onDurationChanged(3)"
-            />
+            <input type="radio" name="duration" (change)="onDurationChanged(3)" />
             Doppel (90 Minuten)
           </label>
         </div>
@@ -130,61 +99,36 @@
       <label class="col-sm-2 control-label">Wiederholung</label>
       <div class="row col-sm-10">
         <div class="col-sm-6">
-          <select
-            id="repeat_type"
-            name="repeat_type"
-            class="form-control"
-            [(ngModel)]="reservation.repeatType"
-            (change)="onRepeatTypeChanged()"
-          >
+          <select id="repeat_type" name="repeat_type" class="form-control" [(ngModel)]="reservation.repeatType"
+            (change)="onRepeatTypeChanged()">
             <option selected value="">keine</option>
             <option value="daily">täglich</option>
             <option value="weekly">wöchentlich</option>
           </select>
         </div>
-        <div
-          class="col-sm-4"
-          *ngIf="
+        <div class="col-sm-4" *ngIf="
             reservation.repeatType === 'daily' ||
             reservation.repeatType === 'weekly'
-          "
-        >
+          ">
           <div style="display: flex">
             <label class="control-label">bis &nbsp;&nbsp;</label>
-            <ngb-datepicker
-            [(ngModel)]="repeatUntil"
-            [minDate]="repeatMinDate"
-            [ngModelOptions]="{standalone: true}"
-            > #d</ngb-datepicker>
+            <ngb-datepicker [(ngModel)]="repeatUntil" [minDate]="repeatMinDate" [ngModelOptions]="{standalone: true}">
+              #d</ngb-datepicker>
           </div>
         </div>
-        <div
-          class="col-2"
-          *ngIf="
+        <div class="col-2" *ngIf="
             reservation.repeatType === 'daily' ||
             reservation.repeatType === 'weekly'
-          "
-        >
-          <button
-            title="Reservierungen generieren"
-            (click)="onGenerateOccupations()"
-            class="btn btn-primary"
-          >
+          ">
+          <button title="Reservierungen generieren" (click)="onGenerateOccupations()" class="btn btn-primary">
             +
           </button>
         </div>
       </div>
-      <div
-        class="row col-sm-10 mb-2 border-button"
-        *ngFor="let occupation of reservation.occupations; let i = index"
-      >
+      <div class="row col-sm-10 mb-2 border-button" *ngFor="let occupation of reservation.occupations; let i = index">
         <div class="col">Reservierung am {{ toDate(occupation.date) }}</div>
         <div class="col">
-          <button
-            title="Diese Reservierung löschen"
-            class="btn btn-outline-tertiary"
-            (click)="onDeleteOccupation(i)"
-          >
+          <button title="Diese Reservierung löschen" class="btn btn-outline-tertiary" (click)="onDeleteOccupation(i)">
             -
           </button>
         </div>
@@ -194,10 +138,8 @@
     <!-- error -->
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-10">
-        <tch-show-error
-          [httpError]="httpError"
-          [errorMessages]="errorMessages"
-        ></tch-show-error>
+        <tch-show-error [httpError]="httpError" [errorMessages]="errorMessages"
+          [fieldErrors]="fieldErrors"></tch-show-error>
       </div>
     </div>
 

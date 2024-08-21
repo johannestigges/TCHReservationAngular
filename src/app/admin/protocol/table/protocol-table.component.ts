@@ -8,8 +8,7 @@ import { Router } from '@angular/router';
 
 @Component({
 	selector: 'tch-protocol-table',
-	templateUrl: './protocol-table.component.html',
-	styleUrls: ['./protocol-table.component.scss']
+	templateUrl: './protocol-table.component.html'
 })
 export class ProtocolTableComponent extends ErrorAware implements OnInit {
 

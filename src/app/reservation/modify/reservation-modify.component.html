@@ -10,14 +10,8 @@
       <label class="col-sm-2 control-label">Zeit:</label>
       <div class="row col-sm-10">
         <div class="col-6">
-          <input
-            type="text"
-            name="date"
-            class="form-control"
-            [value]="getDate()"
-            size="8"
-            readonly
-          />
+          <input type="text" name="date" class="form-control" [value]="getDate()" size="8" readonly />
+          <tch-field-error [fieldErrors]="fieldErrors" field="date" />
         </div>
         <div class="col-6">
           <select class="form-control" id="time" [(ngModel)]="time" name="time">
@@ -25,6 +19,7 @@
               {{ showTime(t) }}
             </option>
           </select>
+          <tch-field-error [fieldErrors]="fieldErrors" field="start" />
         </div>
       </div>
     </div>
@@ -34,19 +29,12 @@
       <label class="col-sm-2 control-label">Platz:</label>
       <div class="row col-sm-10">
         <div class="col-sm-4">
-          <select
-            class="form-control"
-            id="court"
-            [(ngModel)]="court"
-            name="court"
-          >
-            <option
-              *ngFor="let index of systemConfig.getCourtIndices()"
-              [value]="index + 1"
-            >
+          <select class="form-control" id="court" [(ngModel)]="court" name="court">
+            <option *ngFor="let index of systemConfig.getCourtIndices()" [value]="index + 1">
               {{ systemConfig.getCourtName(index) }}
             </option>
           </select>
+          <tch-field-error [fieldErrors]="fieldErrors" field="court" />
         </div>
       </div>
     </div>
@@ -60,6 +48,7 @@
             {{ reservationType.name }}
           </option>
         </select>
+        <tch-field-error [fieldErrors]="fieldErrors" field="type" />
       </div>
     </div>
 
@@ -67,13 +56,8 @@
     <div class="form-group mb-3">
       <label class="col-sm-2 control-label">Text:</label>
       <div class="col-sm-10">
-        <input
-          type="text"
-          class="form-control"
-          [(ngModel)]="occupation.text"
-          name="text"
-          required
-        />
+        <input type="text" class="form-control" [(ngModel)]="occupation.text" name="text" required />
+        <tch-field-error [fieldErrors]="fieldErrors" field="text" />
       </div>
     </div>
 
@@ -82,13 +66,8 @@
       <label class="col-sm-2 control-label">Dauer:</label>
       <div class="row col-sm-10 align-items-center">
         <div class="col-4">
-          <input
-            type="text"
-            class="form-control"
-            [(ngModel)]="occupation.duration"
-            name="duration"
-            size="1"
-          />
+          <input type="text" class="form-control" [(ngModel)]="occupation.duration" name="duration" size="1" />
+          <tch-field-error [fieldErrors]="fieldErrors" field="duration" />
         </div>
         <div class="col-8">
           mal {{ systemConfig.durationUnitInMinutes }} Minuten
@@ -97,26 +76,17 @@
     </div>
 
     <!-- user-->
-    <div class="form-group mb-3">
-      <label class="col-2 control-label">Benutzer:</label>
-      <div class="col-10">
-        {{occupation.reservation.user.name}}
-      </div> 
-    </div>
-    <div *ngIf="occupation.reservation.user.email" class="form-group mb-3">
-      <label class="col-2 control-label">EMail:</label>
-      <div class="col-10">
-        {{occupation.reservation.user.email}}
-      </div> 
-    </div>
+    <label class="form-group mb-3">
+      Angelegt von {{occupation.reservation.user.name}}
+      <a *ngIf="occupation.reservation.user.email" [href]="'mailto:'+occupation.reservation.user.email">
+        {{occupation.reservation.user.email}}</a>
+    </label>
 
     <!-- error -->
     <div class="form-group mb-3">
       <div class="col-sm-offset-2 col-sm-10">
-        <tch-show-error
-          [httpError]="httpError"
-          [errorMessages]="errorMessages"
-        ></tch-show-error>
+        <tch-show-error [httpError]="httpError" [errorMessages]="errorMessages"
+          [fieldErrors]="fieldErrors"></tch-show-error>
       </div>
     </div>
 
@@ -126,11 +96,7 @@
         <button *ngIf="canEdit()" (click)="onUpdate()" class="btn btn-primary">
           Speichern
         </button>
-        <button
-          *ngIf="canDelete()"
-          (click)="onDelete()"
-          class="btn btn-outline-secondary ms-1"
-        >
+        <button *ngIf="canDelete()" (click)="onDelete()" class="btn btn-outline-secondary ms-1">
           Löschen
         </button>
         <!-- not working yet

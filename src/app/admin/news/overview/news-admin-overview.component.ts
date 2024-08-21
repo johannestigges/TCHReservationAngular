@@ -9,8 +9,7 @@ import { Router } from '@angular/router';
 @Component({
 	selector: 'tch-news-admin-overview',
 	standalone: false,
-	templateUrl: './news-admin-overview.component.html',
-	styleUrl: './news-admin-overview.component.scss'
+	templateUrl: './news-admin-overview.component.html'
 })
 export class NewsAdminOverviewComponent extends ErrorAware implements OnInit {
 	newsList: News[] = [];

@@ -7,8 +7,7 @@ import { Router } from '@angular/router';
 
 @Component({
 	selector: 'tch-user-table',
-	templateUrl: './user-table.component.html',
-	styleUrls: ['./user-table.component.scss']
+	templateUrl: './user-table.component.html'
 })
 export class UserTableComponent extends ErrorAware implements OnInit {
 

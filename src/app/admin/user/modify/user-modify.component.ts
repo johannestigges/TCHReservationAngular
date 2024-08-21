@@ -10,8 +10,7 @@ import { ErrorAware } from '../../../util/error/error-aware';
 
 @Component({
 	selector: 'tch-user-modify',
-	templateUrl: './user-modify.component.html',
-	styleUrls: ['./user-modify.component.scss']
+	templateUrl: './user-modify.component.html'
 })
 export class UserModifyComponent extends ErrorAware implements OnInit {
 
@@ -57,7 +56,7 @@ export class UserModifyComponent extends ErrorAware implements OnInit {
 	onClick() {
 		this.clearError();
 		if (this.user.password !== this.confirmPassword) {
-			this.addErrorMessage('Passwörter stimmen nicht überein!', 'password');
+			this.addFieldError('confirmPassword', 'Passwörter stimmen nicht überein!');
 			return;
 		}
 		this.user.role = this.userRole;

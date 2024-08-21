@@ -5,8 +5,7 @@ import { userRoleNames, userRoleValues } from '../../user/user-role.enum';
 
 @Component({
 	selector: 'tch-reservation-types',
-	templateUrl: './reservation-types.component.html',
-	styleUrls: ['./reservation-types.component.scss']
+	templateUrl: './reservation-types.component.html'
 })
 export class ReservationTypesComponent implements OnInit {
 	readonly NOT_IN_EDIT = -1;

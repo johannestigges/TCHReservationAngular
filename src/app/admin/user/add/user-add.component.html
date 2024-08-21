@@ -16,6 +16,7 @@
           [(ngModel)]="user.name"
           required
         />
+        <tch-field-error [fieldErrors]="fieldErrors" field="name" />
       </div>
     </div>
 
@@ -29,6 +30,7 @@
           name="email"
           [(ngModel)]="user.email"
         />
+        <tch-field-error [fieldErrors]="fieldErrors" field="email" />
       </div>
     </div>
 
@@ -43,6 +45,7 @@
           [(ngModel)]="user.password"
           required
         />
+        <tch-field-error [fieldErrors]="fieldErrors" field="password" />
       </div>
     </div>
 
@@ -57,6 +60,7 @@
           [(ngModel)]="confirmPassword"
           required
         />
+        <tch-field-error [fieldErrors]="fieldErrors" field="confirmPassword" />
       </div>
     </div>
 
@@ -66,7 +70,7 @@
       <div class="col-sm-10">
         <select
           class="form-control"
-          id="type"
+          id="role"
           [(ngModel)]="userRole"
           name="role"
         >
@@ -74,6 +78,7 @@
             {{ role }}
           </option>
         </select>
+        <tch-field-error [fieldErrors]="fieldErrors" field="role" />
       </div>
     </div>
     <!-- user status -->
@@ -82,19 +87,20 @@
       <div class="col-sm-10">
         <select
           class="form-control"
-          id="type"
+          id="status"
           [(ngModel)]="userStatus"
           name="status"
         >
           <option *ngFor="let s of statusValues" [value]="s">{{ s }}</option>
         </select>
+        <tch-field-error [fieldErrors]="fieldErrors" field="status" />
       </div>
     </div>
 
     <!-- error -->
     <div class="form-group mb-3">
       <div class="col-sm-offset-2 col-sm-10">
-        <tch-show-error [httpError]="httpError" [errorMessages]="errorMessages">
+        <tch-show-error [httpError]="httpError" [errorMessages]="errorMessages" [fieldErrors]="fieldErrors">
         </tch-show-error>
       </div>
     </div>
