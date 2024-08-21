@@ -6,8 +6,7 @@ import { User } from 'src/app/admin/user/user';
 @Component({
 	selector: 'tch-news-link',
 	standalone: false,
-	templateUrl: './news-link.component.html',
-	styleUrl: './news-link.component.scss'
+	templateUrl: './news-link.component.html'
 })
 export class NewsLinkComponent implements OnInit, OnChanges {
 

@@ -9,8 +9,7 @@ import { ErrorAware } from 'src/app/util/error/error-aware';
 @Component({
 	selector: 'tch-news-detail',
 	standalone: false,
-	templateUrl: './news-detail.component.html',
-	styleUrl: './news-detail.component.scss'
+	templateUrl: './news-detail.component.html'
 })
 export class NewsDetailComponent extends ErrorAware implements OnInit {
 	news: News = { id: 0, subject: '', text: '', url: '', createdAt: 0 };

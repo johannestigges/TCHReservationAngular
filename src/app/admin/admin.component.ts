@@ -3,8 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 
 @Component({
 	selector: 'tch-admin',
-	templateUrl: './admin.component.html',
-	styleUrls: ['./admin.component.scss']
+	templateUrl: './admin.component.html'
 })
 export class AdminComponent implements OnInit {
 	constructor(private route: ActivatedRoute) { }

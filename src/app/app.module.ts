@@ -36,6 +36,7 @@ import { NewsAdminOverviewComponent } from './admin/news/overview/news-admin-ove
 import { NewsOverviewComponent } from './news/overview/news-overview.component';
 import { NewsDetailComponent } from './news/detail/news-detail.component';
 import { NewsLinkComponent } from './news/link/news-link.component';
+import { FieldErrorComponent } from './util/field-error/field-error.component';
 
 @NgModule({
 	declarations: [
@@ -73,6 +74,7 @@ import { NewsLinkComponent } from './news/link/news-link.component';
 		ReactiveFormsModule,
 		HttpClientModule,
 		QRCodeModule,
+		FieldErrorComponent,
 		NgbModule
 	],
 	providers: [
@@ -81,11 +83,9 @@ import { NewsLinkComponent } from './news/link/news-link.component';
 		ProtocolService,
 		SystemconfigService,
 		{
-			provide: HTTP_INTERCEPTORS,
-			useClass: CorsInterceptor,
-			multi: true,
+			provide: HTTP_INTERCEPTORS, useClass: CorsInterceptor, multi: true,
 		},
 	],
 	bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

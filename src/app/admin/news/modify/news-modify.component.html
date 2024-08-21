@@ -4,7 +4,7 @@
       <div class="form-group mb-3">
         <h2 class="col-sm-offset-2 col-sm-10">Nachricht ändern</h2>
       </div>
-  
+
       <!-- subject -->
       <div class="form-group mb-3">
         <label class="col-sm-2 control-label">Titel:</label>
@@ -16,9 +16,10 @@
             [(ngModel)]="news.subject"
             required
           />
+          <tch-field-error [fieldErrors]="fieldErrors" field="titel" />
         </div>
       </div>
-  
+
       <!-- text -->
       <div class="form-group mb-3">
         <label class="col-sm-2 control-label">Text:</label>
@@ -29,17 +30,18 @@
             name="text"
             [(ngModel)]="news.text"
           ></textarea>
+          <tch-field-error [fieldErrors]="fieldErrors" field="text" />
         </div>
       </div>
-  
+
       <!-- error -->
       <div class="form-group mb-3">
         <div class="col-sm-offset-2 col-sm-10">
-          <tch-show-error [httpError]="httpError" [errorMessages]="errorMessages">
+          <tch-show-error [httpError]="httpError" [errorMessages]="errorMessages" [fieldErrors]="fieldErrors">
           </tch-show-error>
         </div>
       </div>
-  
+
       <!-- Buttons -->
       <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
@@ -51,4 +53,3 @@
       </div>
     </form>
   </div>
-  

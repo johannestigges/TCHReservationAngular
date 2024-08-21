@@ -7,8 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 @Component({
 	selector: 'tch-news-modify',
 	standalone: false,
-	templateUrl: './news-modify.component.html',
-	styleUrl: './news-modify.component.scss'
+	templateUrl: './news-modify.component.html'
 })
 export class NewsModifyComponent extends ErrorAware implements OnInit {
 
