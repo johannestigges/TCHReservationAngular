@@ -1,55 +1,46 @@
 <div class="container">
-    <form class="form-horizontal">
-      <!-- title -->
-      <div class="form-group mb-3">
-        <h2 class="col-sm-offset-2 col-sm-10">Nachricht ändern</h2>
-      </div>
+  <form class="form-horizontal">
+    <!-- title -->
+    <div class="form-group mb-3">
+      <h2 class="col-sm-offset-2 col-sm-10">Nachricht ändern</h2>
+    </div>
 
-      <!-- subject -->
-      <div class="form-group mb-3">
-        <label class="col-sm-2 control-label">Titel:</label>
-        <div class="col-sm-10">
-          <input
-            type="text"
-            class="form-control"
-            name="subject"
-            [(ngModel)]="news.subject"
-            required
-          />
-          <tch-field-error [fieldErrors]="fieldErrors" field="titel" />
-        </div>
+    <!-- subject -->
+    <div class="form-group mb-3">
+      <label class="col-sm-2 control-label">Titel:</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" [class.is-invalid]="fieldErrors?.has('titel')" name="subject"
+          [(ngModel)]="news.subject" required />
+        <tch-field-error [fieldErrors]="fieldErrors" field="titel" />
       </div>
+    </div>
 
-      <!-- text -->
-      <div class="form-group mb-3">
-        <label class="col-sm-2 control-label">Text:</label>
-        <div class="col-sm-10">
-          <textarea
-            rows="30"
-            class="form-control"
-            name="text"
-            [(ngModel)]="news.text"
-          ></textarea>
-          <tch-field-error [fieldErrors]="fieldErrors" field="text" />
-        </div>
+    <!-- text -->
+    <div class="form-group mb-3">
+      <label class="col-sm-2 control-label">Text:</label>
+      <div class="col-sm-10">
+        <textarea rows="30" class="form-control" [class.is-invalid]="fieldErrors?.has('text')" name="text"
+          [(ngModel)]="news.text"></textarea>
+        <tch-field-error [fieldErrors]="fieldErrors" field="text" />
       </div>
+    </div>
 
-      <!-- error -->
-      <div class="form-group mb-3">
-        <div class="col-sm-offset-2 col-sm-10">
-          <tch-show-error [httpError]="httpError" [errorMessages]="errorMessages" [fieldErrors]="fieldErrors">
-          </tch-show-error>
-        </div>
+    <!-- error -->
+    <div class="form-group mb-3">
+      <div class="col-sm-offset-2 col-sm-10">
+        <tch-show-error [httpError]="httpError" [errorMessages]="errorMessages" [fieldErrors]="fieldErrors">
+        </tch-show-error>
       </div>
+    </div>
 
-      <!-- Buttons -->
-      <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
-          <button (click)="onClick()" class="btn btn-primary">
-            Nachricht speichern
-          </button>
-          <button (click)="cancel()" class="btn btn-outline-secondary ms-1">Zurück</button>
-        </div>
+    <!-- Buttons -->
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button (click)="onClick()" class="btn btn-primary">
+          Nachricht speichern
+        </button>
+        <button (click)="cancel()" class="btn btn-outline-secondary ms-1">Zurück</button>
       </div>
-    </form>
-  </div>
+    </div>
+  </form>
+</div>

@@ -10,11 +10,13 @@
       <label class="col-sm-2 control-label">Zeit:</label>
       <div class="row col-sm-10">
         <div class="col-6">
-          <input type="text" name="date" class="form-control" size="8" readonly [value]="getDate()" />
+          <input type="text" name="date" class="form-control" [class.is-invalid]="fieldErrors?.has('date')" size="8"
+            readonly [value]="getDate()" />
           <tch-field-error [fieldErrors]="fieldErrors" field="date" />
         </div>
         <div class="col-6">
-          <select name="time" id="time" class="form-control" [(ngModel)]="time">
+          <select name="time" id="time" class="form-control" [class.is-invalid]="fieldErrors?.has('start')"
+            [(ngModel)]="time">
             <option *ngFor="let t of getTimes()" [value]="t">
               {{ showTime(t) }}
             </option>
@@ -29,7 +31,8 @@
       <label class="col-sm-2 control-label">Platz:</label>
       <div class="row col-sm-10">
         <div class="col-sm-4">
-          <select class="form-control" name="court" id="court" [(ngModel)]="reservation.courts">
+          <select class="form-control" name="court" id="court" [class.is-invalid]="fieldErrors?.has('court')"
+            [(ngModel)]="reservation.courts">
             <option *ngFor="let index of systemConfig.getCourtIndices()" [value]="index + 1">
               {{ systemConfig.getCourtName(index) }}
             </option>
@@ -43,7 +46,8 @@
     <div class="form-group mb-3">
       <label class="col-sm-2 control-label">Typ:</label>
       <div class="col-sm-10">
-        <select id="type" name="type" class="form-control" [(ngModel)]="type" (ngModelChange)="onTypeSelected()">
+        <select id="type" name="type" class="form-control" [(ngModel)]="type"
+          [class.is-invalid]="fieldErrors?.has('type')" (ngModelChange)="onTypeSelected()">
           <option *ngFor="let reservationType of reservationTypes" [value]="reservationType.type">
             {{ reservationType.name }}
           </option>
@@ -56,7 +60,8 @@
     <div class="form-group mb-3">
       <label for="text" class="col-sm-2 form-label">Text:</label>
       <div class="col-sm-10 input-group has-validation">
-        <input id="text" type="text" class="form-control" [(ngModel)]="reservation.text" name="text" required />
+        <input id="text" type="text" class="form-control" [class.is-invalid]="fieldErrors?.has('text')"
+          [(ngModel)]="reservation.text" name="text" required />
         <tch-field-error [fieldErrors]="fieldErrors" field="text" />
       </div>
     </div>
@@ -66,8 +71,9 @@
       <label class="col-sm-2 control-label">Dauer:</label>
       <div class="row col-sm-10 align-items-center">
         <div class="col-4">
-          <input type="text" class="form-control" [(ngModel)]="reservation.duration" name="duration" size="1" />
-          <tch-field-error [fieldErrors]="fieldErrors" field="duration"/>
+          <input type="text" class="form-control" [class.is-invalid]="fieldErrors?.has('duration')"
+            [(ngModel)]="reservation.duration" name="duration" size="1" />
+          <tch-field-error [fieldErrors]="fieldErrors" field="duration" />
         </div>
         <div class="col-8">
           mal {{ systemConfig.durationUnitInMinutes }} Minuten
