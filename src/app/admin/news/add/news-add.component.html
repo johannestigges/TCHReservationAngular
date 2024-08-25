@@ -9,9 +9,9 @@
     <div class="form-group mb-3">
       <label class="col-sm-2 control-label">Titel:</label>
       <div class="col-sm-10">
-        <input type="text" class="form-control" [class.is-invalid]="fieldErrors?.has('titel')" name="subject"
+        <input type="text" class="form-control" [class.is-invalid]="fieldErrors?.has('subject')" name="subject"
           [(ngModel)]="news.subject" required />
-        <tch-field-error [fieldErrors]="fieldErrors" field="titel" />
+        <tch-field-error [fieldErrors]="fieldErrors" field="subject" />
       </div>
     </div>
 
