@@ -9,7 +9,7 @@
     <div class="form-group mb-3">
       <label class="col-sm-2 control-label">Id:</label>
       <div class="col-sm-10">
-        <input type="text" class="form-control" formControlName="id" />
+        <input type="text" class="form-control" [class.is-invalid]="fieldErrors?.has('id')" formControlName="id" />
         <tch-field-error [fieldErrors]="fieldErrors" field="id" />
       </div>
     </div>
@@ -18,7 +18,7 @@
     <div class="form-group mb-3">
       <label class="col-sm-2 control-label">Name:</label>
       <div class="col-sm-10">
-        <input type="text" class="form-control" formControlName="name" />
+        <input type="text" class="form-control" [class.is-invalid]="fieldErrors?.has('name')" formControlName="name" />
         <tch-field-error [fieldErrors]="fieldErrors" field="name" />
       </div>
     </div>
@@ -27,7 +27,8 @@
     <div class="form-group mb-3">
       <label class="col-sm-2 control-label">Titel:</label>
       <div class="col-sm-10">
-        <input type="text" class="form-control" formControlName="title" />
+        <input type="text" class="form-control" [class.is-invalid]="fieldErrors?.has('titel')"
+          formControlName="title" />
         <tch-field-error [fieldErrors]="fieldErrors" field="titel" />
       </div>
     </div>
@@ -58,7 +59,8 @@
     <div class="form-group mb-3">
       <label class="col-sm-2 control-label">Buchungseinheit:</label>
       <div class="col-sm-10">
-        <select class="form-control" formControlName="durationUnitInMinutes">
+        <select class="form-control" [class.is-invalid]="fieldErrors?.has('durationUnit')"
+          formControlName="durationUnitInMinutes">
           <option *ngFor="let du of durationUnits" [value]="du">
             {{ du }} Minuten
           </option>
@@ -71,7 +73,8 @@
     <div class="form-group mb-3">
       <label class="col-sm-2 control-label">im Voraus buchbar:</label>
       <div class="col-sm-10">
-        <select class="form-control" formControlName="maxDaysReservationInFuture">
+        <select class="form-control" [class.is-invalid]="fieldErrors?.has('maxDaysReservationInFuture')"
+          formControlName="maxDaysReservationInFuture">
           <option *ngFor="let md of maxDays" [value]="md">{{ md }} Tage</option>
         </select>
         <tch-field-error [fieldErrors]="fieldErrors" field="maxDaysReservationInFuture" />
@@ -82,7 +85,7 @@
     <div class="form-group mb-3">
       <label class="col-sm-2 control-label">maximale Buchungsdauer:</label>
       <div class="col-sm-10">
-        <select class="form-control" formControlName="maxDuration">
+        <select class="form-control" [class.is-invalid]="fieldErrors?.has('maxDuration')" formControlName="maxDuration">
           <option *ngFor="let md of maxDurations" [value]="md">
             {{ md }}
           </option>
@@ -95,7 +98,7 @@
     <div class="form-group mb-3">
       <label class="col-sm-2 control-label">Buchbar von :</label>
       <div class="col-sm-10">
-        <select class="form-control" formControlName="openingHour">
+        <select class="form-control" [class.is-invalid]="fieldErrors?.has('openingHour')" formControlName="openingHour">
           <option *ngFor="let oh of openingHours" [value]="oh">
             {{ oh }} Uhr
           </option>
@@ -108,7 +111,7 @@
     <div class="form-group mb-3">
       <label class="col-sm-2 control-label">Buchbar bis :</label>
       <div class="col-sm-10">
-        <select class="form-control" formControlName="closingHour">
+        <select class="form-control" [class.is-invalid]="fieldErrors?.has('closingHour')" formControlName="closingHour">
           <option *ngFor="let ch of closingHours" [value]="ch">
             {{ ch }} Uhr
           </option>
