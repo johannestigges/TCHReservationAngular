@@ -11,24 +11,27 @@ export class SelectFilterComponent implements OnChanges {
 
 	selectableValues: string[] = [];
 	selectedValue = '';
-	showList = true;
+	showList = false;
 
 	ngOnChanges() {
 		this.selectableValues = [...this.valueList];
 		this.selectedValue = '';
-		this.showList = true;
 	}
 
-	onFilterChange(event: Event) {
+	onInput(event: Event) {
 		this.selectedValue = (<HTMLInputElement>event.target).value;
 		this.selectableValues = this.valueList.filter(value => this.filter(value));
-		this.showList = true;
 		this.selected.next('');
+		this.showList = true;
 	}
 
-	onSelect(user: string) {
-		this.selectedValue = user;
-		this.selected.next(user);
+	onFocus() {
+		this.showList = true;
+	}
+
+	onSelect(value: string) {
+		this.selectedValue = value;
+		this.selected.next(value);
 		this.showList = false;
 	}
 

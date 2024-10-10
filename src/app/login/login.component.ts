@@ -5,8 +5,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
 	selector: 'tch-login',
-	templateUrl: './login.component.html',
-	styleUrls: ['./login.component.scss'],
+	templateUrl: './login.component.html'
 })
 export class LoginComponent implements OnInit {
 	error = '';
@@ -44,7 +43,6 @@ export class LoginComponent implements OnInit {
 
 	setError(error: unknown) {
 		this.error = JSON.stringify(error);
-		console.log(this.error);
 	}
 
 	onSubmit() {

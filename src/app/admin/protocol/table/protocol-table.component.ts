@@ -1,22 +1,21 @@
 import { Component, OnInit } from '@angular/core';
-import { Location } from '@angular/common';
 
 import { ProtocolService } from '../protocol.service';
 import { Protocol } from '../protocol';
 import { ErrorAware } from '../../../util/error/error-aware';
 import { DateUtil } from '../../../util/date/date-util';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'tch-protocol-table',
-	templateUrl: './protocol-table.component.html',
-	styleUrls: ['./protocol-table.component.scss']
+	templateUrl: './protocol-table.component.html'
 })
 export class ProtocolTableComponent extends ErrorAware implements OnInit {
 
 	protocols: Protocol[] = [];
 	since = 0;
 
-	constructor(private protocolService: ProtocolService, private location: Location) {
+	constructor(private protocolService: ProtocolService, private router: Router) {
 		super();
 	}
 
@@ -37,8 +36,8 @@ export class ProtocolTableComponent extends ErrorAware implements OnInit {
 		});
 	}
 
-	date(t: number[]) {
-		return `${t[2]}.${t[1]}.${t[0]} ${t[3]}:${t[4]}`;
+	date(t: number) {
+		return DateUtil.showDateTime(t);
 	}
 
 	parseJson(o: string) {
@@ -46,6 +45,6 @@ export class ProtocolTableComponent extends ErrorAware implements OnInit {
 	}
 
 	cancel() {
-		this.location.back();
+		this.router.navigateByUrl('/');
 	}
 }

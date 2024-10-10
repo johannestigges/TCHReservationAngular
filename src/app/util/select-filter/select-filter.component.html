@@ -1,4 +1,5 @@
-<input type="text" class="w-100 p-3 mb-3" [value]="selectedValue" (input)="onFilterChange($event)">
+<input type="text" class="form-control ng-pristine ng-valid ng-touched w-100 p-3 mb-3" [value]="selectedValue"
+    (input)="onInput($event)" (focus)="onFocus()">
 <ul *ngIf="showList" class="list-group">
     <li *ngFor="let value of selectableValues" class="list-group-item" [class.active]="value === selectedValue"
         (click)="onSelect(value)">{{value}}</li>

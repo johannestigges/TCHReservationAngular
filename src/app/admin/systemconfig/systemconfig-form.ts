@@ -1,5 +1,6 @@
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { UserRoleType, userRoleValues } from '../user/user-role.enum';
+import { WeekDays } from 'src/app/reservation/reservation-system-config';
 
 export interface SystemconfigForm {
 	id: FormControl<number>,
@@ -20,6 +21,10 @@ export interface ReservationTypeForm {
 	maxDuration: FormControl<number>,
 	maxDaysReservationInFuture: FormControl<number>,
 	maxCancelInHours: FormControl<number>,
+	repeatable: FormControl<boolean>,
+	publicVisible: FormControl<boolean>,
+	forbiddenDaysOfWeek: FormArray<FormControl<boolean>>,
+	cssStyle: FormControl<string | null>
 	roles: FormArray<FormControl<boolean>>
 }
 
@@ -29,6 +34,10 @@ export interface ReservationTypeValues {
 	maxDuration: number,
 	maxDaysReservationInFuture: number,
 	maxCancelInHours: number,
+	repeatable: boolean,
+	publicVisible: boolean,
+	forbiddenDaysOfWeek: boolean[],
+	cssStyle: string | null,
 	roles: boolean[]
 }
 
@@ -55,6 +64,13 @@ export function createReservationTypeForm(): FormGroup<ReservationTypeForm> {
 		maxDuration: new FormControl(0, { nonNullable: true }),
 		maxDaysReservationInFuture: new FormControl(0, { nonNullable: true }),
 		maxCancelInHours: new FormControl(0, { nonNullable: true }),
+		repeatable: new FormControl(true, { nonNullable: true }),
+		publicVisible: new FormControl(true, { nonNullable: true }),
+		forbiddenDaysOfWeek: new FormArray([
+			new FormControl(false, { nonNullable: true }),
+		]
+		),
+		cssStyle: new FormControl('', { nonNullable: true }),
 		roles: new FormArray<FormControl<boolean>>(createUserRoles())
 	};
 	return new FormGroup(reservationTypeForm);

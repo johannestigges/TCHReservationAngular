@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { UserService } from '../../user/user.service';
 import { User } from '../../user/user';
@@ -11,8 +10,7 @@ import { ErrorAware } from '../../../util/error/error-aware';
 
 @Component({
 	selector: 'tch-user-modify',
-	templateUrl: './user-modify.component.html',
-	styleUrls: ['./user-modify.component.scss']
+	templateUrl: './user-modify.component.html'
 })
 export class UserModifyComponent extends ErrorAware implements OnInit {
 
@@ -30,13 +28,13 @@ export class UserModifyComponent extends ErrorAware implements OnInit {
 	constructor(
 		private route: ActivatedRoute,
 		private userService: UserService,
-		private location: Location) {
+		private router: Router) {
 		super();
 	}
 
 	ngOnInit() {
-		const id = this.route.snapshot.params.user;
-		this.userService.getUser(id).subscribe({
+		const userId = this.route.snapshot.params.user;
+		this.userService.getUser(userId).subscribe({
 			next: (user) => {
 				this.user = user;
 				this.confirmPassword = this.user.password;
@@ -58,7 +56,7 @@ export class UserModifyComponent extends ErrorAware implements OnInit {
 	onClick() {
 		this.clearError();
 		if (this.user.password !== this.confirmPassword) {
-			this.addErrorMessage('Passwörter stimmen nicht überein!','password');
+			this.addFieldError('confirmPassword', 'Passwörter stimmen nicht überein!');
 			return;
 		}
 		this.user.role = this.userRole;
@@ -71,6 +69,10 @@ export class UserModifyComponent extends ErrorAware implements OnInit {
 	}
 
 	cancel() {
-		this.location.back();
+		if (this.isAdmin) {
+			this.router.navigateByUrl('/admin?tab=user');
+		} else {
+			this.router.navigateByUrl('/');
+		}
 	}
 }

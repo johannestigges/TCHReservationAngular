@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Location } from '@angular/common';
 
 import { ErrorAware } from '../../../util/error/error-aware';
 import { ReservationSystemConfig } from 'src/app/reservation/reservation-system-config';
 import { SystemconfigService } from '../systemconfig.service';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'tch-systemconfig-table',
@@ -16,7 +16,7 @@ export class SystemconfigTableComponent extends ErrorAware implements OnInit {
 
 	constructor(
 		private systemconfigService: SystemconfigService,
-		private location: Location) {
+		private router: Router) {
 		super();
 	}
 
@@ -28,6 +28,6 @@ export class SystemconfigTableComponent extends ErrorAware implements OnInit {
 	}
 
 	cancel() {
-		this.location.back();
+		this.router.navigateByUrl('/');
 	}
 }

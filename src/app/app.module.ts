@@ -30,6 +30,13 @@ import { QrComponent } from './admin/user/qr/qr.component';
 import { ReservationTypeComponent } from './admin/systemconfig/reservation-type/reservation-type.component';
 import { ReservationTypesComponent } from './admin/systemconfig/reservation-types/reservation-types.component';
 import { SelectFilterComponent } from './util/select-filter/select-filter.component';
+import { NewsAddComponent } from './admin/news/add/news-add.component';
+import { NewsModifyComponent } from './admin/news/modify/news-modify.component';
+import { NewsAdminOverviewComponent } from './admin/news/overview/news-admin-overview.component';
+import { NewsOverviewComponent } from './news/overview/news-overview.component';
+import { NewsDetailComponent } from './news/detail/news-detail.component';
+import { NewsLinkComponent } from './news/link/news-link.component';
+import { FieldErrorComponent } from './util/field-error/field-error.component';
 
 @NgModule({
 	declarations: [
@@ -51,6 +58,12 @@ import { SelectFilterComponent } from './util/select-filter/select-filter.compon
 		ShowErrorComponent,
 		ReservationTypeComponent,
 		ReservationTypesComponent,
+		NewsAdminOverviewComponent,
+		NewsAddComponent,
+		NewsModifyComponent,
+		NewsOverviewComponent,
+		NewsDetailComponent,
+		NewsLinkComponent
 	],
 	imports: [
 		BrowserModule,
@@ -61,6 +74,7 @@ import { SelectFilterComponent } from './util/select-filter/select-filter.compon
 		ReactiveFormsModule,
 		HttpClientModule,
 		QRCodeModule,
+		FieldErrorComponent,
 		NgbModule
 	],
 	providers: [
@@ -69,11 +83,9 @@ import { SelectFilterComponent } from './util/select-filter/select-filter.compon
 		ProtocolService,
 		SystemconfigService,
 		{
-			provide: HTTP_INTERCEPTORS,
-			useClass: CorsInterceptor,
-			multi: true,
+			provide: HTTP_INTERCEPTORS, useClass: CorsInterceptor, multi: true,
 		},
 	],
 	bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

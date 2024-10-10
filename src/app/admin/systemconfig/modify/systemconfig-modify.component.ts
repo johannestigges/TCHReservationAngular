@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Location } from '@angular/common';
 import { ErrorAware } from '../../../util/error/error-aware';
 import { ReservationSystemConfig, SystemConfigReservationType } from 'src/app/reservation/reservation-system-config';
 import { SystemconfigService } from '../systemconfig.service';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SystemconfigForm, createReservationTypeForm, createSystemConfigForm } from '../systemconfig-form';
 import { userRoleValues } from '../../user/user-role.enum';
 
@@ -31,7 +30,7 @@ export class SystemconfigModifyComponent extends ErrorAware implements OnInit {
 	form: FormGroup<SystemconfigForm>;
 
 	constructor(
-		private location: Location,
+		private router: Router,
 		private route: ActivatedRoute,
 		private systemconfigService: SystemconfigService
 	) {
@@ -73,6 +72,8 @@ export class SystemconfigModifyComponent extends ErrorAware implements OnInit {
 		form.controls.maxDuration.setValue(type.maxDuration);
 		form.controls.maxDaysReservationInFuture.setValue(type.maxDaysReservationInFuture);
 		form.controls.maxCancelInHours.setValue(type.maxCancelInHours);
+		form.controls.repeatable.setValue(type.repeatable);
+		form.controls.publicVisible.setValue(type.publicVisible);
 		for (let i = 0; i < userRoleValues.length; i++) {
 			form.controls.roles.at(i).setValue(type.roles.includes(userRoleValues[i]));
 		}
@@ -133,7 +134,7 @@ export class SystemconfigModifyComponent extends ErrorAware implements OnInit {
 	}
 
 	onCancel() {
-		this.location.back();
+		this.router.navigateByUrl('admin?tab=systemconfig');
 	}
 
 	private getTypesFromForm() {
@@ -146,6 +147,10 @@ export class SystemconfigModifyComponent extends ErrorAware implements OnInit {
 				maxDuration: type.controls.maxDuration.value,
 				maxDaysReservationInFuture: type.controls.maxDaysReservationInFuture.value,
 				maxCancelInHours: type.controls.maxCancelInHours.value,
+				repeatable: type.controls.repeatable.value,
+				publicVisible: type.controls.publicVisible.value,
+				forbiddenDaysOfWeek: [],
+				cssStyle: '',
 				roles: this.getRolesFromForm(type.controls.roles)
 			})
 		);
