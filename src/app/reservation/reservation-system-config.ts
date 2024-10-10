@@ -1,23 +1,24 @@
 import { DateUtil } from '../util/date/date-util';
 import { Reservation } from './reservation';
 import { Occupation } from './occupation';
+import { WeekDay } from '@angular/common';
 
 /**
  * reservation system configuration data
  */
 export class ReservationSystemConfig {
 	constructor(
-    public id: number, // system configuration id
-    public name: string, // name of reservation system
-    public title: string, // title of reservation system
-    public courts: string[], // names of courts
-    public durationUnitInMinutes: number, // smallest reservation unit
-    public maxDaysReservationInFuture: number, // maximum of reservation in the future for normal users
-    public maxDuration: number, // maximum of duration for normal users
-    public openingHour: number, // first reservation hour
-    public closingHour: number, // last reservation hour
-	public types: SystemConfigReservationType[]
-	) {}
+		public id: number, // system configuration id
+		public name: string, // name of reservation system
+		public title: string, // title of reservation system
+		public courts: string[], // names of courts
+		public durationUnitInMinutes: number, // smallest reservation unit
+		public maxDaysReservationInFuture: number, // maximum of reservation in the future for normal users
+		public maxDuration: number, // maximum of duration for normal users
+		public openingHour: number, // first reservation hour
+		public closingHour: number, // last reservation hour
+		public types: SystemConfigReservationType[]
+	) { }
 
 	public static of(config: ReservationSystemConfig) {
 		return new ReservationSystemConfig(
@@ -57,7 +58,7 @@ export class ReservationSystemConfig {
 	public toRow(date: number): number {
 		return (
 			(DateUtil.getDayMinutesPart(date) - this.openingHour * 60) /
-      this.durationUnitInMinutes
+			this.durationUnitInMinutes
 		);
 	}
 
@@ -93,7 +94,11 @@ export class ReservationSystemConfig {
 		return 2;
 	}
 
-	static readonly EMPTY = new ReservationSystemConfig(0,'','',[],0,0,0,0,0,[]);
+	static readonly EMPTY = new ReservationSystemConfig(0, '', '', [], 0, 0, 0, 0, 0, []);
+}
+
+export enum WeekDays {
+	MONDAY = 1, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY
 }
 
 export class SystemConfigReservationType {
@@ -106,10 +111,12 @@ export class SystemConfigReservationType {
 		public maxCancelInHours = 0,
 		public repeatable = false,
 		public publicVisible = false,
+		public forbiddenDaysOfWeek: WeekDays[] = [],
+		public cssStyle = '',
 		public roles: string[] = []
-	) {}
+	) { }
 
-	public static of(type:SystemConfigReservationType ) {
+	public static of(type: SystemConfigReservationType) {
 		return new SystemConfigReservationType(
 			type.id,
 			type.type,
@@ -119,6 +126,8 @@ export class SystemConfigReservationType {
 			type.maxCancelInHours,
 			type.repeatable,
 			type.publicVisible,
+			type.forbiddenDaysOfWeek,
+			type.cssStyle,
 			type.roles
 		);
 	}

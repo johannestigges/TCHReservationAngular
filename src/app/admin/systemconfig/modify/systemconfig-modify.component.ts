@@ -30,7 +30,7 @@ export class SystemconfigModifyComponent extends ErrorAware implements OnInit {
 	form: FormGroup<SystemconfigForm>;
 
 	constructor(
-		private router:Router,
+		private router: Router,
 		private route: ActivatedRoute,
 		private systemconfigService: SystemconfigService
 	) {
@@ -149,6 +149,8 @@ export class SystemconfigModifyComponent extends ErrorAware implements OnInit {
 				maxCancelInHours: type.controls.maxCancelInHours.value,
 				repeatable: type.controls.repeatable.value,
 				publicVisible: type.controls.publicVisible.value,
+				forbiddenDaysOfWeek: [],
+				cssStyle: '',
 				roles: this.getRolesFromForm(type.controls.roles)
 			})
 		);
