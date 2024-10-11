@@ -1,58 +1,66 @@
 <div class="container">
-    <form *ngIf="form" [formGroup]="form" class="form-horizontal">
-        <!-- id -->
-        <div class="form-group mb-3">
-            <label class="control-label">Id:</label>
-            <input type="text" class="form-control" formControlName="id" />
+    <h2>Reservierungsart</h2>
+    <form *ngIf="form" [formGroup]="form">
+        <div class="row g-3 mb-3">
+            <!-- id -->
+            <div class="col-2">
+                <label class="form-label">Id:</label>
+                <input type="text" class="form-control" formControlName="id" />
+            </div>
+
+            <!-- name -->
+            <div class="col-10">
+                <label class="form-label">Name:</label>
+                <input type="text" class="form-control" formControlName="name" />
+            </div>
+        </div>
+        <div class="row g-3 mb-3">
+
+            <!-- maxReservation -->
+            <div class="col-6 col-sm-4">
+                <label class="form-label">im Voraus buchbar:</label>
+                <select class="form-control" formControlName="maxDaysReservationInFuture">
+                    <option *ngFor="let md of maxDays" [value]="md">{{ md }} Tage</option>
+                </select>
+            </div>
+
+            <!-- max Cancel-->
+            <div class="col-6 col-sm-4">
+                <label class="form-label">im Voraus stornierbar:</label>
+                <select class="form-control" formControlName="maxCancelInHours">
+                    <option *ngFor="let mc of maxCancel" [value]="mc">{{ mc }} Stunden</option>
+                </select>
+            </div>
+
+            <!-- maxDuration -->
+            <div class="col-12 col-sm-4">
+                <label class="form-label">maximale Buchungsdauer:</label>
+                <select class="form-control" formControlName="maxDuration">
+                    <option *ngFor="let md of maxDurations" [value]="md">
+                        {{ md }}
+                    </option>
+                </select>
+            </div>
         </div>
 
-        <!-- name -->
-        <div class="form-group mb-3">
-            <label class="control-label">Name:</label>
-            <input type="text" class="form-control" formControlName="name" />
-        </div>
+        <div class="row g-3 mb-3">
 
-        <!-- maxReservation -->
-        <div class="form-group mb-3">
-            <label class="control-label">im Voraus buchbar:</label>
-            <select class="form-control" formControlName="maxDaysReservationInFuture">
-                <option *ngFor="let md of maxDays" [value]="md">{{ md }} Tage</option>
-            </select>
-        </div>
+            <!-- repeatable -->
+            <div class="col-12 col-sm-6 col-lg-4">
+                <input type="checkbox" class="form-check-input" formControlName="repeatable">
+                <span class="ms-2 me-4">Wiederholungen erlaubt</span>
+            </div>
 
-        <!-- max Cancel-->
-        <div class="form-group mb-3">
-            <label class="control-label">im Voraus stornierbar:</label>
-            <select class="form-control" formControlName="maxCancelInHours">
-                <option *ngFor="let mc of maxCancel" [value]="mc">{{ mc }} Stunden</option>
-            </select>
-        </div>
-
-        <!-- maxDuration -->
-        <div class="form-group mb-3">
-            <label class="control-label">maximale Buchungsdauer:</label>
-            <select class="form-control" formControlName="maxDuration">
-                <option *ngFor="let md of maxDurations" [value]="md">
-                    {{ md }}
-                </option>
-            </select>
-        </div>
-
-        <!-- repeatable -->
-        <div class="form-group mb-3">
-            <input type="checkbox" class="form-check-input" formControlName="repeatable">
-            <span class="ms-2 me-4">Wiederholungen erlaubt:</span>
-        </div>
-
-        <!-- public visible -->
-        <div class="form-group mb-3">
-            <input type="checkbox" class="form-check-input" formControlName="publicVisible">
-            <span class="ms-2 me-4">Text öffentlich sichtbar</span>
+            <!-- public visible -->
+            <div class="col">
+                <input type="checkbox" class="form-check-input" formControlName="publicVisible">
+                <span class="ms-2 me-4">Text öffentlich sichtbar</span>
+            </div>
         </div>
 
         <!-- roles-->
         <div class="form-group mb-3">
-            <label class="control-label h3">Buchung erlaubt von:</label>
+            <h4>Buchung erlaubt von:</h4>
             <div class="d-flex flex-row flex-wrap">
                 <div *ngFor="let roleForm of form.controls.roles.controls; index as i">
                     <input type="checkbox" class="form-check-input" [formControl]="roleForm">
