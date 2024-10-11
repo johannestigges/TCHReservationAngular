@@ -1,64 +1,37 @@
 <div class="container">
   <!-- title -->
-  <div class="form-group mb-3">
-    <h2 class="col-sm-offset-2 col-sm-10">Systemkonfiguration anlegen</h2>
-  </div>
+  <h2>Systemkonfiguration anlegen</h2>
 
-  <form [formGroup]="form" class="form-horizontal">
-    <!-- id -->
-    <div class="form-group mb-3">
-      <label class="col-sm-2 control-label">Id:</label>
-      <div class="col-sm-10">
+  <form [formGroup]="form">
+    <div class="row g-3 mb-3">
+
+      <!-- id -->
+      <div class="col-3 col-sm-2">
+        <label class="form-label">Id:</label>
         <input type="text" class="form-control" [class.is-invalid]="fieldErrors?.has('id')" formControlName="id" />
         <tch-field-error [fieldErrors]="fieldErrors" field="id" />
       </div>
-    </div>
 
-    <!-- name -->
-    <div class="form-group mb-3">
-      <label class="col-sm-2 control-label">Name:</label>
-      <div class="col-sm-10">
+      <!-- name -->
+      <div class="col-9 col-sm-5">
+        <label class="form-label">Name:</label>
         <input type="text" class="form-control" [class.is-invalid]="fieldErrors?.has('name')" formControlName="name" />
         <tch-field-error [fieldErrors]="fieldErrors" field="name" />
       </div>
-    </div>
 
-    <!-- title -->
-    <div class="form-group mb-3">
-      <label class="col-sm-2 control-label">Titel:</label>
-      <div class="col-sm-10">
+      <!-- title -->
+      <div class="col-12 col-sm-5">
+        <label class="form-label">Titel:</label>
         <input type="text" class="form-control" [class.is-invalid]="fieldErrors?.has('titel')"
           formControlName="title" />
         <tch-field-error [fieldErrors]="fieldErrors" field="titel" />
       </div>
     </div>
 
-    <!-- courts -->
-    <div class="form-group mb-3">
-      <label class="col-sm-2 control-label">Plätze:</label>
-      <div class="col-sm-10" formArrayName="courts">
-        <div class="d-flex flex-row align-items-center"
-          *ngFor="let court of form.controls.courts.controls; let i = index">
-          <input class="flex-grow-1" type="text" [formControl]="court" />
-          <button class="btn btn-outline-secondary m-1" (click)="removeCourt(i)">
-            -
-          </button>
-        </div>
-        <button class="btn btn-outline-secondary" (click)="addCourt()">
-          +
-        </button>
-      </div>
-    </div>
-
-    <!-- reservation types -->
-    <div class="form-group mb-3">
-      <tch-reservation-types formGroupName="types"></tch-reservation-types>
-    </div>
-
-    <!-- durationUnit -->
-    <div class="form-group mb-3">
-      <label class="col-sm-2 control-label">Buchungseinheit:</label>
-      <div class="col-sm-10">
+    <div class="row g-3 mb-3">
+      <!-- durationUnit -->
+      <div class="col-12 col-sm-4">
+        <label class="form-label">Buchungseinheit:</label>
         <select class="form-control" [class.is-invalid]="fieldErrors?.has('durationUnit')"
           formControlName="durationUnitInMinutes">
           <option *ngFor="let du of durationUnits" [value]="du">
@@ -67,37 +40,11 @@
         </select>
         <tch-field-error [fieldErrors]="fieldErrors" field="durationUnit" />
       </div>
-    </div>
 
-    <!-- maxReservation -->
-    <div class="form-group mb-3">
-      <label class="col-sm-2 control-label">im Voraus buchbar:</label>
-      <div class="col-sm-10">
-        <select class="form-control" [class.is-invalid]="fieldErrors?.has('maxDaysReservationInFuture')"
-          formControlName="maxDaysReservationInFuture">
-          <option *ngFor="let md of maxDays" [value]="md">{{ md }} Tage</option>
-        </select>
-        <tch-field-error [fieldErrors]="fieldErrors" field="maxDaysReservationInFuture" />
-      </div>
-    </div>
 
-    <!-- maxDuration -->
-    <div class="form-group mb-3">
-      <label class="col-sm-2 control-label">maximale Buchungsdauer:</label>
-      <div class="col-sm-10">
-        <select class="form-control" [class.is-invalid]="fieldErrors?.has('maxDuration')" formControlName="maxDuration">
-          <option *ngFor="let md of maxDurations" [value]="md">
-            {{ md }}
-          </option>
-        </select>
-        <tch-field-error [fieldErrors]="fieldErrors" field="maxDuration" />
-      </div>
-    </div>
-
-    <!-- openingHour -->
-    <div class="form-group mb-3">
-      <label class="col-sm-2 control-label">Buchbar von :</label>
-      <div class="col-sm-10">
+      <!-- openingHour -->
+      <div class="col-6 col-sm-4">
+        <label class="form-label">Buchbar von :</label>
         <select class="form-control" [class.is-invalid]="fieldErrors?.has('openingHour')" formControlName="openingHour">
           <option *ngFor="let oh of openingHours" [value]="oh">
             {{ oh }} Uhr
@@ -105,12 +52,10 @@
         </select>
         <tch-field-error [fieldErrors]="fieldErrors" field="openingHour" />
       </div>
-    </div>
 
-    <!-- closingHour -->
-    <div class="form-group mb-3">
-      <label class="col-sm-2 control-label">Buchbar bis :</label>
-      <div class="col-sm-10">
+      <!-- closingHour -->
+      <div class="col-6 col-sm-4">
+        <label class="form-label">Buchbar bis :</label>
         <select class="form-control" [class.is-invalid]="fieldErrors?.has('closingHour')" formControlName="closingHour">
           <option *ngFor="let ch of closingHours" [value]="ch">
             {{ ch }} Uhr
@@ -119,6 +64,22 @@
         <tch-field-error [fieldErrors]="fieldErrors" field="closingHour" />
       </div>
     </div>
+
+
+    <!-- courts -->
+    <h4 class="mt-4">Plätze:</h4>
+    <div *ngFor="let court of form.controls.courts.controls; let i = index" class="d-flex gap-3 mb-3">
+      <input class="form-control" type="text" [formControl]="court" />
+      <button class="btn btn-outline-secondary" (click)="removeCourt(i)">
+        -
+      </button>
+    </div>
+    <button class="btn btn-outline-secondary" (click)="addCourt()">
+      +
+    </button>
+
+    <!-- reservation types -->
+    <tch-reservation-types formGroupName="types"></tch-reservation-types>
 
     <!-- error -->
     <div class="form-group mb-3">
@@ -129,11 +90,7 @@
     </div>
 
     <!-- Buttons -->
-    <div class="form-group">
-      <div class="col-sm-offset-2 col-sm-10">
-        <button (click)="onSubmit()" class="btn btn-primary">Systemkonfiguration anlegen</button>
-        <button (click)="onCancel()" class="btn btn-outline-secondary ms-1">Zurück</button>
-      </div>
-    </div>
+    <button (click)="onSubmit()" class="btn btn-primary m-1">Systemkonfiguration anlegen</button>
+    <button (click)="onCancel()" class="btn btn-outline-secondary m-1">Zurück</button>
   </form>
 </div>
