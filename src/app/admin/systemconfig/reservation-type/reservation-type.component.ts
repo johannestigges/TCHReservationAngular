@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ReservationTypeForm, ReservationTypeValues, createReservationTypeForm } from '../systemconfig-form';
 import { userRoleNames } from '../../user/user-role.enum';
+import { weekDaysNames } from 'src/app/reservation/week-days';
 
 @Component({
 	selector: 'tch-reservation-type',
@@ -20,6 +21,7 @@ export class ReservationTypeComponent implements OnInit {
 	];
 
 	readonly userRoleNames = userRoleNames;
+	readonly weekDaysNames = weekDaysNames;
 
 	ngOnInit(): void {
 		this.form = createReservationTypeForm();

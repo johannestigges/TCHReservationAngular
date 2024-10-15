@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, FormGroupDirective } from '@angular/forms';
 import { ReservationTypeForm } from '../systemconfig-form';
 import { userRoleNames, userRoleValues } from '../../user/user-role.enum';
+import { weekDaysNames, weekDaysValues } from 'src/app/reservation/week-days';
 
 @Component({
 	selector: 'tch-reservation-types',
@@ -39,8 +40,16 @@ export class ReservationTypesComponent implements OnInit {
 
 	getRoles(roles: FormArray<FormControl<boolean>>): string {
 		return userRoleValues
-			.map((role, index) => roles.at(index).value ? userRoleNames[index] : null)
+			.map((_, i) => roles.at(i).value ? userRoleNames[i] : null)
 			.filter(role => role)
 			.join(', ');
+	}
+	getWeekDays(weekDays: FormArray<FormControl<boolean>>): string {
+		const weekDaysText = weekDaysValues
+			.map((_, i) => weekDays.at(i).value ? weekDaysNames[i] : null)
+			.filter(weekDay => weekDay)
+			.join(', ');
+
+		return weekDaysText ? 'gesperrt: ' + weekDaysText : '';
 	}
 }

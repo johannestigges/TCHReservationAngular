@@ -1,6 +1,6 @@
 <h4 class="mt-4">Reservierungsarten:</h4>
 <div>
-  <div *ngFor="let type of form?.controls; let i = index">
+  <div *ngFor="let type of form?.controls; let i = index" class="row mb-3">
 
     <dialog #typeDialog>
       <tch-reservation-type [value]="type.getRawValue()"
@@ -8,30 +8,46 @@
       </tch-reservation-type>
     </dialog>
 
-    <div *ngIf="inEdit !== i" class="row mb-3">
-      <div class="col-12 col-md-3 col-lg-2">
-        ({{type.controls.id.value}}) <span class="fw-bold">{{type.controls.name.value}}</span>
+    <div class="col-12 col-md-3 col-lg-2">
+      ({{type.controls.id.value}}) <span class="fw-bold">{{type.controls.name.value}}</span>
+    </div>
+    <div class="col-12  col-md-9 col-lg-4">
+      <div *ngIf="type.controls.maxDaysReservationInFuture.value">
+        Reservierbar {{type.controls.maxDaysReservationInFuture.value}} Tage im Voraus
       </div>
-      <div class="col-12  col-md-9 col-lg-4">
-        <span *ngIf="type.controls.maxDaysReservationInFuture.value">Reservierbar
-          {{type.controls.maxDaysReservationInFuture.value}} Tage im Voraus;</span>
-        <span *ngIf="type.controls.maxCancelInHours.value">Stornierbar {{type.controls.maxCancelInHours.value}}
-          Stunden vor Beginn;</span>
-        <span *ngIf="type.controls.repeatable.value">Wiederholungen möglich;</span>
-        <span *ngIf="type.controls.publicVisible.value">Text öffentlich sichtbar;</span>
+      <div *ngIf="type.controls.maxCancelInHours.value">
+        Stornierbar {{type.controls.maxCancelInHours.value}} Stunden vor Beginn
       </div>
-      <div class="col-12  col-md-12 offset-md-3 col-lg-4 offset-lg-0">
-        nutzbar von {{getRoles(type.controls.roles)}}
+      <div *ngIf="type.controls.repeatable.value">
+        Wiederholungen möglich
       </div>
-      <div class="col-12 col-md-12 offset-md-3 col-lg-2 offset-lg-0">
-        <button class="btn btn-outline-secondary" (click)="typeDialog.showModal()">ändern</button>
-        <button class="btn btn-outline-secondary ms-1" (click)="onRemove(i)">-</button>
+      <div *ngIf="type.controls.publicVisible.value">
+        Text öffentlich sichtbar
       </div>
+      <div>
+        {{getWeekDays(type.controls.forbiddenDaysOfWeek)}}
+      </div>
+    </div>
+    <div class="col-12  col-md-12 offset-md-3 col-lg-4 offset-lg-0">
+      Nutzbar von: {{getRoles(type.controls.roles)}}
+    </div>
+    <div class="col-12 col-md-12 offset-md-3 col-lg-2 offset-lg-0">
+      <button class="btn btn-outline-secondary" (click)="onStartEdit(i); typeDialog.showModal()">ändern</button>
+      <button class="btn btn-outline-secondary ms-1" (click)="onRemove(i)">-</button>
     </div>
   </div>
 
-  <tch-reservation-type *ngIf="inEdit === form?.length + 1" (finished)="onFinishedReservationType($event)">
-  </tch-reservation-type>
-  <button *ngIf="inEdit === NOT_IN_EDIT" class="btn btn-outline-secondary" (click)="onStartEdit(form?.length + 1)">
-    + Reservierungsart hinzufügen </button>
+
+  <div class="row">
+    <dialog #typeAddDialog>
+      <tch-reservation-type *ngIf="inEdit === form?.length + 1"
+        (finished)="onFinishedReservationType($event); typeAddDialog.close();">
+      </tch-reservation-type>
+    </dialog>
+  </div>
+
+  <button *ngIf="inEdit === NOT_IN_EDIT" class="btn btn-outline-secondary"
+    (click)="onStartEdit(form?.length + 1); typeAddDialog.showModal();">
+    + Reservierungsart hinzufügen
+  </button>
 </div>

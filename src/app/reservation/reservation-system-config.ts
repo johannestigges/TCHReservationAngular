@@ -1,7 +1,6 @@
 import { DateUtil } from '../util/date/date-util';
 import { Reservation } from './reservation';
 import { Occupation } from './occupation';
-import { WeekDay } from '@angular/common';
 
 /**
  * reservation system configuration data
@@ -97,10 +96,6 @@ export class ReservationSystemConfig {
 	static readonly EMPTY = new ReservationSystemConfig(0, '', '', [], 0, 0, 0, 0, 0, []);
 }
 
-export enum WeekDays {
-	MONDAY = 1, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY
-}
-
 export class SystemConfigReservationType {
 	constructor(
 		public id = 0,
@@ -111,7 +106,7 @@ export class SystemConfigReservationType {
 		public maxCancelInHours = 0,
 		public repeatable = false,
 		public publicVisible = false,
-		public forbiddenDaysOfWeek: WeekDays[] = [],
+		public forbiddenDaysOfWeek: string[] = [],
 		public cssStyle = '',
 		public roles: string[] = []
 	) { }

@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ReservationSystemConfig } from 'src/app/reservation/reservation-system-config';
+import { ReservationSystemConfig, SystemConfigReservationType } from 'src/app/reservation/reservation-system-config';
 import { SystemconfigService } from '../systemconfig.service';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { ErrorAware } from 'src/app/util/error/error-aware';
 import { SystemconfigForm, createSystemConfigForm } from '../systemconfig-form';
 import { Router } from '@angular/router';
+import { weekDaysValues } from 'src/app/reservation/week-days';
+import { userRoleValues } from '../../user/user-role.enum';
 
 @Component({
 	selector: 'tch-systemconfig-add',
@@ -72,8 +74,9 @@ export class SystemconfigAddComponent extends ErrorAware implements OnInit {
 			this.form.controls.maxDuration.value,
 			this.form.controls.openingHour.value,
 			this.form.controls.closingHour.value,
-			[]
+			this.getTypesFromForm()
 		);
+
 		this.systemconfigService.add(newconfig).subscribe({
 			next: () => this.onCancel(),
 			error: (error) => this.setError(error)
@@ -81,5 +84,43 @@ export class SystemconfigAddComponent extends ErrorAware implements OnInit {
 	}
 	onCancel() {
 		this.router.navigateByUrl('admin?tab=systemconfig');
+	}
+
+	private getTypesFromForm() {
+		const types: SystemConfigReservationType[] = [];
+		this.form.controls.types.controls.forEach(type =>
+			types.push({
+				id: 0,
+				type: type.controls.id.value,
+				name: type.controls.name.value,
+				maxDuration: type.controls.maxDuration.value,
+				maxDaysReservationInFuture: type.controls.maxDaysReservationInFuture.value,
+				maxCancelInHours: type.controls.maxCancelInHours.value,
+				repeatable: type.controls.repeatable.value,
+				publicVisible: type.controls.publicVisible.value,
+				forbiddenDaysOfWeek: this.getWeekDaysFromForm(type.controls.forbiddenDaysOfWeek),
+				cssStyle: type.controls.cssStyle.value,
+				roles: this.getRolesFromForm(type.controls.roles)
+			})
+		);
+		return types;
+	}
+	private getWeekDaysFromForm(form: FormArray<FormControl<boolean>>) {
+		const weekDays: string[] = [];
+		for (let i = 0; i < weekDaysValues.length; i++) {
+			if (form.at(i).value) {
+				weekDays.push(weekDaysValues[i]);
+			}
+		}
+		return weekDays;
+	}
+	private getRolesFromForm(form: FormArray<FormControl<boolean>>) {
+		const roles: string[] = [];
+		for (let i = 0; i < userRoleValues.length; i++) {
+			if (form.at(i).value) {
+				roles.push(userRoleValues[i]);
+			}
+		}
+		return roles;
 	}
 }
