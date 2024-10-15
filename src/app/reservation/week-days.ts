@@ -6,14 +6,14 @@ export enum WeekDays {
 export type WeekDaysType = keyof typeof WeekDays;
 
 export const weekDaysValues = Object.keys(WeekDays)
-    .filter(key => isNaN(Number(key))) as WeekDaysType[];
+	.filter(key => isNaN(Number(key))) as WeekDaysType[];
 
 export const weekDaysNames = [
-    'Montag',
-    'Dienstag',
-    'Mittwoch',
-    'Donnerstag',
-    'Freitag',
-    'Samstag',
-    'Sonntag'
+	'Montag',
+	'Dienstag',
+	'Mittwoch',
+	'Donnerstag',
+	'Freitag',
+	'Samstag',
+	'Sonntag'
 ];
