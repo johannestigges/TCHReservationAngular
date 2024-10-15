@@ -1,5 +1,6 @@
 table.occupation_table {
-  table-layout: fixed; /* all columns have equal width */
+  table-layout: fixed;
+  /* all columns have equal width */
   width: 100%;
   border: 1px solid;
   border-collapse: separate;
@@ -46,6 +47,7 @@ table.occupation_table a {
 .available_light_reservable {
   background-color: rgba(160, 160, 160, 0.4);
 }
+
 .deletable {
   color: var(--bs-black);
 }
@@ -78,4 +80,20 @@ table.occupation_table a {
 .type5 {
   /* Jugendtraining */
   background-color: rgba(150, 255, 200, 0.7);
+}
+
+.type6 {
+  background-color: rgba(170, 235, 180, 0.7);
+}
+
+.type7 {
+  background-color: rgba(190, 215, 160, 0.7);
+}
+
+.type8 {
+  background-color: rgba(210, 195, 140, 0.7);
+}
+
+.type9 {
+  background-color: rgba(230, 175, 120, 0.7);
 }
