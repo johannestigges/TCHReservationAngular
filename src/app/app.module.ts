@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -38,54 +38,48 @@ import { NewsDetailComponent } from './news/detail/news-detail.component';
 import { NewsLinkComponent } from './news/link/news-link.component';
 import { FieldErrorComponent } from './util/field-error/field-error.component';
 
-@NgModule({
-	declarations: [
-		AppComponent,
-		OccupationTableComponent,
-		ReservationAddComponent,
-		ReservationModifyComponent,
-		AdminComponent,
-		UserTableComponent,
-		UserAddComponent,
-		UserModifyComponent,
-		QrComponent,
-		SelectFilterComponent,
-		ProtocolTableComponent,
-		SystemconfigTableComponent,
-		SystemconfigAddComponent,
-		SystemconfigModifyComponent,
-		LoginComponent,
-		ShowErrorComponent,
-		ReservationTypeComponent,
-		ReservationTypesComponent,
-		NewsAdminOverviewComponent,
-		NewsAddComponent,
-		NewsModifyComponent,
-		NewsOverviewComponent,
-		NewsDetailComponent,
-		NewsLinkComponent
-	],
-	imports: [
-		BrowserModule,
-		BrowserAnimationsModule,
-		AppRoutingModule,
-		RouterModule,
-		FormsModule,
-		ReactiveFormsModule,
-		HttpClientModule,
-		QRCodeModule,
-		FieldErrorComponent,
-		NgbModule
-	],
-	providers: [
-		ReservationService,
-		UserService,
-		ProtocolService,
-		SystemconfigService,
-		{
-			provide: HTTP_INTERCEPTORS, useClass: CorsInterceptor, multi: true,
-		},
-	],
-	bootstrap: [AppComponent],
-})
+@NgModule({ declarations: [
+        AppComponent,
+        OccupationTableComponent,
+        ReservationAddComponent,
+        ReservationModifyComponent,
+        AdminComponent,
+        UserTableComponent,
+        UserAddComponent,
+        UserModifyComponent,
+        QrComponent,
+        SelectFilterComponent,
+        ProtocolTableComponent,
+        SystemconfigTableComponent,
+        SystemconfigAddComponent,
+        SystemconfigModifyComponent,
+        LoginComponent,
+        ShowErrorComponent,
+        ReservationTypeComponent,
+        ReservationTypesComponent,
+        NewsAdminOverviewComponent,
+        NewsAddComponent,
+        NewsModifyComponent,
+        NewsOverviewComponent,
+        NewsDetailComponent,
+        NewsLinkComponent
+    ],
+    bootstrap: [AppComponent], imports: [BrowserModule,
+        BrowserAnimationsModule,
+        AppRoutingModule,
+        RouterModule,
+        FormsModule,
+        ReactiveFormsModule,
+        QRCodeModule,
+        FieldErrorComponent,
+        NgbModule], providers: [
+        ReservationService,
+        UserService,
+        ProtocolService,
+        SystemconfigService,
+        {
+            provide: HTTP_INTERCEPTORS, useClass: CorsInterceptor, multi: true,
+        },
+        provideHttpClient(withInterceptorsFromDi()),
+    ] })
 export class AppModule { }
