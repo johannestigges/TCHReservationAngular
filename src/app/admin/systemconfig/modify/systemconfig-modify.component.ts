@@ -6,6 +6,7 @@ import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SystemconfigForm, createReservationTypeForm, createSystemConfigForm } from '../systemconfig-form';
 import { userRoleValues } from '../../user/user-role.enum';
+import { weekDaysValues } from 'src/app/reservation/week-days';
 
 @Component({
 	selector: 'tch-systemconfig-modify',
@@ -28,6 +29,7 @@ export class SystemconfigModifyComponent extends ErrorAware implements OnInit {
 	];
 
 	form: FormGroup<SystemconfigForm>;
+	reservationTypeInEdit = -1;
 
 	constructor(
 		private router: Router,
@@ -74,8 +76,12 @@ export class SystemconfigModifyComponent extends ErrorAware implements OnInit {
 		form.controls.maxCancelInHours.setValue(type.maxCancelInHours);
 		form.controls.repeatable.setValue(type.repeatable);
 		form.controls.publicVisible.setValue(type.publicVisible);
+		form.controls.cssStyle.setValue(type.cssStyle);
 		for (let i = 0; i < userRoleValues.length; i++) {
 			form.controls.roles.at(i).setValue(type.roles.includes(userRoleValues[i]));
+		}
+		for (let i = 0; i < weekDaysValues.length; i++) {
+			form.controls.forbiddenDaysOfWeek.at(i).setValue(type.forbiddenDaysOfWeek.includes(weekDaysValues[i]));
 		}
 		return form;
 	}
@@ -149,12 +155,21 @@ export class SystemconfigModifyComponent extends ErrorAware implements OnInit {
 				maxCancelInHours: type.controls.maxCancelInHours.value,
 				repeatable: type.controls.repeatable.value,
 				publicVisible: type.controls.publicVisible.value,
-				forbiddenDaysOfWeek: [],
-				cssStyle: '',
+				forbiddenDaysOfWeek: this.getWeekDaysFromForm(type.controls.forbiddenDaysOfWeek),
+				cssStyle: type.controls.cssStyle.value,
 				roles: this.getRolesFromForm(type.controls.roles)
 			})
 		);
 		return types;
+	}
+	private getWeekDaysFromForm(form: FormArray<FormControl<boolean>>) {
+		const weekDays: string[] = [];
+		for (let i = 0; i < weekDaysValues.length; i++) {
+			if (form.at(i).value) {
+				weekDays.push(weekDaysValues[i]);
+			}
+		}
+		return weekDays;
 	}
 	private getRolesFromForm(form: FormArray<FormControl<boolean>>) {
 		const roles: string[] = [];

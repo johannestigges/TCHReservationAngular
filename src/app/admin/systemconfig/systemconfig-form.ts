@@ -1,6 +1,6 @@
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { UserRoleType, userRoleValues } from '../user/user-role.enum';
-import { WeekDays } from 'src/app/reservation/reservation-system-config';
+import { WeekDaysType, weekDaysValues } from 'src/app/reservation/week-days';
 
 export interface SystemconfigForm {
 	id: FormControl<number>,
@@ -24,7 +24,7 @@ export interface ReservationTypeForm {
 	repeatable: FormControl<boolean>,
 	publicVisible: FormControl<boolean>,
 	forbiddenDaysOfWeek: FormArray<FormControl<boolean>>,
-	cssStyle: FormControl<string | null>
+	cssStyle: FormControl<string>
 	roles: FormArray<FormControl<boolean>>
 }
 
@@ -37,7 +37,7 @@ export interface ReservationTypeValues {
 	repeatable: boolean,
 	publicVisible: boolean,
 	forbiddenDaysOfWeek: boolean[],
-	cssStyle: string | null,
+	cssStyle: string,
 	roles: boolean[]
 }
 
@@ -66,17 +66,17 @@ export function createReservationTypeForm(): FormGroup<ReservationTypeForm> {
 		maxCancelInHours: new FormControl(0, { nonNullable: true }),
 		repeatable: new FormControl(true, { nonNullable: true }),
 		publicVisible: new FormControl(true, { nonNullable: true }),
-		forbiddenDaysOfWeek: new FormArray([
-			new FormControl(false, { nonNullable: true }),
-		]
-		),
-		cssStyle: new FormControl('', { nonNullable: true }),
+		forbiddenDaysOfWeek: new FormArray<FormControl<boolean>>(createWeekDays()),
+		cssStyle: new FormControl<string>('', { nonNullable: true }),
 		roles: new FormArray<FormControl<boolean>>(createUserRoles())
 	};
 	return new FormGroup(reservationTypeForm);
 }
 export function createUserRoles() {
 	return userRoleValues.map(userRole => createUserRole(userRole));
+}
+export function createWeekDays() {
+	return weekDaysValues.map(weekDay => createWeekDay(weekDay));
 }
 function createUserRole(userRole: UserRoleType) {
 	const control = new FormControl<boolean>(false, { nonNullable: true });
@@ -85,6 +85,9 @@ function createUserRole(userRole: UserRoleType) {
 		control.disable();
 	}
 	return control;
+}
+function createWeekDay(weekDay: WeekDaysType) {
+	return new FormControl<boolean>(false, { nonNullable: true });
 }
 function isAdmin(userRole: UserRoleType) {
 	return userRole === 'ADMIN';

@@ -1,68 +1,86 @@
 <div class="container">
-    <form *ngIf="form" [formGroup]="form" class="form-horizontal">
-        <!-- id -->
-        <div class="form-group mb-3">
-            <label class="control-label">Id:</label>
-            <input type="text" class="form-control" formControlName="id" />
+    <h2>Reservierungsart</h2>
+    <form *ngIf="form" [formGroup]="form">
+        <div class="row g-3 mb-3">
+            <!-- id -->
+            <div class="col-2">
+                <label class="form-label">Id:</label>
+                <input type="text" class="form-control" formControlName="id" />
+            </div>
+            <!-- name -->
+            <div class="col-10">
+                <label class="form-label">Name:</label>
+                <input type="text" class="form-control" formControlName="name" />
+            </div>
+        </div>
+        <div class="row g-3 mb-3">
+            <!-- max Reservation -->
+            <div class="col-6">
+                <label class="form-label">im Voraus buchbar:</label>
+                <select class="form-control" formControlName="maxDaysReservationInFuture">
+                    <option *ngFor="let md of maxDays" [value]="md">
+                        {{ md }} Tage
+                    </option>
+                </select>
+            </div>
+            <!-- max Cancel-->
+            <div class="col-6">
+                <label class="form-label">im Voraus stornierbar:</label>
+                <select class="form-control" formControlName="maxCancelInHours">
+                    <option *ngFor="let mc of maxCancel" [value]="mc">
+                        {{ mc }} Stunden
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="row g-3 mb-3">
+            <!-- max Duration -->
+            <div class="col-4">
+                <label class="form-label">maximale Buchungsdauer:</label>
+                <select class="form-control" formControlName="maxDuration">
+                    <option *ngFor="let md of maxDurations" [value]="md">
+                        {{ md }}
+                    </option>
+                </select>
+            </div>
+            <!-- css class -->
+            <!--
+            <div class="col-12 col-md-8">
+                <label class="form-label">Styling:</label>
+                <input type="text" class="form-control" formControlName="cssStyle">
+            </div>
+            -->
         </div>
 
-        <!-- name -->
-        <div class="form-group mb-3">
-            <label class="control-label">Name:</label>
-            <input type="text" class="form-control" formControlName="name" />
-        </div>
-
-        <!-- maxReservation -->
-        <div class="form-group mb-3">
-            <label class="control-label">im Voraus buchbar:</label>
-            <select class="form-control" formControlName="maxDaysReservationInFuture">
-                <option *ngFor="let md of maxDays" [value]="md">{{ md }} Tage</option>
-            </select>
-        </div>
-
-        <!-- max Cancel-->
-        <div class="form-group mb-3">
-            <label class="control-label">im Voraus stornierbar:</label>
-            <select class="form-control" formControlName="maxCancelInHours">
-                <option *ngFor="let mc of maxCancel" [value]="mc">{{ mc }} Stunden</option>
-            </select>
-        </div>
-
-        <!-- maxDuration -->
-        <div class="form-group mb-3">
-            <label class="control-label">maximale Buchungsdauer:</label>
-            <select class="form-control" formControlName="maxDuration">
-                <option *ngFor="let md of maxDurations" [value]="md">
-                    {{ md }}
-                </option>
-            </select>
-        </div>
-
-        <!-- repeatable -->
-        <div class="form-group mb-3">
-            <input type="checkbox" class="form-check-input" formControlName="repeatable">
-            <span class="ms-2 me-4">Wiederholungen erlaubt:</span>
-        </div>
-
-        <!-- public visible -->
-        <div class="form-group mb-3">
-            <input type="checkbox" class="form-check-input" formControlName="publicVisible">
-            <span class="ms-2 me-4">Text öffentlich sichtbar</span>
-        </div>
-
-        <!-- roles-->
-        <div class="form-group mb-3">
-            <label class="control-label h3">Buchung erlaubt von:</label>
-            <div class="d-flex flex-row flex-wrap">
-                <div *ngFor="let roleForm of form.controls.roles.controls; index as i">
-                    <input type="checkbox" class="form-check-input" [formControl]="roleForm">
-                    <span class="ms-2 me-4">{{ userRoleNames[i] }}</span>
-                </div>
+        <div class="row g-3 mb-3">
+            <!-- repeatable -->
+            <div class="col-12 col-sm-6">
+                <input type="checkbox" class="form-check-input" formControlName="repeatable">
+                <span class="ms-2 me-4">Wiederholungen erlaubt</span>
+            </div>
+            <!-- public visible -->
+            <div class="col">
+                <input type="checkbox" class="form-check-input" formControlName="publicVisible">
+                <span class="ms-2 me-4">Text öffentlich sichtbar</span>
             </div>
         </div>
 
+        <!-- week days -->
+        <h4>Nicht erlaubte Wochentage</h4>
+        <div *ngFor="let weekDay of form.controls.forbiddenDaysOfWeek.controls; index as i">
+            <input type="checkbox" class="form-check-input" [formControl]="weekDay">
+            <span class="ms-2 me-4">{{ weekDaysNames[i] }}</span>
+        </div>
+
+        <!-- roles-->
+        <h4>Buchung erlaubt von:</h4>
+        <div *ngFor="let roleForm of form.controls.roles.controls; index as i">
+            <input type="checkbox" class="form-check-input" [formControl]="roleForm">
+            <span class="ms-2 me-4">{{ userRoleNames[i] }}</span>
+        </div>
+
         <div class="form-group">
-            <button (click)="onSubmit()" class="btn btn-primary">Reservierungsart übernehmen</button>
+            <button (click)="onSubmit()" class="btn btn-primary m-1">Reservierungsart übernehmen</button>
             <button (click)="onCancel()" class="btn btn-outline-secondary ms-1">Zurück</button>
         </div>
     </form>
