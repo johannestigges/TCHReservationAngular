@@ -1,6 +1,6 @@
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { UserRoleType, userRoleValues } from '../user/user-role.enum';
-import { WeekDaysType, weekDaysValues } from 'src/app/reservation/week-days';
+import { weekDaysValues } from 'src/app/reservation/week-days';
 
 export interface SystemconfigForm {
 	id: FormControl<number>,
@@ -76,7 +76,7 @@ export function createUserRoles() {
 	return userRoleValues.map(userRole => createUserRole(userRole));
 }
 export function createWeekDays() {
-	return weekDaysValues.map(weekDay => createWeekDay(weekDay));
+	return weekDaysValues.map(() => createWeekDay());
 }
 function createUserRole(userRole: UserRoleType) {
 	const control = new FormControl<boolean>(false, { nonNullable: true });
@@ -86,7 +86,7 @@ function createUserRole(userRole: UserRoleType) {
 	}
 	return control;
 }
-function createWeekDay(weekDay: WeekDaysType) {
+function createWeekDay() {
 	return new FormControl<boolean>(false, { nonNullable: true });
 }
 function isAdmin(userRole: UserRoleType) {

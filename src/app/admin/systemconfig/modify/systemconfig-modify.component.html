@@ -30,12 +30,12 @@
       <div class="col-12 col-sm-4">
         <label class="form-label">Buchungseinheit:</label>
         <select class="form-control" [class.is-invalid]="fieldErrors?.has('durationUnit')"
-                formControlName="durationUnitInMinutes">
+          formControlName="durationUnitInMinutes">
           <option *ngFor="let du of durationUnits" [value]="du">
             {{ du }} Minuten
           </option>
         </select>
-        <tch-field-error [fieldErrors]="fieldErrors" field="durationUnit" />Ï
+        <tch-field-error [fieldErrors]="fieldErrors" field="durationUnit" />
       </div>
       <!-- openingHour -->
       <div class="col-6 col-sm-4">
