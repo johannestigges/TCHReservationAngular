@@ -4,8 +4,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
-	selector: 'tch-login',
-	templateUrl: './login.component.html'
+    selector: 'tch-login',
+    templateUrl: './login.component.html',
+    standalone: false
 })
 export class LoginComponent implements OnInit {
 	error = '';

@@ -7,8 +7,9 @@ import { DateUtil } from '../../../util/date/date-util';
 import { Router } from '@angular/router';
 
 @Component({
-	selector: 'tch-protocol-table',
-	templateUrl: './protocol-table.component.html'
+    selector: 'tch-protocol-table',
+    templateUrl: './protocol-table.component.html',
+    standalone: false
 })
 export class ProtocolTableComponent extends ErrorAware implements OnInit {
 

@@ -5,8 +5,9 @@ import { userRoleNames } from '../../user/user-role.enum';
 import { weekDaysNames } from 'src/app/reservation/week-days';
 
 @Component({
-	selector: 'tch-reservation-type',
-	templateUrl: './reservation-type.component.html'
+    selector: 'tch-reservation-type',
+    templateUrl: './reservation-type.component.html',
+    standalone: false
 })
 export class ReservationTypeComponent implements OnInit {
 	@Input() value?: ReservationTypeValues;

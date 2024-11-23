@@ -3,9 +3,10 @@ import { Title } from '@angular/platform-browser';
 import { SystemconfigService } from './admin/systemconfig/systemconfig.service';
 
 @Component({
-	selector: 'tch-root',
-	templateUrl: './app.component.html',
-	styleUrls: ['./app.component.scss'],
+    selector: 'tch-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss'],
+    standalone: false
 })
 export class AppComponent implements OnInit {
 	constructor(private title: Title, private service: SystemconfigService) {}

@@ -3,9 +3,10 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ErrorMessage } from '../error/error-message';
 
 @Component({
-	selector: 'tch-show-error',
-	templateUrl: './show-error.component.html',
-	styleUrls: ['./show-error.component.scss']
+    selector: 'tch-show-error',
+    templateUrl: './show-error.component.html',
+    styleUrls: ['./show-error.component.scss'],
+    standalone: false
 })
 export class ShowErrorComponent {
 

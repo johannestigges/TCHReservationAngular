@@ -8,8 +8,9 @@ import { ErrorAware } from '../../../util/error/error-aware';
 import { Router } from '@angular/router';
 
 @Component({
-	selector: 'tch-user-add',
-	templateUrl: './user-add.component.html'
+    selector: 'tch-user-add',
+    templateUrl: './user-add.component.html',
+    standalone: false
 })
 export class UserAddComponent extends ErrorAware {
 

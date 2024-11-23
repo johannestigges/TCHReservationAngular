@@ -1,8 +1,9 @@
 import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 
 @Component({
-	selector: 'tch-select-filter',
-	templateUrl: './select-filter.component.html',
+    selector: 'tch-select-filter',
+    templateUrl: './select-filter.component.html',
+    standalone: false
 })
 export class SelectFilterComponent implements OnChanges {
 

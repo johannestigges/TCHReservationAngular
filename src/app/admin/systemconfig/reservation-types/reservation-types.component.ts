@@ -5,8 +5,9 @@ import { userRoleNames, userRoleValues } from '../../user/user-role.enum';
 import { weekDaysNames, weekDaysValues } from 'src/app/reservation/week-days';
 
 @Component({
-	selector: 'tch-reservation-types',
-	templateUrl: './reservation-types.component.html'
+    selector: 'tch-reservation-types',
+    templateUrl: './reservation-types.component.html',
+    standalone: false
 })
 export class ReservationTypesComponent implements OnInit {
 	readonly NOT_IN_EDIT = -1;

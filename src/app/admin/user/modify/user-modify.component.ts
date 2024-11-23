@@ -1,16 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { UserService } from '../../user/user.service';
-import { User } from '../../user/user';
+import { UserService } from '../user.service';
+import { User } from '../user';
 import { UserRole, UserRoleType, userRoleValues } from '../user-role.enum';
 import { ActivationStatus, activationStatusValues } from '../activation-status.enum';
 import { ErrorAware } from '../../../util/error/error-aware';
 
 
 @Component({
-	selector: 'tch-user-modify',
-	templateUrl: './user-modify.component.html'
+    selector: 'tch-user-modify',
+    templateUrl: './user-modify.component.html',
+    standalone: false
 })
 export class UserModifyComponent extends ErrorAware implements OnInit {
 

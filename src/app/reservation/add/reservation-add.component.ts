@@ -15,9 +15,10 @@ import { DateUtil } from '../../util/date/date-util';
 import { activationStatusFrom } from '../../admin/user/activation-status.enum';
 
 @Component({
-	selector: 'tch-reservation-add',
-	templateUrl: './reservation-add.component.html',
-	styleUrls: ['./reservation-add.component.scss'],
+    selector: 'tch-reservation-add',
+    templateUrl: './reservation-add.component.html',
+    styleUrls: ['./reservation-add.component.scss'],
+    standalone: false
 })
 export class ReservationAddComponent extends ErrorAware implements OnInit {
 	systemConfig = ReservationSystemConfig.EMPTY;

@@ -13,9 +13,10 @@ import { Observable, timer, Subscription } from 'rxjs';
 import { ReservationSystemConfig } from '../reservation-system-config';
 
 @Component({
-	selector: 'tch-occupation-table',
-	templateUrl: './occupation-table.component.html',
-	styleUrls: ['./occupation-table.component.scss'],
+    selector: 'tch-occupation-table',
+    templateUrl: './occupation-table.component.html',
+    styleUrls: ['./occupation-table.component.scss'],
+    standalone: false
 })
 export class OccupationTableComponent extends ErrorAware implements OnInit, OnDestroy {
 	occupationTable = new OccupationTable(User.EMPTY);

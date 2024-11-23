@@ -14,8 +14,9 @@ import { Occupation } from '../occupation';
 import { activationStatusFrom } from '../../admin/user/activation-status.enum';
 
 @Component({
-	selector: 'tch-reservation-modify',
-	templateUrl: './reservation-modify.component.html'
+    selector: 'tch-reservation-modify',
+    templateUrl: './reservation-modify.component.html',
+    standalone: false
 })
 export class ReservationModifyComponent extends ErrorAware implements OnInit, OnDestroy {
 	systemConfig = ReservationSystemConfig.EMPTY;
@@ -106,10 +107,7 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit, On
 		if (this.user.hasRole(UserRole.ADMIN, UserRole.TRAINER)) {
 			return true;
 		}
-		if (this.user.id === this.occupation.reservation.user.id) {
-			return true;
-		}
-		return false;
+		return this.user.id === this.occupation.reservation.user.id;
 	}
 
 	public canTerminate() {

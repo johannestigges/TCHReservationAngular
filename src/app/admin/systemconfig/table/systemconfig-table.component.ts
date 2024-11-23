@@ -6,9 +6,10 @@ import { SystemconfigService } from '../systemconfig.service';
 import { Router } from '@angular/router';
 
 @Component({
-	selector: 'tch-systemconfig-table',
-	templateUrl: './systemconfig-table.component.html',
-	styleUrls: ['./systemconfig-table.component.scss']
+    selector: 'tch-systemconfig-table',
+    templateUrl: './systemconfig-table.component.html',
+    styleUrls: ['./systemconfig-table.component.scss'],
+    standalone: false
 })
 export class SystemconfigTableComponent extends ErrorAware implements OnInit {
 

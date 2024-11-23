@@ -9,8 +9,9 @@ import { weekDaysValues } from 'src/app/reservation/week-days';
 import { userRoleValues } from '../../user/user-role.enum';
 
 @Component({
-	selector: 'tch-systemconfig-add',
-	templateUrl: './systemconfig-add.component.html'
+    selector: 'tch-systemconfig-add',
+    templateUrl: './systemconfig-add.component.html',
+    standalone: false
 })
 export class SystemconfigAddComponent extends ErrorAware implements OnInit {
 	durationUnits = [30, 60];

@@ -7,8 +7,9 @@ import { ErrorAware } from 'src/app/util/error/error-aware';
 import { Router } from '@angular/router';
 
 @Component({
-	selector: 'tch-qr',
-	templateUrl: './qr.component.html'
+    selector: 'tch-qr',
+    templateUrl: './qr.component.html',
+    standalone: false
 })
 export class QrComponent extends ErrorAware implements OnInit {
 	users: User[] = [];
