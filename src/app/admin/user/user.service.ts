@@ -44,8 +44,4 @@ export class UserService {
 	private userUrl() {
 		return '/rest/user';
 	}
-
-	private loginUrl() {
-		return '/login';
-	}
 }

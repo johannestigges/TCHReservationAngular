@@ -1,12 +1,14 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import {FormGroup, ReactiveFormsModule} from '@angular/forms';
 import { ReservationTypeForm, ReservationTypeValues, createReservationTypeForm } from '../systemconfig-form';
 import { userRoleNames } from '../../user/user-role.enum';
 import { weekDaysNames } from 'src/app/reservation/week-days';
+import {NgFor, NgIf} from "@angular/common";
 
 @Component({
-	selector: 'tch-reservation-type',
-	templateUrl: './reservation-type.component.html'
+    selector: 'tch-reservation-type',
+    templateUrl: './reservation-type.component.html',
+    imports:[NgIf,NgFor,ReactiveFormsModule],
 })
 export class ReservationTypeComponent implements OnInit {
 	@Input() value?: ReservationTypeValues;

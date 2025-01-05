@@ -17,7 +17,7 @@
           required
           [disabled]="!isAdmin"
         />
-        <tch-field-error [fieldErrors]="fieldErrors" field="name" />
+        <tch-field-error [fieldErrors]="fieldErrors" field="name"/>
       </div>
     </div>
 
@@ -31,7 +31,7 @@
           name="email"
           [(ngModel)]="user.email"
         />
-        <tch-field-error [fieldErrors]="fieldErrors" field="email" />
+        <tch-field-error [fieldErrors]="fieldErrors" field="email"/>
       </div>
     </div>
 
@@ -46,7 +46,7 @@
           [(ngModel)]="user.password"
           required
         />
-        <tch-field-error [fieldErrors]="fieldErrors" field="passowrd" />
+        <tch-field-error [fieldErrors]="fieldErrors" field="passowrd"/>
       </div>
     </div>
 
@@ -61,7 +61,7 @@
           [(ngModel)]="confirmPassword"
           required
         />
-        <tch-field-error [fieldErrors]="fieldErrors" field="confirmPassword" />
+        <tch-field-error [fieldErrors]="fieldErrors" field="confirmPassword"/>
       </div>
     </div>
 
@@ -79,7 +79,7 @@
             {{ role }}
           </option>
         </select>
-        <tch-field-error [fieldErrors]="fieldErrors" field="role" />
+        <tch-field-error [fieldErrors]="fieldErrors" field="role"/>
       </div>
     </div>
 
@@ -93,9 +93,9 @@
           [(ngModel)]="userStatus"
           name="status"
         >
-          <option *ngFor="let s of statusValues" [value]="s" s>{{ s }}</option>
+          <option *ngFor="let s of statusValues" [value]="s">{{ s }}</option>
         </select>
-        <tch-field-error [fieldErrors]="fieldErrors" field="status" />
+        <tch-field-error [fieldErrors]="fieldErrors" field="status"/>
       </div>
     </div>
 

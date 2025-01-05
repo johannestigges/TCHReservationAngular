@@ -1,7 +1,6 @@
 <h4 class="mt-4">Reservierungsarten:</h4>
-<div>
-  <div *ngFor="let type of form?.controls; let i = index" class="row mb-3">
-
+<div *ngIf="form">
+  <div *ngFor="let type of form.controls; let i = index" class="row mb-3">
     <dialog #typeDialog>
       <tch-reservation-type [value]="type.getRawValue()"
         (finished)="onFinishedReservationType($event); typeDialog.close();">
