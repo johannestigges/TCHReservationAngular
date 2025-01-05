@@ -1,42 +1,45 @@
-import { Component, OnInit } from '@angular/core';
-import { News } from '../news';
-import { DateUtil } from 'src/app/util/date/date-util';
-import { NewsService } from '../news.service';
-import { ErrorAware } from 'src/app/util/error/error-aware';
-import { Router } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {News} from '../news';
+import {DateUtil} from 'src/app/util/date/date-util';
+import {NewsService} from '../news.service';
+import {ErrorAware} from 'src/app/util/error/error-aware';
+import {Router, RouterLink} from '@angular/router';
+import {NgFor} from "@angular/common";
+import {ShowErrorComponent} from "../../../util/show-error/show-error.component";
 
 
 @Component({
-	selector: 'tch-news-admin-overview',
-	standalone: false,
-	templateUrl: './news-admin-overview.component.html'
+  selector: 'tch-news-admin-overview',
+  templateUrl: './news-admin-overview.component.html',
+  imports: [NgFor, RouterLink, ShowErrorComponent],
+  providers: [NewsService]
 })
 export class NewsAdminOverviewComponent extends ErrorAware implements OnInit {
-	newsList: News[] = [];
+  newsList: News[] = [];
 
-	constructor(private newsService: NewsService, private router: Router) {
-		super();
-	}
+  constructor(private newsService: NewsService, private router: Router) {
+    super();
+  }
 
-	ngOnInit(): void {
-		this.newsService.getAll().subscribe({
-			next: (data) => this.newsList = data,
-			error: (error) => this.setError(error)
-		});
-	}
+  ngOnInit(): void {
+    this.newsService.getAll().subscribe({
+      next: (data) => this.newsList = data,
+      error: (error) => this.setError(error)
+    });
+  }
 
-	onDelete(id: number) {
-		this.newsService.delete(id).subscribe({
-			next: () => this.ngOnInit(),
-			error: (error) => this.setError(error)
-		});
-	}
+  onDelete(id: number) {
+    this.newsService.delete(id).subscribe({
+      next: () => this.ngOnInit(),
+      error: (error) => this.setError(error)
+    });
+  }
 
-	cancel() {
-		this.router.navigateByUrl('/');
-	}
+  cancel() {
+    this.router.navigateByUrl('/');
+  }
 
-	date(t: number) {
-		return DateUtil.showDateTime(t);
-	}
+  date(t: number) {
+    return DateUtil.showDateTime(t);
+  }
 }

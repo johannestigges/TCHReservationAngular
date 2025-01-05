@@ -1,14 +1,26 @@
 /// <reference types="@angular/localize" />
-
-import { enableProdMode } from '@angular/core';
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-
-import { AppModule } from './app/app.module';
-import { environment } from './environments/environment';
+import {Component, enableProdMode} from '@angular/core';
+import {environment} from './environments/environment';
+import {bootstrapApplication} from "@angular/platform-browser";
+import {provideHttpClient, withInterceptorsFromDi} from "@angular/common/http";
+import {provideRouter, RouterOutlet} from "@angular/router";
+import {routes} from "./app/routes";
 
 if (environment.production) {
-	enableProdMode();
+  enableProdMode();
 }
 
-platformBrowserDynamic().bootstrapModule(AppModule)
-	.catch(err => console.error(err));
+@Component({
+  selector: '[tchRoot]',
+  imports: [RouterOutlet],
+  template: '<div class="container-fluid"><router-outlet/></div>'
+})
+export class App {
+}
+
+bootstrapApplication(App, {
+  providers: [
+    provideHttpClient(withInterceptorsFromDi()),
+    provideRouter(routes)
+  ]
+});
