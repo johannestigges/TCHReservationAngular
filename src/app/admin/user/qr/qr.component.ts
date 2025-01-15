@@ -6,7 +6,7 @@ import {UserService} from '../user.service';
 import {ErrorAware} from 'src/app/util/error/error-aware';
 import {Router} from '@angular/router';
 import {QRCodeComponent} from "angularx-qrcode";
-import {NgIf} from "@angular/common";
+
 import {ShowErrorComponent} from "../../../util/show-error/show-error.component";
 import {FormsModule} from "@angular/forms";
 import {SelectFilterComponent} from "../../../util/select-filter/select-filter.component";
@@ -14,7 +14,7 @@ import {SelectFilterComponent} from "../../../util/select-filter/select-filter.c
 @Component({
   selector: 'tch-qr',
   templateUrl: './qr.component.html',
-  imports: [QRCodeComponent, NgIf, FormsModule, SelectFilterComponent, ShowErrorComponent],
+  imports: [QRCodeComponent, FormsModule, SelectFilterComponent, ShowErrorComponent],
   providers: [UserService]
 })
 export class QrComponent extends ErrorAware implements OnInit {

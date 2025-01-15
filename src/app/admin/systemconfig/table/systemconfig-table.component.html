@@ -15,27 +15,33 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let config of systemconfigs">
-      <td class="d-none d-lg-table-cell">{{ config.id }}</td>
-      <td>{{ config.name }}</td>
-      <td class="d-none d-lg-table-cell">{{ config.title }}</td>
-      <td class="d-none d-sm-table-cell">
-        <div *ngFor="let court of config.courts">{{court}}</div>
-      </td>
-      <td class="d-none d-sm-table-cell">
-        <div *ngFor="let type of config.types">
-          {{type.type}} {{ type.name }}
-        </div>
-      </td>
-      <td class="d-none d-sm-table-cell">
-        max {{ config.maxDuration }} x {{ config.durationUnitInMinutes }} Minuten;
-        max {{ config.maxDaysReservationInFuture }} Tage im Voraus
-      </td>
-      <td class="d-none d-sm-table-cell">{{ config.openingHour }} - {{ config.closingHour }} Uhr</td>
-      <td>
-        <a class="btn btn-outline-secondary" routerLink="/systemconfig/modify/{{ config.id }}">ändern</a>
-      </td>
-    </tr>
+    @for (config of systemconfigs; track config) {
+      <tr>
+        <td class="d-none d-lg-table-cell">{{ config.id }}</td>
+        <td>{{ config.name }}</td>
+        <td class="d-none d-lg-table-cell">{{ config.title }}</td>
+        <td class="d-none d-sm-table-cell">
+          @for (court of config.courts; track court) {
+            <div>{{court}}</div>
+          }
+        </td>
+        <td class="d-none d-sm-table-cell">
+          @for (type of config.types; track type) {
+            <div>
+              {{type.type}} {{ type.name }}
+            </div>
+          }
+        </td>
+        <td class="d-none d-sm-table-cell">
+          max {{ config.maxDuration }} x {{ config.durationUnitInMinutes }} Minuten;
+          max {{ config.maxDaysReservationInFuture }} Tage im Voraus
+        </td>
+        <td class="d-none d-sm-table-cell">{{ config.openingHour }} - {{ config.closingHour }} Uhr</td>
+        <td>
+          <a class="btn btn-outline-secondary" routerLink="/systemconfig/modify/{{ config.id }}">ändern</a>
+        </td>
+      </tr>
+    }
   </tbody>
 </table>
 <tch-show-error [httpError]="httpError" [errorMessages]="errorMessages" [fieldErrors]="fieldErrors"></tch-show-error>

@@ -1,10 +1,10 @@
 import {Component, EventEmitter, Input, OnChanges, Output} from '@angular/core';
-import {NgFor, NgIf} from "@angular/common";
+
 
 @Component({
   selector: 'tch-select-filter',
   templateUrl: './select-filter.component.html',
-  imports: [NgIf, NgFor],
+  imports: [],
   standalone: true
 })
 export class SelectFilterComponent implements OnChanges {

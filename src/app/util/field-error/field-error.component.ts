@@ -1,9 +1,9 @@
-import { NgIf } from '@angular/common';
+
 import { Component, Input } from '@angular/core';
 
 @Component({
     selector: 'tch-field-error',
-    imports: [NgIf],
+    imports: [],
     templateUrl: './field-error.component.html'
 })
 export class FieldErrorComponent {

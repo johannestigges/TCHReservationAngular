@@ -10,13 +10,13 @@ import {weekDaysValues} from 'src/app/reservation/week-days';
 import {FieldErrorComponent} from "../../../util/field-error/field-error.component";
 import {ShowErrorComponent} from "../../../util/show-error/show-error.component";
 import {ReservationTypesComponent} from "../reservation-types/reservation-types.component";
-import {NgFor} from "@angular/common";
+
 
 @Component({
   selector: 'tch-systemconfig-modify',
   templateUrl: './systemconfig-modify.component.html',
   styleUrls: ['./systemconfig-modify.component.scss'],
-  imports: [NgFor, ReservationTypesComponent, FieldErrorComponent, ShowErrorComponent, ReactiveFormsModule],
+  imports: [ReservationTypesComponent, FieldErrorComponent, ShowErrorComponent, ReactiveFormsModule],
   providers: [SystemconfigService]
 })
 export class SystemconfigModifyComponent extends ErrorAware implements OnInit {

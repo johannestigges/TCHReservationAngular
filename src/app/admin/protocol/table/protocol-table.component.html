@@ -16,26 +16,32 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let p of protocols">
-      <td class="d-none d-lg-table-cell">{{ p.id }}</td>
-      <td>{{ this.date(p.time) }}</td>
-      <td>{{ p.actionType }}</td>
-      <td>{{ p.entityType }}</td>
-      <td class="d-none d-lg-table-cell">{{ p.entityId }}</td>
-      <td class="d-none d-sm-table-cell">{{ p.user.name }}</td>
-      <td>
-        <div *ngFor="let kv of parseJson(p.value) | keyvalue">
-          <span class="key">{{ kv.key }}</span> =
-          <span class="value">{{ kv.value }}</span>
-        </div>
-      </td>
-      <td class="d-none d-sm-table-cell">
-        <div *ngFor="let kv of parseJson(p.oldValue) | keyvalue">
-          <span class="key">{{ kv.key }}</span> =
-          <span class="value">{{ kv.value }}</span>
-        </div>
-      </td>
-    </tr>
+    @for (p of protocols; track p) {
+      <tr>
+        <td class="d-none d-lg-table-cell">{{ p.id }}</td>
+        <td>{{ this.date(p.time) }}</td>
+        <td>{{ p.actionType }}</td>
+        <td>{{ p.entityType }}</td>
+        <td class="d-none d-lg-table-cell">{{ p.entityId }}</td>
+        <td class="d-none d-sm-table-cell">{{ p.user.name }}</td>
+        <td>
+          @for (kv of parseJson(p.value) | keyvalue; track kv) {
+            <div>
+              <span class="key">{{ kv.key }}</span> =
+              <span class="value">{{ kv.value }}</span>
+            </div>
+          }
+        </td>
+        <td class="d-none d-sm-table-cell">
+          @for (kv of parseJson(p.oldValue) | keyvalue; track kv) {
+            <div>
+              <span class="key">{{ kv.key }}</span> =
+              <span class="value">{{ kv.value }}</span>
+            </div>
+          }
+        </td>
+      </tr>
+    }
   </tbody>
 </table>
 <tch-show-error [httpError]="httpError" [errorMessages]="errorMessages" [fieldErrors]="fieldErrors"></tch-show-error>

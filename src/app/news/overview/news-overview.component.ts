@@ -3,13 +3,13 @@ import {NewsService} from 'src/app/admin/news/news.service';
 import {UserNewsService} from 'src/app/admin/news/user-news.service';
 import {UserNews} from 'src/app/admin/news/usernews';
 import {ErrorAware} from 'src/app/util/error/error-aware';
-import {NgClass, NgFor, NgIf} from "@angular/common";
+import { NgClass } from "@angular/common";
 import {RouterLink} from "@angular/router";
 
 @Component({
   selector: 'tch-news-overview',
   templateUrl: './news-overview.component.html',
-  imports: [NgIf, NgFor, NgClass, RouterLink]
+  imports: [NgClass, RouterLink]
 })
 export class NewsOverviewComponent extends ErrorAware implements OnInit {
 

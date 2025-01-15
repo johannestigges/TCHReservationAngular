@@ -15,13 +15,13 @@ import {activationStatusFrom} from '../../admin/user/activation-status.enum';
 import {FieldErrorComponent} from "../../util/field-error/field-error.component";
 import {ShowErrorComponent} from "../../util/show-error/show-error.component";
 import {FormsModule} from "@angular/forms";
-import {NgFor, NgIf} from "@angular/common";
+
 
 @Component({
   selector: 'tch-reservation-add',
   templateUrl: './reservation-add.component.html',
   styleUrls: ['./reservation-add.component.scss'],
-  imports: [NgIf, NgFor, FieldErrorComponent, ShowErrorComponent, FormsModule, NgbDatepickerModule],
+  imports: [FieldErrorComponent, ShowErrorComponent, FormsModule, NgbDatepickerModule],
   providers: [ReservationService, UserService]
 })
 export class ReservationAddComponent extends ErrorAware implements OnInit {
@@ -31,7 +31,7 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
   reservationTypes: SystemConfigReservationType[] = [];
 
   repeatUntil?: NgbDateStruct;
-  repeatMinDate?: Date;
+  repeatMinDate?: NgbDateStruct;
   time?: number;
   type = -1;
 
@@ -55,7 +55,8 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
     const start = parseInt(this.route.snapshot.params.date, 10);
     const court = this.route.snapshot.params.court;
 
-    this.repeatMinDate = DateUtil.addDays(new Date(), 1);
+    const tomorrow = DateUtil.addDays(new Date(), 1);
+    this.repeatMinDate = {year: tomorrow.getFullYear(), month: tomorrow.getMonth(), day: tomorrow.getDay()};
 
     this.reservation.date = DateUtil.getDatePart(start);
     this.reservation.start = DateUtil.getTimePart(start);

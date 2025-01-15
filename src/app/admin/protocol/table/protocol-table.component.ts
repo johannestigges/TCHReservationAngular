@@ -5,13 +5,13 @@ import {Protocol} from '../protocol';
 import {ErrorAware} from '../../../util/error/error-aware';
 import {DateUtil} from '../../../util/date/date-util';
 import {Router} from '@angular/router';
-import {KeyValuePipe, NgFor} from "@angular/common";
+import { KeyValuePipe } from "@angular/common";
 import {ShowErrorComponent} from "../../../util/show-error/show-error.component";
 
 @Component({
   selector: 'tch-protocol-table',
   templateUrl: './protocol-table.component.html',
-  imports: [NgFor, KeyValuePipe, ShowErrorComponent],
+  imports: [KeyValuePipe, ShowErrorComponent],
   providers: [ProtocolService]
 })
 export class ProtocolTableComponent extends ErrorAware implements OnInit {
