@@ -1,3 +1,5 @@
-<div *ngIf="fieldErrors.size && fieldErrors?.has(field)" class="text-danger">
+@if (fieldErrors.size && fieldErrors?.has(field)) {
+  <div class="text-danger">
     {{fieldErrors.get(field)}}
-</div>
+  </div>
+}

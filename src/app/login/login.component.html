@@ -1,7 +1,9 @@
 <div class="container" style="max-width: 20rem;">
   <h2>Anmeldung</h2>
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <div *ngIf="error" class="text-bg-danger p-3 my-3">{{error}}</div>
+    @if (error) {
+      <div class="text-bg-danger p-3 my-3">{{error}}</div>
+    }
     <div class="row mb-3">
       <div class="col">
         <label for="user" class="form-label">Benutzerkennung</label>

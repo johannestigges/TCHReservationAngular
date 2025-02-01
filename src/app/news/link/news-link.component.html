@@ -1,8 +1,14 @@
-<div *ngIf="newsCount > 0">
-    <button *ngIf="hasUnacknowledgedNews" class="btn btn-danger" routerLink="/news">
+@if (newsCount > 0) {
+  <div>
+    @if (hasUnacknowledgedNews) {
+      <button class="btn btn-danger" routerLink="/news">
         neue Nachrichten
-    </button>
-    <button *ngIf="!hasUnacknowledgedNews" class="btn btn-outline-secondary" routerLink="/news">
+      </button>
+    }
+    @if (!hasUnacknowledgedNews) {
+      <button class="btn btn-outline-secondary" routerLink="/news">
         &#9993;
-    </button>
-</div>
+      </button>
+    }
+  </div>
+}

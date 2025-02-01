@@ -10,12 +10,12 @@ import {userRoleValues} from '../../user/user-role.enum';
 import {FieldErrorComponent} from "../../../util/field-error/field-error.component";
 import {ShowErrorComponent} from "../../../util/show-error/show-error.component";
 import {ReservationTypesComponent} from "../reservation-types/reservation-types.component";
-import {NgFor} from "@angular/common";
+
 
 @Component({
   selector: 'tch-systemconfig-add',
   templateUrl: './systemconfig-add.component.html',
-  imports: [NgFor, ReservationTypesComponent, FieldErrorComponent, ShowErrorComponent, ReactiveFormsModule],
+  imports: [ReservationTypesComponent, FieldErrorComponent, ShowErrorComponent, ReactiveFormsModule],
   providers: [SystemconfigService]
 })
 export class SystemconfigAddComponent extends ErrorAware implements OnInit {

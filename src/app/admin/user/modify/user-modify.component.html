@@ -1,123 +1,125 @@
-<div class="container" *ngIf="user">
-  <form class="form-horizontal">
-    <!-- title -->
-    <div class="form-group mb-3">
-      <h2 class="col-sm-offset-2 col-sm-10">Benutzer ändern</h2>
-    </div>
-
-    <!-- user name -->
-    <div class="form-group mb-3">
-      <label class="col-sm-2 control-label">Name:</label>
-      <div class="col-sm-10">
-        <input
-          type="text"
-          class="form-control"
-          name="name"
-          [(ngModel)]="user.name"
-          required
-          [disabled]="!isAdmin"
-        />
-        <tch-field-error [fieldErrors]="fieldErrors" field="name"/>
+@if (user) {
+  <div class="container">
+    <form class="form-horizontal">
+      <!-- title -->
+      <div class="form-group mb-3">
+        <h2 class="col-sm-offset-2 col-sm-10">Benutzer ändern</h2>
       </div>
-    </div>
-
-    <!-- user email -->
-    <div class="form-group mb-3">
-      <label class="col-sm-2 control-label">EMail:</label>
-      <div class="col-sm-10">
-        <input
-          type="email"
-          class="form-control"
-          name="email"
-          [(ngModel)]="user.email"
-        />
-        <tch-field-error [fieldErrors]="fieldErrors" field="email"/>
+      <!-- user name -->
+      <div class="form-group mb-3">
+        <label class="col-sm-2 control-label">Name:</label>
+        <div class="col-sm-10">
+          <input
+            type="text"
+            class="form-control"
+            name="name"
+            [(ngModel)]="user.name"
+            required
+            [disabled]="!isAdmin"
+            />
+          <tch-field-error [fieldErrors]="fieldErrors" field="name"/>
+        </div>
       </div>
-    </div>
-
-    <!-- user password -->
-    <div class="form-group mb-3">
-      <label class="col-sm-2 control-label">Password:</label>
-      <div class="col-sm-10">
-        <input
-          type="password"
-          class="form-control"
-          name="password"
-          [(ngModel)]="user.password"
-          required
-        />
-        <tch-field-error [fieldErrors]="fieldErrors" field="passowrd"/>
+      <!-- user email -->
+      <div class="form-group mb-3">
+        <label class="col-sm-2 control-label">EMail:</label>
+        <div class="col-sm-10">
+          <input
+            type="email"
+            class="form-control"
+            name="email"
+            [(ngModel)]="user.email"
+            />
+          <tch-field-error [fieldErrors]="fieldErrors" field="email"/>
+        </div>
       </div>
-    </div>
-
-    <!-- user confirm passowrd -->
-    <div class="form-group mb-3">
-      <label class="col-sm-2 control-label">Passwort bestätigen:</label>
-      <div class="col-sm-10">
-        <input
-          type="password"
-          class="form-control"
-          name="confirmPassword"
-          [(ngModel)]="confirmPassword"
-          required
-        />
-        <tch-field-error [fieldErrors]="fieldErrors" field="confirmPassword"/>
+      <!-- user password -->
+      <div class="form-group mb-3">
+        <label class="col-sm-2 control-label">Password:</label>
+        <div class="col-sm-10">
+          <input
+            type="password"
+            class="form-control"
+            name="password"
+            [(ngModel)]="user.password"
+            required
+            />
+          <tch-field-error [fieldErrors]="fieldErrors" field="passowrd"/>
+        </div>
       </div>
-    </div>
-
-    <!-- user role -->
-    <div *ngIf="isAdmin" class="form-group mb-3">
-      <label class="col-sm-2 control-label">Rolle:</label>
-      <div class="col-sm-10">
-        <select
-          class="form-control"
-          id="role"
-          [(ngModel)]="userRole"
-          name="role"
-        >
-          <option *ngFor="let role of roleValues" [value]="role">
-            {{ role }}
-          </option>
-        </select>
-        <tch-field-error [fieldErrors]="fieldErrors" field="role"/>
+      <!-- user confirm passowrd -->
+      <div class="form-group mb-3">
+        <label class="col-sm-2 control-label">Passwort bestätigen:</label>
+        <div class="col-sm-10">
+          <input
+            type="password"
+            class="form-control"
+            name="confirmPassword"
+            [(ngModel)]="confirmPassword"
+            required
+            />
+          <tch-field-error [fieldErrors]="fieldErrors" field="confirmPassword"/>
+        </div>
       </div>
-    </div>
-
-    <!-- user status -->
-    <div *ngIf="isAdmin" class="form-group mb-3">
-      <label class="col-sm-2 control-label">Status:</label>
-      <div class="col-sm-10">
-        <select
-          class="form-control"
-          id="status"
-          [(ngModel)]="userStatus"
-          name="status"
-        >
-          <option *ngFor="let s of statusValues" [value]="s">{{ s }}</option>
-        </select>
-        <tch-field-error [fieldErrors]="fieldErrors" field="status"/>
+      <!-- user role -->
+      @if (isAdmin) {
+        <div class="form-group mb-3">
+          <label class="col-sm-2 control-label">Rolle:</label>
+          <div class="col-sm-10">
+            <select
+              class="form-control"
+              id="role"
+              [(ngModel)]="userRole"
+              name="role"
+              >
+              @for (role of roleValues; track role) {
+                <option [value]="role">
+                  {{ role }}
+                </option>
+              }
+            </select>
+            <tch-field-error [fieldErrors]="fieldErrors" field="role"/>
+          </div>
+        </div>
+      }
+      <!-- user status -->
+      @if (isAdmin) {
+        <div class="form-group mb-3">
+          <label class="col-sm-2 control-label">Status:</label>
+          <div class="col-sm-10">
+            <select
+              class="form-control"
+              id="status"
+              [(ngModel)]="userStatus"
+              name="status"
+              >
+              @for (s of statusValues; track s) {
+                <option [value]="s">{{ s }}</option>
+              }
+            </select>
+            <tch-field-error [fieldErrors]="fieldErrors" field="status"/>
+          </div>
+        </div>
+      }
+      <!-- error -->
+      <div class="form-group mb-3">
+        <div class="col-sm-offset-2 col-sm-10">
+          <tch-show-error
+            [httpError]="httpError"
+            [errorMessages]="errorMessages"
+            [fieldErrors]="fieldErrors"
+          ></tch-show-error>
+        </div>
       </div>
-    </div>
-
-    <!-- error -->
-    <div class="form-group mb-3">
-      <div class="col-sm-offset-2 col-sm-10">
-        <tch-show-error
-          [httpError]="httpError"
-          [errorMessages]="errorMessages"
-          [fieldErrors]="fieldErrors"
-        ></tch-show-error>
+      <!-- Buttons -->
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <button (click)="onClick()" class="btn btn-primary">
+            Daten speichern
+          </button>
+          <button (click)="cancel()" class="btn btn-outline-secondary ms-1">Zurück</button>
+        </div>
       </div>
-    </div>
-
-    <!-- Buttons -->
-    <div class="form-group">
-      <div class="col-sm-offset-2 col-sm-10">
-        <button (click)="onClick()" class="btn btn-primary">
-          Daten speichern
-        </button>
-        <button (click)="cancel()" class="btn btn-outline-secondary ms-1">Zurück</button>
-      </div>
-    </div>
-  </form>
-</div>
+    </form>
+  </div>
+}

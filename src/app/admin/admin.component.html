@@ -1,40 +1,48 @@
 <h2>Administration</h2>
 <ul class="nav nav-tabs" id="adminTab" role="tablist">
-    <li class="nav-item">
-        <a class="nav-link" [class.active]="tab === 'news'" (click)="select('news')">
-          Nachrichten
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" [class.active]="tab === 'user'" (click)="select('user')">
-          Benutzer
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link d-none d-sm-block" [class.active]="tab === 'systemconfig'"
-            (click)="select('systemconfig')">
-          Systemkonfiguration
-        </a>
-        <a class="nav-link d-block d-sm-none" [class.active]="tab === 'systemconfig'"
-            (click)="select('systemconfig')">
-          System
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" [class.active]="tab === 'protocol'" (click)="select('protocol')">
-          Historie
-        </a>
-    </li>
+  <li class="nav-item">
+    <a class="nav-link" [class.active]="tab === 'news'" (click)="select('news')">
+      Nachrichten
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" [class.active]="tab === 'user'" (click)="select('user')">
+      Benutzer
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link d-none d-sm-block" [class.active]="tab === 'systemconfig'"
+      (click)="select('systemconfig')">
+      Systemkonfiguration
+    </a>
+    <a class="nav-link d-block d-sm-none" [class.active]="tab === 'systemconfig'"
+      (click)="select('systemconfig')">
+      System
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" [class.active]="tab === 'protocol'" (click)="select('protocol')">
+      Historie
+    </a>
+  </li>
 </ul>
-<div *ngIf="tab === 'news'">
+@if (tab === 'news') {
+  <div>
     <tch-news-admin-overview></tch-news-admin-overview>
-</div>
-<div *ngIf="tab === 'user'">
+  </div>
+}
+@if (tab === 'user') {
+  <div>
     <tch-user-table></tch-user-table>
-</div>
-<div *ngIf="tab === 'systemconfig'">
+  </div>
+}
+@if (tab === 'systemconfig') {
+  <div>
     <tch-systemconfig-table></tch-systemconfig-table>
-</div>
-<div *ngIf="tab === 'protocol'">
+  </div>
+}
+@if (tab === 'protocol') {
+  <div>
     <tch-protocol-table></tch-protocol-table>
-</div>
+  </div>
+}

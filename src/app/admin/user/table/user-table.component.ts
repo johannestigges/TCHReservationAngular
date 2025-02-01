@@ -4,13 +4,13 @@ import {UserService} from '../user.service';
 import {User} from '../user';
 import {ErrorAware} from '../../../util/error/error-aware';
 import {Router, RouterLink} from '@angular/router';
-import {NgFor} from "@angular/common";
+
 import {ShowErrorComponent} from "../../../util/show-error/show-error.component";
 
 @Component({
   selector: 'tch-user-table',
   templateUrl: './user-table.component.html',
-  imports: [NgFor, RouterLink, ShowErrorComponent],
+  imports: [RouterLink, ShowErrorComponent],
   providers: [UserService]
 
 })

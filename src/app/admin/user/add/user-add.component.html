@@ -15,7 +15,7 @@
           name="name"
           [(ngModel)]="user.name"
           required
-        />
+          />
         <tch-field-error [fieldErrors]="fieldErrors" field="name" />
       </div>
     </div>
@@ -29,7 +29,7 @@
           class="form-control"
           name="email"
           [(ngModel)]="user.email"
-        />
+          />
         <tch-field-error [fieldErrors]="fieldErrors" field="email" />
       </div>
     </div>
@@ -44,7 +44,7 @@
           name="password"
           [(ngModel)]="user.password"
           required
-        />
+          />
         <tch-field-error [fieldErrors]="fieldErrors" field="password" />
       </div>
     </div>
@@ -59,7 +59,7 @@
           name="confirmPassword"
           [(ngModel)]="confirmPassword"
           required
-        />
+          />
         <tch-field-error [fieldErrors]="fieldErrors" field="confirmPassword" />
       </div>
     </div>
@@ -73,10 +73,12 @@
           id="role"
           [(ngModel)]="userRole"
           name="role"
-        >
-          <option *ngFor="let role of roleValues" [value]="role">
-            {{ role }}
-          </option>
+          >
+          @for (role of roleValues; track role) {
+            <option [value]="role">
+              {{ role }}
+            </option>
+          }
         </select>
         <tch-field-error [fieldErrors]="fieldErrors" field="role" />
       </div>
@@ -90,8 +92,10 @@
           id="status"
           [(ngModel)]="userStatus"
           name="status"
-        >
-          <option *ngFor="let s of statusValues" [value]="s">{{ s }}</option>
+          >
+          @for (s of statusValues; track s) {
+            <option [value]="s">{{ s }}</option>
+          }
         </select>
         <tch-field-error [fieldErrors]="fieldErrors" field="status" />
       </div>

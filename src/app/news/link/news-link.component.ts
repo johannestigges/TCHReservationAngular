@@ -3,12 +3,12 @@ import {NewsService} from 'src/app/admin/news/news.service';
 import {UserNewsService} from 'src/app/admin/news/user-news.service';
 import {User} from 'src/app/admin/user/user';
 import {RouterLink} from "@angular/router";
-import {NgIf} from "@angular/common";
+
 
 @Component({
   selector: 'tch-news-link',
   templateUrl: './news-link.component.html',
-  imports: [NgIf, RouterLink],
+  imports: [RouterLink],
 })
 export class NewsLinkComponent implements OnInit, OnChanges {
 

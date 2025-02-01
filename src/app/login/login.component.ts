@@ -2,12 +2,12 @@ import {Component, OnInit} from '@angular/core';
 import {UserService} from '../admin/user/user.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
-import {NgIf} from "@angular/common";
+
 
 @Component({
   selector: 'tch-login',
   templateUrl: './login.component.html',
-  imports: [NgIf, ReactiveFormsModule],
+  imports: [ReactiveFormsModule],
   providers: [UserService]
 })
 export class LoginComponent implements OnInit {

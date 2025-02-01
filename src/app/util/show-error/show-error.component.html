@@ -1,6 +1,10 @@
-<ul *ngFor="let errorMessage of errorMessages" class="unstyled text-danger">
+@for (errorMessage of errorMessages; track errorMessage) {
+  <ul class="unstyled text-danger">
     {{errorMessage.message}}
-</ul>
-<ul *ngFor="let fe of fieldErrors | keyvalue" class="unstyled text-danger">
+  </ul>
+}
+@for (fe of fieldErrors | keyvalue; track fe) {
+  <ul class="unstyled text-danger">
     Fehler in Feld {{fe.key}}: {{fe.value}}
-</ul>
+  </ul>
+}

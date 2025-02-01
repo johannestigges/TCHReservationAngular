@@ -6,7 +6,7 @@ import {User} from '../user';
 import {UserRole, UserRoleType, userRoleValues} from '../user-role.enum';
 import {ActivationStatus, activationStatusValues} from '../activation-status.enum';
 import {ErrorAware} from '../../../util/error/error-aware';
-import {NgFor, NgIf} from "@angular/common";
+
 import {FormsModule} from "@angular/forms";
 import {FieldErrorComponent} from "../../../util/field-error/field-error.component";
 import {ShowErrorComponent} from "../../../util/show-error/show-error.component";
@@ -15,7 +15,7 @@ import {ShowErrorComponent} from "../../../util/show-error/show-error.component"
 @Component({
   selector: 'tch-user-modify',
   templateUrl: './user-modify.component.html',
-  imports: [NgIf, NgFor, FieldErrorComponent, ShowErrorComponent, FormsModule],
+  imports: [FieldErrorComponent, ShowErrorComponent, FormsModule],
   providers: [UserService]
 })
 export class UserModifyComponent extends ErrorAware implements OnInit {

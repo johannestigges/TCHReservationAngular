@@ -1,69 +1,72 @@
-<div *ngIf="!qrUrl" class="container">
-  <form class="form-horizontal">
-    <div class="form-group mb-3">
-      <div class="col-sm-offset-2 col-sm-10">
-        <tch-show-error [errorMessages]="errorMessages" [httpError]="httpError" [fieldErrors]="fieldErrors">
-        </tch-show-error>
-      </div>
-    </div>
-    <div class="form-group mb-3">
-      <h2 class="col-sm-offset-2 col-sm-10">Benutzer anlegen</h2>
-    </div>
-    <div class="form-group mb-3">
-      <label class="col-sm-2 control-label">Name:</label>
-      <div class="col-sm-10 d-flex">
-        <input [(ngModel)]="user.name" class="form-control" name="name" type="text" />
-        <button [disabled]="!user.name" (click)="onClickNewUser()" class="btn btn-outline-primary ms-3">
-          Benutzer anlegen
-        </button>
-      </div>
-      <div class="form-check form-check-inline mt-3">
-        <input class="form-check-input" type="radio" checked="checked" name="role" id="select_user"
-          [(ngModel)]="user.role" [value]="UserRole.REGISTERED" selected>
-        <label class="form-check-label" for="select_user">
-          Mitglied
-        </label>
-      </div>
-      <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="role" id="select_guest" [(ngModel)]="user.role"
-          [value]="UserRole.GUEST">
-        <label class="form-check-label" for="select_guest">
-          Gast
-        </label>
-      </div>
-    </div>
-
-    <div class="form-group mt-5 mb-3">
-      <h2 class="col-sm-offset-2 col-sm-10">Kennwort zurücksetzen</h2>
-    </div>
-    <div class="form-group mb-3">
-      <label class="col-sm-2 control-label">Benutzer:</label>
-      <div class="col-sm-10 d-flex align-items-start">
-        <div class="w-100">
-          <tch-select-filter [valueList]="activeUserNames" (selected)="onSelectUser($event)">
-          </tch-select-filter>
+@if (!qrUrl) {
+  <div class="container">
+    <form class="form-horizontal">
+      <div class="form-group mb-3">
+        <div class="col-sm-offset-2 col-sm-10">
+          <tch-show-error [errorMessages]="errorMessages" [httpError]="httpError" [fieldErrors]="fieldErrors">
+          </tch-show-error>
         </div>
-        <button [disabled]="!selectedUserId" (click)="onClickNewPassword()" class="btn btn-outline-primary ms-3">
-          neues Passwort
-        </button>
       </div>
-    </div>
-    <div class="form-group">
-      <div class="col-sm-offset-2 col-sm-10">
-        <button (click)="onClose()" class="btn btn-outline-secondary mt-1">Zurück</button>
+      <div class="form-group mb-3">
+        <h2 class="col-sm-offset-2 col-sm-10">Benutzer anlegen</h2>
       </div>
-    </div>
-  </form>
-</div>
-<div *ngIf="qrUrl" class="d-flex flex-column align-items-center">
-  <h2 class="mt-3">QR-Code</h2>
-  <qrcode [qrdata]="qrUrl"></qrcode>
-  <div class="mx-3 text-center">
-    Dieser QR-Code enthält den Link zum Anmelden für den Benutzer
-    <h4>{{user.name}}</h4>
-    mit dem generierten Kennwort
-    <h4>{{user.password}}</h4>
-    <a [href]="qrUrl" target="_blank">{{qrUrl}}</a>
+      <div class="form-group mb-3">
+        <label class="col-sm-2 control-label">Name:</label>
+        <div class="col-sm-10 d-flex">
+          <input [(ngModel)]="user.name" class="form-control" name="name" type="text" />
+          <button [disabled]="!user.name" (click)="onClickNewUser()" class="btn btn-outline-primary ms-3">
+            Benutzer anlegen
+          </button>
+        </div>
+        <div class="form-check form-check-inline mt-3">
+          <input class="form-check-input" type="radio" checked="checked" name="role" id="select_user"
+            [(ngModel)]="user.role" [value]="UserRole.REGISTERED" selected>
+          <label class="form-check-label" for="select_user">
+            Mitglied
+          </label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="role" id="select_guest" [(ngModel)]="user.role"
+            [value]="UserRole.GUEST">
+          <label class="form-check-label" for="select_guest">
+            Gast
+          </label>
+        </div>
+      </div>
+      <div class="form-group mt-5 mb-3">
+        <h2 class="col-sm-offset-2 col-sm-10">Kennwort zurücksetzen</h2>
+      </div>
+      <div class="form-group mb-3">
+        <label class="col-sm-2 control-label">Benutzer:</label>
+        <div class="col-sm-10 d-flex align-items-start">
+          <div class="w-100">
+            <tch-select-filter [valueList]="activeUserNames" (selected)="onSelectUser($event)">
+            </tch-select-filter>
+          </div>
+          <button [disabled]="!selectedUserId" (click)="onClickNewPassword()" class="btn btn-outline-primary ms-3">
+            neues Passwort
+          </button>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <button (click)="onClose()" class="btn btn-outline-secondary mt-1">Zurück</button>
+        </div>
+      </div>
+    </form>
   </div>
-  <button (click)="onClose()" class="btn btn-outline-primary my-3">Schließen</button>
-</div>
+}
+@if (qrUrl) {
+  <div class="d-flex flex-column align-items-center">
+    <h2 class="mt-3">QR-Code</h2>
+    <qrcode [qrdata]="qrUrl"></qrcode>
+    <div class="mx-3 text-center">
+      Dieser QR-Code enthält den Link zum Anmelden für den Benutzer
+      <h4>{{user.name}}</h4>
+      mit dem generierten Kennwort
+      <h4>{{user.password}}</h4>
+      <a [href]="qrUrl" target="_blank">{{qrUrl}}</a>
+    </div>
+    <button (click)="onClose()" class="btn btn-outline-primary my-3">Schließen</button>
+  </div>
+}

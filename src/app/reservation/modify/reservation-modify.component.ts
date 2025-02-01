@@ -12,7 +12,7 @@ import {UserRole, userRoleFrom} from '../../admin/user/user-role.enum';
 import {DateUtil} from '../../util/date/date-util';
 import {Occupation} from '../occupation';
 import {activationStatusFrom} from '../../admin/user/activation-status.enum';
-import {NgFor, NgIf} from "@angular/common";
+
 import {FieldErrorComponent} from "../../util/field-error/field-error.component";
 import {FormsModule} from "@angular/forms";
 import {ShowErrorComponent} from "../../util/show-error/show-error.component";
@@ -20,7 +20,7 @@ import {ShowErrorComponent} from "../../util/show-error/show-error.component";
 @Component({
   selector: 'tch-reservation-modify',
   templateUrl: './reservation-modify.component.html',
-  imports: [NgIf, NgFor, FieldErrorComponent, ShowErrorComponent, FormsModule],
+  imports: [FieldErrorComponent, ShowErrorComponent, FormsModule],
   providers: [ReservationService, UserService]
 })
 export class ReservationModifyComponent extends ErrorAware implements OnInit, OnDestroy {

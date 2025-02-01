@@ -4,14 +4,14 @@ import {DateUtil} from 'src/app/util/date/date-util';
 import {NewsService} from '../news.service';
 import {ErrorAware} from 'src/app/util/error/error-aware';
 import {Router, RouterLink} from '@angular/router';
-import {NgFor} from "@angular/common";
+
 import {ShowErrorComponent} from "../../../util/show-error/show-error.component";
 
 
 @Component({
   selector: 'tch-news-admin-overview',
   templateUrl: './news-admin-overview.component.html',
-  imports: [NgFor, RouterLink, ShowErrorComponent],
+  imports: [RouterLink, ShowErrorComponent],
   providers: [NewsService]
 })
 export class NewsAdminOverviewComponent extends ErrorAware implements OnInit {

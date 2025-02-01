@@ -9,12 +9,12 @@ import {Router} from '@angular/router';
 import {FormsModule} from "@angular/forms";
 import {FieldErrorComponent} from "../../../util/field-error/field-error.component";
 import {ShowErrorComponent} from "../../../util/show-error/show-error.component";
-import {NgFor} from "@angular/common";
+
 
 @Component({
   selector: 'tch-user-add',
   templateUrl: './user-add.component.html',
-  imports: [NgFor, FieldErrorComponent, ShowErrorComponent, FormsModule],
+  imports: [FieldErrorComponent, ShowErrorComponent, FormsModule],
   providers: [UserService]
 })
 export class UserAddComponent extends ErrorAware {

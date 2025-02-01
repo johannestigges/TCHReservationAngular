@@ -16,16 +16,18 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let user of users">
-      <td class="d-none d-lg-table-cell">{{ user.id }}</td>
-      <td>{{ user.name }}</td>
-      <td class="d-none d-sm-table-cell">{{ user.email }}</td>
-      <td>{{ user.role }}</td>
-      <td>{{ user.status }}</td>
-      <td>
-        <a class="btn btn-outline-secondary" routerLink="/user/modify/{{ user.id }}">ändern</a>
-      </td>
-    </tr>
+    @for (user of users; track user) {
+      <tr>
+        <td class="d-none d-lg-table-cell">{{ user.id }}</td>
+        <td>{{ user.name }}</td>
+        <td class="d-none d-sm-table-cell">{{ user.email }}</td>
+        <td>{{ user.role }}</td>
+        <td>{{ user.status }}</td>
+        <td>
+          <a class="btn btn-outline-secondary" routerLink="/user/modify/{{ user.id }}">ändern</a>
+        </td>
+      </tr>
+    }
   </tbody>
 </table>
 <tch-show-error [httpError]="httpError" [errorMessages]="errorMessages" [fieldErrors]="fieldErrors"></tch-show-error>

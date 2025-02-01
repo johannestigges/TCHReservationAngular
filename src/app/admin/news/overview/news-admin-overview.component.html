@@ -1,20 +1,21 @@
 <div class="d-flex justify-content-end my-2">
-    <a class="btn btn-outline-primary mx-2" routerLink="/admin/news/add">Nachricht anlegen</a>
-    <button class="btn btn-outline-secondary" (click)="cancel()">Zurück</button>
-  </div>
+  <a class="btn btn-outline-primary mx-2" routerLink="/admin/news/add">Nachricht anlegen</a>
+  <button class="btn btn-outline-secondary" (click)="cancel()">Zurück</button>
+</div>
 
-  <table class="table table-bordered table-hover">
-    <thead>
+<table class="table table-bordered table-hover">
+  <thead>
+    <tr>
+      <th class="d-none d-lg-table-cell">Id</th>
+      <th>Titel</th>
+      <th class="d-none d-sm-table-cell">Text</th>
+      <th>Anlage am</th>
+      <th>Aktion</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (news of newsList; track news) {
       <tr>
-        <th class="d-none d-lg-table-cell">Id</th>
-        <th>Titel</th>
-        <th class="d-none d-sm-table-cell">Text</th>
-        <th>Anlage am</th>
-        <th>Aktion</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let news of newsList">
         <td class="d-none d-lg-table-cell">{{ news.id }}</td>
         <td>{{ news.subject }}</td>
         <td class="d-none d-sm-table-cell" style="white-space:pre-wrap;">{{ news.text }}</td>
@@ -24,6 +25,7 @@
           <a class="btn btn-outline-secondary me-1 mb-1" (click)="onDelete(news.id)">löschen</a>
         </td>
       </tr>
-    </tbody>
-  </table>
-  <tch-show-error [httpError]="httpError" [errorMessages]="errorMessages" [fieldErrors]="fieldErrors"></tch-show-error>
+    }
+  </tbody>
+</table>
+<tch-show-error [httpError]="httpError" [errorMessages]="errorMessages" [fieldErrors]="fieldErrors"></tch-show-error>

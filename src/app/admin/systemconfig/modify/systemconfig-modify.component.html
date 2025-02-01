@@ -31,9 +31,11 @@
         <label class="form-label">Buchungseinheit:</label>
         <select class="form-control" [class.is-invalid]="fieldErrors?.has('durationUnit')"
           formControlName="durationUnitInMinutes">
-          <option *ngFor="let du of durationUnits" [value]="du">
-            {{ du }} Minuten
-          </option>
+          @for (du of durationUnits; track du) {
+            <option [value]="du">
+              {{ du }} Minuten
+            </option>
+          }
         </select>
         <tch-field-error [fieldErrors]="fieldErrors" field="durationUnit" />
       </div>
@@ -41,9 +43,11 @@
       <div class="col-6 col-sm-4">
         <label class="form-label">Buchbar von :</label>
         <select class="form-control" [class.is-invalid]="fieldErrors?.has('openingHour')" formControlName="openingHour">
-          <option *ngFor="let oh of openingHours" [value]="oh">
-            {{ oh }} Uhr
-          </option>
+          @for (oh of openingHours; track oh) {
+            <option [value]="oh">
+              {{ oh }} Uhr
+            </option>
+          }
         </select>
         <tch-field-error [fieldErrors]="fieldErrors" field="openingHour" />
       </div>
@@ -51,9 +55,11 @@
       <div class="col-6 col-sm-4">
         <label class="form-label">Buchbar bis :</label>
         <select class="form-control" [class.is-invalid]="fieldErrors?.has('closingHour')" formControlName="closingHour">
-          <option *ngFor="let ch of closingHours" [value]="ch">
-            {{ ch }} Uhr
-          </option>
+          @for (ch of closingHours; track ch) {
+            <option [value]="ch">
+              {{ ch }} Uhr
+            </option>
+          }
         </select>
         <tch-field-error [fieldErrors]="fieldErrors" field="closingHour" />
       </div>
@@ -61,12 +67,14 @@
 
     <!-- courts -->
     <h4 class="mt-4">Plätze:</h4>
-    <div *ngFor="let court of courts.controls; let i = index" class="d-flex gap-3 mb-3">
-      <input class="form-control" type="text" [formControl]="court" />
-      <button class="btn btn-outline-secondary" (click)="removeCourt(i)">
-        -
-      </button>
-    </div>
+    @for (court of courts.controls; track court; let i = $index) {
+      <div class="d-flex gap-3 mb-3">
+        <input class="form-control" type="text" [formControl]="court" />
+        <button class="btn btn-outline-secondary" (click)="removeCourt(i)">
+          -
+        </button>
+      </div>
+    }
     <button type="button" class="btn btn-outline-secondary mb-3" (click)="addCourt()">
       +
     </button>
