@@ -89,6 +89,10 @@ export class QrComponent extends ErrorAware implements OnInit {
     this.router.navigateByUrl('/admin?tab=user');
   }
 
+  onCopyToClipboard(text:string){
+    navigator.clipboard.writeText(text).then().catch(e => console.error(e));
+  }
+
   private generatePassword() {
     const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     const length = 20;
