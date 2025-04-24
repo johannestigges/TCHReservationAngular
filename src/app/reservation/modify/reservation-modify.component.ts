@@ -173,7 +173,7 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit, On
 
   onDelete() {
     this.clearError();
-    this.service.deleteOccupation(this.occupation.id).subscribe({
+    this.service.deleteOccupation(this.occupation.id!).subscribe({
       next: () => this.onBack(),
       error: (error) => this.setError(error)
     });
@@ -191,7 +191,7 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit, On
         error: (error) => this.setError(error)
       });
     } else {
-      this.service.deleteOccupation(this.occupation.id).subscribe({
+      this.service.deleteOccupation(this.occupation.id!).subscribe({
         next: () => this.onBack(),
         error: (error) => this.setError(error)
       });

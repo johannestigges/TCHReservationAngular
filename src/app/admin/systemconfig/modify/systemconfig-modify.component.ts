@@ -153,7 +153,7 @@ export class SystemconfigModifyComponent extends ErrorAware implements OnInit {
     const types: SystemConfigReservationType[] = [];
     this.form.controls.types.controls.forEach(type =>
       types.push({
-        id: 0,
+        id: null,
         type: type.controls.id.value,
         name: type.controls.name.value,
         maxDuration: type.controls.maxDuration.value,
