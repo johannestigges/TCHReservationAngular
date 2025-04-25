@@ -38,7 +38,7 @@ export class ReservationSystemConfig {
    * get array of court indices [0,1,2,3,...]
    */
 	public getCourtIndices(): number[] {
-		return Array.from(new Array(this.courts.length), (val, index) => index);
+		return Array.from(new Array(this.courts.length), (_, index) => index);
 	}
 
 	public getCourtName(index: number): string {
@@ -98,7 +98,7 @@ export class ReservationSystemConfig {
 
 export class SystemConfigReservationType {
 	constructor(
-		public id = 0,
+		public id: number | null = null,
 		public type = 0,
 		public name = '',
 		public maxDuration = 0,
