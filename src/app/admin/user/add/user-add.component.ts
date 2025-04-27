@@ -33,7 +33,7 @@ export class UserAddComponent extends ErrorAware {
     super();
 
     // initialize user with defaults
-    this.user = new User(-1, '', UserRole.REGISTERED, '', '', ActivationStatus.CREATED);
+    this.user = new User(null, '', UserRole.REGISTERED, '', '', ActivationStatus.CREATED);
     this.confirmPassword = this.user.password;
     this.userRole = UserRole.REGISTERED;
     this.userStatus = ActivationStatus.CREATED;

@@ -28,7 +28,7 @@ export class QrComponent extends ErrorAware implements OnInit {
 
   constructor(private readonly router: Router, private readonly userService: UserService) {
     super();
-    this.user = new User(0, '', UserRole.REGISTERED, '', this.generatePassword(), ActivationStatus.ACTIVE);
+    this.user = new User(null, '', UserRole.REGISTERED, '', this.generatePassword(), ActivationStatus.ACTIVE);
   }
 
   ngOnInit() {

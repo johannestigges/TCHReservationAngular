@@ -3,7 +3,7 @@ import {ActivationStatus} from './activation-status.enum';
 
 export class User {
   constructor(
-    public id: number,
+    public id: number | null,
     public name: string,
     public role: UserRole,
     public email: string = '',
@@ -31,5 +31,5 @@ export class User {
     return this.id === user.id;
   }
 
-  static readonly EMPTY = new User(0, '', UserRole.ANONYMOUS, '', '', ActivationStatus.CREATED);
+  static readonly EMPTY = new User(null, '', UserRole.ANONYMOUS, '', '', ActivationStatus.CREATED);
 }
