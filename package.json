@@ -25,6 +25,7 @@
     "angularx-qrcode": "^19",
     "bootstrap": "^5",
     "jquery": "^3.7.0",
+    "npm": "^11.4.1",
     "rxjs": "^7.8.1",
     "tslib": "^2.5.3",
     "zone.js": "^0.15.0"
