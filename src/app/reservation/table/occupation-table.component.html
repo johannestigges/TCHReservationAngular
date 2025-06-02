@@ -20,7 +20,7 @@
         {{occupationTable.user.name}}
       </button>
       <ul class="dropdown-menu">
-        <li *ngIf="isLoggedIn() && canLogout()">
+        <li *ngIf="canLogout()">
           <a class="dropdown-item" routerLink="/login" [queryParams]="{logout:true}">Logout</a>
         </li>
         <li *ngIf="canChangePassword()">
@@ -104,9 +104,7 @@
             <!-- available cell with link to add reservation -->
             <td *ngIf="cell.data.css && canAdd(cell.data.date)" [attr.rowspan]="cell.rowspan"
               [attr.colspan]="cell.colspan" class="{{ cell.data.css }}_reservable">
-              <a routerLink="/add/{{ occupationTable.systemConfig.id }}/{{
-                  cell.data.court
-                }}/{{ cell.data.date }}">
+              <a routerLink="/add/{{ occupationTable.systemConfig.id }}/{{ cell.data.court }}/{{ cell.data.date }}">
                 &nbsp;
               </a>
             </td>
