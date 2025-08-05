@@ -21,7 +21,7 @@ export class NewsAddComponent extends ErrorAware {
   constructor(private router: Router, private newsService: NewsService) {
     super();
 
-    this.news = {id: 0, subject: '', text: '', url: '', createdAt: 0};
+    this.news = {subject: '', text: '', url: '', createdAt: 0};
   }
 
   onClick() {

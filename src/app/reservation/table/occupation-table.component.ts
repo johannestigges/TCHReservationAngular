@@ -11,15 +11,16 @@ import {DateUtil} from '../../util/date/date-util';
 import {ErrorAware} from '../../util/error/error-aware';
 import {Observable, Subscription, timer} from 'rxjs';
 import {ReservationSystemConfig} from '../reservation-system-config';
-import {NgFor, NgIf} from "@angular/common";
+
 import {ShowErrorComponent} from "../../util/show-error/show-error.component";
 import {NewsLinkComponent} from "../../news/link/news-link.component";
+import {ThemeToggleComponent} from "../../util/theme-toggle/theme-toggle.component";
 
 @Component({
   selector: 'tch-occupation-table',
   templateUrl: './occupation-table.component.html',
   styleUrls: ['./occupation-table.component.scss'],
-  imports: [NgIf, NgFor, RouterLink, RouterOutlet, NewsLinkComponent, ShowErrorComponent],
+  imports: [RouterLink, RouterOutlet, NewsLinkComponent, ShowErrorComponent, ThemeToggleComponent],
   providers: [ReservationService,UserService]
 })
 export class OccupationTableComponent extends ErrorAware implements OnInit, OnDestroy {
@@ -39,7 +40,6 @@ export class OccupationTableComponent extends ErrorAware implements OnInit, OnDe
   }
 
   ngOnInit() {
-    this.setTheme();
     this.route.paramMap.subscribe(params => {
       const date = params.get('date');
       if (date) {
@@ -216,16 +216,6 @@ export class OccupationTableComponent extends ErrorAware implements OnInit, OnDe
 
   navigateTo(id: number) {
     this.router.navigate(['table', id, this.occupationTable.date]);
-  }
-
-  toggleTheme() {
-    const theme = localStorage.getItem('theme') === 'dark' ? 'light' : 'dark';
-    localStorage.setItem('theme', theme);
-    this.setTheme();
-  }
-
-  setTheme() {
-    document.documentElement.setAttribute('data-bs-theme', localStorage.getItem('theme') ?? 'light');
   }
 
   private show(occupations: Occupation[]) {

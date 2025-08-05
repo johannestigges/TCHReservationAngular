@@ -32,7 +32,7 @@ export class NewsDetailComponent extends ErrorAware implements OnInit {
     this.newsService.getOne(Number(newsId)).subscribe({
       next: (news) => {
         this.news = news;
-        this.acknoledge(news.id)
+        this.acknoledge(news.id!)
       },
       error: (error) => this.setError(error)
     });

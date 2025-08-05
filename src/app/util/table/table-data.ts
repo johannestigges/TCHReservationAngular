@@ -3,10 +3,10 @@ import { TableCell } from './table-cell';
 /**
  * generic table data
  */
-export class TableData {
+export class TableData<Data> {
 	private tableRows = 0;
 	private tableColumns = 0;
-	table: TableCell[][] = [];
+	table: TableCell<Data>[][] = [];
 
 	/**
    * set the data for one cell
@@ -22,7 +22,7 @@ export class TableData {
 		this.setColspan(row, column, rowspan, colspan);
 	}
 
-	setData(row: number, column: number, data: unknown) {
+	setData(row: number, column: number, data: Data) {
 		const cell = this.getCell(row, column);
 		if (cell != null) {
 			cell.data = data;
@@ -43,7 +43,7 @@ export class TableData {
 		return this.tableColumns;
 	}
 
-	getCell(row: number, column: number): TableCell | null {
+	getCell(row: number, column: number): TableCell<Data> | null {
 		if (row > this.getRows() || column > this.getColums()) {
 			return null;
 		}

@@ -1,126 +1,193 @@
 <router-outlet></router-outlet>
 <div class="d-flex flex-wrap justify-content-between mt-1">
   <div class="d-flex mb-1">
-    <div *ngIf="systemConfigs?.length > 1" class="dropdown me-1">
-      <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-        {{ occupationTable?.systemConfig?.title }}
-      </button>
-      <ul class="dropdown-menu">
-        <li *ngFor="let config of systemConfigs">
-          <button class="dropdown-item" (click)="navigateTo(config.id)">{{ config.title }}</button>
-        </li>
-      </ul>
-    </div>
-    <div class="h3 me-2" *ngIf="systemConfigs?.length === 1">
-      {{systemConfigs[0].title}}
-    </div>
+    @if (systemConfigs?.length ?? 0 > 1) {
+      <div class="dropdown me-1">
+        <button class="btn btn-outline-primary dropdown-toggle"
+                type="button"
+                data-bs-toggle="dropdown">
+          {{ occupationTable?.systemConfig?.title }}
+        </button>
+        <ul class="dropdown-menu">
+          @for (config of systemConfigs; track config) {
+            <li>
+              <button class="dropdown-item" (click)="navigateTo(config.id)">
+                {{ config.title }}
+              </button>
+            </li>
+          }
+        </ul>
+      </div>
+    }
+    @if (systemConfigs?.length === 1) {
+      <div class="h3 me-2">
+        {{ systemConfigs[0].title }}
+      </div>
+    }
 
-    <div *ngIf="isLoggedIn()" class="dropdown">
-      <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-        {{occupationTable.user.name}}
+    @if (isLoggedIn()) {
+      <div class="dropdown">
+        <button class="btn btn-outline-secondary dropdown-toggle"
+                type="button" data-bs-toggle="dropdown">
+          <img src="assets/svg/person-fill.svg" alt="Benutzer">
+          <div class="d-none d-lg-inline ms-2">{{ occupationTable.user.name }}</div>
+        </button>
+        <ul class="dropdown-menu">
+          <li>
+            <div class="ms-2">
+              <img src="assets/svg/person.svg" alt="Benutzer">
+              {{ occupationTable.user.name }}
+            </div>
+          </li>
+          @if (canLogout()) {
+            <li>
+              <a class="dropdown-item" routerLink="/login" [queryParams]="{logout:true}">
+                Logout
+              </a>
+            </li>
+          }
+          @if (canChangePassword()) {
+            <li>
+              <a class="dropdown-item"
+                 routerLink="/user/modify/{{ occupationTable.user.id }}">
+                Kennwort ändern
+              </a>
+            </li>
+          }
+          @if (isAdminOrTrainer()) {
+            <li>
+              <a class="dropdown-item" routerLink="/admin">
+                Administration
+              </a>
+            </li>
+          }
+          <li>
+            <tch-theme-toggle></tch-theme-toggle>
+          </li>
+        </ul>
+      </div>
+    } @else {
+      <button (click)="onLogin()" class="btn btn-outline-secondary">
+        Login
       </button>
-      <ul class="dropdown-menu">
-        <li *ngIf="canLogout()">
-          <a class="dropdown-item" routerLink="/login" [queryParams]="{logout:true}">Logout</a>
-        </li>
-        <li *ngIf="canChangePassword()">
-          <a class="dropdown-item" routerLink="/user/modify/{{ occupationTable.user.id }}">Kennwort ändern</a>
-        </li>
-        <li *ngIf="isAdminOrTrainer()">
-          <a class="dropdown-item" routerLink="/admin">Administration</a>
-        </li>
-      </ul>
-    </div>
-    <button *ngIf="!isLoggedIn()" (click)="onLogin()" class="btn btn-outline-secondary">
-      Login
-    </button>
+    }
   </div>
-  <tch-news-link [loggedInUser]="occupationTable.user"></tch-news-link>
-  <h3 class="m-1">
-    <div class="d-none d-md-inline"> {{ showDate() }} &nbsp;</div>
-    <div class="d-inline d-md-none"> {{ showDateShort() }} &nbsp;</div>
-  </h3>
-  <div class="mb-1">
-    <button (click)="onBackWeek()" title="Eine Woche zurück" class="btn btn-space">
-      &lt;&lt;
-    </button>
-    <button (click)="onBackDay()" title="Einen Tag zurück" class="btn btn-space">
-      &lt;
-    </button>
-    <button (click)="onToday()" title="Heute" class="btn btn-primary btn-space">
-      +
-    </button>
-    <button (click)="onNextDay()" title="Einen Tag vor" class="btn btn-space">
-      &gt;
-    </button>
-    <button (click)="onNextWeek()" title="Eine Woche vor" class="btn btn-space">
-      &gt;&gt;
-    </button>
-    <button class="btn btn-space" (click)="toggleTheme()">&#8251;</button>
+
+  <div class="d-flex mb-1">
+    <tch-news-link [loggedInUser]="occupationTable.user"></tch-news-link>
+  </div>
+
+  <div class="d-flex mb-1">
+    <h3 class="m-1">
+      <div class="d-none d-md-inline"> {{ showDate() }} &nbsp;</div>
+      <div class="d-inline d-md-none"> {{ showDateShort() }} &nbsp;</div>
+    </h3>
+
+    <div>
+      <button (click)="onBackWeek()" title="Eine Woche zurück" class="btn btn-space">
+        &lt;&lt;
+      </button>
+      <button (click)="onBackDay()" title="Einen Tag zurück" class="btn btn-space">
+        &lt;
+      </button>
+      <button (click)="onToday()" title="Heute" class="btn btn-primary btn-space">
+        +
+      </button>
+      <button (click)="onNextDay()" title="Einen Tag vor" class="btn btn-space">
+        &gt;
+      </button>
+      <button (click)="onNextWeek()" title="Eine Woche vor" class="btn btn-space">
+        &gt;&gt;
+      </button>
+    </div>
   </div>
 </div>
 
-<table *ngIf="occupationTable.systemConfig" class="occupation_table">
-  <thead>
+@if (occupationTable.systemConfig) {
+  <table class="occupation_table">
+    <thead>
     <tr>
       <th>Zeit</th>
-      <th *ngFor="let index of occupationTable.systemConfig.getCourtIndices()">
-        {{ occupationTable.systemConfig.getCourtName(index) }}
-      </th>
+      @for (index of occupationTable.systemConfig.getCourtIndices(); track index) {
+        <th>
+          {{ occupationTable.systemConfig.getCourtName(index) }}
+        </th>
+      }
     </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let row of occupationTable.table">
-      <ng-container *ngFor="let cell of row">
-        <ng-container *ngIf="cell.rowspan > 0 && cell.colspan > 0">
-          <!-- first column with time data -->
-          <ng-container *ngIf="cell.data; else noCellData">
-            <td *ngIf="cell.data.time" [attr.rowspan]="cell.rowspan" [attr.colspan]="cell.colspan"
-              class="d-none d-sm-block">
-              {{ cell.data.time }}
-            </td>
-            <td *ngIf="cell.data.time" [attr.rowspan]="cell.rowspan" [attr.colspan]="cell.colspan"
-              class="d-block d-sm-none">
-              {{ cell.data.short_time }}
-            </td>
-
-            <!-- occupation entry with link to modify or delete occupation -->
-            <td *ngIf="cell.data.text && canModify(cell.data)" [attr.rowspan]="cell.rowspan"
-              [attr.colspan]="cell.colspan" class="type{{ cell.data.type }} deletable">
-              <a routerLink="/modify/{{ occupationTable.systemConfig.id }}/{{
-                  cell.data.id
-                }}">
-                <span>{{ cell.data.text }}</span>
-              </a>
-            </td>
-
-            <!-- occupation entry -->
-            <td *ngIf="cell.data.text && !canModify(cell.data)" [attr.rowspan]="cell.rowspan"
-              [attr.colspan]="cell.colspan" class="type{{ cell.data.type }}">
-              <span *ngIf="canShowText(cell.data)">{{ cell.data.text }}</span>
-              <span *ngIf="!canShowText(cell.data)">Reserviert</span>
-            </td>
-
-            <!-- available cell with link to add reservation -->
-            <td *ngIf="cell.data.css && canAdd(cell.data.date)" [attr.rowspan]="cell.rowspan"
-              [attr.colspan]="cell.colspan" class="{{ cell.data.css }}_reservable">
-              <a routerLink="/add/{{ occupationTable.systemConfig.id }}/{{ cell.data.court }}/{{ cell.data.date }}">
-                &nbsp;
-              </a>
-            </td>
-
-            <!-- available cell without link to add reservation -->
-            <td *ngIf="cell.data.css && !canAdd(cell.data.date)" [attr.rowspan]="cell.rowspan"
-              [attr.colspan]="cell.colspan" class="{{ cell.data.css }}" style="height: 100%; width: 100%"></td>
-          </ng-container>
-
-          <ng-template #noCellData>
-            <!-- no data? available cell without link -->
-            <td [attr.rowspan]="cell.rowspan" [attr.colspan]="cell.colspan" class="available"></td>
-          </ng-template>
-        </ng-container>
-      </ng-container>
-    </tr>
-  </tbody>
-</table>
-<tch-show-error [httpError]="httpError" [errorMessages]="errorMessages" [fieldErrors]="fieldErrors"></tch-show-error>
+    </thead>
+    <tbody>
+      @for (row of occupationTable.table; track $index) {
+        <tr>
+          @for (cell of row; track $index) {
+            @if (cell.rowspan > 0 && cell.colspan > 0) {
+              @if (cell.data) {
+                <!-- first column with time data -->
+                @if (cell.data.header) {
+                  <td [attr.rowspan]="cell.rowspan" [attr.colspan]="cell.colspan"
+                      class="d-none d-sm-block">
+                    {{ cell.data.header.time }}
+                  </td>
+                  <td [attr.rowspan]="cell.rowspan" [attr.colspan]="cell.colspan"
+                      class="d-block d-sm-none">
+                    {{ cell.data.header.short_time }}
+                  </td>
+                }
+                <!-- occupation entry with link to modify or delete occupation -->
+                @if (cell.data.occupation && canModify(cell.data.occupation)) {
+                  <td [attr.rowspan]="cell.rowspan"
+                      [attr.colspan]="cell.colspan"
+                      class="type{{ cell.data.occupation.type }}">
+                    <a routerLink="/modify/{{ occupationTable.systemConfig.id }}/{{ cell.data.occupation.id }}">
+                      <span>{{ cell.data.occupation.text }}</span>
+                    </a>
+                  </td>
+                }
+                <!-- occupation entry -->
+                @if (cell.data.occupation && !canModify(cell.data.occupation)) {
+                  <td [attr.rowspan]="cell.rowspan"
+                      [attr.colspan]="cell.colspan"
+                      class="type{{ cell.data.occupation.type }}">
+                    @if (canShowText(cell.data?.occupation)) {
+                      <span>{{ cell.data.occupation.text }}</span>
+                    } @else {
+                      <span>Reserviert</span>
+                    }
+                  </td>
+                }
+                <!-- available cell with link to add reservation -->
+                @if (cell.data.available && canAdd(cell.data.available.date)) {
+                  <td [attr.rowspan]="cell.rowspan"
+                      [attr.colspan]="cell.colspan"
+                      class="{{ cell.data.available.css }}_reservable">
+                    <a
+                      routerLink="/add/{{ occupationTable.systemConfig.id }}/{{ cell.data.available.court }}/{{ cell.data.available.date }}">&nbsp;
+                    </a>
+                  </td>
+                }
+                <!-- available cell without link to add reservation -->
+                @if (cell.data.available && !canAdd(cell.data.available.date)) {
+                  <td [attr.rowspan]="cell.rowspan"
+                      [attr.colspan]="cell.colspan"
+                      class="{{ cell.data.available.css }}"
+                      style="height: 100%; width: 100%">
+                  </td>
+                }
+              } @else {
+                <!-- no data? available cell without link -->
+                <td [attr.rowspan]="cell.rowspan"
+                    [attr.colspan]="cell.colspan"
+                    class="available">
+                </td>
+              }
+            }
+          }
+        </tr>
+      }
+    </tbody>
+  </table>
+}
+<tch-show-error
+  [httpError]="httpError"
+  [errorMessages]="errorMessages"
+  [fieldErrors]="fieldErrors">
+</tch-show-error>

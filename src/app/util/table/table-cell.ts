@@ -1,6 +1,6 @@
-export class TableCell {
+export class TableCell<Data> {
 	constructor(
-    public data: unknown = null,
+    public data: Data | null = null,
     public rowspan: number = 1,
     public colspan: number = 1
 	) {}

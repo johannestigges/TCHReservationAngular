@@ -22,7 +22,7 @@
         <td>{{ date(news.createdAt) }}</td>
         <td class="">
           <a class="btn btn-outline-secondary me-1 mb-1" routerLink="/admin/news/modify/{{ news.id }}">ändern</a>
-          <a class="btn btn-outline-secondary me-1 mb-1" (click)="onDelete(news.id)">löschen</a>
+          <a class="btn btn-outline-secondary me-1 mb-1" (click)="onDelete(news.id!)">löschen</a>
         </td>
       </tr>
     }

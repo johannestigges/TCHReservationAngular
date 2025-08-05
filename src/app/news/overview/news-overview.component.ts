@@ -24,7 +24,7 @@ export class NewsOverviewComponent extends ErrorAware implements OnInit {
   ngOnInit(): void {
     this.newsService.getAll().subscribe({
       next: (allNews) => {
-        this.news = allNews.map(news => new AcknoledgedNews(news.id, news.subject, news.url, news.text, false));
+        this.news = allNews.map(news => new AcknoledgedNews(news.id!, news.subject, news.url, news.text, false));
         this.userNewsServise.getUserNews().subscribe({
           next: (data) => this.addAcknowledges(data),
           error: () => this.news.forEach(n => n.acknowledged = true)

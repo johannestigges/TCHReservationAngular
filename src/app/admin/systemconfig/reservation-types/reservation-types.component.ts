@@ -3,18 +3,18 @@ import {FormArray, FormControl, FormGroup, FormGroupDirective} from '@angular/fo
 import {ReservationTypeForm} from '../systemconfig-form';
 import {userRoleNames, userRoleValues} from '../../user/user-role.enum';
 import {weekDaysNames, weekDaysValues} from 'src/app/reservation/week-days';
-import {NgFor, NgIf} from "@angular/common";
+
 import {ReservationTypeComponent} from "../reservation-type/reservation-type.component";
 
 @Component({
   selector: 'tch-reservation-types',
   templateUrl: './reservation-types.component.html',
-  imports: [NgIf, NgFor, ReservationTypeComponent]
+  imports: [ReservationTypeComponent]
 })
 export class ReservationTypesComponent implements OnInit {
   readonly NOT_IN_EDIT = -1;
 
-  form?: FormArray;
+  form?: FormArray<FormGroup<ReservationTypeForm>> = undefined;
   @Input() formGroupName = '';
 
   inEdit = this.NOT_IN_EDIT;
@@ -34,7 +34,7 @@ export class ReservationTypesComponent implements OnInit {
     this.form?.removeAt(i);
   }
 
-  onFinishedReservationType(form: FormGroup<ReservationTypeForm>) {
+  onFinishedReservationType(form: FormGroup<ReservationTypeForm> | null) {
     if (form) {
       this.form?.setControl(this.inEdit, form);
     }

@@ -1,14 +1,14 @@
 @if (newsCount > 0) {
   <div>
     @if (hasUnacknowledgedNews) {
-      <button class="btn btn-danger" routerLink="/news">
-        neue Nachrichten
-      </button>
-    }
-    @if (!hasUnacknowledgedNews) {
-      <button class="btn btn-outline-secondary" routerLink="/news">
-        &#9993;
-      </button>
+      <a title="Es gibt Neuigkeiten!" class="btn btn-danger" routerLink="/news">
+        <div class="d-none d-lg-inline me-lg-2">Neuigkeiten</div>
+        <img src="assets/svg/envelope.svg" alt="Neuigkeiten">
+      </a>
+    } @else {
+      <a class="btn btn-outline-secondary" routerLink="/news">
+        <img src="assets/svg/envelope.svg" alt="Neuigkeiten">
+      </a>
     }
   </div>
 }
