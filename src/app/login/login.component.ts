@@ -3,7 +3,6 @@ import {UserService} from '../admin/user/user.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 
-
 @Component({
   selector: 'tch-login',
   templateUrl: './login.component.html',
@@ -29,10 +28,10 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.queryParamMap.subscribe(params => {
-      const username: string | null = params.get('username');
-      const pw: string | null = params.get('password');
-      if (username && pw) {
-        this.userService.login(username, pw, true).subscribe({
+      const username  = params.get('username');
+      const password = params.get('password');
+      if (username && password) {
+        this.userService.login(username, password, true).subscribe({
           next: () => this.router.navigateByUrl('/'),
           error: (error) => this.setError(error)
         });

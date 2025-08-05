@@ -7,22 +7,35 @@
     <div class="row mb-3">
       <div class="col">
         <label for="user" class="form-label">Benutzerkennung</label>
-        <input formControlName="user" class="form-control" type="text" id="user"/>
+        <input formControlName="user"
+               class="form-control"
+               type="text"
+               id="user"/>
       </div>
     </div>
     <div class="row mb-3">
       <div class="col">
         <label for="password" class="form-label">Kennwort</label>
-        <input formControlName="password" class="form-control" type="password" id="password"/>
+        <input formControlName="password"
+               class="form-control"
+               type="password"
+               id="password"/>
       </div>
     </div>
     <div class="row mb-3">
       <div class="col">
-        <input formControlName="rememberMe"  type="checkbox" id="rememberMe" class="m-2"/>
+        <input formControlName="rememberMe"
+               type="checkbox"
+               id="rememberMe"
+               class="m-2"/>
         <label for="rememberMe" class="form-label">Angemeldet bleiben</label>
       </div>
     </div>
-    <button type="submit" class="btn btn-outline-primary">Anmelden</button>
-    <button class="btn btn-outline-secondary ms-1" (click)="onCancel()">Abbrechen</button>
+    <button type="submit" class="btn btn-outline-primary">
+      Anmelden
+    </button>
+    <button class="btn btn-outline-secondary ms-1" (click)="onCancel()">
+      Abbrechen
+    </button>
   </form>
 </div>

@@ -8,7 +8,6 @@ import {User} from "../../admin/user/user";
 import {UserService} from "../../admin/user/user.service";
 import {UserRole, userRoleFrom} from "../../admin/user/user-role.enum";
 
-
 @Component({
   selector: 'tch-news-detail',
   templateUrl: './news-detail.component.html',
@@ -16,7 +15,7 @@ import {UserRole, userRoleFrom} from "../../admin/user/user-role.enum";
   providers: [NewsService, UserService, UserNewsService]
 })
 export class NewsDetailComponent extends ErrorAware implements OnInit {
-  news: News = {id: 0, subject: '', text: '', url: '', createdAt: 0};
+  news: News = {subject: '', text: '', url: '', createdAt: 0};
   user = User.EMPTY;
 
   constructor(

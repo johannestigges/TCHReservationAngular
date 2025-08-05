@@ -39,7 +39,7 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit, On
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private service: ReservationService,
+    private reservationService: ReservationService,
     private userService: UserService
   ) {
     super();
@@ -49,7 +49,7 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit, On
     const systemId = this.route.snapshot.params.system;
     const occupationId: number = this.route.snapshot.params.occupation;
 
-    this.service.getSystemConfig(systemId).subscribe({
+    this.reservationService.getSystemConfig(systemId).subscribe({
       next: (config) => {
         this.systemConfig = ReservationSystemConfig.of(config);
         this.userService.getLoggedInUser().subscribe({
@@ -62,8 +62,9 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit, On
               '',
               activationStatusFrom(user.status),
             );
-            this.types = this.systemConfig.types.filter(type => type.roles.includes(user.role.toString()));
-            this.service.getOccupation(occupationId).subscribe({
+            this.types = this.systemConfig.types
+              .filter(type => type.roles.includes(user.role.toString()));
+            this.reservationService.getOccupation(occupationId).subscribe({
               next: (occupation) => {
                 this.occupation = occupation;
                 this.time = this.occupation.start;
@@ -173,7 +174,7 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit, On
 
   onDelete() {
     this.clearError();
-    this.service.deleteOccupation(this.occupation.id!).subscribe({
+    this.reservationService.deleteOccupation(this.occupation.id!).subscribe({
       next: () => this.onBack(),
       error: (error) => this.setError(error)
     });
@@ -186,12 +187,12 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit, On
       this.occupation.duration--;
     }
     if (this.occupation.duration > 0) {
-      this.service.updateOccupation(this.occupation).subscribe({
+      this.reservationService.updateOccupation(this.occupation).subscribe({
         next: () => this.onBack(),
         error: (error) => this.setError(error)
       });
     } else {
-      this.service.deleteOccupation(this.occupation.id!).subscribe({
+      this.reservationService.deleteOccupation(this.occupation.id!).subscribe({
         next: () => this.onBack(),
         error: (error) => this.setError(error)
       });
@@ -206,7 +207,7 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit, On
       this.occupation.court = this.court;
       this.occupation.lastCourt = this.court;
     }
-    this.service.updateOccupation(this.occupation).subscribe({
+    this.reservationService.updateOccupation(this.occupation).subscribe({
       next: () => this.onBack(),
       error: (error) => this.setError(error)
     });

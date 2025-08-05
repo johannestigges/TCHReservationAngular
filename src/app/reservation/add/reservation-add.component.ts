@@ -16,7 +16,6 @@ import {FieldErrorComponent} from "../../util/field-error/field-error.component"
 import {ShowErrorComponent} from "../../util/show-error/show-error.component";
 import {FormsModule} from "@angular/forms";
 
-
 @Component({
   selector: 'tch-reservation-add',
   templateUrl: './reservation-add.component.html',
@@ -56,7 +55,11 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
     const court = this.route.snapshot.params.court;
 
     const tomorrow = DateUtil.addDays(new Date(), 1);
-    this.repeatMinDate = {year: tomorrow.getFullYear(), month: tomorrow.getMonth(), day: tomorrow.getDay()};
+    this.repeatMinDate = {
+      year: tomorrow.getFullYear(),
+      month: tomorrow.getMonth(),
+      day: tomorrow.getDay()
+    };
 
     this.reservation.date = DateUtil.getDatePart(start);
     this.reservation.start = DateUtil.getTimePart(start);
@@ -109,7 +112,9 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
     this.reservation.occupations = [];
     this.reservation.type = this.type;
     this.reservation.start = this.time;
-    this.reservation.repeatUntil = DateUtil.convertFromNgbDateStruct(this.repeatUntil).getTime();
+    this.reservation.repeatUntil = DateUtil
+      .convertFromNgbDateStruct(this.repeatUntil)
+      .getTime();
     this.service.checkReservation(this.reservation).subscribe({
       next: (reservation) => this.reservation = reservation,
       error: (error) => this.setError(error)
@@ -127,7 +132,8 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
     this._setTypes();
 
     // decide which parts of the layout are visible
-    this.showSimpleDuration = this.systemConfig?.durationUnitInMinutes === 30 && !this._isAtLeastTeamster();
+    this.showSimpleDuration = this.systemConfig?.durationUnitInMinutes === 30
+      && !this._isAtLeastTeamster();
     this.onTypeSelected();
     this.setDefaultValues();
   }
@@ -147,10 +153,7 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
     if (this.user.hasRole(UserRole.TRAINER, UserRole.TEAMSTER)) {
       this.focus = 'duration';
     }
-    if (this.user.hasRole(UserRole.REGISTERED)) {
-      this.focus = 'duration';
-    }
-    if (this.user.hasRole(UserRole.KIOSK, UserRole.TECHNICAL)) {
+    if (this.user.hasRole(UserRole.REGISTERED, UserRole.KIOSK, UserRole.TECHNICAL)) {
       this.focus = 'text';
     }
   }
@@ -166,7 +169,6 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
   showTime(d: number) {
     return DateUtil.showTime(d);
   }
-
 
   onRepeatTypeChanged() {
     this.reservation!.occupations = [];
@@ -200,7 +202,9 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
     this.reservation!.type = this.type ?? -1;
     this.reservation!.start = this.time!;
     if (this.repeatUntil) {
-      this.reservation!.repeatUntil = DateUtil.convertFromNgbDateStruct(this.repeatUntil).getTime();
+      this.reservation!.repeatUntil = DateUtil
+        .convertFromNgbDateStruct(this.repeatUntil)
+        .getTime();
     }
     this._setCookie('text', this.reservation!.text);
     this.service.addReservation(this.reservation!).subscribe({
@@ -240,6 +244,7 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
   }
 
   private _setTypes() {
-    this.reservationTypes = this.systemConfig.types.filter(type => type.roles.includes(UserRole[this.user.role]));
+    this.reservationTypes = this.systemConfig.types
+      .filter(type => type.roles.includes(UserRole[this.user.role]));
   }
 }

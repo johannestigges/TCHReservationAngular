@@ -4,7 +4,6 @@ import {UserNewsService} from 'src/app/admin/news/user-news.service';
 import {User} from 'src/app/admin/user/user';
 import {RouterLink} from "@angular/router";
 
-
 @Component({
   selector: 'tch-news-link',
   templateUrl: './news-link.component.html',
