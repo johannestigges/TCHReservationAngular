@@ -14,8 +14,12 @@ export class ReservationService {
 	constructor(private httpClient: HttpClient) {}
 
 	getReservation(id: number): Observable<Reservation> {
-		return this.httpClient.get<Reservation>(`${this.url()}/${id}`);
+		return this.httpClient.get<Reservation>(`${this.url()}/id/${id}`);
 	}
+
+  getMyReservations():Observable<Reservation[]> {
+    return this.httpClient.get<Reservation[]>(`${this.url()}/my`);
+  }
 
 	getOccupation(id: number) {
 		return this.httpClient.get<Occupation>(`${this.url()}/occupation/${id}`);
@@ -26,7 +30,7 @@ export class ReservationService {
 		date: number
 	): Observable<Occupation[]> {
 		return this.httpClient.get<Occupation[]>(
-			`${this.url()}/getOccupations/${systemConfigId}/${date}`
+			`${this.url()}/occupations/${systemConfigId}/${date}`
 		);
 	}
 

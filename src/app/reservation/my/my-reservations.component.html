@@ -1,0 +1,23 @@
+<h2>Meine Reservierungen</h2>
+<div class="d-flex my-1">
+  <button class="btn btn-outline-primary ml-auto" (click)="onCancel()">Zurück</button>
+</div>
+<table class="table table-bordered table-striped">
+  <thead>
+  <tr>
+    <th>Datum</th>
+    <th>Platz</th>
+    <th>Text</th>
+  </tr>
+  </thead>
+  <tbody>
+    @for (reservation of reservations; track reservation) {
+      <tr>
+        <td>{{ toDate(reservation.date) }} {{toTime(reservation.start)}}</td>
+        <td> {{ reservation.courts}}</td>
+        <td>{{ reservation.text }}</td>
+      </tr>
+    }
+  </tbody>
+</table>
+

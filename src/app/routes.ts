@@ -16,12 +16,14 @@ import {NewsAddComponent} from './admin/news/add/news-add.component';
 import {NewsModifyComponent} from './admin/news/modify/news-modify.component';
 import {NewsOverviewComponent} from './news/overview/news-overview.component';
 import {NewsDetailComponent} from './news/detail/news-detail.component';
+import {MyReservationsComponent} from "./reservation/my/my-reservations.component";
 
 export const routes: Routes = [
   {path: '', redirectTo: '/table', pathMatch: 'full'},
   {path: 'table', component: OccupationTableComponent},
   {path: 'table/:system', component: OccupationTableComponent},
   {path: 'table/:system/:date', component: OccupationTableComponent},
+  {path: 'my-reservations', component: MyReservationsComponent},
   {path: 'add/:system/:court/:date', component: ReservationAddComponent},
   {path: 'modify/:system/:occupation', component: ReservationModifyComponent},
   {path: 'admin', component: AdminComponent},
