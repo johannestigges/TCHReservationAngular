@@ -30,7 +30,7 @@ export class ReservationService {
 		date: number
 	): Observable<Occupation[]> {
 		return this.httpClient.get<Occupation[]>(
-			`${this.url()}/occupations/${systemConfigId}/${date}`
+			`${this.url()}/getOccupations/${systemConfigId}/${date}`
 		);
 	}
 
