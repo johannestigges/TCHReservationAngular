@@ -47,7 +47,7 @@ export class OccupationTableComponent extends ErrorAware implements OnInit, OnDe
       }
       this.reservationService.getAllSystemConfigs().subscribe(systemConfigs => {
         this.systemConfigs = systemConfigs;
-        const systemConfigId = Number(params.get('system') ?? systemConfigs[0].id);
+        const systemConfigId = Number(params.get('system') ?? localStorage.getItem('systemConfigId') ?? systemConfigs[0].id);
         const systemConfig = systemConfigs.find(e => e.id === systemConfigId) ?? this.systemConfigs[0];
         this.initTable(systemConfig);
       });
@@ -215,6 +215,7 @@ export class OccupationTableComponent extends ErrorAware implements OnInit, OnDe
   }
 
   navigateTo(id: number) {
+    localStorage.setItem('systemConfigId', '' + id);
     this.router.navigate(['table', id, this.occupationTable.date]);
   }
 
