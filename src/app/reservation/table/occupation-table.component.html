@@ -146,6 +146,7 @@
                       class="type{{ cell.data.occupation.type }}">
                     <a routerLink="/modify/{{ occupationTable.systemConfig.id }}/{{ cell.data.occupation.id }}">
                       <span>{{ cell.data.occupation.text }}</span>
+                      <span class="d-none d-lg-inline">&nbsp;({{cell.data.occupation.reservation.user.name}})</span>
                     </a>
                   </td>
                 }
@@ -155,7 +156,8 @@
                       [attr.colspan]="cell.colspan"
                       class="type{{ cell.data.occupation.type }}">
                     @if (canShowText(cell.data?.occupation)) {
-                      <span>{{ cell.data.occupation.text }}</span>
+                      <span>{{ cell.data.occupation.text }} BAA2</span>
+                      <span class="d-none d-lg-inline">&nbsp;({{cell.data.occupation.reservation.user.name}})</span>
                     } @else {
                       <span>Reserviert</span>
                     }
