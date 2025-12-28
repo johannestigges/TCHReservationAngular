@@ -35,7 +35,6 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
   type = -1;
 
   showSimpleDuration = false;
-  showDuration = false;
   showRepeat = false;
   showDouble = false;
   focus = 'date';
@@ -141,7 +140,7 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
   private setDefaultValues() {
     this.reservation.text = this._getCookie('text') ?? this.user.name;
     this.reservation.duration = this.systemConfig.getDurationDefault();
-    this.type = 0;
+    this.type = this.reservationTypes[0].type;
     this.time = this.reservation.start;
     this.setDefaultFocus();
   }
@@ -246,5 +245,7 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
   private _setTypes() {
     this.reservationTypes = this.systemConfig.types
       .filter(type => type.roles.includes(UserRole[this.user.role]));
+    this.type = this.reservationTypes[0].type;
+    this.reservation.type = this.type;
   }
 }
