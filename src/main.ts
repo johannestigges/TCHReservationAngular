@@ -1,5 +1,5 @@
 /// <reference types="@angular/localize" />
-import {Component, enableProdMode} from '@angular/core';
+import {Component, enableProdMode, provideZoneChangeDetection} from '@angular/core';
 import {environment} from './environments/environment';
 import {bootstrapApplication} from "@angular/platform-browser";
 import {provideHttpClient, withInterceptorsFromDi} from "@angular/common/http";
@@ -20,7 +20,7 @@ export class App {
 
 bootstrapApplication(App, {
   providers: [
-    provideHttpClient(withInterceptorsFromDi()),
+    provideZoneChangeDetection(),provideHttpClient(withInterceptorsFromDi()),
     provideRouter(routes, withHashLocation())
   ]
 });

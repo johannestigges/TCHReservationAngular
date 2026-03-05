@@ -54,6 +54,7 @@ export class OccupationTableComponent extends ErrorAware implements OnInit, OnDe
       },
     error: (err) => this.setError(err)
     });
+    });
   }
 
   private getItemFromLocalStorage(item: string): string | null {
