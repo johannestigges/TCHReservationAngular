@@ -45,13 +45,21 @@ export class OccupationTableComponent extends ErrorAware implements OnInit, OnDe
       if (date) {
         this.occupationTable.setDate(parseInt(date, 10));
       }
-      this.reservationService.getAllSystemConfigs().subscribe(systemConfigs => {
+      this.reservationService.getAllSystemConfigs().subscribe({
+        next: systemConfigs => {
         this.systemConfigs = systemConfigs;
-        const systemConfigId = Number(params.get('system') ?? localStorage.getItem('systemConfigId') ?? systemConfigs[0].id);
+        const systemConfigId = Number(params.get('system') ?? this.getItemFromLocalStorage('systemConfigId') ?? systemConfigs[0].id);
         const systemConfig = systemConfigs.find(e => e.id === systemConfigId) ?? this.systemConfigs[0];
         this.initTable(systemConfig);
-      });
+      },
+    error: (err) => this.setError(err)
     });
+  }
+
+  private getItemFromLocalStorage(item: string): string | null {
+    try {
+      return localStorage.getItem(item);
+    } catch { return null; }
   }
 
   private initTable(systemConfig: ReservationSystemConfig) {
@@ -141,7 +149,7 @@ export class OccupationTableComponent extends ErrorAware implements OnInit, OnDe
       return false;
     }
 
-    // can only modify my ccupations
+    // can only modify my occupations
     return occupation.reservation.user.id === this.occupationTable.user.id;
   }
 

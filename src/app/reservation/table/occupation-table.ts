@@ -114,7 +114,6 @@ export class OccupationTable extends TableData<OccupationTableCell> {
   }
 
   private zeroPad(num: number, places: number) {
-    const zero = places - num.toString().length + 1;
-    return Array(+(zero > 0 && zero)).join('0') + num;
+    return num.toString().padStart(places,'0');
   }
 }
