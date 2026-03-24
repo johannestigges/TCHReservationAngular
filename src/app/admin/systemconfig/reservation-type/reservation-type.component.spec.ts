@@ -6,10 +6,10 @@ describe('ReservationTypeComponent', () => {
 	let component: ReservationTypeComponent;
 	let fixture: ComponentFixture<ReservationTypeComponent>;
 
-	beforeEach(() => {
-		TestBed.configureTestingModule({
-			declarations: [ReservationTypeComponent]
-		});
+	beforeEach(async () => {
+		await TestBed.configureTestingModule({
+			imports: [ReservationTypeComponent]
+		}).compileComponents();
 		fixture = TestBed.createComponent(ReservationTypeComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

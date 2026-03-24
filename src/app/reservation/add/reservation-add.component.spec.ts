@@ -1,5 +1,7 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 import { ReservationAddComponent } from './reservation-add.component';
 
@@ -7,16 +9,11 @@ describe('ReservationAddComponent', () => {
 	let component: ReservationAddComponent;
 	let fixture: ComponentFixture<ReservationAddComponent>;
 
-	beforeEach(
-		waitForAsync(() => {
-			TestBed.configureTestingModule({
-				imports: [RouterTestingModule],
-				declarations: [ReservationAddComponent],
-			}).compileComponents();
-		})
-	);
-
-	beforeEach(() => {
+	beforeEach(async () => {
+		await TestBed.configureTestingModule({
+			imports: [ReservationAddComponent],
+			providers: [provideRouter([]), provideHttpClient(), provideHttpClientTesting()]
+		}).compileComponents();
 		fixture = TestBed.createComponent(ReservationAddComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();
