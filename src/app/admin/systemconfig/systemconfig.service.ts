@@ -7,7 +7,7 @@ import { ReservationSystemConfig } from '../../reservation/reservation-system-co
 /**
  * reservation system config service
  */
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class SystemconfigService {
 
 	constructor(private httpClient: HttpClient) {

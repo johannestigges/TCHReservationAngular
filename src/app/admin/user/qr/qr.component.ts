@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {User} from '../user';
 import {UserRole} from '../user-role.enum';
 import {ActivationStatus} from '../activation-status.enum';
@@ -10,14 +10,14 @@ import {QRCodeComponent} from "angularx-qrcode";
 import {ShowErrorComponent} from "../../../util/show-error/show-error.component";
 import {FormsModule} from "@angular/forms";
 import {SelectFilterComponent} from "../../../util/select-filter/select-filter.component";
+import {map, Subject, switchMap, takeUntil} from 'rxjs';
 
 @Component({
   selector: 'tch-qr',
   templateUrl: './qr.component.html',
-  imports: [QRCodeComponent, FormsModule, SelectFilterComponent, ShowErrorComponent],
-  providers: [UserService]
+  imports: [QRCodeComponent, FormsModule, SelectFilterComponent, ShowErrorComponent]
 })
-export class QrComponent extends ErrorAware implements OnInit {
+export class QrComponent extends ErrorAware implements OnInit, OnDestroy {
   users: User[] = [];
   activeUsers: User[] = [];
   activeUserNames: string[] = [];
@@ -26,13 +26,15 @@ export class QrComponent extends ErrorAware implements OnInit {
   qrUrl = '';
   UserRole = UserRole;
 
+  private readonly destroy$ = new Subject<void>();
+
   constructor(private readonly router: Router, private readonly userService: UserService) {
     super();
     this.user = new User(null, '', UserRole.REGISTERED, '', this.generatePassword(), ActivationStatus.ACTIVE);
   }
 
   ngOnInit() {
-    this.userService.getAll().subscribe(users => {
+    this.userService.getAll().pipe(takeUntil(this.destroy$)).subscribe(users => {
       this.user.role = UserRole.REGISTERED;
       this.users = users;
       this.activeUsers = this.users.filter(user => this.isActive(user.status));
@@ -40,6 +42,10 @@ export class QrComponent extends ErrorAware implements OnInit {
     });
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
   private isActive(status: unknown) {
     return 'ACTIVE' === status;
@@ -57,7 +63,7 @@ export class QrComponent extends ErrorAware implements OnInit {
         this.qrUrl = '';
         return;
       }
-      this.userService.addUser(this.user).subscribe({
+      this.userService.addUser(this.user).pipe(takeUntil(this.destroy$)).subscribe({
         next: () => this.qrUrl = this.generateUrl(),
         error: (error) => this.setError(error)
       });
@@ -69,16 +75,16 @@ export class QrComponent extends ErrorAware implements OnInit {
   onClickNewPassword() {
     if (this.selectedUserId) {
       this.clearError();
-      this.userService.getUser(this.selectedUserId).subscribe({
-        next: (user) => {
+      this.userService.getUser(this.selectedUserId).pipe(
+        switchMap(user => {
           user.password = this.generatePassword();
-          this.userService.updateUser(user).subscribe({
-            next: () => {
-              this.user = user;
-              this.qrUrl = this.generateUrl();
-            },
-            error: (error) => this.setError(error)
-          });
+          return this.userService.updateUser(user).pipe(map(() => user));
+        }),
+        takeUntil(this.destroy$)
+      ).subscribe({
+        next: (user) => {
+          this.user = user;
+          this.qrUrl = this.generateUrl();
         },
         error: (error) => this.setError(error)
       });

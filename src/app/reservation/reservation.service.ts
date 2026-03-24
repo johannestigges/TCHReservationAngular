@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 /**
  * reservation service
  */
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class ReservationService {
 	constructor(private httpClient: HttpClient) {}
 

@@ -16,12 +16,12 @@ import {activationStatusFrom} from '../../admin/user/activation-status.enum';
 import {FieldErrorComponent} from "../../util/field-error/field-error.component";
 import {FormsModule} from "@angular/forms";
 import {ShowErrorComponent} from "../../util/show-error/show-error.component";
+import {Subject, switchMap, takeUntil} from 'rxjs';
 
 @Component({
   selector: 'tch-reservation-modify',
   templateUrl: './reservation-modify.component.html',
-  imports: [FieldErrorComponent, ShowErrorComponent, FormsModule],
-  providers: [ReservationService, UserService]
+  imports: [FieldErrorComponent, ShowErrorComponent, FormsModule]
 })
 export class ReservationModifyComponent extends ErrorAware implements OnInit, OnDestroy {
   systemConfig = ReservationSystemConfig.EMPTY;
@@ -36,6 +36,8 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit, On
 
   focus = 'date';
 
+  private readonly destroy$ = new Subject<void>();
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -49,40 +51,40 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit, On
     const systemId = this.route.snapshot.params.system;
     const occupationId: number = this.route.snapshot.params.occupation;
 
-    this.reservationService.getSystemConfig(systemId).subscribe({
-      next: (config) => {
+    this.reservationService.getSystemConfig(systemId).pipe(
+      switchMap(config => {
         this.systemConfig = ReservationSystemConfig.of(config);
-        this.userService.getLoggedInUser().subscribe({
-          next: (user) => {
-            this.user = new User(
-              user.id,
-              user.name,
-              userRoleFrom(user.role),
-              '',
-              '',
-              activationStatusFrom(user.status),
-            );
-            this.types = this.systemConfig.types
-              .filter(type => type.roles.includes(user.role.toString()));
-            this.reservationService.getOccupation(occupationId).subscribe({
-              next: (occupation) => {
-                this.occupation = occupation;
-                this.time = this.occupation.start;
-                this.type = this.occupation.type;
-                this.court = this.occupation.court;
-                this.setFocus();
-              },
-              error: (occupationerror) => this.setError(occupationerror)
-            });
-          },
-          error: (usererror) => this.setError(usererror)
-        });
+        return this.userService.getLoggedInUser();
+      }),
+      switchMap(user => {
+        this.user = new User(
+          user.id,
+          user.name,
+          userRoleFrom(user.role),
+          '',
+          '',
+          activationStatusFrom(user.status),
+        );
+        this.types = this.systemConfig.types
+          .filter(type => type.roles.includes(user.role.toString()));
+        return this.reservationService.getOccupation(occupationId);
+      }),
+      takeUntil(this.destroy$)
+    ).subscribe({
+      next: (occupation) => {
+        this.occupation = occupation;
+        this.time = this.occupation.start;
+        this.type = this.occupation.type;
+        this.court = this.occupation.court;
+        this.setFocus();
       },
-      error: (configerror) => this.setError(configerror)
+      error: (error) => this.setError(error)
     });
   }
 
   ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
     this.occupation = Occupation.EMPTY;
     this.user = User.EMPTY;
     this.systemConfig = ReservationSystemConfig.EMPTY;
@@ -174,7 +176,7 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit, On
 
   onDelete() {
     this.clearError();
-    this.reservationService.deleteOccupation(this.occupation.id!).subscribe({
+    this.reservationService.deleteOccupation(this.occupation.id!).pipe(takeUntil(this.destroy$)).subscribe({
       next: () => this.onBack(),
       error: (error) => this.setError(error)
     });
@@ -187,12 +189,12 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit, On
       this.occupation.duration--;
     }
     if (this.occupation.duration > 0) {
-      this.reservationService.updateOccupation(this.occupation).subscribe({
+      this.reservationService.updateOccupation(this.occupation).pipe(takeUntil(this.destroy$)).subscribe({
         next: () => this.onBack(),
         error: (error) => this.setError(error)
       });
     } else {
-      this.reservationService.deleteOccupation(this.occupation.id!).subscribe({
+      this.reservationService.deleteOccupation(this.occupation.id!).pipe(takeUntil(this.destroy$)).subscribe({
         next: () => this.onBack(),
         error: (error) => this.setError(error)
       });
@@ -207,7 +209,7 @@ export class ReservationModifyComponent extends ErrorAware implements OnInit, On
       this.occupation.court = this.court;
       this.occupation.lastCourt = this.court;
     }
-    this.reservationService.updateOccupation(this.occupation).subscribe({
+    this.reservationService.updateOccupation(this.occupation).pipe(takeUntil(this.destroy$)).subscribe({
       next: () => this.onBack(),
       error: (error) => this.setError(error)
     });

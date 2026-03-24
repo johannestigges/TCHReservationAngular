@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {NgbDatepickerModule, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 
@@ -15,15 +15,15 @@ import {activationStatusFrom} from '../../admin/user/activation-status.enum';
 import {FieldErrorComponent} from "../../util/field-error/field-error.component";
 import {ShowErrorComponent} from "../../util/show-error/show-error.component";
 import {FormsModule} from "@angular/forms";
+import {Subject, switchMap, takeUntil} from 'rxjs';
 
 @Component({
   selector: 'tch-reservation-add',
   templateUrl: './reservation-add.component.html',
   styleUrls: ['./reservation-add.component.scss'],
-  imports: [FieldErrorComponent, ShowErrorComponent, FormsModule, NgbDatepickerModule],
-  providers: [ReservationService, UserService]
+  imports: [FieldErrorComponent, ShowErrorComponent, FormsModule, NgbDatepickerModule]
 })
-export class ReservationAddComponent extends ErrorAware implements OnInit {
+export class ReservationAddComponent extends ErrorAware implements OnInit, OnDestroy {
   systemConfig = ReservationSystemConfig.EMPTY;
   user = User.EMPTY;
   reservation = Reservation.EMPTY;
@@ -38,6 +38,8 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
   showRepeat = false;
   showDouble = false;
   focus = 'date';
+
+  private readonly destroy$ = new Subject<void>();
 
   constructor(
     private route: ActivatedRoute,
@@ -66,28 +68,33 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
     this.reservation.type = 0;
     this.reservation.courts = court;
 
-    this.service.getSystemConfig(systemId).subscribe({
-      next: (config) => {
+    this.service.getSystemConfig(systemId).pipe(
+      switchMap(config => {
         this.systemConfig = ReservationSystemConfig.of(config);
         this.reservation.systemConfigId = this.systemConfig.id;
-        this.userService.getLoggedInUser().subscribe({
-          next: (user) => {
-            this.user = new User(
-              user.id,
-              user.name,
-              userRoleFrom(user.role),
-              '',
-              '',
-              activationStatusFrom(user.status)
-            );
-            this.reservation.user = user;
-            this.init();
-          },
-          error: (usererror) => this.setError(usererror)
-        });
+        return this.userService.getLoggedInUser();
+      }),
+      takeUntil(this.destroy$)
+    ).subscribe({
+      next: (user) => {
+        this.user = new User(
+          user.id,
+          user.name,
+          userRoleFrom(user.role),
+          '',
+          '',
+          activationStatusFrom(user.status)
+        );
+        this.reservation.user = user;
+        this.init();
       },
-      error: (configerror) => this.setError(configerror)
+      error: (error) => this.setError(error)
     });
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   onTypeSelected() {
@@ -114,7 +121,7 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
     this.reservation.repeatUntil = DateUtil
       .convertFromNgbDateStruct(this.repeatUntil)
       .getTime();
-    this.service.checkReservation(this.reservation).subscribe({
+    this.service.checkReservation(this.reservation).pipe(takeUntil(this.destroy$)).subscribe({
       next: (reservation) => this.reservation = reservation,
       error: (error) => this.setError(error)
     });
@@ -206,7 +213,7 @@ export class ReservationAddComponent extends ErrorAware implements OnInit {
         .getTime();
     }
     this._setCookie('text', this.reservation!.text);
-    this.service.addReservation(this.reservation!).subscribe({
+    this.service.addReservation(this.reservation!).pipe(takeUntil(this.destroy$)).subscribe({
       next: (data) => {
         this.reservation = data;
         if (this.reservation.occupations.length > 1) {
