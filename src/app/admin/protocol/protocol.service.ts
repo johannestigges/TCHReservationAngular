@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Protocol } from './protocol';
 import { Observable } from 'rxjs';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class ProtocolService {
 
 	constructor(private httpClient: HttpClient) {

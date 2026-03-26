@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ErrorAware} from '../../../util/error/error-aware';
 import {ReservationSystemConfig, SystemConfigReservationType} from 'src/app/reservation/reservation-system-config';
 import {SystemconfigService} from '../systemconfig.service';
@@ -10,16 +10,16 @@ import {weekDaysValues} from 'src/app/reservation/week-days';
 import {FieldErrorComponent} from "../../../util/field-error/field-error.component";
 import {ShowErrorComponent} from "../../../util/show-error/show-error.component";
 import {ReservationTypesComponent} from "../reservation-types/reservation-types.component";
+import {Subject, takeUntil} from 'rxjs';
 
 
 @Component({
   selector: 'tch-systemconfig-modify',
   templateUrl: './systemconfig-modify.component.html',
   styleUrls: ['./systemconfig-modify.component.scss'],
-  imports: [ReservationTypesComponent, FieldErrorComponent, ShowErrorComponent, ReactiveFormsModule],
-  providers: [SystemconfigService]
+  imports: [ReservationTypesComponent, FieldErrorComponent, ShowErrorComponent, ReactiveFormsModule]
 })
-export class SystemconfigModifyComponent extends ErrorAware implements OnInit {
+export class SystemconfigModifyComponent extends ErrorAware implements OnInit, OnDestroy {
   durationUnits = [30, 60];
   maxDays = [1, 2, 3, 4, 5, 6, 7, 14, 21, 31, 62, 365];
   maxDurations = [
@@ -37,6 +37,8 @@ export class SystemconfigModifyComponent extends ErrorAware implements OnInit {
   form: FormGroup<SystemconfigForm>;
   reservationTypeInEdit = -1;
 
+  private readonly destroy$ = new Subject<void>();
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -48,7 +50,7 @@ export class SystemconfigModifyComponent extends ErrorAware implements OnInit {
 
   ngOnInit() {
     const id = this.route.snapshot.params.id;
-    this.systemconfigService.get(id).subscribe({
+    this.systemconfigService.get(id).pipe(takeUntil(this.destroy$)).subscribe({
       next: (data) => {
         this.form.controls.id.setValue(data.id);
         this.form.controls.name.setValue(data.name);
@@ -70,6 +72,11 @@ export class SystemconfigModifyComponent extends ErrorAware implements OnInit {
       },
       error: (error) => this.setError(error)
     });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
 
@@ -111,7 +118,7 @@ export class SystemconfigModifyComponent extends ErrorAware implements OnInit {
   onDelete() {
     this.clearError();
 
-    this.systemconfigService.delete(this.form.controls.id.value).subscribe({
+    this.systemconfigService.delete(this.form.controls.id.value).pipe(takeUntil(this.destroy$)).subscribe({
       next: (data) => {
         alert(`Systemkonfiguration ${data.name} wurde gelöscht.`);
         this.onCancel();
@@ -136,7 +143,7 @@ export class SystemconfigModifyComponent extends ErrorAware implements OnInit {
       this.getTypesFromForm()
     );
 
-    this.systemconfigService.update(newconfig).subscribe({
+    this.systemconfigService.update(newconfig).pipe(takeUntil(this.destroy$)).subscribe({
       next: (data) => {
         alert(`Systemkonfiguration ${data.name} wurde geändert.`);
         this.onCancel();

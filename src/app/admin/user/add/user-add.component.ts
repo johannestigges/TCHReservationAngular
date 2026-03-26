@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 
 import {UserService} from '../user.service';
 import {User} from '../user';
@@ -9,15 +9,15 @@ import {Router} from '@angular/router';
 import {FormsModule} from "@angular/forms";
 import {FieldErrorComponent} from "../../../util/field-error/field-error.component";
 import {ShowErrorComponent} from "../../../util/show-error/show-error.component";
+import {Subject, takeUntil} from 'rxjs';
 
 
 @Component({
   selector: 'tch-user-add',
   templateUrl: './user-add.component.html',
-  imports: [FieldErrorComponent, ShowErrorComponent, FormsModule],
-  providers: [UserService]
+  imports: [FieldErrorComponent, ShowErrorComponent, FormsModule]
 })
-export class UserAddComponent extends ErrorAware {
+export class UserAddComponent extends ErrorAware implements OnDestroy {
 
   roleValues = userRoleValues;
   statusValues = activationStatusValues;
@@ -26,6 +26,8 @@ export class UserAddComponent extends ErrorAware {
   userRole = UserRole.ANONYMOUS;
   userStatus = ActivationStatus.CREATED;
   confirmPassword = '';
+
+  private readonly destroy$ = new Subject<void>();
 
   constructor(
     private router: Router,
@@ -39,6 +41,11 @@ export class UserAddComponent extends ErrorAware {
     this.userStatus = ActivationStatus.CREATED;
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   onClick() {
     this.clearError();
     if (this.user.password !== this.confirmPassword) {
@@ -48,7 +55,7 @@ export class UserAddComponent extends ErrorAware {
     this.user.role = this.userRole;
     this.user.status = this.userStatus;
 
-    this.userService.addUser(this.user).subscribe({
+    this.userService.addUser(this.user).pipe(takeUntil(this.destroy$)).subscribe({
       next: (data) => {
         this.user = data;
         this.cancel();

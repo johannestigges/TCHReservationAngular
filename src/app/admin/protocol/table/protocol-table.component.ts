@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 
 import {ProtocolService} from '../protocol.service';
 import {Protocol} from '../protocol';
@@ -7,17 +7,19 @@ import {DateUtil} from '../../../util/date/date-util';
 import {Router} from '@angular/router';
 import { KeyValuePipe } from "@angular/common";
 import {ShowErrorComponent} from "../../../util/show-error/show-error.component";
+import {Subject, takeUntil} from 'rxjs';
 
 @Component({
   selector: 'tch-protocol-table',
   templateUrl: './protocol-table.component.html',
-  imports: [KeyValuePipe, ShowErrorComponent],
-  providers: [ProtocolService]
+  imports: [KeyValuePipe, ShowErrorComponent]
 })
-export class ProtocolTableComponent extends ErrorAware implements OnInit {
+export class ProtocolTableComponent extends ErrorAware implements OnInit, OnDestroy {
 
   protocols: Protocol[] = [];
   since = 0;
+
+  private readonly destroy$ = new Subject<void>();
 
   constructor(private protocolService: ProtocolService, private router: Router) {
     super();
@@ -28,13 +30,18 @@ export class ProtocolTableComponent extends ErrorAware implements OnInit {
     this.next();
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   next() {
     this.show(this.since - 7 * DateUtil.DAY);
   }
 
   private show(since: number) {
     this.since = since;
-    this.protocolService.getSince(this.since).subscribe({
+    this.protocolService.getSince(this.since).pipe(takeUntil(this.destroy$)).subscribe({
       next: (data) => this.protocols = data,
       error: (error) => this.setError(error)
     });

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 
 import {UserService} from '../user.service';
@@ -10,15 +10,15 @@ import {ErrorAware} from '../../../util/error/error-aware';
 import {FormsModule} from "@angular/forms";
 import {FieldErrorComponent} from "../../../util/field-error/field-error.component";
 import {ShowErrorComponent} from "../../../util/show-error/show-error.component";
+import {Subject, takeUntil} from 'rxjs';
 
 
 @Component({
   selector: 'tch-user-modify',
   templateUrl: './user-modify.component.html',
-  imports: [FieldErrorComponent, ShowErrorComponent, FormsModule],
-  providers: [UserService]
+  imports: [FieldErrorComponent, ShowErrorComponent, FormsModule]
 })
-export class UserModifyComponent extends ErrorAware implements OnInit {
+export class UserModifyComponent extends ErrorAware implements OnInit, OnDestroy {
 
   roleValues = userRoleValues;
   statusValues = activationStatusValues;
@@ -31,6 +31,8 @@ export class UserModifyComponent extends ErrorAware implements OnInit {
   loggedinUser = User.EMPTY;
   isAdmin = false;
 
+  private readonly destroy$ = new Subject<void>();
+
   constructor(
     private route: ActivatedRoute,
     private userService: UserService,
@@ -40,7 +42,7 @@ export class UserModifyComponent extends ErrorAware implements OnInit {
 
   ngOnInit() {
     const userId = this.route.snapshot.params.user;
-    this.userService.getUser(userId).subscribe({
+    this.userService.getUser(userId).pipe(takeUntil(this.destroy$)).subscribe({
       next: (user) => {
         this.user = user;
         this.confirmPassword = this.user.password;
@@ -50,13 +52,18 @@ export class UserModifyComponent extends ErrorAware implements OnInit {
       error: (error) => this.setError(error)
     });
 
-    this.userService.getLoggedInUser().subscribe({
+    this.userService.getLoggedInUser().pipe(takeUntil(this.destroy$)).subscribe({
       next: (user) => {
         this.loggedinUser = new User(user.id, user.name, UserRole[user.role.toString() as UserRoleType]);
         this.isAdmin = this.loggedinUser.hasRole(UserRole.ADMIN);
       },
       error: (error) => this.setError(error)
     });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   onClick() {
@@ -68,7 +75,7 @@ export class UserModifyComponent extends ErrorAware implements OnInit {
     this.user.role = this.userRole;
     this.user.status = this.userStatus;
 
-    this.userService.updateUser(this.user).subscribe({
+    this.userService.updateUser(this.user).pipe(takeUntil(this.destroy$)).subscribe({
       next: () => this.cancel(),
       error: (error) => this.setError(error)
     });

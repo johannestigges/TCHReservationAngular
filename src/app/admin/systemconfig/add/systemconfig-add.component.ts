@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ReservationSystemConfig, SystemConfigReservationType} from 'src/app/reservation/reservation-system-config';
 import {SystemconfigService} from '../systemconfig.service';
 import {FormArray, FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
@@ -10,15 +10,15 @@ import {userRoleValues} from '../../user/user-role.enum';
 import {FieldErrorComponent} from "../../../util/field-error/field-error.component";
 import {ShowErrorComponent} from "../../../util/show-error/show-error.component";
 import {ReservationTypesComponent} from "../reservation-types/reservation-types.component";
+import {Subject, takeUntil} from 'rxjs';
 
 
 @Component({
   selector: 'tch-systemconfig-add',
   templateUrl: './systemconfig-add.component.html',
-  imports: [ReservationTypesComponent, FieldErrorComponent, ShowErrorComponent, ReactiveFormsModule],
-  providers: [SystemconfigService]
+  imports: [ReservationTypesComponent, FieldErrorComponent, ShowErrorComponent, ReactiveFormsModule]
 })
-export class SystemconfigAddComponent extends ErrorAware implements OnInit {
+export class SystemconfigAddComponent extends ErrorAware implements OnInit, OnDestroy {
   durationUnits = [30, 60];
   maxDays = [1, 2, 3, 4, 5, 6, 7, 14, 21, 31, 62, 365];
   maxDurations = [
@@ -36,6 +36,8 @@ export class SystemconfigAddComponent extends ErrorAware implements OnInit {
   form: FormGroup<SystemconfigForm>;
   reservationTypeInEdit = -1;
 
+  private readonly destroy$ = new Subject<void>();
+
   constructor(
     private router: Router,
     private systemconfigService: SystemconfigService
@@ -52,6 +54,11 @@ export class SystemconfigAddComponent extends ErrorAware implements OnInit {
     this.form.controls.maxDuration.setValue(1);
     this.form.controls.openingHour.setValue(8);
     this.form.controls.closingHour.setValue(22);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   addCourt(): void {
@@ -83,7 +90,7 @@ export class SystemconfigAddComponent extends ErrorAware implements OnInit {
       this.getTypesFromForm()
     );
 
-    this.systemconfigService.add(newconfig).subscribe({
+    this.systemconfigService.add(newconfig).pipe(takeUntil(this.destroy$)).subscribe({
       next: () => this.onCancel(),
       error: (error) => this.setError(error)
     });

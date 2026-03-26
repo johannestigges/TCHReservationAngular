@@ -9,7 +9,7 @@ import {UserRole, userRoleFrom} from '../../admin/user/user-role.enum';
 import {activationStatusFrom} from '../../admin/user/activation-status.enum';
 import {DateUtil} from '../../util/date/date-util';
 import {ErrorAware} from '../../util/error/error-aware';
-import {Observable, Subscription, timer} from 'rxjs';
+import {map, Subject, switchMap, takeUntil, tap, timer} from 'rxjs';
 import {ReservationSystemConfig} from '../reservation-system-config';
 
 import {ShowErrorComponent} from "../../util/show-error/show-error.component";
@@ -20,15 +20,14 @@ import {ThemeToggleComponent} from "../../util/theme-toggle/theme-toggle.compone
   selector: 'tch-occupation-table',
   templateUrl: './occupation-table.component.html',
   styleUrls: ['./occupation-table.component.scss'],
-  imports: [RouterLink, RouterOutlet, NewsLinkComponent, ShowErrorComponent, ThemeToggleComponent],
-  providers: [ReservationService,UserService]
+  imports: [RouterLink, RouterOutlet, NewsLinkComponent, ShowErrorComponent, ThemeToggleComponent]
 })
 export class OccupationTableComponent extends ErrorAware implements OnInit, OnDestroy {
   occupationTable = new OccupationTable(User.EMPTY);
   lastUpdated = 0;
-  private timer?: Observable<number>;
-  private timerSubscription?: Subscription;
   systemConfigs: ReservationSystemConfig[] = [];
+
+  private readonly destroy$ = new Subject<void>();
 
   constructor(
     private reservationService: ReservationService,
@@ -40,25 +39,27 @@ export class OccupationTableComponent extends ErrorAware implements OnInit, OnDe
   }
 
   ngOnInit() {
-    this.route.paramMap.subscribe(params => {
-      const date = params.get('date');
-      if (date) {
-        this.occupationTable.setDate(parseInt(date, 10));
-      }
-      this.reservationService.getAllSystemConfigs().subscribe(systemConfigs => {
+    this.route.paramMap.pipe(
+      tap(params => {
+        const date = params.get('date');
+        if (date) {
+          this.occupationTable.setDate(parseInt(date, 10));
+        }
+      }),
+      switchMap(params =>
+        this.reservationService.getAllSystemConfigs().pipe(
+          map(systemConfigs => ({ params, systemConfigs }))
+        )
+      ),
+      switchMap(({ params, systemConfigs }) => {
         this.systemConfigs = systemConfigs;
-        const systemConfigId = Number(params.get('system') ?? localStorage.getItem('systemConfigId') ?? systemConfigs[0].id);
+        const systemConfigId = Number(params.get('system') ?? this.getItemFromLocalStorage('systemConfigId') ?? systemConfigs[0].id);
         const systemConfig = systemConfigs.find(e => e.id === systemConfigId) ?? this.systemConfigs[0];
-        this.initTable(systemConfig);
-      });
-    });
-  }
-
-  private initTable(systemConfig: ReservationSystemConfig) {
-    this.occupationTable.systemConfig = ReservationSystemConfig.of(systemConfig);
-
-    // get logged in user
-    this.userService.getLoggedInUser().subscribe({
+        this.occupationTable.systemConfig = ReservationSystemConfig.of(systemConfig);
+        return this.userService.getLoggedInUser();
+      }),
+      takeUntil(this.destroy$)
+    ).subscribe({
       next: (user) => {
         this.occupationTable.user = new User(
           user.id,
@@ -68,26 +69,26 @@ export class OccupationTableComponent extends ErrorAware implements OnInit, OnDe
           '',
           activationStatusFrom(user.status)
         );
-        // update occupation table
         this.update(this.occupationTable.date);
+        if (this.occupationTable.user.hasRole(UserRole.KIOSK)) {
+          timer(300000, 300000).pipe(takeUntil(this.destroy$)).subscribe(() =>
+            this.update(this.occupationTable.date)
+          );
+        }
       },
-      error: (usererror) => this.setError(usererror)
-    }).add(() => {
-      // reload system when user is 'kiosk' every 5 Minutes
-      if (this.occupationTable.user.hasRole(UserRole.KIOSK)) {
-        this.timer = timer(300000, 300000);
-        this.timerSubscription = this.timer.subscribe(() =>
-          this.update(this.occupationTable.date)
-        );
-      }
+      error: (err) => this.setError(err)
     });
   }
 
+  private getItemFromLocalStorage(item: string): string | null {
+    try {
+      return localStorage.getItem(item);
+    } catch { return null; }
+  }
+
   ngOnDestroy() {
-    // unsubscribe refresh timer when in kiosk mode
-    if (this.timerSubscription) {
-      this.timerSubscription.unsubscribe();
-    }
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   isLoggedIn() {
@@ -141,7 +142,7 @@ export class OccupationTableComponent extends ErrorAware implements OnInit, OnDe
       return false;
     }
 
-    // can only modify my ccupations
+    // can only modify my occupations
     return occupation.reservation.user.id === this.occupationTable.user.id;
   }
 
@@ -186,6 +187,7 @@ export class OccupationTableComponent extends ErrorAware implements OnInit, OnDe
     this.clearError();
     this.reservationService
       .getOccupations(this.occupationTable.systemConfig.id, date)
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (data) => {
           this.lastUpdated = new Date().getTime();
