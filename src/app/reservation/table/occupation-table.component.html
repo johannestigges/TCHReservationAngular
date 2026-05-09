@@ -108,13 +108,15 @@
   </div>
 </div>
 
-<div class="m-3 text-center text-danger">
-  +++ Ab dem 1. Mai stellen wir um auf das
-  <a class="text-reset" href="https://www.vereinonline.org/Tennisclub_Havixbeck/?action=platzbuchung_uebersicht">
-    neue Reservierungssystem
-  </a>
-  +++
-</div>
+@if (occupationTable.systemConfig.id == 1) {
+  <div class="m-3 text-center text-danger">
+    +++ Seit dem 1. Mai haben wir umgestellt auf das
+    <a class="text-reset" href="https://www.vereinonline.org/Tennisclub_Havixbeck/?action=platzbuchung_uebersicht">
+      neue Reservierungssystem
+    </a>
+    +++
+  </div>
+}
 
 @if (occupationTable.systemConfig) {
   <table class="occupation_table">
@@ -154,7 +156,7 @@
                       class="type{{ cell.data.occupation.type }}">
                     <a routerLink="/modify/{{ occupationTable.systemConfig.id }}/{{ cell.data.occupation.id }}">
                       <span>{{ cell.data.occupation.text }}</span>
-                      <span class="d-none d-lg-inline">&nbsp;({{cell.data.occupation.reservation.user.name}})</span>
+                      <span class="d-none d-lg-inline">&nbsp;({{ cell.data.occupation.reservation.user.name }})</span>
                     </a>
                   </td>
                 }
@@ -165,7 +167,7 @@
                       class="type{{ cell.data.occupation.type }}">
                     @if (canShowText(cell.data?.occupation)) {
                       <span>{{ cell.data.occupation.text }}</span>
-                      <span class="d-none d-lg-inline">&nbsp;({{cell.data.occupation.reservation.user.name}})</span>
+                      <span class="d-none d-lg-inline">&nbsp;({{ cell.data.occupation.reservation.user.name }})</span>
                     } @else {
                       <span>Reserviert</span>
                     }
