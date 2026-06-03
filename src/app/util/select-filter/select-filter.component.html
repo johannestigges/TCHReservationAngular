@@ -1,9 +1,9 @@
-<input type="text" class="form-control ng-pristine ng-valid ng-touched w-100 p-3 mb-3" [value]="selectedValue"
+<input type="text" class="form-control w-full p-4 mb-4" [value]="selectedValue"
   (input)="onInput($event)" (focus)="onFocus()">
 @if (showList) {
   <ul class="list-group">
     @for (value of selectableValues; track value) {
-      <li class="list-group-item" [class.active]="value === selectedValue"
+      <li class="list-group-item list-group-item-action" [class.active]="value === selectedValue"
       (click)="onSelect(value)">{{value}}</li>
     }
   </ul>

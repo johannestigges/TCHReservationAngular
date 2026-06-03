@@ -1,6 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {NgbDatepickerModule, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 
 import {ReservationService} from '../reservation.service';
 import {ReservationSystemConfig, SystemConfigReservationType} from '../reservation-system-config';
@@ -21,7 +20,7 @@ import {Subject, switchMap, takeUntil} from 'rxjs';
   selector: 'tch-reservation-add',
   templateUrl: './reservation-add.component.html',
   styleUrls: ['./reservation-add.component.scss'],
-  imports: [FieldErrorComponent, ShowErrorComponent, FormsModule, NgbDatepickerModule]
+  imports: [FieldErrorComponent, ShowErrorComponent, FormsModule]
 })
 export class ReservationAddComponent extends ErrorAware implements OnInit, OnDestroy {
   systemConfig = ReservationSystemConfig.EMPTY;
@@ -29,8 +28,8 @@ export class ReservationAddComponent extends ErrorAware implements OnInit, OnDes
   reservation = Reservation.EMPTY;
   reservationTypes: SystemConfigReservationType[] = [];
 
-  repeatUntil?: NgbDateStruct;
-  repeatMinDate?: NgbDateStruct;
+  repeatUntil?: string;
+  repeatMinDate?: string;
   time?: number;
   type = -1;
 
@@ -56,11 +55,7 @@ export class ReservationAddComponent extends ErrorAware implements OnInit, OnDes
     const court = this.route.snapshot.params.court;
 
     const tomorrow = DateUtil.addDays(new Date(), 1);
-    this.repeatMinDate = {
-      year: tomorrow.getFullYear(),
-      month: tomorrow.getMonth(),
-      day: tomorrow.getDay()
-    };
+    this.repeatMinDate = DateUtil.toIsoDate(tomorrow);
 
     this.reservation.date = DateUtil.getDatePart(start);
     this.reservation.start = DateUtil.getTimePart(start);
@@ -118,9 +113,7 @@ export class ReservationAddComponent extends ErrorAware implements OnInit, OnDes
     this.reservation.occupations = [];
     this.reservation.type = this.type;
     this.reservation.start = this.time;
-    this.reservation.repeatUntil = DateUtil
-      .convertFromNgbDateStruct(this.repeatUntil)
-      .getTime();
+    this.reservation.repeatUntil = DateUtil.fromIsoDate(this.repeatUntil).getTime();
     this.service.checkReservation(this.reservation).pipe(takeUntil(this.destroy$)).subscribe({
       next: (reservation) => this.reservation = reservation,
       error: (error) => this.setError(error)
@@ -137,7 +130,6 @@ export class ReservationAddComponent extends ErrorAware implements OnInit, OnDes
     }
     this._setTypes();
 
-    // decide which parts of the layout are visible
     this.showSimpleDuration = this.systemConfig?.durationUnitInMinutes === 30
       && !this._isAtLeastTeamster();
     this.onTypeSelected();
@@ -208,9 +200,7 @@ export class ReservationAddComponent extends ErrorAware implements OnInit, OnDes
     this.reservation!.type = this.type ?? -1;
     this.reservation!.start = this.time!;
     if (this.repeatUntil) {
-      this.reservation!.repeatUntil = DateUtil
-        .convertFromNgbDateStruct(this.repeatUntil)
-        .getTime();
+      this.reservation!.repeatUntil = DateUtil.fromIsoDate(this.repeatUntil).getTime();
     }
     this._setCookie('text', this.reservation!.text);
     this.service.addReservation(this.reservation!).pipe(takeUntil(this.destroy$)).subscribe({

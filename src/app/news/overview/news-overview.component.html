@@ -1,14 +1,14 @@
 <h1>Nachrichten</h1>
 @for (item of news; track item) {
-  <div class="list-group d-flex">
-    <a class="list-group-item list-group-item-action mb-1"
-      [ngClass]="item.acknowledged?'' : 'fw-bold'"
+  <div class="flex mb-1">
+    <a class="list-group-item list-group-item-action flex-1"
+      [class.font-bold]="!item.acknowledged"
       routerLink="/news/{{item.id}}">
       {{ item.subject }}
       @if (!item.acknowledged) {
-        <div class="btn btn-outline-danger float-end">Neu</div>
+        <span class="btn btn-outline-danger float-right">Neu</span>
       }
     </a>
   </div>
 }
-<button class="btn btn-outline-primary mt-3" routerLink="/">zurück</button>
+<button class="btn btn-outline-primary mt-4" routerLink="/">zurück</button>

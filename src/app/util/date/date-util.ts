@@ -1,5 +1,3 @@
-import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
-
 /**
  * Utility class with helper methods concerning date and time
  */
@@ -21,12 +19,20 @@ export class DateUtil {
 		return d1.getTime() - d2.getTime();
 	}
 
-	static convertFromNgbDateStruct(dateStruct: NgbDateStruct): Date {
-		console.log(dateStruct.year, dateStruct.month, dateStruct.day);
-		const date = new Date(dateStruct.year, dateStruct.month - 1, dateStruct.day, 12);
-		console.log(date);
-		date.setFullYear(dateStruct.year);
+	/** Parses an ISO date string (YYYY-MM-DD) into a Date at noon local time. */
+	static fromIsoDate(isoDate: string): Date {
+		const [year, month, day] = isoDate.split('-').map(Number);
+		const date = new Date(year, month - 1, day, 12);
+		date.setFullYear(year);
 		return date;
+	}
+
+	/** Formats a Date as an ISO date string (YYYY-MM-DD) for use in date inputs. */
+	static toIsoDate(date: Date): string {
+		const year = date.getFullYear();
+		const month = String(date.getMonth() + 1).padStart(2, '0');
+		const day = String(date.getDate()).padStart(2, '0');
+		return `${year}-${month}-${day}`;
 	}
 
 	static getDatePart(date: number): number {
@@ -37,8 +43,6 @@ export class DateUtil {
 	}
 
 	static getHourPart(date: number): number {
-		//    console.log('get hour part ' + DateUtil.toDate(date).toLocaleString() + "  "
-		//      +date % DateUtil.DAY / DateUtil.HOUR);
 		return DateUtil.toDate(date).getHours();
 	}
 

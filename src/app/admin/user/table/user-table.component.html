@@ -1,15 +1,15 @@
-<div class="d-flex justify-content-end my-2">
+<div class="flex justify-end my-2 gap-2">
   <a class="btn btn-outline-primary" routerLink="/user/qr">QR-Code</a>
-  <a class="btn btn-outline-primary mx-2" routerLink="/user/add">Benutzer anlegen</a>
+  <a class="btn btn-outline-primary" routerLink="/user/add">Benutzer anlegen</a>
   <button class="btn btn-outline-secondary" (click)="cancel()">Zurück</button>
 </div>
 
 <table class="table table-bordered table-hover">
   <thead>
     <tr>
-      <th class="d-none d-lg-table-cell">Id</th>
+      <th class="hidden lg:table-cell">Id</th>
       <th>Name</th>
-      <th class="d-none d-sm-table-cell">EMail</th>
+      <th class="hidden sm:table-cell">EMail</th>
       <th>Rolle</th>
       <th>Status</th>
       <th>Aktion</th>
@@ -18,9 +18,9 @@
   <tbody>
     @for (user of users; track user) {
       <tr>
-        <td class="d-none d-lg-table-cell">{{ user.id }}</td>
+        <td class="hidden lg:table-cell">{{ user.id }}</td>
         <td>{{ user.name }}</td>
-        <td class="d-none d-sm-table-cell">{{ user.email }}</td>
+        <td class="hidden sm:table-cell">{{ user.email }}</td>
         <td>{{ user.role }}</td>
         <td>{{ user.status }}</td>
         <td>

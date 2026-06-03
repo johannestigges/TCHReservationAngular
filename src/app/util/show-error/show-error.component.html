@@ -1,10 +1,10 @@
 @for (errorMessage of errorMessages; track errorMessage) {
-  <ul class="unstyled text-danger">
+  <ul class="text-red-600">
     {{errorMessage.message}}
   </ul>
 }
 @for (fe of fieldErrors | keyvalue; track fe) {
-  <ul class="unstyled text-danger">
+  <ul class="text-red-600">
     Fehler in Feld {{fe.key}}: {{fe.value}}
   </ul>
 }

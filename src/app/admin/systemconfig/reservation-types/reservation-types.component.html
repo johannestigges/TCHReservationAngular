@@ -1,17 +1,17 @@
-<h4 class="mt-4">Reservierungsarten:</h4>
+<h4 class="mt-6">Reservierungsarten:</h4>
 @if (form) {
   <div>
     @for (type of form!.controls; track type; let i = $index) {
-      <div class="row mb-3">
+      <div class="grid grid-cols-12 gap-2 mb-4">
         <dialog #typeDialog>
           <tch-reservation-type [value]="type.getRawValue()"
             (finished)="onFinishedReservationType($event); typeDialog.close();">
           </tch-reservation-type>
         </dialog>
-        <div class="col-12 col-md-3 col-lg-2">
-          ({{type.controls.id.value}}) <span class="fw-bold">{{type.controls.name.value}}</span>
+        <div class="col-span-12 md:col-span-3 lg:col-span-2">
+          ({{type.controls.id.value}}) <span class="font-bold">{{type.controls.name.value}}</span>
         </div>
-        <div class="col-12  col-md-9 col-lg-4">
+        <div class="col-span-12 md:col-span-9 lg:col-span-4">
           @if (type.controls.maxDaysReservationInFuture.value) {
             <div>
               Reservierbar {{type.controls.maxDaysReservationInFuture.value}} Tage im Voraus
@@ -36,16 +36,16 @@
             {{getWeekDays(type.controls.forbiddenDaysOfWeek)}}
           </div>
         </div>
-        <div class="col-12  col-md-12 offset-md-3 col-lg-4 offset-lg-0">
+        <div class="col-span-12 lg:col-span-4">
           Nutzbar von: {{getRoles(type.controls.roles)}}
         </div>
-        <div class="col-12 col-md-12 offset-md-3 col-lg-2 offset-lg-0">
+        <div class="col-span-12 lg:col-span-2 flex gap-2">
           <button class="btn btn-outline-secondary" (click)="onStartEdit(i); typeDialog.showModal()">ändern</button>
-          <button class="btn btn-outline-secondary ms-1" (click)="onRemove(i)">-</button>
+          <button class="btn btn-outline-secondary" (click)="onRemove(i)">-</button>
         </div>
       </div>
     }
-    <div class="row">
+    <div>
       <dialog #typeAddDialog>
         @if (inEdit === (form?.length||0) + 1) {
           <tch-reservation-type

@@ -1,14 +1,14 @@
-<div class="d-flex justify-content-end my-2">
-  <a class="btn btn-outline-primary mx-2" routerLink="/admin/news/add">Nachricht anlegen</a>
+<div class="flex justify-end my-2 gap-2">
+  <a class="btn btn-outline-primary" routerLink="/admin/news/add">Nachricht anlegen</a>
   <button class="btn btn-outline-secondary" (click)="cancel()">Zurück</button>
 </div>
 
 <table class="table table-bordered table-hover">
   <thead>
     <tr>
-      <th class="d-none d-lg-table-cell">Id</th>
+      <th class="hidden lg:table-cell">Id</th>
       <th>Titel</th>
-      <th class="d-none d-sm-table-cell">Text</th>
+      <th class="hidden sm:table-cell">Text</th>
       <th>Anlage am</th>
       <th>Aktion</th>
     </tr>
@@ -16,13 +16,13 @@
   <tbody>
     @for (news of newsList; track news) {
       <tr>
-        <td class="d-none d-lg-table-cell">{{ news.id }}</td>
+        <td class="hidden lg:table-cell">{{ news.id }}</td>
         <td>{{ news.subject }}</td>
-        <td class="d-none d-sm-table-cell" style="white-space:pre-wrap;">{{ news.text }}</td>
+        <td class="hidden sm:table-cell" style="white-space:pre-wrap;">{{ news.text }}</td>
         <td>{{ date(news.createdAt) }}</td>
-        <td class="">
-          <a class="btn btn-outline-secondary me-1 mb-1" routerLink="/admin/news/modify/{{ news.id }}">ändern</a>
-          <a class="btn btn-outline-secondary me-1 mb-1" (click)="onDelete(news.id!)">löschen</a>
+        <td>
+          <a class="btn btn-outline-secondary mr-1 mb-1" routerLink="/admin/news/modify/{{ news.id }}">ändern</a>
+          <a class="btn btn-outline-secondary mr-1 mb-1" (click)="onDelete(news.id!)">löschen</a>
         </td>
       </tr>
     }

@@ -2,93 +2,80 @@
   <h2>Reservierungsart</h2>
   @if (form) {
     <form [formGroup]="form">
-      <div class="row g-3 mb-3">
+      <div class="grid grid-cols-12 gap-4 mb-4">
         <!-- id -->
-        <div class="col-2">
+        <div class="col-span-2">
           <label class="form-label">Id:</label>
           <input type="text" class="form-control" formControlName="id" />
         </div>
         <!-- name -->
-        <div class="col-10">
+        <div class="col-span-10">
           <label class="form-label">Name:</label>
           <input type="text" class="form-control" formControlName="name" />
         </div>
       </div>
-      <div class="row g-3 mb-3">
+      <div class="grid grid-cols-12 gap-4 mb-4">
         <!-- max Reservation -->
-        <div class="col-6">
+        <div class="col-span-6">
           <label class="form-label">im Voraus buchbar:</label>
           <select class="form-control" formControlName="maxDaysReservationInFuture">
             @for (md of maxDays; track md) {
-              <option [value]="md">
-                {{ md }} Tage
-              </option>
+              <option [value]="md">{{ md }} Tage</option>
             }
           </select>
         </div>
         <!-- max Cancel-->
-        <div class="col-6">
+        <div class="col-span-6">
           <label class="form-label">im Voraus stornierbar:</label>
           <select class="form-control" formControlName="maxCancelInHours">
             @for (mc of maxCancel; track mc) {
-              <option [value]="mc">
-                {{ mc }} Stunden
-              </option>
+              <option [value]="mc">{{ mc }} Stunden</option>
             }
           </select>
         </div>
       </div>
-      <div class="row g-3 mb-3">
+      <div class="grid grid-cols-12 gap-4 mb-4">
         <!-- max Duration -->
-        <div class="col-4">
+        <div class="col-span-4">
           <label class="form-label">maximale Buchungsdauer:</label>
           <select class="form-control" formControlName="maxDuration">
             @for (md of maxDurations; track md) {
-              <option [value]="md">
-                {{ md }}
-              </option>
+              <option [value]="md">{{ md }}</option>
             }
           </select>
         </div>
-        <!-- css class -->
-        <!--
-        <div class="col-12 col-md-8">
-          <label class="form-label">Styling:</label>
-          <input type="text" class="form-control" formControlName="cssStyle">
-        </div>
-        -->
       </div>
-      <div class="row g-3 mb-3">
+      <div class="grid grid-cols-12 gap-4 mb-4">
         <!-- repeatable -->
-        <div class="col-12 col-sm-6">
+        <div class="col-span-12 sm:col-span-6 flex items-center">
           <input type="checkbox" class="form-check-input" formControlName="repeatable">
-          <span class="ms-2 me-4">Wiederholungen erlaubt</span>
+          <span class="ml-2 mr-6">Wiederholungen erlaubt</span>
         </div>
         <!-- public visible -->
-        <div class="col">
+        <div class="col-span-12 sm:col-span-6 flex items-center">
           <input type="checkbox" class="form-check-input" formControlName="publicVisible">
-          <span class="ms-2 me-4">Text öffentlich sichtbar</span>
+          <span class="ml-2 mr-6">Text öffentlich sichtbar</span>
         </div>
       </div>
       <!-- week days -->
       <h4>Nicht erlaubte Wochentage</h4>
       @for (weekDay of form.controls.forbiddenDaysOfWeek.controls; track weekDay; let i = $index) {
-        <div>
+        <div class="flex items-center mb-1">
           <input type="checkbox" class="form-check-input" [formControl]="weekDay">
-          <span class="ms-2 me-4">{{ weekDaysNames[i] }}</span>
+          <span class="ml-2 mr-6">{{ weekDaysNames[i] }}</span>
         </div>
       }
       <!-- roles-->
       <h4>Buchung erlaubt von:</h4>
       @for (roleForm of form.controls.roles.controls; track roleForm; let i = $index) {
-        <div>
+        <div class="flex items-center mb-1">
           <input type="checkbox" class="form-check-input" [formControl]="roleForm">
-          <span class="ms-2 me-4">{{ userRoleNames[i] }}</span>
+          <span class="ml-2 mr-6">{{ userRoleNames[i] }}</span>
         </div>
       }
-      <div class="form-group">
-        <button (click)="onSubmit()" class="btn btn-primary m-1">Reservierungsart übernehmen</button>
-        <button (click)="onCancel()" class="btn btn-outline-secondary ms-1">Zurück</button>
+      <div class="flex gap-2 mt-4">
+        <button (click)="onSubmit()" class="btn btn-primary">Reservierungsart übernehmen</button>
+        <button (click)="onCancel()" class="btn btn-outline-secondary">Zurück</button>
       </div>
     </form>
   }

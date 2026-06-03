@@ -1,23 +1,22 @@
 <div class="container">
-  <!-- title -->
   <h2>Systemkonfiguration anlegen</h2>
 
   <form [formGroup]="form">
-    <div class="row g-3 mb-3">
+    <div class="grid grid-cols-12 gap-4 mb-4">
       <!-- id -->
-      <div class="col-3 col-sm-2">
+      <div class="col-span-3 sm:col-span-2">
         <label class="form-label">Id:</label>
         <input type="text" class="form-control" [class.is-invalid]="fieldErrors?.has('id')" formControlName="id" />
         <tch-field-error [fieldErrors]="fieldErrors" field="id" />
       </div>
       <!-- name -->
-      <div class="col-9 col-sm-5">
+      <div class="col-span-9 sm:col-span-5">
         <label class="form-label">Name:</label>
         <input type="text" class="form-control" [class.is-invalid]="fieldErrors?.has('name')" formControlName="name" />
         <tch-field-error [fieldErrors]="fieldErrors" field="name" />
       </div>
       <!-- title -->
-      <div class="col-12 col-sm-5">
+      <div class="col-span-12 sm:col-span-5">
         <label class="form-label">Titel:</label>
         <input type="text" class="form-control" [class.is-invalid]="fieldErrors?.has('titel')"
           formControlName="title" />
@@ -25,40 +24,34 @@
       </div>
     </div>
 
-    <div class="row g-3 mb-3">
+    <div class="grid grid-cols-12 gap-4 mb-4">
       <!-- durationUnit -->
-      <div class="col-12 col-sm-4">
+      <div class="col-span-12 sm:col-span-4">
         <label class="form-label">Buchungseinheit:</label>
         <select class="form-control" [class.is-invalid]="fieldErrors?.has('durationUnit')"
           formControlName="durationUnitInMinutes">
           @for (du of durationUnits; track du) {
-            <option [value]="du">
-              {{ du }} Minuten
-            </option>
+            <option [value]="du">{{ du }} Minuten</option>
           }
         </select>
         <tch-field-error [fieldErrors]="fieldErrors" field="durationUnit" />
       </div>
       <!-- openingHour -->
-      <div class="col-6 col-sm-4">
+      <div class="col-span-6 sm:col-span-4">
         <label class="form-label">Buchbar von :</label>
         <select class="form-control" [class.is-invalid]="fieldErrors?.has('openingHour')" formControlName="openingHour">
           @for (oh of openingHours; track oh) {
-            <option [value]="oh">
-              {{ oh }} Uhr
-            </option>
+            <option [value]="oh">{{ oh }} Uhr</option>
           }
         </select>
         <tch-field-error [fieldErrors]="fieldErrors" field="openingHour" />
       </div>
       <!-- closingHour -->
-      <div class="col-6 col-sm-4">
+      <div class="col-span-6 sm:col-span-4">
         <label class="form-label">Buchbar bis :</label>
         <select class="form-control" [class.is-invalid]="fieldErrors?.has('closingHour')" formControlName="closingHour">
           @for (ch of closingHours; track ch) {
-            <option [value]="ch">
-              {{ ch }} Uhr
-            </option>
+            <option [value]="ch">{{ ch }} Uhr</option>
           }
         </select>
         <tch-field-error [fieldErrors]="fieldErrors" field="closingHour" />
@@ -66,16 +59,16 @@
     </div>
 
     <!-- courts -->
-    <h4 class="mt-4">Plätze:</h4>
+    <h4 class="mt-6">Plätze:</h4>
     @for (court of form.controls.courts.controls; track court; let i = $index) {
-      <div class="d-flex gap-3 mb-3">
+      <div class="flex gap-4 mb-4">
         <input class="form-control" type="text" [formControl]="court" />
         <button class="btn btn-outline-secondary" (click)="removeCourt(i)">
           -
         </button>
       </div>
     }
-    <button type="button" class="btn btn-outline-secondary mb-3" (click)="addCourt()">
+    <button type="button" class="btn btn-outline-secondary mb-4" (click)="addCourt()">
       +
     </button>
 
@@ -83,15 +76,15 @@
     <tch-reservation-types formGroupName="types"></tch-reservation-types>
 
     <!-- error -->
-    <div class="form-group mb-3">
-      <div class="col-sm-offset-2 col-sm-10">
-        <tch-show-error [httpError]="httpError" [errorMessages]="errorMessages" [fieldErrors]="fieldErrors">
-        </tch-show-error>
-      </div>
+    <div class="mb-4">
+      <tch-show-error [httpError]="httpError" [errorMessages]="errorMessages" [fieldErrors]="fieldErrors">
+      </tch-show-error>
     </div>
 
     <!-- Buttons -->
-    <button (click)="onSubmit()" class="btn btn-primary m-1">Systemkonfiguration anlegen</button>
-    <button (click)="onCancel()" class="btn btn-outline-secondary m-1">Zurück</button>
+    <div class="flex gap-2">
+      <button (click)="onSubmit()" class="btn btn-primary">Systemkonfiguration anlegen</button>
+      <button (click)="onCancel()" class="btn btn-outline-secondary">Zurück</button>
+    </div>
   </form>
 </div>

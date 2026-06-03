@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router, RouterLink, RouterOutlet} from '@angular/router';
 import {ReservationService} from '../reservation.service';
 import {OccupationTable} from './occupation-table';
@@ -26,6 +26,8 @@ export class OccupationTableComponent extends ErrorAware implements OnInit, OnDe
   occupationTable = new OccupationTable(User.EMPTY);
   lastUpdated = 0;
   systemConfigs: ReservationSystemConfig[] = [];
+  showConfigDropdown = false;
+  showUserDropdown = false;
 
   private readonly destroy$ = new Subject<void>();
 
@@ -244,5 +246,23 @@ export class OccupationTableComponent extends ErrorAware implements OnInit, OnDe
 
   onNextWeek() {
     this.update(this.occupationTable.date + 7 * DateUtil.DAY);
+  }
+
+  toggleConfigDropdown(event: Event) {
+    event.stopPropagation();
+    this.showConfigDropdown = !this.showConfigDropdown;
+    this.showUserDropdown = false;
+  }
+
+  toggleUserDropdown(event: Event) {
+    event.stopPropagation();
+    this.showUserDropdown = !this.showUserDropdown;
+    this.showConfigDropdown = false;
+  }
+
+  @HostListener('document:click')
+  closeDropdowns() {
+    this.showConfigDropdown = false;
+    this.showUserDropdown = false;
   }
 }

@@ -11,11 +11,11 @@
     </a>
   </li>
   <li class="nav-item">
-    <a class="nav-link d-none d-sm-block" [class.active]="tab === 'systemconfig'"
+    <a class="nav-link hidden sm:block" [class.active]="tab === 'systemconfig'"
       (click)="select('systemconfig')">
       Systemkonfiguration
     </a>
-    <a class="nav-link d-block d-sm-none" [class.active]="tab === 'systemconfig'"
+    <a class="nav-link block sm:hidden" [class.active]="tab === 'systemconfig'"
       (click)="select('systemconfig')">
       System
     </a>

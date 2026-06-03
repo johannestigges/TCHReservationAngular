@@ -21,7 +21,7 @@ export class ThemeToggleComponent implements OnInit {
 
   setTheme() {
     this.theme = localStorage.getItem('theme') ?? 'light';
-    document.documentElement.setAttribute('data-bs-theme', this.theme);
+    document.documentElement.classList.toggle('dark', this.theme === 'dark');
   }
 
 }

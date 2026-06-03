@@ -1,75 +1,83 @@
 <router-outlet></router-outlet>
-<div class="d-flex flex-wrap justify-content-between mt-1">
-  <div class="d-flex mb-1">
+<div class="flex flex-wrap justify-between mt-1">
+  <div class="flex mb-1">
     @if ((systemConfigs?.length ?? 0) > 1) {
-      <div class="dropdown me-1">
-        <button class="btn btn-outline-primary dropdown-toggle"
+      <div class="relative mr-1">
+        <button class="btn btn-outline-primary flex items-center gap-1"
                 type="button"
-                data-bs-toggle="dropdown">
+                (click)="toggleConfigDropdown($event)">
           {{ occupationTable?.systemConfig?.title }}
+          <span>▾</span>
         </button>
-        <ul class="dropdown-menu">
-          @for (config of systemConfigs; track config) {
-            <li>
-              <button class="dropdown-item" (click)="navigateTo(config.id)">
-                {{ config.title }}
-              </button>
-            </li>
-          }
-        </ul>
+        @if (showConfigDropdown) {
+          <ul class="absolute left-0 top-full z-50 mt-1 min-w-full rounded border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800">
+            @for (config of systemConfigs; track config) {
+              <li>
+                <button class="block w-full px-4 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
+                        (click)="navigateTo(config.id)">
+                  {{ config.title }}
+                </button>
+              </li>
+            }
+          </ul>
+        }
       </div>
     }
     @if (systemConfigs?.length === 1) {
-      <div class="h3 me-2">
+      <div class="h3 mr-2">
         {{ systemConfigs[0].title }}
       </div>
     }
 
     @if (isLoggedIn()) {
-      <div class="dropdown">
-        <button class="btn btn-outline-secondary dropdown-toggle"
-                type="button" data-bs-toggle="dropdown">
+      <div class="relative">
+        <button class="btn btn-outline-secondary flex items-center gap-1"
+                type="button" (click)="toggleUserDropdown($event)">
           <img src="assets/svg/person-fill.svg" alt="Benutzer">
-          <div class="d-none d-lg-inline ms-2">{{ occupationTable.user.name }}</div>
+          <span class="hidden lg:inline ml-2">{{ occupationTable.user.name }}</span>
+          <span>▾</span>
         </button>
-        <ul class="dropdown-menu">
-          <li>
-            <div class="ms-2">
+        @if (showUserDropdown) {
+          <ul class="absolute right-0 top-full z-50 mt-1 min-w-48 rounded border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800">
+            <li class="flex items-center gap-2 border-b border-gray-100 px-4 py-2 dark:border-gray-700">
               <img src="assets/svg/person.svg" alt="Benutzer">
               {{ occupationTable.user.name }}
-            </div>
-          </li>
-          @if (canLogout()) {
+            </li>
+            @if (canLogout()) {
+              <li>
+                <a class="block px-4 py-2 text-sm no-underline hover:bg-gray-100 dark:hover:bg-gray-700"
+                   routerLink="/login" [queryParams]="{logout:true}">
+                  Logout
+                </a>
+              </li>
+            }
+            @if (canChangePassword()) {
+              <li>
+                <a class="block px-4 py-2 text-sm no-underline hover:bg-gray-100 dark:hover:bg-gray-700"
+                   routerLink="/user/modify/{{ occupationTable.user.id }}">
+                  Kennwort ändern
+                </a>
+              </li>
+            }
+            @if (isAdminOrTrainer()) {
+              <li>
+                <a class="block px-4 py-2 text-sm no-underline hover:bg-gray-100 dark:hover:bg-gray-700"
+                   routerLink="/admin">
+                  Administration
+                </a>
+              </li>
+            }
             <li>
-              <a class="dropdown-item" routerLink="/login" [queryParams]="{logout:true}">
-                Logout
+              <a class="block px-4 py-2 text-sm no-underline hover:bg-gray-100 dark:hover:bg-gray-700"
+                 routerLink="/my-reservations">
+                Meine Reservierungen
               </a>
             </li>
-          }
-          @if (canChangePassword()) {
-            <li>
-              <a class="dropdown-item"
-                 routerLink="/user/modify/{{ occupationTable.user.id }}">
-                Kennwort ändern
-              </a>
+            <li class="border-t border-gray-100 dark:border-gray-700">
+              <tch-theme-toggle></tch-theme-toggle>
             </li>
-          }
-          @if (isAdminOrTrainer()) {
-            <li>
-              <a class="dropdown-item" routerLink="/admin">
-                Administration
-              </a>
-            </li>
-          }
-          <li>
-            <a class="dropdown-item" routerLink="/my-reservations">
-              Meine Reservierungen
-            </a>
-          </li>
-          <li>
-            <tch-theme-toggle></tch-theme-toggle>
-          </li>
-        </ul>
+          </ul>
+        }
       </div>
     } @else {
       <button (click)="onLogin()" class="btn btn-outline-secondary">
@@ -78,14 +86,14 @@
     }
   </div>
 
-  <div class="d-flex mb-1">
+  <div class="flex mb-1">
     <tch-news-link [loggedInUser]="occupationTable.user"></tch-news-link>
   </div>
 
-  <div class="d-flex mb-1">
+  <div class="flex mb-1">
     <h3 class="m-1">
-      <div class="d-none d-md-inline"> {{ showDate() }} &nbsp;</div>
-      <div class="d-inline d-md-none"> {{ showDateShort() }} &nbsp;</div>
+      <span class="hidden md:inline"> {{ showDate() }} &nbsp;</span>
+      <span class="inline md:hidden"> {{ showDateShort() }} &nbsp;</span>
     </h3>
 
     <div>
@@ -109,9 +117,9 @@
 </div>
 
 @if (occupationTable.systemConfig.id == 1) {
-  <div class="m-3 text-center text-danger">
+  <div class="m-4 text-center text-red-600">
     +++ Seit dem 1. Mai haben wir umgestellt auf das
-    <a class="text-reset" href="https://www.vereinonline.org/Tennisclub_Havixbeck/?action=platzbuchung_uebersicht">
+    <a href="https://www.vereinonline.org/Tennisclub_Havixbeck/?action=platzbuchung_uebersicht">
       neue Reservierungssystem
     </a>
     +++
@@ -140,12 +148,12 @@
                 @if (cell.data.header) {
                   <td [attr.rowspan]="cell.rowspan"
                       [attr.colspan]="cell.colspan"
-                      class="d-none d-sm-block">
+                      class="hidden sm:block">
                     {{ cell.data.header.time }}
                   </td>
                   <td [attr.rowspan]="cell.rowspan"
                       [attr.colspan]="cell.colspan"
-                      class="d-block d-sm-none">
+                      class="block sm:hidden">
                     {{ cell.data.header.short_time }}
                   </td>
                 }
@@ -156,7 +164,7 @@
                       class="type{{ cell.data.occupation.type }}">
                     <a routerLink="/modify/{{ occupationTable.systemConfig.id }}/{{ cell.data.occupation.id }}">
                       <span>{{ cell.data.occupation.text }}</span>
-                      <span class="d-none d-lg-inline">&nbsp;({{ cell.data.occupation.reservation.user.name }})</span>
+                      <span class="hidden lg:inline">&nbsp;({{ cell.data.occupation.reservation.user.name }})</span>
                     </a>
                   </td>
                 }
@@ -167,7 +175,7 @@
                       class="type{{ cell.data.occupation.type }}">
                     @if (canShowText(cell.data?.occupation)) {
                       <span>{{ cell.data.occupation.text }}</span>
-                      <span class="d-none d-lg-inline">&nbsp;({{ cell.data.occupation.reservation.user.name }})</span>
+                      <span class="hidden lg:inline">&nbsp;({{ cell.data.occupation.reservation.user.name }})</span>
                     } @else {
                       <span>Reserviert</span>
                     }
