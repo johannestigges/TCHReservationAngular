@@ -156,10 +156,9 @@ describe('DateUtil', () => {
     });
   });
 
-  describe('convertFromNgbDateStruct', () => {
-    it('should convert NgbDateStruct to a Date with correct year/month/day', () => {
-      const struct = { year: 2024, month: 6, day: 15 };
-      const result = DateUtil.convertFromNgbDateStruct(struct);
+  describe('fromIsoDate', () => {
+    it('should convert an ISO date string to a Date with correct year/month/day', () => {
+      const result = DateUtil.fromIsoDate('2024-06-15');
       expect(result.getFullYear()).toBe(2024);
       expect(result.getMonth()).toBe(5); // 0-indexed
       expect(result.getDate()).toBe(15);

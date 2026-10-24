@@ -2,7 +2,7 @@
   <h2>Anmeldung</h2>
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     @if (error) {
-      <div class="bg-red-600 text-white p-4 my-4 rounded">{{error}}</div>
+      <div class="bg-red-600 text-white p-4 my-4 rounded-sm">{{error}}</div>
     }
     <div class="mb-4">
       <label for="user" class="form-label">Benutzerkennung</label>

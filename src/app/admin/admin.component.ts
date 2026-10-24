@@ -1,4 +1,4 @@
-  import {Component, OnInit} from '@angular/core';
+  import {Component, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {NewsAdminOverviewComponent} from "./news/overview/news-admin-overview.component";
 import {UserTableComponent} from "./user/table/user-table.component";
@@ -9,6 +9,7 @@ import {ProtocolTableComponent} from "./protocol/table/protocol-table.component"
 @Component({
   selector: 'tch-admin',
   templateUrl: './admin.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [NewsAdminOverviewComponent, UserTableComponent, SystemconfigTableComponent, ProtocolTableComponent]
 })
 export class AdminComponent implements OnInit {

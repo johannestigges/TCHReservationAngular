@@ -10,7 +10,7 @@
           <span>▾</span>
         </button>
         @if (showConfigDropdown) {
-          <ul class="absolute left-0 top-full z-50 mt-1 min-w-full rounded border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800">
+          <ul class="absolute left-0 top-full z-50 mt-1 min-w-full rounded-sm border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800">
             @for (config of systemConfigs; track config) {
               <li>
                 <button class="block w-full px-4 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -38,7 +38,7 @@
           <span>▾</span>
         </button>
         @if (showUserDropdown) {
-          <ul class="absolute right-0 top-full z-50 mt-1 min-w-48 rounded border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800">
+          <ul class="absolute right-0 top-full z-50 mt-1 min-w-48 rounded-sm border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800">
             <li class="flex items-center gap-2 border-b border-gray-100 px-4 py-2 dark:border-gray-700">
               <img src="assets/svg/person.svg" alt="Benutzer">
               {{ occupationTable.user.name }}
@@ -173,7 +173,7 @@
                   <td [attr.rowspan]="cell.rowspan"
                       [attr.colspan]="cell.colspan"
                       class="type{{ cell.data.occupation.type }}">
-                    @if (canShowText(cell.data?.occupation)) {
+                    @if (canShowText($safeNavigationMigration(cell.data?.occupation))) {
                       <span>{{ cell.data.occupation.text }}</span>
                       <span class="hidden lg:inline">&nbsp;({{ cell.data.occupation.reservation.user.name }})</span>
                     } @else {

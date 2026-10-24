@@ -1,9 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ChangeDetectionStrategy} from '@angular/core';
 
 @Component({
   selector: 'tch-theme-toggle',
   imports: [],
   templateUrl: './theme-toggle.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './theme-toggle.component.scss'
 })
 export class ThemeToggleComponent implements OnInit {

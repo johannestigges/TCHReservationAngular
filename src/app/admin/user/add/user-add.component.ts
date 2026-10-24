@@ -1,4 +1,4 @@
-import {Component, OnDestroy} from '@angular/core';
+import {Component, OnDestroy, ChangeDetectionStrategy} from '@angular/core';
 
 import {UserService} from '../user.service';
 import {User} from '../user';
@@ -15,6 +15,7 @@ import {Subject, takeUntil} from 'rxjs';
 @Component({
   selector: 'tch-user-add',
   templateUrl: './user-add.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [FieldErrorComponent, ShowErrorComponent, FormsModule]
 })
 export class UserAddComponent extends ErrorAware implements OnDestroy {

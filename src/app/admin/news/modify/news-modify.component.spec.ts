@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withXhr } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 import { NewsModifyComponent } from './news-modify.component';
@@ -12,7 +12,7 @@ describe('NewsModifyComponent', () => {
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
 			imports: [NewsModifyComponent],
-			providers: [provideRouter([]), provideHttpClient(), provideHttpClientTesting()]
+			providers: [provideRouter([]), provideHttpClient(withXhr()), provideHttpClientTesting()]
 		})
 			.compileComponents();
     

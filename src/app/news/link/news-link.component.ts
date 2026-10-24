@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnDestroy, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {NewsService} from 'src/app/admin/news/news.service';
 import {UserNewsService} from 'src/app/admin/news/user-news.service';
 import {User} from 'src/app/admin/user/user';
@@ -8,6 +8,7 @@ import {Subject, takeUntil} from 'rxjs';
 @Component({
   selector: 'tch-news-link',
   templateUrl: './news-link.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [RouterLink],
 })
 export class NewsLinkComponent implements OnInit, OnChanges, OnDestroy {

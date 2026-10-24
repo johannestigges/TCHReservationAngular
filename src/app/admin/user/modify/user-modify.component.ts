@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 
 import {UserService} from '../user.service';
@@ -16,6 +16,7 @@ import {Subject, takeUntil} from 'rxjs';
 @Component({
   selector: 'tch-user-modify',
   templateUrl: './user-modify.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [FieldErrorComponent, ShowErrorComponent, FormsModule]
 })
 export class UserModifyComponent extends ErrorAware implements OnInit, OnDestroy {

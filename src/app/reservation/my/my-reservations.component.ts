@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {ReservationService} from "../reservation.service";
 import {Location} from "@angular/common";
 import {Reservation} from "../reservation";
@@ -8,6 +8,7 @@ import {Subject, takeUntil} from 'rxjs';
 @Component({
   selector: 'tch-my',
   templateUrl: './my-reservations.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './my-reservations.component.scss'
 })
 export class MyReservationsComponent implements OnInit, OnDestroy {

@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {User} from '../user';
 import {UserRole} from '../user-role.enum';
 import {ActivationStatus} from '../activation-status.enum';
@@ -15,6 +15,7 @@ import {map, Subject, switchMap, takeUntil} from 'rxjs';
 @Component({
   selector: 'tch-qr',
   templateUrl: './qr.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [QRCodeComponent, FormsModule, SelectFilterComponent, ShowErrorComponent]
 })
 export class QrComponent extends ErrorAware implements OnInit, OnDestroy {

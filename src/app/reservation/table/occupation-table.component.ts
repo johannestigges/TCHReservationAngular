@@ -1,4 +1,4 @@
-import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
+import {Component, HostListener, OnDestroy, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {ActivatedRoute, Router, RouterLink, RouterOutlet} from '@angular/router';
 import {ReservationService} from '../reservation.service';
 import {OccupationTable} from './occupation-table';
@@ -20,6 +20,7 @@ import {ThemeToggleComponent} from "../../util/theme-toggle/theme-toggle.compone
   selector: 'tch-occupation-table',
   templateUrl: './occupation-table.component.html',
   styleUrls: ['./occupation-table.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [RouterLink, RouterOutlet, NewsLinkComponent, ShowErrorComponent, ThemeToggleComponent]
 })
 export class OccupationTableComponent extends ErrorAware implements OnInit, OnDestroy {

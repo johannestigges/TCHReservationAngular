@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {NewsService} from 'src/app/admin/news/news.service';
 import {UserNewsService} from 'src/app/admin/news/user-news.service';
 import {UserNews} from 'src/app/admin/news/usernews';
@@ -9,6 +9,7 @@ import {catchError, EMPTY, Subject, switchMap, takeUntil, tap} from 'rxjs';
 @Component({
   selector: 'tch-news-overview',
   templateUrl: './news-overview.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [RouterLink]
 })
 export class NewsOverviewComponent extends ErrorAware implements OnInit, OnDestroy {

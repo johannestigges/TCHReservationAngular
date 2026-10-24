@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ChangeDetectionStrategy} from '@angular/core';
 
 import {ProtocolService} from '../protocol.service';
 import {Protocol} from '../protocol';
@@ -12,6 +12,7 @@ import {Subject, takeUntil} from 'rxjs';
 @Component({
   selector: 'tch-protocol-table',
   templateUrl: './protocol-table.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [KeyValuePipe, ShowErrorComponent]
 })
 export class ProtocolTableComponent extends ErrorAware implements OnInit, OnDestroy {

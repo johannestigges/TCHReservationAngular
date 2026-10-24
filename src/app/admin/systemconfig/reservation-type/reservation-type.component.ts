@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core';
 import {FormGroup, ReactiveFormsModule} from '@angular/forms';
 import { ReservationTypeForm, ReservationTypeValues, createReservationTypeForm } from '../systemconfig-form';
 import { userRoleNames } from '../../user/user-role.enum';
@@ -8,6 +8,7 @@ import { weekDaysNames } from 'src/app/reservation/week-days';
 @Component({
     selector: 'tch-reservation-type',
     templateUrl: './reservation-type.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [ReactiveFormsModule],
 })
 export class ReservationTypeComponent implements OnInit {

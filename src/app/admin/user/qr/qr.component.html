@@ -63,7 +63,7 @@
   </div>
 }
 @if (qrUrl) {
-  <div class="flex flex-col break-words items-center">
+  <div class="flex flex-col wrap-break-word items-center">
     <h2 class="mt-4">QR-Code</h2>
     <qrcode [qrdata]="qrUrl"></qrcode>
     <div class="mx-4 text-center">

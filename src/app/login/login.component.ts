@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {UserService} from '../admin/user/user.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
@@ -7,6 +7,7 @@ import {Subject, takeUntil} from 'rxjs';
 @Component({
   selector: 'tch-login',
   templateUrl: './login.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ReactiveFormsModule]
 })
 export class LoginComponent implements OnInit, OnDestroy {

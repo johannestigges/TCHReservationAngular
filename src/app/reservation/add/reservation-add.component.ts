@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 
 import {ReservationService} from '../reservation.service';
@@ -20,6 +20,7 @@ import {Subject, switchMap, takeUntil} from 'rxjs';
   selector: 'tch-reservation-add',
   templateUrl: './reservation-add.component.html',
   styleUrls: ['./reservation-add.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [FieldErrorComponent, ShowErrorComponent, FormsModule]
 })
 export class ReservationAddComponent extends ErrorAware implements OnInit, OnDestroy {

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {FormArray, FormControl, FormGroup, FormGroupDirective} from '@angular/forms';
 import {ReservationTypeForm} from '../systemconfig-form';
 import {userRoleNames, userRoleValues} from '../../user/user-role.enum';
@@ -9,6 +9,7 @@ import {ReservationTypeComponent} from "../reservation-type/reservation-type.com
 @Component({
   selector: 'tch-reservation-types',
   templateUrl: './reservation-types.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ReservationTypeComponent]
 })
 export class ReservationTypesComponent implements OnInit {

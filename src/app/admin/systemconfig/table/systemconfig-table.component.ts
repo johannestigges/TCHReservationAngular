@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ChangeDetectionStrategy} from '@angular/core';
 
 import {ErrorAware} from '../../../util/error/error-aware';
 import {ReservationSystemConfig} from 'src/app/reservation/reservation-system-config';
@@ -12,6 +12,7 @@ import {Subject, takeUntil} from 'rxjs';
   selector: 'tch-systemconfig-table',
   templateUrl: './systemconfig-table.component.html',
   styleUrls: ['./systemconfig-table.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [RouterLink, ShowErrorComponent]
 })
 export class SystemconfigTableComponent extends ErrorAware implements OnInit, OnDestroy {

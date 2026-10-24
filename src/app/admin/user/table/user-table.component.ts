@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ChangeDetectionStrategy} from '@angular/core';
 
 import {UserService} from '../user.service';
 import {User} from '../user';
@@ -11,6 +11,7 @@ import {Subject, takeUntil} from 'rxjs';
 @Component({
   selector: 'tch-user-table',
   templateUrl: './user-table.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [RouterLink, ShowErrorComponent]
 })
 export class UserTableComponent extends ErrorAware implements OnInit, OnDestroy {

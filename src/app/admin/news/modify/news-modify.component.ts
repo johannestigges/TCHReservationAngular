@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {ErrorAware} from 'src/app/util/error/error-aware';
 import {NewsService} from '../news.service';
 import {News} from '../news';
@@ -11,6 +11,7 @@ import {Subject, takeUntil} from 'rxjs';
 @Component({
   selector: 'tch-news-modify',
   templateUrl: './news-modify.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [FieldErrorComponent, ShowErrorComponent, FormsModule]
 })
 export class NewsModifyComponent extends ErrorAware implements OnInit, OnDestroy {

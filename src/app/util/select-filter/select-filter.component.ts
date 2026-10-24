@@ -1,10 +1,11 @@
-import {Component, EventEmitter, Input, OnChanges, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, Output, ChangeDetectionStrategy} from '@angular/core';
 
 
 @Component({
   selector: 'tch-select-filter',
   templateUrl: './select-filter.component.html',
   imports: [],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true
 })
 export class SelectFilterComponent implements OnChanges {

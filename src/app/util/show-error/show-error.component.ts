@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ErrorMessage } from '../error/error-message';
 import { KeyValuePipe } from "@angular/common";
@@ -8,6 +8,7 @@ import { KeyValuePipe } from "@angular/common";
     templateUrl: './show-error.component.html',
     styleUrls: ['./show-error.component.scss'],
     imports: [KeyValuePipe],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: true
 })
 export class ShowErrorComponent {
